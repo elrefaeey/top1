@@ -9,6 +9,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
+import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { nowIso } from "@/lib/cms/admin-utils";
 import type {
   BlogPost,
@@ -57,6 +58,7 @@ async function getPublished<T>(
 async function safeList<T>(
   fetcher: () => Promise<WithId<T>[]>,
 ): Promise<WithId<T>[]> {
+  if (!isFirebaseConfigured()) return [];
   try {
     return await fetcher();
   } catch {
@@ -65,6 +67,7 @@ async function safeList<T>(
 }
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
+  if (!isFirebaseConfigured()) return null;
   try {
     const snap = await withFirestoreTimeout(
       getDoc(doc(db, COLLECTIONS.siteSettings, "global")),
@@ -77,6 +80,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 }
 
 export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | null> {
+  if (!isFirebaseConfigured()) return null;
   try {
     const q = query(
       collection(db, COLLECTIONS.pages),
@@ -93,6 +97,7 @@ export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | nul
 }
 
 export async function getPageById(id: string): Promise<WithId<CmsPage> | null> {
+  if (!isFirebaseConfigured()) return null;
   try {
     const snap = await withFirestoreTimeout(getDoc(doc(db, COLLECTIONS.pages, id)), READ_MS);
     if (!snap.exists()) return null;
@@ -108,6 +113,7 @@ export async function getServices(): Promise<WithId<Service>[]> {
 }
 
 export async function getServiceBySlug(slug: string): Promise<WithId<Service> | null> {
+  if (!isFirebaseConfigured()) return null;
   try {
     const q = query(
       collection(db, COLLECTIONS.services),
@@ -153,7 +159,7 @@ export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
 
 export async function getBlogPostBySlug(slug: string): Promise<WithId<BlogPost> | null> {
   const normalized = normalizeBlogSlugParam(slug);
-  if (!normalized) return null;
+  if (!normalized || !isFirebaseConfigured()) return null;
 
   try {
     const snap = await withFirestoreTimeout(

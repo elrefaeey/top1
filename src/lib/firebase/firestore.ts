@@ -1,5 +1,5 @@
 import { initializeFirestore, getFirestore, type Firestore } from "firebase/firestore";
-import { getFirebaseApp } from "./config";
+import { getFirebaseApp, isFirebaseConfigured } from "./config";
 
 let dbInstance: Firestore | null = null;
 
@@ -17,8 +17,18 @@ export function getDb(): Firestore {
   return dbInstance;
 }
 
-/** @deprecated use getDb() — kept for existing imports */
-export const db = getDb();
+function createLazyDb(): Firestore {
+  return new Proxy({} as Firestore, {
+    get(_target, prop) {
+      const instance = getDb();
+      const value = Reflect.get(instance as object, prop, instance);
+      return typeof value === "function" ? value.bind(instance) : value;
+    },
+  });
+}
+
+/** Lazy Firestore — avoids init during SSR module load */
+export const db = createLazyDb();
 
 export const COLLECTIONS = {
   users: "users",

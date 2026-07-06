@@ -10,8 +10,22 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+export function isFirebaseConfigured(): boolean {
+  return Boolean(
+    firebaseConfig.apiKey &&
+    firebaseConfig.projectId &&
+    firebaseConfig.appId,
+  );
+}
+
 export function getFirebaseApp(): FirebaseApp {
-  return getApps().length ? getApps()[0]! : initializeApp(firebaseConfig);
+  if (getApps().length) return getApps()[0]!;
+  if (!isFirebaseConfigured()) {
+    throw new Error(
+      "Firebase env vars missing. Set VITE_FIREBASE_API_KEY, VITE_FIREBASE_PROJECT_ID, and VITE_FIREBASE_APP_ID.",
+    );
+  }
+  return initializeApp(firebaseConfig);
 }
 
 export const SITE_URL = import.meta.env.VITE_SITE_URL || "";

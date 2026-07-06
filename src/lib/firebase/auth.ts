@@ -1,8 +1,9 @@
 ﻿import {
-  getAuth,
+  getAuth as getFirebaseAuth,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  type Auth,
   type User,
 } from "firebase/auth";
 import { getFirebaseApp } from "./config";
@@ -16,13 +17,24 @@ export interface AppUser {
   role: UserRole | null;
 }
 
-const auth = getAuth(getFirebaseApp());
+let authInstance: Auth | null = null;
+
+function getAuthInstance(): Auth {
+  if (!authInstance) authInstance = getFirebaseAuth(getFirebaseApp());
+  return authInstance;
+}
+
+export const auth = new Proxy({} as Auth, {
+  get(_target, prop) {
+    const instance = getAuthInstance();
+    const value = Reflect.get(instance as object, prop, instance);
+    return typeof value === "function" ? value.bind(instance) : value;
+  },
+});
 
 const BOOTSTRAP_ADMIN_EMAIL = (
   import.meta.env.VITE_BOOTSTRAP_ADMIN_EMAIL as string | undefined
 )?.toLowerCase().trim();
-
-export { auth };
 
 export function isBootstrapAdminEmail(email: string | null | undefined): boolean {
   if (!BOOTSTRAP_ADMIN_EMAIL || !email) return false;
