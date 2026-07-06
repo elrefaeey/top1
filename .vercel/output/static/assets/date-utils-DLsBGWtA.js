@@ -1,1 +1,0 @@
-function e(e){try{return new Date(e).toLocaleDateString(`ar-EG`,{month:`long`,day:`numeric`,year:`numeric`})}catch{return e}}export{e as t};

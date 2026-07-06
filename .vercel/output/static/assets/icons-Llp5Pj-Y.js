@@ -1,1 +1,0 @@
-import{i as e,n as t,r as n,t as r}from"./palette-NIlanWs7.js";import{t as i}from"./search-Ci8TbkAa.js";var a={Globe:t,Code2:e,Search:i,Palette:r,Layers:n};function o(e){return a[e]??t}export{o as t};
