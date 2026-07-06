@@ -41,15 +41,34 @@ function sortByField<T>(items: WithId<T>[], field: string, direction: "asc" | "d
   });
 }
 
+function isPublicCmsItem(item: Record<string, unknown>): boolean {
+  const status = item.status;
+  return status === undefined || status === null || status === "published";
+}
+
 async function getPublished<T>(
   collectionName: string,
   orderField = "order",
   max?: number,
 ): Promise<WithId<T>[]> {
-  // فلترة status فقط — بدون orderBy في Firestore (يتجنّب index مركّب)
-  const q = query(collection(db, collectionName), where("status", "==", "published"));
-  const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
-  let items = snap.docs.map((d) => mapDoc<T>(d));
+  try {
+    const q = query(collection(db, collectionName), where("status", "==", "published"));
+    const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
+    if (snap.docs.length > 0) {
+      let items = snap.docs.map((d) => mapDoc<T>(d));
+      items = sortByField(items, orderField, "asc");
+      if (max) items = items.slice(0, max);
+      return items;
+    }
+  } catch (err) {
+    console.error(`[cms] published query failed for ${collectionName}:`, err);
+  }
+
+  // مستندات قديمة بدون حقل status
+  const snap = await withFirestoreTimeout(getDocs(collection(db, collectionName)), READ_MS);
+  let items = snap.docs
+    .map((d) => mapDoc<T>(d))
+    .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
   items = sortByField(items, orderField, "asc");
   if (max) items = items.slice(0, max);
   return items;
@@ -57,11 +76,13 @@ async function getPublished<T>(
 
 async function safeList<T>(
   fetcher: () => Promise<WithId<T>[]>,
+  label?: string,
 ): Promise<WithId<T>[]> {
   if (!isFirebaseConfigured()) return [];
   try {
     return await fetcher();
-  } catch {
+  } catch (err) {
+    console.error(`[cms] safeList failed${label ? ` (${label})` : ""}:`, err);
     return [];
   }
 }
@@ -102,14 +123,14 @@ export async function getPageById(id: string): Promise<WithId<CmsPage> | null> {
     const snap = await withFirestoreTimeout(getDoc(doc(db, COLLECTIONS.pages, id)), READ_MS);
     if (!snap.exists()) return null;
     const page = mapDoc<CmsPage>(snap);
-    return page.status === "published" ? page : null;
+    return isPublicCmsItem(page as Record<string, unknown>) ? page : null;
   } catch {
     return null;
   }
 }
 
 export async function getServices(): Promise<WithId<Service>[]> {
-  return safeList(() => getPublished<Service>(COLLECTIONS.services));
+  return safeList(() => getPublished<Service>(COLLECTIONS.services), "services");
 }
 
 export async function getServiceBySlug(slug: string): Promise<WithId<Service> | null> {
@@ -130,7 +151,7 @@ export async function getServiceBySlug(slug: string): Promise<WithId<Service> | 
 }
 
 export async function getPortfolio(): Promise<WithId<PortfolioItem>[]> {
-  return safeList(() => getPublished<PortfolioItem>(COLLECTIONS.portfolio));
+  return safeList(() => getPublished<PortfolioItem>(COLLECTIONS.portfolio), "portfolio");
 }
 
 function normalizeBlogPost(docId: string, post: BlogPost): WithId<BlogPost> {
@@ -148,13 +169,27 @@ function normalizeBlogSlugParam(slug: string): string {
 
 export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
   return safeList(async () => {
-    const q = query(collection(db, COLLECTIONS.blogPosts), where("status", "==", "published"));
-    const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
-    let items = snap.docs.map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)));
+    try {
+      const q = query(collection(db, COLLECTIONS.blogPosts), where("status", "==", "published"));
+      const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
+      if (snap.docs.length > 0) {
+        let items = snap.docs.map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)));
+        items = sortByField(items, "publishedAt", "desc");
+        if (max) items = items.slice(0, max);
+        return items;
+      }
+    } catch (err) {
+      console.error("[cms] blog published query failed:", err);
+    }
+
+    const snap = await withFirestoreTimeout(getDocs(collection(db, COLLECTIONS.blogPosts)), READ_MS);
+    let items = snap.docs
+      .map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)))
+      .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
     items = sortByField(items, "publishedAt", "desc");
     if (max) items = items.slice(0, max);
     return items;
-  });
+  }, "blog");
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<WithId<BlogPost> | null> {
@@ -168,7 +203,7 @@ export async function getBlogPostBySlug(slug: string): Promise<WithId<BlogPost> 
     );
     if (snap.exists()) {
       const post = normalizeBlogPost(snap.id, mapDoc<BlogPost>(snap));
-      if (post.status === "published") return post;
+      if (isPublicCmsItem(post as Record<string, unknown>)) return post;
     }
   } catch {
     // continue to list lookup

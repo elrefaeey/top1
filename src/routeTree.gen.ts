@@ -34,6 +34,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
 import { Route as AdminServicesIdRouteImport } from './routes/admin.services.$id'
@@ -168,6 +169,11 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiCmsResourceRoute = ApiCmsResourceRouteImport.update({
+  id: '/api/cms/$resource',
+  path: '/api/cms/$resource',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -243,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/api/cms/$resource': typeof ApiCmsResourceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/api/cms/$resource': typeof ApiCmsResourceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -313,6 +321,7 @@ export interface FileRoutesById {
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/api/cms/$resource': typeof ApiCmsResourceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -350,6 +359,7 @@ export interface FileRouteTypes {
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/api/cms/$resource'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -384,6 +394,7 @@ export interface FileRouteTypes {
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/api/cms/$resource'
   id:
     | '__root__'
     | '/'
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/api/cms/$resource'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -432,6 +444,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
+  ApiCmsResourceRoute: typeof ApiCmsResourceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -610,6 +623,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/cms/$resource': {
+      id: '/api/cms/$resource'
+      path: '/api/cms/$resource'
+      fullPath: '/api/cms/$resource'
+      preLoaderRoute: typeof ApiCmsResourceRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/testimonials/$id': {
       id: '/admin/testimonials/$id'
@@ -832,6 +852,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
+  ApiCmsResourceRoute: ApiCmsResourceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

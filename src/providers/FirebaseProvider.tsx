@@ -7,7 +7,6 @@ import {
   setFirebaseConfig,
 } from "@/lib/firebase/config";
 import {
-  getBootstrapAdminEmail,
   isValidFirebaseConfig,
   setAppRuntimeConfig,
   type FirebasePublicConfig,
@@ -42,8 +41,7 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     async function init() {
-      const needsRuntimeConfig = !isFirebaseConfigured() || !getBootstrapAdminEmail();
-      if (needsRuntimeConfig) {
+      if (typeof window !== "undefined") {
         const config = await fetchServerFirebaseConfig();
         if (cancelled) return;
         if (config) {
@@ -58,8 +56,9 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
 
       if (isFirebaseConfigured()) {
         getFirebaseApp();
-        await queryClient.invalidateQueries({ queryKey: cmsKeys.all });
       }
+
+      await queryClient.invalidateQueries({ queryKey: cmsKeys.all });
 
       if (!cancelled) setReady(true);
     }

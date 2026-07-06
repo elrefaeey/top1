@@ -38,23 +38,29 @@ service cloud.firestore {
       allow write: if isEditor();
     }
 
+    function isPublicContent() {
+      return !('status' in resource.data) ||
+        resource.data.status == null ||
+        resource.data.status == 'published';
+    }
+
     match /pages/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /services/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /portfolio/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /blog_posts/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
@@ -69,22 +75,22 @@ service cloud.firestore {
     }
 
     match /testimonials/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /pricing_plans/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /faqs/{docId} {
-      allow read: if resource.data.status == 'published' || isEditor();
+      allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
     }
 
     match /site_stats/{docId} {
-      allow read: if isEditor() || resource.data.status == 'published';
+      allow read: if isEditor() || isPublicContent();
       allow write: if isEditor();
     }
 
