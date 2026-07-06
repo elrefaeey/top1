@@ -29,12 +29,24 @@ export async function handleCmsApiGet(
 
   switch (resource) {
     case "health": {
-      const services = await getServices();
-      return {
-        ok: true,
-        firebase: true,
-        servicesCount: services.length,
-      };
+      try {
+        const services = await getServices();
+        const blog = await getBlogPosts();
+        const portfolio = await getPortfolio();
+        return {
+          ok: true,
+          firebase: true,
+          servicesCount: services.length,
+          blogCount: blog.length,
+          portfolioCount: portfolio.length,
+        };
+      } catch (err) {
+        return {
+          ok: false,
+          firebase: true,
+          error: err instanceof Error ? err.message : "CMS health check failed",
+        };
+      }
     }
     case "settings":
       return getSiteSettings();

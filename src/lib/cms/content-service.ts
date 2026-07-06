@@ -8,7 +8,7 @@ import {
   where,
   limit,
 } from "firebase/firestore";
-import { db, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
+import { db, COLLECTIONS, getReadTimeoutMs, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { nowIso } from "@/lib/cms/admin-utils";
 import type {
@@ -24,7 +24,7 @@ import type {
   WithId,
 } from "@/types/cms";
 
-const READ_MS = 5000;
+const READ_MS = getReadTimeoutMs();
 
 function mapDoc<T>(snap: { id: string; data: () => T | undefined }): WithId<T> {
   return { id: snap.id, ...snap.data()! };

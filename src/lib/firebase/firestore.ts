@@ -3,6 +3,15 @@ import { getFirebaseApp, isFirebaseConfigured } from "./config";
 
 let dbInstance: Firestore | null = null;
 
+function isServerRuntime(): boolean {
+  return typeof window === "undefined";
+}
+
+export function getReadTimeoutMs(): number {
+  // Vercel/serverless: أول اتصال Firestore قد يأخذ وقتاً أطول
+  return isServerRuntime() ? 30_000 : 8_000;
+}
+
 export function getDb(): Firestore {
   if (!isFirebaseConfigured()) {
     throw new Error("Firebase is not configured");
@@ -12,9 +21,12 @@ export function getDb(): Firestore {
   const app = getFirebaseApp();
   if (!app) throw new Error("Firebase is not configured");
   try {
-    dbInstance = initializeFirestore(app, {
-      experimentalAutoDetectLongPolling: true,
-    });
+    dbInstance = initializeFirestore(
+      app,
+      isServerRuntime()
+        ? { preferRest: true }
+        : { experimentalAutoDetectLongPolling: true },
+    );
   } catch {
     dbInstance = getFirestore(app);
   }
