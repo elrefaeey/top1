@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   isValidFirebaseConfig,
+  readEnv,
   readFirebaseConfigFromEnv,
 } from "@/lib/firebase/env";
 
@@ -15,9 +16,16 @@ export const Route = createFileRoute("/api/firebase-config")({
             { status: 503 },
           );
         }
-        return Response.json(config, {
-          headers: { "cache-control": "public, max-age=300" },
-        });
+        const bootstrapAdminEmail = readEnv("VITE_BOOTSTRAP_ADMIN_EMAIL");
+        return Response.json(
+          {
+            ...config,
+            ...(bootstrapAdminEmail ? { bootstrapAdminEmail } : {}),
+          },
+          {
+            headers: { "cache-control": "public, max-age=300" },
+          },
+        );
       },
     },
   },

@@ -46,31 +46,43 @@ export const auth = new Proxy({} as Auth, {
   },
 });
 
-const BOOTSTRAP_ADMIN_EMAIL = (
-  import.meta.env.VITE_BOOTSTRAP_ADMIN_EMAIL as string | undefined
-)?.toLowerCase().trim();
+import { getBootstrapAdminEmail } from "./env";
 
 export function isBootstrapAdminEmail(email: string | null | undefined): boolean {
-  if (!BOOTSTRAP_ADMIN_EMAIL || !email) return false;
-  return email.toLowerCase().trim() === BOOTSTRAP_ADMIN_EMAIL;
+  const bootstrap = getBootstrapAdminEmail();
+  if (!bootstrap || !email) return false;
+  return email.toLowerCase().trim() === bootstrap;
 }
 
 export async function ensureBootstrapAdminRole(user: User): Promise<UserRole | null> {
   const existing = await getUserRole(user.uid);
   if (existing) return existing;
 
+  const role: UserRole = isBootstrapAdminEmail(user.email) ? "admin" : "editor";
+
   try {
-    const { doc, setDoc, serverTimestamp } = await import("firebase/firestore");
+    const { doc, setDoc, updateDoc, getDoc, serverTimestamp } = await import("firebase/firestore");
     const { db, withFirestoreTimeout } = await import("./firestore");
-    const role: UserRole = isBootstrapAdminEmail(user.email) ? "admin" : "editor";
-    await withFirestoreTimeout(
-      setDoc(doc(db, "users", user.uid), {
-        role,
-        email: user.email,
-        createdAt: serverTimestamp(),
-      }),
-      8000,
-    );
+    const ref = doc(db, "users", user.uid);
+    const snap = await withFirestoreTimeout(getDoc(ref), 5000);
+
+    if (!snap.exists()) {
+      await withFirestoreTimeout(
+        setDoc(ref, {
+          role,
+          email: user.email,
+          createdAt: serverTimestamp(),
+        }),
+        8000,
+      );
+    } else {
+      const currentRole = snap.data()?.role as UserRole | undefined;
+      if (currentRole === "admin" || currentRole === "editor") return currentRole;
+      await withFirestoreTimeout(
+        updateDoc(ref, { role, email: user.email }),
+        8000,
+      );
+    }
     return role;
   } catch (err) {
     console.error("[auth] bootstrap role failed:", err);

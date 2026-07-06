@@ -16,6 +16,24 @@ function readEnv(key: string): string {
   return typeof value === "string" ? value : "";
 }
 
+export { readEnv };
+
+export type AppRuntimeConfig = {
+  bootstrapAdminEmail?: string;
+};
+
+let appRuntimeConfig: AppRuntimeConfig = {};
+
+export function setAppRuntimeConfig(config: AppRuntimeConfig) {
+  appRuntimeConfig = { ...appRuntimeConfig, ...config };
+}
+
+export function getBootstrapAdminEmail(): string {
+  const fromRuntime = appRuntimeConfig.bootstrapAdminEmail?.toLowerCase().trim();
+  if (fromRuntime) return fromRuntime;
+  return readEnv("VITE_BOOTSTRAP_ADMIN_EMAIL").toLowerCase().trim();
+}
+
 /** يقرأ من VITE_* — يعمل على السيرفر (Vercel runtime) والمتصفح (build time) */
 export function readFirebaseConfigFromEnv(): FirebasePublicConfig {
   return {

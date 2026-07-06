@@ -6,7 +6,12 @@ import {
   isFirebaseConfigured,
   setFirebaseConfig,
 } from "@/lib/firebase/config";
-import { isValidFirebaseConfig, type FirebasePublicConfig } from "@/lib/firebase/env";
+import {
+  getBootstrapAdminEmail,
+  isValidFirebaseConfig,
+  setAppRuntimeConfig,
+  type FirebasePublicConfig,
+} from "@/lib/firebase/env";
 
 const FirebaseReadyContext = createContext(false);
 
@@ -14,11 +19,15 @@ export function useFirebaseReady() {
   return useContext(FirebaseReadyContext);
 }
 
-async function fetchServerFirebaseConfig(): Promise<FirebasePublicConfig | null> {
+type ServerFirebasePayload = FirebasePublicConfig & {
+  bootstrapAdminEmail?: string;
+};
+
+async function fetchServerFirebaseConfig(): Promise<ServerFirebasePayload | null> {
   try {
     const res = await fetch("/api/firebase-config");
     if (!res.ok) return null;
-    const config = (await res.json()) as FirebasePublicConfig;
+    const config = (await res.json()) as ServerFirebasePayload;
     return isValidFirebaseConfig(config) ? config : null;
   } catch {
     return null;
@@ -33,11 +42,17 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     async function init() {
-      if (!isFirebaseConfigured()) {
+      const needsRuntimeConfig = !isFirebaseConfigured() || !getBootstrapAdminEmail();
+      if (needsRuntimeConfig) {
         const config = await fetchServerFirebaseConfig();
         if (cancelled) return;
         if (config) {
-          setFirebaseConfig(config);
+          if (!isFirebaseConfigured()) {
+            setFirebaseConfig(config);
+          }
+          if (config.bootstrapAdminEmail) {
+            setAppRuntimeConfig({ bootstrapAdminEmail: config.bootstrapAdminEmail });
+          }
         }
       }
 

@@ -63,6 +63,14 @@ function AdminLayout() {
           {bootstrapError && (
             <p className="mt-2 text-xs text-destructive">{bootstrapError}</p>
           )}
+          <p className="mt-3 text-xs text-muted-foreground">
+            إذا استمرت المشكلة: انشر <code className="bg-accent px-1 rounded">firestore.rules</code> من
+            Firebase Console، واستخدم الرابط{" "}
+            <a href="https://top1-ten.vercel.app/admin" className="text-primary underline">
+              top1-ten.vercel.app
+            </a>{" "}
+            (مش رابط preview).
+          </p>
           {user && (
             <p className="mt-3 text-xs text-muted-foreground break-all" dir="ltr">
               UID: {user.uid}
