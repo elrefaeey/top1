@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFirebaseReady } from "@/providers/FirebaseProvider";
 import {
   createLead,
   getBlogPosts,
@@ -38,15 +39,25 @@ const cmsQuery = {
   refetchOnWindowFocus: false,
 } as const;
 
+function useCmsEnabled(extra = true) {
+  const firebaseReady = useFirebaseReady();
+  return firebaseReady && extra;
+}
+
 export function useSiteSettings() {
-  return useQuery({ queryKey: cmsKeys.settings(), queryFn: getSiteSettings, ...cmsQuery });
+  return useQuery({
+    queryKey: cmsKeys.settings(),
+    queryFn: getSiteSettings,
+    enabled: useCmsEnabled(),
+    ...cmsQuery,
+  });
 }
 
 export function usePage(slug: string) {
   return useQuery({
     queryKey: cmsKeys.page(slug),
     queryFn: () => getPageBySlug(slug),
-    enabled: !!slug,
+    enabled: useCmsEnabled(!!slug),
     ...cmsQuery,
   });
 }
@@ -55,7 +66,7 @@ export function usePageById(id: string) {
   return useQuery({
     queryKey: cmsKeys.page(id),
     queryFn: () => getPageById(id),
-    enabled: !!id,
+    enabled: useCmsEnabled(!!id),
     ...cmsQuery,
   });
 }
@@ -64,6 +75,7 @@ export function useServices() {
   return useQuery({
     queryKey: cmsKeys.services(),
     queryFn: getServices,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -73,7 +85,7 @@ export function useService(slug: string) {
   return useQuery({
     queryKey: cmsKeys.service(slug),
     queryFn: () => getServiceBySlug(slug),
-    enabled: !!slug,
+    enabled: useCmsEnabled(!!slug),
     ...cmsQuery,
   });
 }
@@ -82,6 +94,7 @@ export function usePortfolio() {
   return useQuery({
     queryKey: cmsKeys.portfolio(),
     queryFn: getPortfolio,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -91,6 +104,7 @@ export function useBlogPosts(max?: number) {
   return useQuery({
     queryKey: [...cmsKeys.blog(), max],
     queryFn: () => getBlogPosts(max),
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -100,7 +114,7 @@ export function useBlogPost(slug: string) {
   return useQuery({
     queryKey: cmsKeys.blogPost(slug),
     queryFn: () => getBlogPostBySlug(slug),
-    enabled: !!slug,
+    enabled: useCmsEnabled(!!slug),
     ...cmsQuery,
   });
 }
@@ -109,6 +123,7 @@ export function useTrendingPosts() {
   return useQuery({
     queryKey: cmsKeys.trending(),
     queryFn: () => getTrendingPosts(),
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -118,6 +133,7 @@ export function useTestimonials() {
   return useQuery({
     queryKey: cmsKeys.testimonials(),
     queryFn: getTestimonials,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -127,6 +143,7 @@ export function usePricingPlans() {
   return useQuery({
     queryKey: cmsKeys.pricing(),
     queryFn: getPricingPlans,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -136,6 +153,7 @@ export function useFaqs() {
   return useQuery({
     queryKey: cmsKeys.faqs(),
     queryFn: getFaqs,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });
@@ -145,6 +163,7 @@ export function useSiteStats() {
   return useQuery({
     queryKey: cmsKeys.stats(),
     queryFn: getSiteStats,
+    enabled: useCmsEnabled(),
     placeholderData: [],
     ...cmsQuery,
   });

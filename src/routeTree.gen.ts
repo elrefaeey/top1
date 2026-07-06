@@ -21,6 +21,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
+import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminStatsRouteImport } from './routes/admin.stats'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
@@ -100,6 +101,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
   id: '/api/upload-image',
   path: '/api/upload-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiFirebaseConfigRoute = ApiFirebaseConfigRouteImport.update({
+  id: '/api/firebase-config',
+  path: '/api/firebase-config',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
@@ -224,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
+  '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
+  '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
+  '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -328,6 +337,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/api/firebase-config'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -361,6 +371,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/api/firebase-config'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/api/firebase-config'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -418,6 +430,7 @@ export interface RootRouteChildren {
   PortfolioRoute: typeof PortfolioRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
 }
 
@@ -505,6 +518,13 @@ declare module '@tanstack/react-router' {
       path: '/api/upload-image'
       fullPath: '/api/upload-image'
       preLoaderRoute: typeof ApiUploadImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/firebase-config': {
+      id: '/api/firebase-config'
+      path: '/api/firebase-config'
+      fullPath: '/api/firebase-config'
+      preLoaderRoute: typeof ApiFirebaseConfigRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/testimonials': {
@@ -810,6 +830,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioRoute: PortfolioRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
 }
 export const routeTree = rootRouteImport

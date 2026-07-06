@@ -13,6 +13,7 @@ import {
   type AppUser,
 } from "@/lib/firebase/auth";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
+import { useFirebaseReady } from "@/providers/FirebaseProvider";
 
 interface AuthContextValue {
   user: AppUser | null;
@@ -33,8 +34,11 @@ const AuthContext = createContext<AuthContextValue>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const firebaseReady = useFirebaseReady();
 
   useEffect(() => {
+    if (!firebaseReady) return;
+
     if (!isFirebaseConfigured()) {
       setLoading(false);
       return;
@@ -53,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .finally(() => setLoading(false));
     });
     return unsub;
-  }, []);
+  }, [firebaseReady]);
 
   async function refreshUser() {
     if (!isFirebaseConfigured()) {

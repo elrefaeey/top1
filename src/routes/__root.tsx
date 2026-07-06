@@ -17,6 +17,7 @@ import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
 import { FirebaseAnalytics } from "../components/site/FirebaseAnalytics";
 import { AuthProvider } from "../providers/AuthProvider";
+import { FirebaseProvider } from "../providers/FirebaseProvider";
 import { SITE_NAME, SITE_LOGO_URL, SITE_TWITTER } from "@/lib/site-config";
 
 function NotFoundComponent() {
@@ -125,6 +126,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <FirebaseProvider>
       <AuthProvider>
         <FirebaseAnalytics />
         {isAdminRoute ? (
@@ -140,6 +142,7 @@ function RootComponent() {
           </div>
         )}
       </AuthProvider>
+      </FirebaseProvider>
     </QueryClientProvider>
   );
 }

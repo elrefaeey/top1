@@ -1,27 +1,38 @@
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import {
+  readFirebaseConfigFromEnv,
+  isValidFirebaseConfig,
+  type FirebasePublicConfig,
+} from "./env";
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
+let overrideConfig: FirebasePublicConfig | null = null;
+
+export function getFirebaseConfig(): FirebasePublicConfig {
+  return overrideConfig ?? readFirebaseConfigFromEnv();
+}
+
+export function setFirebaseConfig(config: FirebasePublicConfig) {
+  overrideConfig = config;
+}
 
 export function isFirebaseConfigured(): boolean {
-  return Boolean(
-    firebaseConfig.apiKey &&
-    firebaseConfig.projectId &&
-    firebaseConfig.appId,
-  );
+  if (getApps().length > 0) return true;
+  return isValidFirebaseConfig(getFirebaseConfig());
 }
 
 export function getFirebaseApp(): FirebaseApp | null {
   if (getApps().length) return getApps()[0]!;
-  if (!isFirebaseConfigured()) return null;
-  return initializeApp(firebaseConfig);
+  const config = getFirebaseConfig();
+  if (!isValidFirebaseConfig(config)) return null;
+  return initializeApp(config);
 }
 
-export const SITE_URL = import.meta.env.VITE_SITE_URL || "";
+function readSiteUrl(): string {
+  if (typeof process !== "undefined" && process.env?.VITE_SITE_URL) {
+    return process.env.VITE_SITE_URL;
+  }
+  const value = import.meta.env.VITE_SITE_URL;
+  return typeof value === "string" ? value : "";
+}
+
+export const SITE_URL = readSiteUrl();

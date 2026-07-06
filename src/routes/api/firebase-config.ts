@@ -1,0 +1,24 @@
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  isValidFirebaseConfig,
+  readFirebaseConfigFromEnv,
+} from "@/lib/firebase/env";
+
+export const Route = createFileRoute("/api/firebase-config")({
+  server: {
+    handlers: {
+      GET: () => {
+        const config = readFirebaseConfigFromEnv();
+        if (!isValidFirebaseConfig(config)) {
+          return Response.json(
+            { error: "Firebase env vars are not set on the server" },
+            { status: 503 },
+          );
+        }
+        return Response.json(config, {
+          headers: { "cache-control": "public, max-age=300" },
+        });
+      },
+    },
+  },
+});
