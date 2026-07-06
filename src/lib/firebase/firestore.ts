@@ -4,9 +4,13 @@ import { getFirebaseApp, isFirebaseConfigured } from "./config";
 let dbInstance: Firestore | null = null;
 
 export function getDb(): Firestore {
+  if (!isFirebaseConfigured()) {
+    throw new Error("Firebase is not configured");
+  }
   if (dbInstance) return dbInstance;
 
   const app = getFirebaseApp();
+  if (!app) throw new Error("Firebase is not configured");
   try {
     dbInstance = initializeFirestore(app, {
       experimentalAutoDetectLongPolling: true,
@@ -20,6 +24,9 @@ export function getDb(): Firestore {
 function createLazyDb(): Firestore {
   return new Proxy({} as Firestore, {
     get(_target, prop) {
+      if (!isFirebaseConfigured()) {
+        throw new Error("Firebase is not configured");
+      }
       const instance = getDb();
       const value = Reflect.get(instance as object, prop, instance);
       return typeof value === "function" ? value.bind(instance) : value;

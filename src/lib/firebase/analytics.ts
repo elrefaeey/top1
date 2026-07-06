@@ -1,14 +1,17 @@
 import { getAnalytics, isSupported, logEvent, type Analytics } from "firebase/analytics";
-import { getFirebaseApp } from "./config";
+import { getFirebaseApp, isFirebaseConfigured } from "./config";
 
 let analytics: Analytics | null = null;
 
 export async function initAnalytics(): Promise<Analytics | null> {
   if (typeof window === "undefined") return null;
+  if (!isFirebaseConfigured()) return null;
   if (analytics) return analytics;
   const supported = await isSupported();
   if (!supported) return null;
-  analytics = getAnalytics(getFirebaseApp());
+  const app = getFirebaseApp();
+  if (!app) return null;
+  analytics = getAnalytics(app);
   return analytics;
 }
 

@@ -18,13 +18,9 @@ export function isFirebaseConfigured(): boolean {
   );
 }
 
-export function getFirebaseApp(): FirebaseApp {
+export function getFirebaseApp(): FirebaseApp | null {
   if (getApps().length) return getApps()[0]!;
-  if (!isFirebaseConfigured()) {
-    throw new Error(
-      "Firebase env vars missing. Set VITE_FIREBASE_API_KEY, VITE_FIREBASE_PROJECT_ID, and VITE_FIREBASE_APP_ID.",
-    );
-  }
+  if (!isFirebaseConfigured()) return null;
   return initializeApp(firebaseConfig);
 }
 

@@ -12,6 +12,7 @@ import {
   ensureBootstrapAdminRole,
   type AppUser,
 } from "@/lib/firebase/auth";
+import { isFirebaseConfigured } from "@/lib/firebase/config";
 
 interface AuthContextValue {
   user: AppUser | null;
@@ -34,6 +35,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!isFirebaseConfigured()) {
+      setLoading(false);
+      return;
+    }
+
     const unsub = subscribeToAuth((firebaseUser) => {
       if (!firebaseUser) {
         setUser(null);
@@ -50,6 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function refreshUser() {
+    if (!isFirebaseConfigured()) {
+      setUser(null);
+      return;
+    }
     const firebaseUser = auth.currentUser;
     if (!firebaseUser) {
       setUser(null);

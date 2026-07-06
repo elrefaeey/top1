@@ -6,7 +6,7 @@
   type Auth,
   type User,
 } from "firebase/auth";
-import { getFirebaseApp } from "./config";
+import { getFirebaseApp, isFirebaseConfigured } from "./config";
 
 export type UserRole = "admin" | "editor";
 
@@ -20,12 +20,26 @@ export interface AppUser {
 let authInstance: Auth | null = null;
 
 function getAuthInstance(): Auth {
-  if (!authInstance) authInstance = getFirebaseAuth(getFirebaseApp());
+  const app = getFirebaseApp();
+  if (!app) throw new Error("Firebase is not configured");
+  if (!authInstance) authInstance = getFirebaseAuth(app);
   return authInstance;
 }
 
 export const auth = new Proxy({} as Auth, {
   get(_target, prop) {
+    if (!isFirebaseConfigured()) {
+      if (prop === "currentUser") return null;
+      if (prop === "app") return null;
+      if (prop === "name") return "[DEFAULT]";
+      if (prop === "onAuthStateChanged") {
+        return (callback: (user: User | null) => void) => {
+          callback(null);
+          return () => {};
+        };
+      }
+      return () => Promise.reject(new Error("Firebase is not configured"));
+    }
     const instance = getAuthInstance();
     const value = Reflect.get(instance as object, prop, instance);
     return typeof value === "function" ? value.bind(instance) : value;
@@ -68,17 +82,25 @@ export async function ensureBootstrapAdminRole(user: User): Promise<UserRole | n
 }
 
 export async function loginWithEmail(email: string, password: string) {
-  const credential = await signInWithEmailAndPassword(auth, email, password);
+  if (!isFirebaseConfigured()) {
+    throw new Error("Firebase غير مُعد — أضف متغيرات VITE_FIREBASE_* في Vercel ثم أعد النشر");
+  }
+  const credential = await signInWithEmailAndPassword(getAuthInstance(), email, password);
   await ensureBootstrapAdminRole(credential.user);
   return credential;
 }
 
 export async function logout() {
-  return signOut(auth);
+  if (!isFirebaseConfigured()) return;
+  return signOut(getAuthInstance());
 }
 
 export function subscribeToAuth(callback: (user: User | null) => void) {
-  return onAuthStateChanged(auth, callback);
+  if (!isFirebaseConfigured()) {
+    callback(null);
+    return () => {};
+  }
+  return onAuthStateChanged(getAuthInstance(), callback);
 }
 
 export async function getUserRole(uid: string): Promise<UserRole | null> {
