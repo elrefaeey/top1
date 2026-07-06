@@ -6,7 +6,7 @@ import {
   getDocs,
   setDoc,
 } from "firebase/firestore";
-import { db, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
+import { getDb, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { nowIso } from "./admin-utils";
 import type {
   BlogPost,
@@ -123,7 +123,7 @@ async function listCollection<T>(
   direction: "asc" | "desc" = "asc",
 ): Promise<WithId<T>[]> {
   try {
-    const snap = await withFirestoreTimeout(getDocs(collection(db, collectionName)), ADMIN_READ_MS);
+    const snap = await withFirestoreTimeout(getDocs(collection(getDb(), collectionName)), ADMIN_READ_MS);
     markFirestoreAvailable();
     const items = snap.docs.map((d) => mapDoc<T>(d));
     items.sort((a, b) => {
@@ -144,7 +144,7 @@ async function listCollection<T>(
 
 export async function getAdminDoc<T>(collectionName: string, id: string): Promise<WithId<T> | null> {
   try {
-    const snap = await withFirestoreTimeout(getDoc(doc(db, collectionName, id)), ADMIN_READ_MS);
+    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), collectionName, id)), ADMIN_READ_MS);
     if (!snap.exists()) return null;
     markFirestoreAvailable();
     return mapDoc<T>(snap);
@@ -160,7 +160,7 @@ export async function saveAdminDoc<T extends Record<string, unknown>>(
   data: T,
 ): Promise<void> {
   try {
-    const ref = doc(db, collectionName, id);
+    const ref = doc(getDb(), collectionName, id);
     const existing = await withFirestoreTimeout(getDoc(ref), ADMIN_READ_MS).catch(() => null);
     const ts = nowIso();
     await withFirestoreTimeout(
@@ -184,7 +184,7 @@ export async function saveAdminDoc<T extends Record<string, unknown>>(
 
 export async function deleteAdminDoc(collectionName: string, id: string): Promise<void> {
   try {
-    await withFirestoreTimeout(deleteDoc(doc(db, collectionName, id)), ADMIN_WRITE_MS);
+    await withFirestoreTimeout(deleteDoc(doc(getDb(), collectionName, id)), ADMIN_WRITE_MS);
     markFirestoreAvailable();
   } catch (err) {
     markFirestoreUnavailable(err);
@@ -256,7 +256,7 @@ export const listAdminLeads = () => listCollection<Lead>(COLLECTIONS.leads, "cre
 export async function getAdminSiteSettings(): Promise<SiteSettings | null> {
   try {
     const snap = await withFirestoreTimeout(
-      getDoc(doc(db, COLLECTIONS.siteSettings, "global")),
+      getDoc(doc(getDb(), COLLECTIONS.siteSettings, "global")),
       ADMIN_READ_MS,
     );
     markFirestoreAvailable();
@@ -271,7 +271,7 @@ export async function saveAdminSiteSettings(settings: SiteSettings): Promise<voi
   const payload = normalizeSiteSettingsForSave(settings);
   try {
     await withFirestoreTimeout(
-      setDoc(doc(db, COLLECTIONS.siteSettings, "global"), payload, { merge: true }),
+      setDoc(doc(getDb(), COLLECTIONS.siteSettings, "global"), payload, { merge: true }),
       ADMIN_WRITE_MS,
     );
     markFirestoreAvailable();

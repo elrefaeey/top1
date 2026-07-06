@@ -62,8 +62,8 @@ export async function ensureBootstrapAdminRole(user: User): Promise<UserRole | n
 
   try {
     const { doc, setDoc, updateDoc, getDoc, serverTimestamp } = await import("firebase/firestore");
-    const { db, withFirestoreTimeout } = await import("./firestore");
-    const ref = doc(db, "users", user.uid);
+    const { getDb, withFirestoreTimeout } = await import("./firestore");
+    const ref = doc(getDb(), "users", user.uid);
     const snap = await withFirestoreTimeout(getDoc(ref), 5000);
 
     if (!snap.exists()) {
@@ -118,8 +118,8 @@ export function subscribeToAuth(callback: (user: User | null) => void) {
 export async function getUserRole(uid: string): Promise<UserRole | null> {
   try {
     const { doc, getDoc } = await import("firebase/firestore");
-    const { db, withFirestoreTimeout } = await import("./firestore");
-    const snap = await withFirestoreTimeout(getDoc(doc(db, "users", uid)), 5000);
+    const { getDb, withFirestoreTimeout } = await import("./firestore");
+    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), "users", uid)), 5000);
     if (snap.exists()) {
       const role = snap.data().role as UserRole | undefined;
       if (role === "admin" || role === "editor") return role;

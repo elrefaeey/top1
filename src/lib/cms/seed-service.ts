@@ -1,5 +1,5 @@
 import { doc, setDoc, writeBatch } from "firebase/firestore";
-import { db, COLLECTIONS } from "@/lib/firebase/firestore";
+import { getDb, COLLECTIONS } from "@/lib/firebase/firestore";
 import {
   FALLBACK_BLOG_POSTS,
   FALLBACK_FAQS,
@@ -58,40 +58,40 @@ export interface SeedResult {
 }
 
 export async function seedFirestoreContent(): Promise<SeedResult> {
-  const batch = writeBatch(db);
+  const batch = writeBatch(getDb());
 
   for (const service of FALLBACK_SERVICES) {
     const { id, ...data } = service;
-    batch.set(doc(db, COLLECTIONS.services, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.services, id), data);
   }
 
   for (const post of FALLBACK_BLOG_POSTS) {
     const { id, ...data } = post;
-    batch.set(doc(db, COLLECTIONS.blogPosts, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.blogPosts, id), data);
   }
 
   for (const item of FALLBACK_TESTIMONIALS) {
     const { id, ...data } = item;
-    batch.set(doc(db, COLLECTIONS.testimonials, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.testimonials, id), data);
   }
 
   for (const plan of FALLBACK_PRICING) {
     const { id, ...data } = plan;
-    batch.set(doc(db, COLLECTIONS.pricingPlans, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.pricingPlans, id), data);
   }
 
   for (const faq of FALLBACK_FAQS) {
     const { id, ...data } = faq;
-    batch.set(doc(db, COLLECTIONS.faqs, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.faqs, id), data);
   }
 
   for (const stat of FALLBACK_SITE_STATS) {
     const { id, ...data } = stat;
-    batch.set(doc(db, COLLECTIONS.siteStats, id), data);
+    batch.set(doc(getDb(), COLLECTIONS.siteStats, id), data);
   }
 
   await batch.commit();
-  await setDoc(doc(db, COLLECTIONS.siteSettings, "global"), SITE_SETTINGS);
+  await setDoc(doc(getDb(), COLLECTIONS.siteSettings, "global"), SITE_SETTINGS);
 
   return {
     services: FALLBACK_SERVICES.length,

@@ -31,9 +31,9 @@ export async function handleCmsApiGet(
     case "health": {
       try {
         const { collection, getDocs, query, where } = await import("firebase/firestore");
-        const { db } = await import("@/lib/firebase/firestore");
+        const { getDb } = await import("@/lib/firebase/firestore");
         const snap = await getDocs(
-          query(collection(db, "services"), where("status", "==", "published")),
+          query(collection(getDb(), "services"), where("status", "==", "published")),
         );
         const services = await getServices();
         const blog = await getBlogPosts();

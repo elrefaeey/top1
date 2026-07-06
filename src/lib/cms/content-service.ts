@@ -8,7 +8,7 @@ import {
   where,
   limit,
 } from "firebase/firestore";
-import { db, COLLECTIONS, getReadTimeoutMs, withFirestoreTimeout } from "@/lib/firebase/firestore";
+import { getDb, COLLECTIONS, getReadTimeoutMs, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { nowIso } from "@/lib/cms/admin-utils";
 import type {
@@ -52,7 +52,7 @@ async function getPublished<T>(
   max?: number,
 ): Promise<WithId<T>[]> {
   try {
-    const q = query(collection(db, collectionName), where("status", "==", "published"));
+    const q = query(collection(getDb(), collectionName), where("status", "==", "published"));
     const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
     if (snap.docs.length > 0) {
       let items = snap.docs.map((d) => mapDoc<T>(d));
@@ -65,7 +65,7 @@ async function getPublished<T>(
   }
 
   // مستندات قديمة بدون حقل status
-  const snap = await withFirestoreTimeout(getDocs(collection(db, collectionName)), READ_MS);
+  const snap = await withFirestoreTimeout(getDocs(collection(getDb(), collectionName)), READ_MS);
   let items = snap.docs
     .map((d) => mapDoc<T>(d))
     .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
@@ -91,7 +91,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
   if (!isFirebaseConfigured()) return null;
   try {
     const snap = await withFirestoreTimeout(
-      getDoc(doc(db, COLLECTIONS.siteSettings, "global")),
+      getDoc(doc(getDb(), COLLECTIONS.siteSettings, "global")),
       READ_MS,
     );
     return snap.exists() ? (snap.data() as SiteSettings) : null;
@@ -104,7 +104,7 @@ export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | nul
   if (!isFirebaseConfigured()) return null;
   try {
     const q = query(
-      collection(db, COLLECTIONS.pages),
+      collection(getDb(), COLLECTIONS.pages),
       where("slug", "==", slug),
       where("status", "==", "published"),
       limit(1),
@@ -120,7 +120,7 @@ export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | nul
 export async function getPageById(id: string): Promise<WithId<CmsPage> | null> {
   if (!isFirebaseConfigured()) return null;
   try {
-    const snap = await withFirestoreTimeout(getDoc(doc(db, COLLECTIONS.pages, id)), READ_MS);
+    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), COLLECTIONS.pages, id)), READ_MS);
     if (!snap.exists()) return null;
     const page = mapDoc<CmsPage>(snap);
     return isPublicCmsItem(page as Record<string, unknown>) ? page : null;
@@ -137,7 +137,7 @@ export async function getServiceBySlug(slug: string): Promise<WithId<Service> | 
   if (!isFirebaseConfigured()) return null;
   try {
     const q = query(
-      collection(db, COLLECTIONS.services),
+      collection(getDb(), COLLECTIONS.services),
       where("slug", "==", slug),
       where("status", "==", "published"),
       limit(1),
@@ -170,7 +170,7 @@ function normalizeBlogSlugParam(slug: string): string {
 export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
   return safeList(async () => {
     try {
-      const q = query(collection(db, COLLECTIONS.blogPosts), where("status", "==", "published"));
+      const q = query(collection(getDb(), COLLECTIONS.blogPosts), where("status", "==", "published"));
       const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
       if (snap.docs.length > 0) {
         let items = snap.docs.map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)));
@@ -182,7 +182,7 @@ export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
       console.error("[cms] blog published query failed:", err);
     }
 
-    const snap = await withFirestoreTimeout(getDocs(collection(db, COLLECTIONS.blogPosts)), READ_MS);
+    const snap = await withFirestoreTimeout(getDocs(collection(getDb(), COLLECTIONS.blogPosts)), READ_MS);
     let items = snap.docs
       .map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)))
       .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
@@ -198,7 +198,7 @@ export async function getBlogPostBySlug(slug: string): Promise<WithId<BlogPost> 
 
   try {
     const snap = await withFirestoreTimeout(
-      getDoc(doc(db, COLLECTIONS.blogPosts, normalized)),
+      getDoc(doc(getDb(), COLLECTIONS.blogPosts, normalized)),
       READ_MS,
     );
     if (snap.exists()) {
@@ -255,7 +255,7 @@ export async function createLead(input: {
   message: string;
   source?: string;
 }): Promise<void> {
-  const ref = doc(collection(db, COLLECTIONS.leads));
+  const ref = doc(collection(getDb(), COLLECTIONS.leads));
   const ts = nowIso();
   await withFirestoreTimeout(
     setDoc(ref, {
