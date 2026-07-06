@@ -1,0 +1,95 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isEditor() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'editor'];
+    }
+
+    // User profiles — أول تسجيل دخول ينشئ مستند role لنفسه
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() &&
+        request.auth.uid == userId &&
+        !exists(/databases/$(database)/documents/users/$(userId)) &&
+        request.resource.data.role in ['admin', 'editor'];
+      allow update, delete: if isAdmin();
+    }
+
+    match /site_settings/{docId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    match /pages/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /services/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /portfolio/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /blog_posts/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /blog_categories/{docId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    match /blog_tags/{docId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    match /testimonials/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /pricing_plans/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /faqs/{docId} {
+      allow read: if resource.data.status == 'published' || isEditor();
+      allow write: if isEditor();
+    }
+
+    match /site_stats/{docId} {
+      allow read: if isEditor() || resource.data.status == 'published';
+      allow write: if isEditor();
+    }
+
+    match /media/{docId} {
+      allow read: if true;
+      allow write: if isEditor();
+    }
+
+    match /leads/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isEditor();
+    }
+  }
+}

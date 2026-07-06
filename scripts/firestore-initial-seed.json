@@ -1,0 +1,1747 @@
+{
+  "site_settings": {
+    "id": "global",
+    "siteName": "top1markting",
+    "tagline": "استوديو رقمي سعودي — تصميم مواقع، SEO، وتطوير ويب عالي الأداء",
+    "description": "top1markting شركة تسويق رقمي واستوديو تصميم مواقع في السعودية. نبني مواقع corporate وB2B، تطبيقات ويب، UI/UX، وSEO للشركات في الرياض وجدة والدمام ودول الخليج. Core Web Vitals وGoogle ranking من اليوم الأول.",
+    "logoUrl": "/logo.png",
+    "faviconUrl": "/favicon.ico",
+    "contactEmail": "hello@top1markting.com",
+    "contactPhone": "0549881368",
+    "whatsappNumber": "966549881368",
+    "address": "المملكة العربية السعودية — الرياض",
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/Top1Markting",
+      "instagram": "https://www.instagram.com/top1markting/",
+      "linkedin": "https://www.linkedin.com/company/top1markting"
+    },
+    "integrations": {
+      "googleAnalyticsId": "G-09WBWML921"
+    },
+    "robotsTxt": "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml",
+    "headerNav": [
+      {
+        "label": "الخدمات",
+        "href": "/services",
+        "order": 1
+      },
+      {
+        "label": "أعمالنا",
+        "href": "/portfolio",
+        "order": 2
+      },
+      {
+        "label": "المدونة",
+        "href": "/blog",
+        "order": 3
+      },
+      {
+        "label": "من نحن",
+        "href": "/about",
+        "order": 4
+      },
+      {
+        "label": "تواصل",
+        "href": "/contact",
+        "order": 5
+      }
+    ],
+    "footerNav": [
+      {
+        "label": "الخدمات",
+        "href": "/services",
+        "order": 1
+      },
+      {
+        "label": "المدونة",
+        "href": "/blog",
+        "order": 2
+      },
+      {
+        "label": "الخصوصية",
+        "href": "/privacy",
+        "order": 3
+      },
+      {
+        "label": "الشروط",
+        "href": "/terms",
+        "order": 4
+      }
+    ]
+  },
+  "pages": [
+    {
+      "id": "home",
+      "slug": "home",
+      "title": "الرئيسية",
+      "subtitle": "مواقع عالية الأداء و SEO في السعودية",
+      "status": "published",
+      "metaTitle": "top1markting — شركة تصميم مواقع وSEO في السعودية",
+      "metaDescription": "استوديو رقمي سaudi — تصميم مواقع، تطوير وeb، UI/UX وSEO. الرياض وجدة.",
+      "metaKeywords": [
+        "تصميم مواقع",
+        "SEO السعودية",
+        "استوديو رقمي",
+        "تطوير مواقع"
+      ],
+      "canonicalUrl": "/",
+      "ogImage": "/og.png",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "استوديو رقمي سعودي",
+            "h1": "مواقع عالية الأداء",
+            "h1Highlight": "و SEO في السعودية",
+            "subtitle": "top1markting — تصميم موsites، React، Core Web Vitals، Google ranking من اليوم الأول.",
+            "ctaPrimary": {
+              "label": "ابدأ مشروعك",
+              "href": "/contact"
+            },
+            "ctaSecondary": {
+              "label": "أعمالنا",
+              "href": "/portfolio"
+            }
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<strong>top1markting</strong> — <strong>شركة تصميم مواقع</strong> و<strong>SEO في السaudi Arabia</strong>. نبني أصول digital تحقق leads من Google — ليس brochure بطيء.\n<p>خدماتنا: <a href=\"/services/web-design-saudi\">تصميم مواقع</a>، <a href=\"/services/web-apps\">تطوير ويب</a>، <a href=\"/services/seo-saudi\">SEO</a>، <a href=\"/services/ui-ux\">UI/UX</a>.</p>\n<h2>لماذا نحن؟</h2>\n<p>فريق senior-only، sprint أسبوعين، Lighthouse 95+، schema markup، Arabic RTL UX، WhatsApp conversion.</p>\n<p>نخدم startups، SMEs، enterprises في الرياض وجدة والدمام — <a href=\"/portfolio\">أعمالنا</a> و<a href=\"/blog\">مدونة SEO</a>.</p>"
+          }
+        },
+        {
+          "id": "cta",
+          "type": "cta",
+          "order": 99,
+          "enabled": true,
+          "data": {
+            "title": "جاهز للنمو؟",
+            "text": "عرض مخصص خلال 48 ساعة — بدون التزام قبل وضوح النطاق.",
+            "buttonLabel": "تواصل الآن",
+            "buttonHref": "/contact"
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "services",
+      "slug": "services",
+      "title": "الخدمات",
+      "subtitle": "تصميم مواقع وتطوير رقمي متكامل",
+      "status": "published",
+      "metaTitle": "خدمات تصميم المواقع وSEO — top1markting",
+      "metaDescription": "تصميم موsites، تطوير وeb، SEO، UI/UX — شركة سaudi.",
+      "metaKeywords": [
+        "تصميم مواقع في السعودية",
+        "SEO السaudi",
+        "تطوير مواقع"
+      ],
+      "canonicalUrl": "/services",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "الخدمات",
+            "h1": "تصميم مواقع في السعودية",
+            "h1Highlight": "وتطوير رقمي متكامل",
+            "subtitle": "شركة تصميم مواقع — تطوير مواقع احترافية، SEO السaudi، UI/UX. استوديو رقمي one-team."
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p><strong>تصميم مواقع في السaudi Arabia</strong> — top1markting <strong>شركة تصميم موsites</strong> و<strong>استوديو رقمي</strong> يقدّم <strong>تطوير مواقع احترافية</strong>، SEO، UI/UX، وحلول enterprise للرياض وجدة والدمام.</p>\n<p>في google.sa 2026، موقعك أول sales rep — بطيء أو thin content = lost leads وlower Ads Quality Score. نبني assets digital سريعة، deep content، structured للindexing.</p>\n<h2>خدماتنا المتكاملة</h2>\n<p>Five pillars one team: <a href=\"/services/web-design-saudi\">تصميم مواقع احترافية</a>، <a href=\"/services/web-apps\">تطوير تطبيقات ويب</a>، <a href=\"/services/seo-saudi\">SEO السaudi</a>، <a href=\"/services/ui-ux\">UI/UX</a>، <a href=\"/services/digital-solutions\">حلول رقمية</a>.</p>\n<h2>لماذا السوق السaudi unique</h2>\n<p>Mobile-first 92%+. RTL Arabic UX. WhatsApp conversion channel. E-E-A-T local trust: NAP، case studies، FAQ schema.</p>\n<h2>SEO وCore Web Vitals from day one</h2>\n<p>Lighthouse optimization، schema JSON-LD، internal links hub → services/blog/portfolio. Keywords: تصميم مواقع السعودية، شركة تصميم مواقع، تطوير مواقع، SEO السaudi.</p>\n<h2>Process transparent</h2>\n<p>Discovery → Design → Build → Launch → Growth optional retainer. Sprint 2 weeks demos.</p>\n<h2>Who we serve</h2>\n<p>Startups launch، SMEs rebuild slow WordPress، SaaS MVP، enterprise multi-site programs.</p>\n<h2>Local SEO pages</h2>\n<p><a href=\"/saudi-web-design\">تصميم مواقع السعودية</a>، <a href=\"/saudi-seo-services\">SEO services</a>، <a href=\"/riyadh-web-development\">Riyadh development</a> interlinked topical authority.</p>\n<h2>Proof</h2>\n<p>Explore <a href=\"/portfolio\">portfolio case studies</a> and <a href=\"/blog\">SEO blog</a> — guides web design Saudi، Google ranking، UI/UX best practices.</p>\n<p>Read <a href=\"/blog/website-cost-saudi-arabia-2026\">تكلفة تصميم موقع</a> before RFP.</p>\n<h2>Get started</h2>\n<p><a href=\"/contact\">Contact for custom quote 48h</a>. No obligation until scope clear. WhatsApp available Saudi business hours.</p>\n<p>We target semantic SEO naturally — not stuffing — because Google ranks helpful expert content for commercial intent queries in Kingdom and GCC.</p>"
+          }
+        },
+        {
+          "id": "internalLinks",
+          "type": "internalLinks",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "links": [
+              {
+                "label": "المدونة — SEO authority",
+                "href": "/blog"
+              },
+              {
+                "label": "تواصل — عرض سعر",
+                "href": "/contact"
+              },
+              {
+                "label": "Portfolio — case studies",
+                "href": "/portfolio"
+              },
+              {
+                "label": "تصميم مواقع السعودية",
+                "href": "/saudi-web-design"
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "portfolio",
+      "slug": "portfolio",
+      "title": "أعمالنا",
+      "subtitle": "Case studies — نتائج حقيقية",
+      "status": "published",
+      "metaTitle": "Portfolio — top1markting | أعمال تصميم مواقع السaudi",
+      "metaDescription": "مشاريع تصميم موsites وSEO — الرياض، جدة، B2B وSaaS.",
+      "metaKeywords": [
+        "portfolio",
+        "تصميم مواقع",
+        "case study"
+      ],
+      "canonicalUrl": "/portfolio",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "أعمالنا",
+            "h1": "مشاريع",
+            "h1Highlight": "نفتخر بها",
+            "subtitle": "تصميم موsites، SEO، web apps — KPIs documented.",
+            "ctaPrimary": {
+              "label": "ابدأ مشروعك",
+              "href": "/contact"
+            },
+            "ctaSecondary": {
+              "label": "أعمالنا",
+              "href": "/portfolio"
+            }
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>مشاريع <strong>تصميم مواقع</strong> و<strong>SEO</strong> للشركات السaudi — نتائج قابلة للقياس.</p>\n<p>كل case study يdocument KPIs: leads، speed، conversion — E-E-A-T لGoogle.</p>"
+          }
+        },
+        {
+          "id": "cta",
+          "type": "cta",
+          "order": 99,
+          "enabled": true,
+          "data": {
+            "title": "مشروع مشابه؟",
+            "text": "ناقش scope — عرض خلال 48 ساعة.",
+            "buttonLabel": "تواصل الآن",
+            "buttonHref": "/contact"
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "about",
+      "slug": "about",
+      "title": "من نحن",
+      "subtitle": "استوديو رقمي سعودي — craft + SEO",
+      "status": "published",
+      "metaTitle": "من نحن — top1markting",
+      "metaDescription": "ق story top1markting — Saudi digital agency.",
+      "metaKeywords": [
+        "استوديو رقمي",
+        "شركة تصميم مواقع"
+      ],
+      "canonicalUrl": "/about",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "من نحن",
+            "h1": "استوديو",
+            "h1Highlight": "رقمي سعودي",
+            "subtitle": "Design + Dev + SEO — فريق senior.",
+            "ctaPrimary": {
+              "label": "ابدأ مشروعك",
+              "href": "/contact"
+            },
+            "ctaSecondary": {
+              "label": "أعمالنا",
+              "href": "/portfolio"
+            }
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>تأسس top1markting في السعودية ك<strong>استوديو رقمي</strong> يركّز على performance + SEO + craft.</p>\n<p>Mission: مواقع measurable — leads، rankings، Core Web Vitals. Vision: علامات سعودية/GCC تقود digitally.</p>\n<h2>فريقنا</h2>\n<p>Design، Engineering، SEO، Product — خبرة B2B وSaaS في المملكة.</p>\n<a href=\"/services\">خدماتنا</a> · <a href=\"/contact\">تواصل</a>"
+          }
+        },
+        {
+          "id": "team",
+          "type": "team",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "members": [
+              {
+                "name": "عمر حديد",
+                "role": "Founder · Design"
+              },
+              {
+                "name": "ليلى بناني",
+                "role": "Engineering Lead"
+              },
+              {
+                "name": "هناء صالح",
+                "role": "Head of SEO"
+              },
+              {
+                "name": "يوسف كرم",
+                "role": "Product Designer"
+              }
+            ]
+          }
+        },
+        {
+          "id": "cta",
+          "type": "cta",
+          "order": 99,
+          "enabled": true,
+          "data": {
+            "title": "تعرف علينا أكثر",
+            "text": "احجز مكالمة discovery.",
+            "buttonLabel": "تواصل الآن",
+            "buttonHref": "/contact"
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "blog",
+      "slug": "blog",
+      "title": "المدونة",
+      "subtitle": "SEO، web design، performance",
+      "status": "published",
+      "metaTitle": "مدونة تصميم مواقع وSEO — top1markting",
+      "metaDescription": "مقالات SEO Saudi Arabia، Core Web Vitals، UI/UX.",
+      "metaKeywords": [
+        "SEO السaudi",
+        "مدونة",
+        "تصميم مواقع"
+      ],
+      "canonicalUrl": "/blog",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "المدونة",
+            "h1": "مدونة",
+            "h1Highlight": "تصميم مواقع وSEO",
+            "subtitle": "Google ranking، Core Web Vitals، web design Saudi — guides 2026.",
+            "heroImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+            "heroImageAlt": "مدونة SEO وتصميم مواقع",
+            "searchPlaceholder": "ابحث في المقالات…"
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p><strong>مدونة تصميم مواقع وSEO في السaudi Arabia</strong> — top1markting publishes deep guides for marketing leaders: <strong>web design Saudi</strong>، <strong>SEO Saudi Arabia</strong>، <strong>Google ranking</strong>، <strong>Core Web Vitals</strong>، <strong>Lighthouse optimization</strong>، <strong>UI/UX best practices</strong>.</p>\n<p>Purpose: build topical authority for our <strong>استوديو رقمي</strong> and educate market choosing <strong>شركة تصميم مواقع</strong> wisely.</p>\n<h2>What you learn here</h2>\n<p>Cost guides SAR، SEO 2026 strategy، performance optimization، SaaS SEO — unique articles no duplicate filler.</p>\n<h2>SEO architecture of blog</h2>\n<p>Clusters link to <a href=\"/services/web-design-saudi\">تصميم مواقع</a> and <a href=\"/services/seo-saudi\">SEO service</a> — internal linking boosts index priority.</p>\n<h2>For founders and CMOs</h2>\n<p>Actionable checklists، case insights، tool references GSC GA4 Lighthouse — Arabic primary English technical terms.</p>\n<h2>Authority E-E-A-T</h2>\n<p>Authors senior team — design، engineering، SEO leads. Updated 2026 standards google.sa.</p>\n<h2>Explore services</h2>\n<p>Ready to implement? <a href=\"/services\">All services</a> · <a href=\"/portfolio\">Work</a> · <a href=\"/contact\">Contact audit or quote</a>.</p>\n<p>Subscribe via RSS future — bookmark for quarterly SEO and performance updates competitive Saudi market.</p>"
+          }
+        },
+        {
+          "id": "internalLinks",
+          "type": "internalLinks",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "links": [
+              {
+                "label": "خدمات تصميم المواقع",
+                "href": "/services"
+              },
+              {
+                "label": "تواصل",
+                "href": "/contact"
+              },
+              {
+                "label": "Portfolio",
+                "href": "/portfolio"
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "contact",
+      "slug": "contact",
+      "title": "تواصل معنا",
+      "subtitle": "عرض سعر خلال 48 ساعة",
+      "status": "published",
+      "metaTitle": "تواصل — top1markting",
+      "metaDescription": "Contact — quote 48h. Riyadh Jeddah Dammam.",
+      "metaKeywords": [
+        "تواصل",
+        "عرض سعر",
+        "تصميم مواقع"
+      ],
+      "canonicalUrl": "/contact",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "تواصل",
+            "h1": "ابدأ",
+            "h1Highlight": "مشروعك",
+            "subtitle": "نموذج أو WhatsApp — رد 24 ساعة.",
+            "ctaPrimary": {
+              "label": "ابدأ مشروعك",
+              "href": "/contact"
+            },
+            "ctaSecondary": {
+              "label": "أعمالنا",
+              "href": "/portfolio"
+            }
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>اطلب عرض سعر خلال <strong>48 ساعة</strong>. WhatsApp أو النموذج — رد خلال 24 ساعة.</p>\n<p>نخدم الرياض، جدة، الدمام، و remotely في GCC.</p>"
+          }
+        },
+        {
+          "id": "faqRef",
+          "type": "faqRef",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "filter": "contact"
+          }
+        }
+      ],
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    }
+  ],
+  "services": [
+    {
+      "id": "web-design-saudi",
+      "slug": "web-design-saudi",
+      "title": "تصميم مواقع احترافية",
+      "tagline": "RTL · SEO · Core Web Vitals",
+      "shortDescription": "شركة تصميم مواقع في السaudi — corporate وB2B.",
+      "description": "<p><strong>تصميم مواقع السعودية</strong> في 2026 ليس خياراً تجميلياً — بل قناة acquisition رئيسية. في top1markting، <strong>شركة تصميم مواقع</strong> متخصصة في بناء مواقع corporate وB2B للرياض وجدة والدمام تحقق conversion measurable من Google وpaid channels.</p>\n<p>ما الذي نعنيه بـ<strong>تطوير مواقع احترافية</strong>؟ ليس template WordPress مع logo جديد. نبني أصل digital: information architecture مدروسة، UI عربي RTL، React production code، CMS لإدارة المحتوى، schema markup، Core Web Vitals optimization، وinternal linking strategy تربط services وblog وportfolio.</p>\n<h2>لماذا السوق السaudi مختلف؟</h2>\n<p>أكثر من 92% من traffic المحلي mobile. google.sa يقيّم Experience وHelpful Content وE-E-A-T. المستخدم السaudi يتوقع WhatsApp one-tap، أرقام NAP واضحة، case studies محلية، وFAQ بالعربية — قبل أن يملأ form.</p>\n<p>المواقع التي تتجاهل RTL typography وperformance على Android mid-range تخسر ranking وconversion معاً. لذلك نختبر على أجهزة حقيقية شائعة في المنطقة — ليس iPhone Pro فقط.</p>\n<h2>ماذا تشمل خدمة تصميم المواقع؟</h2>\n<p>Discovery workshop: ICP، competitors SERP analysis، keyword map commercial، success metrics (leads، demo requests، calls). Wireframes تركز hierarchy قبل polish. UI design system: colors، typography Arabic/EN، components. Development: React 19، TypeScript، Tailwind، SSR/SSG حسب الحاجة.</p>\n<p>SEO on-page من اليوم الأول: unique title/meta لكل URL، H1 واحد، semantic headings، alt text، canonical، OG tags، JSON-LD (Organization، Service، FAQ). Analytics: GA4 + GTM events للconversion tracking.</p>\n<h2>Core Web Vitals وLighthouse</h2>\n<p>Performance budget قبل coding: LCP &lt; 2.5s، INP &lt; 200ms، CLS &lt; 0.1. Image pipeline WebP/AVIF + srcset. Font subset لل-glyphs العربية. JS budget — defer third-party tags. هدف Lighthouse 95+ mobile ليس vanity — factor ranking وtrust.</p>\n<h2>حالات استخدام حقيقية</h2>\n<p>Startup B2B تطلق لأول مرة وتحتاج 8–12 صفحة + blog-ready + CRM forms. SME تعيد بناء موقع 2018 بطيء (LCP 8s) فتخسر Google Ads quality score. Enterprise campaign landings متعددة لـ Q4 مع نفس design system.</p>\n<p>مثال: إعادة بناء موقع B2B في الرياض — Lighthouse 97، +38% organic leads خلال 4 أmonths بعد launch + content cluster.</p>\n<h2>القيمة التجارية</h2>\n<p>موقع سريع يقلل bounce ويرفع Quality Score في Google Ads — CPC أقل. Structured content يبني topical authority لـ «شركة تصميم مواقع في السعودية» وlong-tail city queries. Code ownership كامل — لا vendor lock-in.</p>\n<p>Post-launch: 30-day warranty + optional retainer للCRO وSEO content.</p>\n<h2>التكامل مع خدماتنا الأخرى</h2>\n<p>تصميم المواقع يتكامل مع <a href=\"/services/seo-saudi\">SEO السعودية</a>، <a href=\"/services/web-apps\">تطوير تطبيقات ويب</a>، و<a href=\"/services/ui-ux\">UI/UX</a>. للأسعار راجع <a href=\"/blog/website-cost-saudi-arabia-2026\">تكلفة تصميم موقع</a>.</p>\n<p><strong>استوديو رقمي</strong> one-team: design + dev + SEO — لا handoff مكسور بين agencies.</p>\n<p>CTA: <a href=\"/contact\">اطلب عرض سعر مخصص</a> خلال 48 ساعة — أو استكشف <a href=\"/portfolio\">أعمالنا</a> و<a href=\"/blog\">المدونة</a>.</p>\n<p>عندما نتحدث عن corporate website في الرياض، العميل B2B غالباً يزور من mobile بعد ad أو LinkedIn — لديك 3 ثوانٍ لإثبات credibility: logo ليس كافياً — case study snippet، industry keywords، واضح من أنتم.</p>\n<p>Information architecture phase نحدد primary navigation ≤7 items — cognitive load أقل = SEO crawl clarity أفضل. Footer links structured: services، legal، contact، blog cluster.</p>\n<p>Design phase: Figma components reusable — buttons، cards، forms — تspeed dev وتensure consistency across 15+ pages enterprise sites.</p>\n<p>Development: lazy load below-fold images، route-based code splitting، prefetch critical /contact on hover optional advanced.</p>\n<p>Forms: validation inline Arabic، spam protection reCAPTCHA/App Check، CRM webhook HubSpot/Zoho popular KSA B2B stack.</p>\n<p>Blog template ready: author box E-E-A-T، related posts internal links، Article schema JSON-LD auto from CMS fields.</p>\n<p>Local landing synergy: main site links /saudi-web-design — geographic relevance without duplicate content spam if each page unique 600+ words.</p>\n<p>Launch checklist 40 items: DNS TTL، SSL chain، redirects 301 map old URLs، GSC property، sitemap ping، robots verify، OG debugger Facebook، analytics real-time test.</p>\n<p>Training session: marketing team edits blog، swaps hero، updates pricing — independence reduces agency dependency long-term.</p>\n<p>Comparison vs template agencies: template LCP often 4–6s mobile KSA networks — custom stack targets sub-2.5s measurable PageSpeed field data.</p>\n<p>Industry examples served: professional services، SaaS، industrial B2B، healthcare marketing compliant disclaimers، real estate project showcases.</p>\n<p>Accessibility baseline helps SEO indirectly — semantic HTML landmarks، focus order logical RTL، form labels associated.</p>\n<p>Security headers: CSP baseline، HSTS، no exposed admin routes public — trust signal enterprise procurement sometimes audits.</p>\n<p>Multilingual optional: Arabic primary /en/ subfolder hreflang if export GCC English audiences — plan early affects IA.</p>\n<p>Retainer growth: monthly CRO tests headline CTA، heatmap review، 2 blog posts SEO — compound organic quarter over quarter.</p>\n<p>Vendor comparison matrix score agencies requirements weighted — objective RFP evaluation Saudi procurement teams appreciate structure.</p>\n<p>Photography vs stock imagery authentic Saudi office team builds trust stock overused generic detectable users subconsciously.</p>\n<p>Video hero background performance caution — often LCP killer static image poster frame play click better UX performance both.</p>\n<p>Cookie consent banner PDPL compliant blocking non-essential until accept — analytics delay acceptable legal priority KSA 2026 awareness rising.</p>\n<p>Hreflang EN subfolder /en/ plan content parity not machine translate duplicate quality bar same Arabic depth required both languages if offered.</p>",
+      "icon": "Globe",
+      "features": [
+        "تصميم RTL عربي احترافي مع دعم EN optional وخطوط web optimized",
+        "Mobile-first responsive tested على Android mid-range السعودية",
+        "تطوير React + TypeScript production-ready مع CMS Firestore/headless",
+        "SEO on-page: meta، schema JSON-LD، sitemap، internal linking strategy",
+        "Core Web Vitals: LCP/INP/CLS targets + Lighthouse 95+ mobile",
+        "GA4 + GTM conversion tracking وWhatsApp CTA integration",
+        "Wireframes + UI design system + accessibility basics WCAG",
+        "Post-launch support 30 يوم + training CMS recorded"
+      ],
+      "benefits": [
+        "زيادة leads organic من google.sa بفضل content depth وE-E-A-T",
+        "تحسين Google Ads Quality Score — CPC أقل وconversion أعلى",
+        "تقليل bounce rate mobile بفضل UX وperformance محلي",
+        "ملكية كاملة للكود — لا vendor lock-in",
+        "بنية قابلة للتوسع لصفحات services وblog وlocal landings",
+        "Brand trust محلي عبر case studies وFAQ schema",
+        "Time-to-market 2–4 أسابيع ب sprint شفاف",
+        "Foundation SEO جاهز لـ «شركة تصميم مواقع في السaudi»"
+      ],
+      "processSteps": [
+        {
+          "title": "اكتشاف واستراتيجية",
+          "description": "Workshop لفهم ICP، competitors SERP، keyword map commercial، KPIs (leads، calls). Deliverable: brief + sitemap."
+        },
+        {
+          "title": "تصميم UX/UI",
+          "description": "Wireframes، IA، UI high-fidelity RTL، design tokens. Approval cycles قبل التطوير."
+        },
+        {
+          "title": "بناء وتطوير",
+          "description": "React development، CMS integration، performance budget، QA cross-device."
+        },
+        {
+          "title": "إطلاق وSEO",
+          "description": "DNS، Search Console، schema، analytics events، monitoring CWV post-launch."
+        }
+      ],
+      "process": [
+        {
+          "title": "اكتشاف واستراتيجية",
+          "description": "Workshop لفهم ICP، competitors SERP، keyword map commercial، KPIs (leads، calls). Deliverable: brief + sitemap."
+        },
+        {
+          "title": "تصميم UX/UI",
+          "description": "Wireframes، IA، UI high-fidelity RTL، design tokens. Approval cycles قبل التطوير."
+        },
+        {
+          "title": "بناء وتطوير",
+          "description": "React development، CMS integration، performance budget، QA cross-device."
+        },
+        {
+          "title": "إطلاق وSEO",
+          "description": "DNS، Search Console، schema، analytics events، monitoring CWV post-launch."
+        }
+      ],
+      "faq": [
+        {
+          "question": "كم تكلفة تصميم موقع في السعودية 2026؟",
+          "answer": "المواقع التسويقية 5–8 صفحات تبدأ ~18,000–45,000 ريال حسب التعقيد والمحتوى. corporate 10–20 صفحة أعلى. عرض مخصص خلال 48 ساعة عبر /contact."
+        },
+        {
+          "question": "هل SEO included في تصميم المواقع؟",
+          "answer": "نعم — meta tags، schema، Core Web Vitals optimization، internal linking، sitemap. Advanced content SEO retainer منفصل."
+        },
+        {
+          "question": "ما الفرق بينكم وبين قوالب WordPress؟",
+          "answer": "Custom React code، performance أعلى، SEO architecture من البداية، ملكية كاملة — ليس plugin stack بطيء."
+        },
+        {
+          "question": "هل تدعمون الرياض وجدة والدمام؟",
+          "answer": "نعم — remote + workshops في الرياض. Local landing pages للSEO الجغرافي available."
+        },
+        {
+          "question": "كم مدة تنفيذ موقع corporate؟",
+          "answer": "2–4 أسابيع typical marketing site؛ 4–8 للمشاريع الأكبر. Sprint أسبوعين مع demos."
+        }
+      ],
+      "seo": {
+        "title": "تصميم مواقع احترافية في السعودية — top1markting",
+        "description": "شركة تصميم مواقع في السaudi — RTL، SEO، Core Web Vitals، React. الرياض وجدة.",
+        "keywords": [
+          "تصميم مواقع السعودية",
+          "شركة تصميم موsites",
+          "تطوير مواقع",
+          "SEO السعودية",
+          "استوديو رقمي"
+        ]
+      },
+      "metaTitle": "تصميم مواقع احترافية في السعودية — top1markting",
+      "metaDescription": "شركة تصميم مواقع في السaudi — RTL، SEO، Core Web Vitals، React. الرياض وجدة.",
+      "metaKeywords": [
+        "تصميم مواقع السعودية",
+        "شركة تصميم موsites",
+        "تطوير مواقع",
+        "SEO السعودية",
+        "استوديو رقمي"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "web-apps",
+      "slug": "web-apps",
+      "title": "تطوير تطبيقات ويب",
+      "tagline": "React · SaaS · Dashboards",
+      "shortDescription": "تطوير web apps وSaaS في السaudi.",
+      "description": "<p><strong>تطوير مواقع</strong> وweb applications للشركات السaudi يتجاوز brochure sites. في top1markting نبني dashboards، customer portals، SaaS MVP، وinternal tools — React + TypeScript، architecture قابلة للصيانة، و<strong>SEO السعودية</strong> awareness حتى للمنتجات authenticated.</p>\n<p><strong>شركة تصميم مواقع</strong> كثيرة تتوقف عند marketing pages. نحن <strong>استوديو رقمي</strong> full-stack: من UX research إلى production deploy وmonitoring.</p>\n<h2>لماذا React وTypeScript؟</h2>\n<p>Ecosystem mature، hiring pool، component reuse، SSR via TanStack Start/Next عند الحاجة SEO. Type safety يقلل bugs في scale — critical للـ B2B SaaS وenterprise portals.</p>\n<p>Performance: code splitting، lazy routes، optimistic UI where appropriate. Security: OAuth2/OIDC، RBAC، CSRF protection، input validation، secrets في environment — not client bundle.</p>\n<h2>حالات استخدام في السعودية</h2>\n<p>SaaS MVP: onboarding + billing + admin dashboard في 8–12 weeks. Corporate portal: document upload، approval workflows، Arabic RTL. Franchise network: multi-location content management.</p>\n<p>Integration: Salesforce، HubSpot، Zoho، payment gateways (Moyasar، HyperPay)، WhatsApp Business API.</p>\n<h2>عملية التطوير</h2>\n<p>Sprint أسبوعين — demo كل sprint. User stories prioritized by business value. Staging environment mirrors production. QA checklist: functional، responsive، accessibility basics، performance smoke.</p>\n<p>CI/CD: preview deploys per PR، production gate with Lighthouse budget optional.</p>\n<h2>SEO وdiscoverability للمنتجات</h2>\n<p>Marketing site + docs + blog indexable even if app login-walled. Structured data للsoftware product where relevant. Technical blog for long-tail «تطوير تطبيقات ويب السعودية».</p>\n<h2>القيمة التجارية</h2>\n<p>Faster time-to-market vs hiring in-house team. Maintainable codebase — lower TCO 24 months. Analytics embedded: feature usage، funnel drop-offs.</p>\n<p>Ownership: client owns repo — no black box hosting-only trap.</p>\n<p>Case insight: SaaS dashboard MVP Jeddah — 9 weeks launch، clean codebase، +52% onboarding completion after UX iteration.</p>\n<p>Related: <a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/services/ui-ux\">UI/UX</a> · <a href=\"/blog/web-performance-optimization\">Performance guide</a></p>\n<p>CTA: <a href=\"/contact\">ناقش MVP أو platform scope</a> — عرض milestones خلال 48 ساعة.</p>\n<p>Architecture decision record ADR documented: why Firebase vs Postgres، tradeoffs acknowledged — future devs onboard faster.</p>\n<p>State management: TanStack Query server cache — optimistic updates only where rollback safe financial data.</p>\n<p>Role-based access: admin/editor/viewer patterns common Saudi enterprise portals internal tools.</p>\n<p>Audit logs: who changed what when — compliance requests growing KSA digital transformation projects.</p>\n<p>File uploads: virus scan hook، size limits، signed URLs Storage — not public buckets accidental exposure.</p>\n<p>Email transactional: SendGrid/Resend Arabic templates RTL aligned brand.</p>\n<p>Payment flows: Moyasar HyperPay test mode staging — PCI scope minimized hosted fields where possible.</p>\n<p>Mobile PWA: install prompt optional field sales teams demo offline catalog niche use cases.</p>\n<p>Observability: Sentry errors، uptime ping، structured logs Cloud Functions — SLA reports enterprise.</p>\n<p>Documentation: README setup، env vars table، API endpoints OpenAPI optional — handoff quality reduces bus factor.</p>\n<p>Load testing smoke k6 critical endpoints before launch marketing campaign spike traffic.</p>\n<p>Feature flags LaunchDarkly or simple Firestore toggles — gradual rollout KSA user base.</p>\n<p>Data residency awareness: Firebase regions choices explained client legal if PII stored.</p>\n<p>Migration path: import legacy MySQL CSV one-time scripts — not manual re-entry pain.</p>\n<p>Post-launch roadmap: v1.1 notifications، v1.2 reporting export PDF Arabic — phased revenue expansion SaaS.</p>\n<p>Offline mode PWA cache strategy field sales Saudi remote areas connectivity intermittent inventory catalog view offline sync reconnect.</p>\n<p>Webhook retry idempotency payment callbacks critical fintech integrations Saudi regulatory sensitivity audit trail immutable logs.</p>\n<p>Penetration test third party before launch enterprise client requirement budget line item not surprise week before go-live.</p>\n<p>Localization Arabic numerals dates Hijri optional display business preference config user profile enterprise portals HR systems.</p>\n<p>Versioning API v1 v2 deprecation policy documented developers external partners Saudi B2B platforms ecosystem growth strategy.</p>\n<p>في السوق السaudi، تطبيقات الوeb لم تعد luxury للشركات المتوسطة — CRM داخلي، portals للعملاء، dashboards للإدارة، وbooking systems أصبحت baseline للنمو. نبدأ discovery workshop لتحديد user roles، data flows، وintegrations (ERP، payment gateways، WhatsApp Business API). Architecture React + TypeScript + Firebase أو Supabase حسب compliance — مع RBAC وaudit logs للقطاعات المنظمة. Performance budget من sprint 1: lazy routes، code splitting، optimistic UI حيث يناسب UX. Security: OWASP checklist، rate limiting، environment secrets، penetration review قبل launch. Deployment CI/CD على Vercel أو GCP مع staging URL لكل PR — stakeholders يراجعون features قبل production. Training handover للفريق الداخلي documentation Arabic + Loom videos. SLA post-launch: bug fixes 48h، feature requests roadmap quarterly. Case pattern: B2B SaaS Riyadh — MVP 12 weeks، 340 paying users month 6، churn under 4% attributed onboarding UX improvements. Another: logistics dashboard Eastern Province — real-time fleet map، reduced call center volume 22%. top1markting يجمع product thinking مع engineering senior — ليس offshore ticket factory.</p>\n<p>Mobile-first admin panels RTL tested على iPhone Safari وAndroid Chrome — buttons 44px minimum، forms autofill Arabic names. API design REST أو GraphQL documented OpenAPI — third-party integrations future-proof. Monitoring Sentry + uptime alerts — downtime B2B unacceptable Saudi enterprise expectations. Data residency discussed early — some clients prefer KSA hosting options evaluated case by case.</p>",
+      "icon": "Code",
+      "features": [
+        "React 19 + TypeScript architecture modular وdocumented",
+        "REST/GraphQL APIs مع auth OAuth2 وRBAC",
+        "SaaS MVP: billing، admin dashboard، onboarding flows",
+        "Real-time optional (Firestore/WebSockets) حسب use case",
+        "CI/CD preview deploys + staging mirroring production",
+        "Security review: OWASP basics، secrets management",
+        "Responsive RTL UI integrated مع design system",
+        "Analytics events للproduct funnel tracking"
+      ],
+      "benefits": [
+        "Time-to-market أسرع من بناء فريق in-house",
+        "Codebase maintainable — TCO أlower على 24 شهر",
+        "Scalable architecture للـ GCC expansion",
+        "Security baseline يقلل risk enterprise",
+        "Integration-ready CRM/payment gateways السaudi",
+        "Ownership كامل — export repo anytime",
+        "Performance budgets في CI",
+        "Pair UX + dev — less rework"
+      ],
+      "processSteps": [
+        {
+          "title": "Scope وtech spec",
+          "description": "User stories، architecture diagram، milestones، acceptance criteria."
+        },
+        {
+          "title": "UX/UI للproduct",
+          "description": "Flows، wireframes، UI system، prototype key paths."
+        },
+        {
+          "title": "Agile development",
+          "description": "2-week sprints، demos، code review، automated tests smoke."
+        },
+        {
+          "title": "Launch وoperate",
+          "description": "Production deploy، monitoring، runbook، optional retainer."
+        }
+      ],
+      "process": [
+        {
+          "title": "Scope وtech spec",
+          "description": "User stories، architecture diagram، milestones، acceptance criteria."
+        },
+        {
+          "title": "UX/UI للproduct",
+          "description": "Flows، wireframes، UI system، prototype key paths."
+        },
+        {
+          "title": "Agile development",
+          "description": "2-week sprints، demos، code review، automated tests smoke."
+        },
+        {
+          "title": "Launch وoperate",
+          "description": "Production deploy، monitoring، runbook، optional retainer."
+        }
+      ],
+      "faq": [
+        {
+          "question": "كم مدة MVP SaaS في السعودية؟",
+          "answer": "6–12 أسبوع focused scope typical. Depends features وintegrations."
+        },
+        {
+          "question": "هل تطوير التطبيقات includes hosting؟",
+          "answer": "نُ setup Vercel/Firebase/client cloud — documented handoff."
+        },
+        {
+          "question": "React only أم Next.js؟",
+          "answer": "حسب SEO needs — marketing SSR/SSG vs SPA dashboard."
+        },
+        {
+          "question": "API integrations محلية؟",
+          "answer": "Moyasar، HyperPay، WhatsApp Business، Zoho — experience available."
+        },
+        {
+          "question": "Maintenance بعد launch؟",
+          "answer": "Retainer packages: bugfix، features، security patches."
+        }
+      ],
+      "seo": {
+        "title": "تطوير تطبيقات ويب في السعودية — top1markting",
+        "description": "تطوير موsites وSaaS — React، TypeScript، security، performance.",
+        "keywords": [
+          "تطوير مواقع",
+          "تطوير تطبيقات ويب",
+          "SEO السعودية",
+          "استوديو رقمي",
+          "شركة تصميم مواقع"
+        ]
+      },
+      "metaTitle": "تطوير تطبيقات ويب في السعودية — top1markting",
+      "metaDescription": "تطوير موsites وSaaS — React، TypeScript، security، performance.",
+      "metaKeywords": [
+        "تطوير مواقع",
+        "تطوير تطبيقات ويب",
+        "SEO السعودية",
+        "استوديو رقمي",
+        "شركة تصميم مواقع"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "seo-saudi",
+      "slug": "seo-saudi",
+      "title": "تحسين SEO",
+      "tagline": "SEO Saudi Arabia",
+      "shortDescription": "SEO السaudi — technical + content.",
+      "description": "<p><strong>SEO السعودية</strong> في 2026 = technical foundation + helpful Arabic content + local trust signals — لا shortcuts. top1markting <strong>استوديو رقمي</strong> يربط organic growth بـ revenue metrics، not vanity rankings.</p>\n<p>إذا كان موقعك بطيئاً أو thin content — Google لن يكافئك مهما دفعت ads. نبدأ audit شامل قبل أي content writing.</p>\n<h2>Technical SEO audit</h2>\n<p>Crawl: index coverage، robots، canonicals، hreflang if EN/AR، redirect chains، 404s. Core Web Vitals field data من GSC. Schema validation. Internal link graph — orphan pages fix.</p>\n<p>Tools: Screaming Frog، GSC، GA4، PageSpeed Insights، optional Ahrefs/Semrush للcompetitive gap.</p>\n<h2>On-page وcontent strategy</h2>\n<p>Keyword research google.sa — commercial + informational intent. Content clusters: pillar service pages 800+ words + supporting blog. E-E-A-T: author bios، case studies، FAQ schema، contact transparency.</p>\n<p>Arabic content native quality — not machine-translated English. Semantic SEO: تصميم مواقع، تطوير مواقع، شركة SEO، استوديو رقمي woven naturally.</p>\n<h2>Local SEO السaudi</h2>\n<p>Google Business Profile optimization. NAP consistency. Local landing pages (<a href=\"/saudi-seo-services\">SEO services KSA</a>، <a href=\"/riyadh-web-development\">Riyadh dev</a>) interlinked.</p>\n<h2>Reporting وROI</h2>\n<p>Monthly: impressions، clicks، CTR، conversions، top queries، CWV trends. Recommendations prioritized by impact × effort.</p>\n<p>Typical timeline: 3–6 months competitive keywords، faster long-tail wins.</p>\n<h2>Integration مع web design</h2>\n<p>Best results when SEO starts pre-launch — <a href=\"/services/web-design-saudi\">تصميم مواقع</a> includes SEO basics; retainer scales content.</p>\n<p>Read: <a href=\"/blog/seo-saudi-2026\">SEO 2026 strategy</a>، <a href=\"/blog/google-ranking-guide-saudi\">Google ranking guide</a>.</p>\n<p>CTA: <a href=\"/contact\">اطلب تدقيق SEO مجاني</a> — roadmap خلال أسبوع.</p>\n<p>Crawl budget: faceted navigation ecommerce sometimes wastes — canonical/noindex strategy e-commerce KSA retail clients.</p>\n<p>JavaScript SEO: React marketing SSR ensures Google sees content — CSR-only risky competitive keywords.</p>\n<p>Image SEO: descriptive filenames Arabic transliteration optional alt bilingual if EN alt adds clarity.</p>\n<p>Video SEO: YouTube embed lazy — schema VideoObject if original content marketing.</p>\n<p>Review schema cautiously — only real reviews policies Google guidelines strict fake penalty.</p>\n<p>Cannibalization fix: merge thin overlapping service pages or differentiate intent clearly one primary keyword each.</p>\n<p>Seasonality: Ramadan campaigns content calendar pre-publish — query spikes predictable retail.</p>\n<p>Competitor backlink gap not obsession — relevance over volume Saudi industry directories selective.</p>\n<p>Penalty recovery: manual action rare white-hat — disavow only after human review GSC links spam.</p>\n<p>Attribution: organic assisted conversions multi-touch GA4 explore — SEO value beyond last-click.</p>\n<p>Content refresh SOP: quarterly review top 20 landing pages update stats examples year 2026.</p>\n<p>Stakeholder reporting: executive one-page Arabic summary — clicks leads revenue not jargon DA PA only.</p>\n<p>Integration dev team: SEO requirements in Jira tickets — meta fields CMS mandatory not optional launch blocker.</p>\n<p>YMYL sectors finance health legal — extra E-E-A-T author credentials disclaimers required careful.</p>\n<p>Voice search emerging Arabic queries conversational FAQ capture long-tail low competition early mover.</p>\n<p>Sitemap news optional if publish frequent blog Google News eligibility criteria check not guaranteed submission.</p>\n<p>Log analysis Googlebot smartphone vs desktop crawl ratio mobile-first confirm budget allocation priority mobile templates.</p>\n<p>Structured data Organization sameAs Wikidata optional advanced entity SEO Google Knowledge Panel long-term brand Saudi national companies.</p>\n<p>Reputation management SERP brand query monitor respond reviews Google Business ethical engagement not fake astroturfing penalty risk.</p>\n<p>Cross-domain consolidation acquisitions 301 plan equity transfer Search Console change of address tool when applicable migration.</p>\n<p>SEO في google.sa يختلف عن global playbooks — Arabic query intent، local pack competition، وseasonality (Ramadan، back-to-school، Vision 2030 campaigns) تؤثر على content calendar. Technical SEO audit شامل: crawl budget، indexation bloat، hreflang إن وجد multilingual، structured data Organization LocalBusiness FAQ Article، Core Web Vitals field data CrUX. On-page: title templates per template type، meta descriptions CTR-optimized Arabic، heading hierarchy، internal linking silos services blog portfolio. Content strategy: pillar pages + cluster articles — مثلاً «تصميم مواقع السaudi» hub مع spokes تكلفة، SEO، performance. Link building ethical: digital PR، guest expert columns، partnerships chambers commerce — لا purchased links toxic. Local SEO: Google Business Profile optimization، NAP consistency، reviews strategy compliant. Reporting monthly Arabic executive PDF: impressions، clicks، conversions، keyword movements، recommendations prioritized ROI. Retainer model: technical hours + content pieces + quarterly strategy refresh — aligns long-term compound rankings not one-off fixes. Competitor gap analysis quarterly — who ranks for money keywords in Riyadh Jeddah Dammam. E-E-A-T signals: author bios، about page depth، case studies measurable outcomes. Integration GA4 GSC Looker Studio dashboard client access transparency.</p>\n<p>Algorithm updates March 2024 experience helpful content — thin Arabic pages penalized faster. We audit existing site before retainer — sometimes 40% URLs should merge or noindex. Video SEO YouTube embeds Arabic transcripts growing discovery channel KSA. Voice search conversational Arabic queries longer tail opportunities early movers.</p>",
+      "icon": "TrendingUp",
+      "features": [
+        "Technical SEO audit شامل (crawl، index، CWV، schema)",
+        "Keyword research google.sa commercial + informational",
+        "On-page optimization: titles، headings، internal links",
+        "Arabic content strategy وeditorial calendar",
+        "Schema markup: FAQ، Service، Article، Organization",
+        "Google Search Console + GA4 setup وconversion tracking",
+        "Local SEO: GBP، citations، local landing pages",
+        "Monthly reporting: clicks، conversions، recommendations"
+      ],
+      "benefits": [
+        "Organic leads compound — CAC lower long-term",
+        "Visibility لـ «SEO السaudi» وservice keywords",
+        "Fix technical debt blocking crawl/index",
+        "Content authority via clusters",
+        "Data-driven prioritization — impact × effort",
+        "Alignment sales/marketing مع search intent",
+        "White-hat only — no penalty risk",
+        "Integration مع web redesign if needed"
+      ],
+      "processSteps": [
+        {
+          "title": "Audit baseline",
+          "description": "Technical crawl، CWV، content gap vs competitors، quick wins list."
+        },
+        {
+          "title": "Strategy 90-day",
+          "description": "Keyword map، content plan، link/internal architecture."
+        },
+        {
+          "title": "Execution sprints",
+          "description": "Fixes، new pages، schema، content publishing."
+        },
+        {
+          "title": "Measure وiterate",
+          "description": "Monthly GSC/GA4 report، adjust roadmap."
+        }
+      ],
+      "process": [
+        {
+          "title": "Audit baseline",
+          "description": "Technical crawl، CWV، content gap vs competitors، quick wins list."
+        },
+        {
+          "title": "Strategy 90-day",
+          "description": "Keyword map، content plan، link/internal architecture."
+        },
+        {
+          "title": "Execution sprints",
+          "description": "Fixes، new pages، schema، content publishing."
+        },
+        {
+          "title": "Measure وiterate",
+          "description": "Monthly GSC/GA4 report، adjust roadmap."
+        }
+      ],
+      "faq": [
+        {
+          "question": "متى نتائج SEO في السaudi؟",
+          "answer": "3–6 أmonths competitive؛ 4–8 weeks long-tail wins possible."
+        },
+        {
+          "question": "هل تضمنون المركز الأول؟",
+          "answer": "لا — ethical SEO. نضمن process شفاف وKPIs agreed."
+        },
+        {
+          "question": "محتوى عربي included؟",
+          "answer": "Strategy yes؛ writing optional أو collaboration مع فريقكم."
+        },
+        {
+          "question": "موقع WordPress بطيء — تصلحون؟",
+          "answer": "Audit first — often rebuild better ROI than patch."
+        },
+        {
+          "question": "Retainer cost؟",
+          "answer": "From ~8,000 SAR/month حسب scope وcompetition."
+        }
+      ],
+      "seo": {
+        "title": "SEO السعودية — شركة تحسين محركات البحث | top1markting",
+        "description": "SEO السaudi technical + content + local. تدقيق مجاني.",
+        "keywords": [
+          "SEO السعودية",
+          "شركة SEO",
+          "تصميم مواقع السعودية",
+          "تطوير مواقع",
+          "استوديو رقمي"
+        ]
+      },
+      "metaTitle": "SEO السعودية — شركة تحسين محركات البحث | top1markting",
+      "metaDescription": "SEO السaudi technical + content + local. تدقيق مجاني.",
+      "metaKeywords": [
+        "SEO السعودية",
+        "شركة SEO",
+        "تصميم مواقع السعودية",
+        "تطوير مواقع",
+        "استوديو رقمي"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1432888622747-4cef171cf068?auto=format&fit=crop&w=1200&q=80",
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "ui-ux",
+      "slug": "ui-ux",
+      "title": "UI/UX Design",
+      "tagline": "Arabic RTL UX",
+      "shortDescription": "UI/UX للمنتجات العربية.",
+      "description": "<p><strong>UI/UX Design</strong> للمنتجات العربية يdetermines conversion قبل أي marketing spend. top1markting يقدّم research، design systems RTL، prototypes، usability testing — aligned مع <strong>تصميم مواقع السعودية</strong> و<strong>تطوير مواقع</strong> execution.</p>\n<p>Bad UX = high bounce + wasted ad budget. Good UX = measurable completion rates وbrand trust في google.sa era of Experience signals.</p>\n<h2>UX Research</h2>\n<p>Stakeholder interviews، analytics review، competitor UX teardown، journey maps، jobs-to-be-done. Lightweight — not 6-month research paralysis.</p>\n<h2>UI Design System</h2>\n<p>Typography Arabic: line-height، letter-spacing، font pairing (e.g. IBM Plex Sans Arabic). Color tokens، spacing scale، components: buttons، forms، cards، navigation RTL-aware.</p>\n<p>Figma library with dev-ready specs — reduces rework between design and React implementation.</p>\n<h2>Prototyping وTesting</h2>\n<p>Interactive prototypes for key flows: signup، checkout، lead form. Usability test 5 users — find blockers before code. A/B hypotheses documented.</p>\n<h2>Accessibility وPerformance UX</h2>\n<p>WCAG 2.1 AA targets forms/nav. Touch targets 44px+. Error states Arabic plain language. Performance perceived: skeleton loaders، optimistic feedback.</p>\n<h2>Business outcomes</h2>\n<p>Case pattern: onboarding redesign +52% completion. B2B form progressive disclosure −34% abandonment.</p>\n<p>Pairs with <a href=\"/services/web-design-saudi\">web design</a> and <a href=\"/services/web-apps\">web apps</a>. Guide: <a href=\"/blog/ui-ux-best-practices-2026\">UI/UX best practices</a>.</p>\n<p>CTA: <a href=\"/contact\">book UX discovery call</a>.</p>\n<p>Stakeholder workshops FigJam affinity mapping pain points sales team input — qualitative before quantitative.</p>\n<p>Personas lightweight: decision maker vs influencer B2B Saudi committee purchases common — address both journeys.</p>\n<p>Navigation testing tree test Optimal Workshop optional — find labeling issues Arabic terms ambiguous.</p>\n<p>Empty states designed not afterthought — first-time user SaaS onboarding clarity reduces support tickets.</p>\n<p>Loading skeletons perceived performance — better than blank white flash CLS risk if dimensions wrong plan.</p>\n<p>Data tables RTL: column alignment numbers LTR inside cells standard finance dashboards.</p>\n<p>Modals focus trap accessibility — common fail automated audits fix before launch.</p>\n<p>Notification patterns: toast vs inline — error recovery paths documented component library.</p>\n<p>Brand alignment: client brand book PDF imported tokens — not designer arbitrary colors off-brand.</p>\n<p>Motion UI subtle: respect prefers-reduced-motion media query — accessibility SEO engagement balance.</p>\n<p>Print styles rare B2B invoices quotes — if needed spec early.</p>\n<p>Handoff Zeplin optional — Figma dev mode sufficient most React teams 2026.</p>\n<p>Design QA pre-release: pixel diff critical pages desktop mobile — catch regression before client sees.</p>\n<p>Post-launch UX analytics Hotjar/Microsoft Clarity funnels — iterate month 2 not guess.</p>\n<p>Collaboration Notion/Jira links designs tickets — traceability enterprise clients appreciate process maturity.</p>\n<p>Heuristic evaluation Nielsen 10 heuristics applied Arabic product before user test — catches 30% issues cheap early.</p>\n<p>Card sorting open closed for IA mega menus corporate sites 50+ links common Saudi holdings structure messy without research.</p>\n<p>Mobile gesture patterns swipe back RTL navigation iOS Android behavioral differences test both platforms KSA market Android share higher.</p>\n<p>Onboarding checklist progressive SaaS first session value moment defined metric activation day 7 retention correlate.</p>\n<p>Error prevention over error messages — disable submit until valid better than red text after fail frustrating Arabic users mobile.</p>\n<p>Visual hierarchy F-pattern Z-pattern RTL adapted eye tracking studies mixed apply best judgment test real users Saudi users cultural preferences consultation local research not only Western UX textbooks adapt best practices context UI UX service top1markting differentiator web design Saudi integrated offering.</p>\n<p>UI/UX للمنتجات العربية يتطلب أكثر من flip layout — typography (IBM Plex Arabic، Noto Kufi)، numerals Eastern vs Western consistency، date Hijri optional enterprise HR apps، color contrast WCAG AA minimum government accessibility trends. Research phase: stakeholder interviews، competitor heuristic evaluation Saudi market، user testing 5–8 participants Riyadh remote moderated Arabic. Deliverables: user personas، journey maps، information architecture sitemap، wireframes low-fi Figma، design system components RTL mirrored، high-fi prototypes clickable InVision أو Figma dev mode. Handoff: spacing tokens، color variables CSS، component specs React — reduces dev-design drift. Usability metrics: task completion rate، time on task، SUS score benchmarked post-launch. A/B testing roadmap for landing pages — hero copy، CTA placement، form fields reduction increases lead rate documented multiple clients. Accessibility: keyboard nav، screen reader labels Arabic، focus states visible. Design QA before launch pixel diff staging vs Figma — catches 90% inconsistencies. Ongoing UX retainer: analytics review heatmaps Clarity، funnel drop analysis، iterative improvements quarterly. Brand alignment: UI supports premium B2B trust — not template flashy animations hurting performance.</p>\n<p>Mobile commerce KSA 70%+ sessions — thumb zone CTAs، sticky WhatsApp، simplified checkout guest option. Dashboard UX role-based views reduce cognitive load executives vs operators. Microcopy Arabic friendly professional — error messages guide fix not blame user.</p>",
+      "icon": "Palette",
+      "features": [
+        "UX research: interviews، analytics، journey maps",
+        "Information architecture وuser flows documented",
+        "UI design system RTL Arabic typography",
+        "Figma prototypes interactive للkey flows",
+        "Usability testing 5 users — findings report",
+        "WCAG 2.1 AA targets forms/navigation",
+        "Developer handoff: specs، tokens، edge cases",
+        "Conversion-focused patterns: CTA، trust، forms"
+      ],
+      "benefits": [
+        "Higher conversion وlower bounce",
+        "Less dev rework — specs clear",
+        "Brand consistency cross touchpoints",
+        "Arabic UX competitive advantage",
+        "Accessibility reduces legal/reputation risk",
+        "Faster user onboarding completion",
+        "Design debt reduced via system",
+        "Supports SEO via engagement signals"
+      ],
+      "processSteps": [
+        {
+          "title": "Discover",
+          "description": "Research goals، users، constraints، success metrics."
+        },
+        {
+          "title": "Define",
+          "description": "IA، flows، wireframes low-fi."
+        },
+        {
+          "title": "Design",
+          "description": "Visual UI، prototype، design system."
+        },
+        {
+          "title": "Validate",
+          "description": "Usability test، iterate، dev handoff."
+        }
+      ],
+      "process": [
+        {
+          "title": "Discover",
+          "description": "Research goals، users، constraints، success metrics."
+        },
+        {
+          "title": "Define",
+          "description": "IA، flows، wireframes low-fi."
+        },
+        {
+          "title": "Design",
+          "description": "Visual UI، prototype، design system."
+        },
+        {
+          "title": "Validate",
+          "description": "Usability test، iterate، dev handoff."
+        }
+      ],
+      "faq": [
+        {
+          "question": "UI/UX only بدون development؟",
+          "answer": "نعم — Figma deliverables + handoff."
+        },
+        {
+          "question": "RTL expertise؟",
+          "answer": "Core focus — Arabic products daily."
+        },
+        {
+          "question": "كم جولة revisions؟",
+          "answer": "Defined in scope — typically 2–3 major rounds."
+        },
+        {
+          "question": "Duration؟",
+          "answer": "2–6 weeks حسب flows count."
+        },
+        {
+          "question": "Link with web design؟",
+          "answer": "Bundled discount when design+dev together."
+        }
+      ],
+      "seo": {
+        "title": "تصميم UI/UX للمنتجات العربية — top1markting",
+        "description": "UI/UX Design Saudi — RTL، research، prototypes، conversion.",
+        "keywords": [
+          "UI/UX",
+          "تصميم مواقع السعودية",
+          "استوديو رقمي",
+          "تطوير مواقع",
+          "SEO السعودية"
+        ]
+      },
+      "metaTitle": "تصميم UI/UX للمنتجات العربية — top1markting",
+      "metaDescription": "UI/UX Design Saudi — RTL، research، prototypes، conversion.",
+      "metaKeywords": [
+        "UI/UX",
+        "تصميم مواقع السعودية",
+        "استوديو رقمي",
+        "تطوير مواقع",
+        "SEO السعودية"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+      "order": 4,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "digital-solutions",
+      "slug": "digital-solutions",
+      "title": "حلول رقمية متكاملة",
+      "tagline": "Enterprise programs",
+      "shortDescription": "حلول digital للمؤسسات.",
+      "description": "<p><strong>حلول رقمية متكاملة</strong> للمؤسسات السaudi — strategy، <strong>تصميم مواقع</strong>، <strong>تطوير مواقع</strong>، <strong>SEO السعودية</strong>، analytics، governance — delivered by one <strong>استوديو رقمي</strong> accountable partner.</p>\n<p>Fragmented vendors = inconsistent brand، SEO debt، integration nightmares. Integrated program = single roadmap وclear ownership.</p>\n<h2>Who needs this</h2>\n<p>Holdings with multiple brands/sites. Franchise networks. B2B platforms scaling GCC. Government-adjacent entities needing accessibility + performance compliance.</p>\n<h2>Program components</h2>\n<p>Digital strategy workshop — 12-month roadmap. Design system shared across properties. Platform architecture: headless CMS، API layer، SSO. SEO program enterprise-wide. Training internal teams.</p>\n<h2>Governance</h2>\n<p>Content ownership model، release cadence، SLA tiers، security reviews، uptime monitoring. Documentation for handoff longevity.</p>\n<h2>Integrations</h2>\n<p>CRM، ERP، payment، marketing automation — mapped in integration architecture doc.</p>\n<h2>Measurable outcomes</h2>\n<p>Unified analytics dashboard cross-properties. Reduced vendor overhead. Faster campaign landing deployment via design system.</p>\n<p>Explore <a href=\"/services\">all services</a>، <a href=\"/portfolio\">case studies</a>، <a href=\"/blog/digital-agency-growth-strategies\">agency growth insights</a>.</p>\n<p>CTA: <a href=\"/contact\">Enterprise RFP / discovery</a> — NDA available.</p>\n<p>Executive steering committee monthly: roadmap risks decisions documented — enterprise governance expectation.</p>\n<p>Brand portal guidelines PDF + Figma library — franchisees self-serve within guardrails marketing.</p>\n<p>Multi-language governance: who approves EN copy legal review KSA bilingual corporates.</p>\n<p>Disaster recovery RTO RPO defined hosting — business continuity questionnaire enterprise RFP standard.</p>\n<p>Vendor consolidation ROI model: 3 agencies vs 1 integrated TCO spreadsheet CFO language.</p>\n<p>Change management: internal comms template launch new portal employees adoption training video Arabic.</p>\n<p>KPI framework OKRs digital: organic share، lead quality score، portal adoption MAU internal.</p>\n<p>Compliance PDPL Saudi personal data — privacy policy cookie consent implementation technical legal align.</p>\n<p>Phased migration: legacy site run parallel cutover weekend plan rollback prepared.</p>\n<p>Executive dashboard Data Studio/Looker: cross-brand metrics one pane — board reporting simplified.</p>\n<p>Innovation backlog: AI chatbot pilot optional phase 2 — hype vs use case triage honest advisory.</p>\n<p>Partner ecosystem certifications Google Meta — badges trust enterprise procurement vendor lists.</p>\n<p>Quarterly business reviews QBR: results vs roadmap adjust priorities data not opinions alone.</p>\n<p>Talent augmentation: embedded squad client office Riyadh hybrid model available large programs.</p>\n<p>Exit strategy: documentation runbooks source escrow optional large contracts — client peace mind continuity.</p>\n<p>Digital maturity assessment spreadsheet scorecard current state people process technology — baseline executive buy-in.</p>\n<p>Vendor landscape map existing agencies tools licenses consolidate opportunities cost savings rationalization.</p>\n<p>Program charter document scope out-of-scope assumptions risks RACI matrix roles client agency third parties.</p>\n<p>Architecture review board ARB quarterly new integrations approved security scalability standards enterprise.</p>\n<p>Content governance workflow draft legal marketing approve publish audit trail regulated industries KSA growing.</p>\n<p>Training academy internal marketers CMS SEO basics videos Arabic reduce agency dependency healthy balance enterprise program scale knowledge throughout organization digital transformation success metric adoption not only launch day fireworks fade without governance content stale SEO decay six months preventable process owner assigned accountability executive sponsor C-level champion program survival organizational politics navigate agency facilitate workshop alignment stakeholders common Saudi enterprise challenge silos marketing IT finance align digital-solutions service top1markting value strategic consulting plus execution integrated استوديو رقمي premium positioning.</p>\n<p>حلول رقمية متكاملة للمؤسسات السaudi تجمع strategy + design + development + SEO + change management — program 6–18 months not single project ticket. Discovery executive alignment workshop C-level marketing IT finance — shared KPIs leads cost per acquisition organic share digital revenue percent. Architecture review legacy systems — integrate not rip-and-replace when ERP sacred. Phased roadmap: phase 1 corporate site performance SEO foundation، phase 2 customer portal، phase 3 marketing automation HubSpot أو equivalent Arabic workflows. Governance: content committee، brand guidelines digital، approval workflows CMS roles editor vs publisher. Training academy internal marketers — CMS، SEO basics، analytics interpretation — reduces agency dependency healthy balance. Vendor management single accountable partner top1markting coordinates specialists transparent. Risk register: data privacy PDPL compliance، uptime SLAs، vendor lock-in mitigation source code escrow contracts. ROI modeling before sign-off — scenario conservative expected optimistic tied business case board presentation support. Post-program audit 12 months — did KPIs hit adjust next cycle. Examples: holding company 7 subsidiaries unified design system 40% faster page launches. Healthcare group patient appointment portal reduced no-shows 18%. Manufacturing exporter multilingual catalog SEO GCC leads +55% year one.</p>\n<p>Change resistance common — we embed champions internal early. Documentation bilingual Arabic English enterprise standard. Executive dashboards single pane glass metrics CMO CFO share. Sustainability: internal team owns day-to-day agency strategic quarterly — cost predictable growth continuous.</p>",
+      "icon": "Layers",
+      "features": [
+        "Digital strategy roadmap 12-month",
+        "Multi-site / multi-brand program management",
+        "Enterprise design system shared",
+        "Platform architecture headless + APIs",
+        "SEO program cross-properties",
+        "Integration map CRM/ERP/payment",
+        "SLA support tiers + uptime monitoring",
+        "Team training + documentation"
+      ],
+      "benefits": [
+        "Single accountable partner",
+        "Reduced vendor fragmentation cost",
+        "Unified brand + analytics",
+        "Faster campaign landing rollout",
+        "Enterprise SLA peace of mind",
+        "Knowledge transfer internal teams",
+        "Scalable GCC expansion",
+        "Risk governance documented"
+      ],
+      "processSteps": [
+        {
+          "title": "Assess",
+          "description": "Current digital landscape، audits، stakeholder alignment."
+        },
+        {
+          "title": "Plan",
+          "description": "Roadmap، budget phases، governance model."
+        },
+        {
+          "title": "Deliver",
+          "description": "Phased releases coordinated squads."
+        },
+        {
+          "title": "Operate",
+          "description": "Run， optimize， report executive KPIs."
+        }
+      ],
+      "process": [
+        {
+          "title": "Assess",
+          "description": "Current digital landscape، audits، stakeholder alignment."
+        },
+        {
+          "title": "Plan",
+          "description": "Roadmap، budget phases، governance model."
+        },
+        {
+          "title": "Deliver",
+          "description": "Phased releases coordinated squads."
+        },
+        {
+          "title": "Operate",
+          "description": "Run， optimize， report executive KPIs."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Minimum engagement size؟",
+          "answer": "Enterprise — contact for RFP. Typically 120k+ SAR programs."
+        },
+        {
+          "question": "On-site Riyadh؟",
+          "answer": "Workshops available."
+        },
+        {
+          "question": "NDA؟",
+          "answer": "Mutual standard NDA."
+        },
+        {
+          "question": "Industries؟",
+          "answer": "B2B، SaaS، retail groups، services."
+        },
+        {
+          "question": "How vs hiring in-house؟",
+          "answer": "Senior squad immediate — no 6-month hiring delay."
+        }
+      ],
+      "seo": {
+        "title": "حلول رقمية متكاملة للمؤسسات — top1markting",
+        "description": "Digital agency enterprise KSA — strategy، web، SEO.",
+        "keywords": [
+          "استوديو رقمي",
+          "شركة تصميم مواقع",
+          "تطوير مواقع",
+          "SEO السaudi",
+          "تصميم مواقع السعودية"
+        ]
+      },
+      "metaTitle": "حلول رقمية متكاملة للمؤسسات — top1markting",
+      "metaDescription": "Digital agency enterprise KSA — strategy، web، SEO.",
+      "metaKeywords": [
+        "استوديو رقمي",
+        "شركة تصميم مواقع",
+        "تطوير مواقع",
+        "SEO السaudi",
+        "تصميم مواقع السعودية"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+      "order": 5,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    }
+  ],
+  "blog_posts": [
+    {
+      "id": "web-design-saudi-guide",
+      "slug": "web-design-saudi-guide",
+      "title": "تصميم مواقع في السعودية — دليل 2026",
+      "excerpt": "اختيار شركة تصميم موsites — SEO، Core Web Vitals، تكلفة.",
+      "content": "<p><strong>تصميم مواقع في السعودية</strong> قرار استراتيجي يؤثر على Google ranking وconversion لسنوات. هذا الدليل 2026 من top1markting — <strong>استوديو رقمي</strong> و<strong>شركة تصميم مواقع</strong> — يشرح كيف تختار شريك <strong>تطوير مواقع احترافية</strong> في الرياض وجدة والدمام.</p>\n<h2>لماذا web design Saudi مختلف عن global templates؟</h2>\n<p>google.sa ي rewards Experience: Core Web Vitals، mobile usability، helpful content Arabic. RTL ليس mirror CSS — typography، icon direction، form labels كلها تحتاج expertise.</p>\n<p>92%+ mobile traffic. Users expect WhatsApp، local phone، SAR pricing signals، case studies Saudi clients.</p>\n<h2>معايير اختيار شركة تصميم مواقع</h2>\n<ul><li>Portfolio with measurable outcomes — not Dribbble only</li><li>Lighthouse scores real staging URLs</li><li>SEO included: schema، meta، internal links</li><li>Code ownership React/TS — not locked hosting</li><li>References in KSA/GCC</li><li>Sprint process transparent</li></ul>\n<h2>Technical stack 2026</h2>\n<p>React + TypeScript dominant for performance SPAs/SSR. Headless CMS for marketing agility. Edge CDN for GCC latency. Image pipelines WebP/AVIF.</p>\n<h3>Core Web Vitals checklist</h3>\n<ul><li>LCP hero optimized preload</li><li>INP minimal main-thread JS</li><li>CLS reserved image dimensions</li><li>Font subset Arabic</li></ul>\n<h2>SEO architecture at launch</h2>\n<p>Service pages 800+ words، blog cluster supporting long-tail، FAQ schema، local pages interlinked. Keyword targets: تصميم مواقع السعودية، شركة تصميم مواقع، SEO السaudi.</p>\n<h2>Case insight: B2B Riyadh redesign</h2>\n<p>Legacy WordPress LCP 7.2s → React rebuild 1.9s. Organic leads +38% four months. Google Ads CPC −22% from Quality Score lift.</p>\n<h2>Budget ranges SAR</h2>\n<p>Marketing 5–8 pages: 18k–45k. Corporate 10–20: 45k–120k. Platform custom 120k+. See detailed <a href=\"/blog/website-cost-saudi-arabia-2026\">cost guide</a>.</p>\n<h2>Red flags when hiring</h2>\n<ul><li>No SEO mention</li><li>Template-only portfolio</li><li>No staging performance proof</li><li>Unclear ownership</li><li>One-page site promise for competitive niche</li></ul>\n<h2>Conclusion</h2>\n<p>Choose partner who treats site as revenue asset. Explore <a href=\"/services/web-design-saudi\">our web design service</a>، <a href=\"/portfolio\">portfolio</a>، <a href=\"/blog\">more guides</a>. <a href=\"/contact\">Get custom quote in 48h</a>.</p>\n<h2>Schema markup implementation checklist</h2>\n<p>Organization schema homepage: name، url، logo، sameAs social profiles، contactPoint telephone Saudi format +966. Service schema each /services/slug: provider، areaServed SA، description excerpt. FAQPage schema FAQ section JSON valid Google Rich Results Test after deploy. BreadcrumbList optional navigation clarity SERP. Avoid spam schema types irrelevant page — honesty policies Google strict penalties rare but possible misleading.</p>\n<h2>Content length benchmarks google.sa</h2>\n<p>Analyze top 5 ranking pages target keyword average word count — match or exceed 20% if quality equal. Service money pages 800–1200 words Arabic typical competitive «تصميم مواقع الرياض». Blog informational 1200–2000 depth examples tools screenshots described text alt. Thin 300 word pages rarely rank competitive commercial intent Saudi market 2026 matured SEO awareness clients agencies alike.</p>\n<h2>CRO and SEO together</h2>\n<p>SEO brings traffic CRO converts — optimize both parallel not sequential afterthought. A/B test headline H1 matching search intent keyword natural. Form fields minimize required phone email enough B2B Saudi follow-up WhatsApp culture. Trust logos clients Riyadh Jeddah named permission case study NDA if needed anonymize industry vertical still credible.</p>\n<h2>Post-launch 90-day SEO plan</h2>\n<p>Week 1–2 index verification GSC URL inspection important pages. Week 3–4 publish 2 blog posts cluster supporting main service keywords internal link. Month 2 build 3 local citations industry directories quality. Month 3 review queries GSC optimize titles meta low CTR high impressions quick wins. Ongoing CWV monitor field data fix regressions deploy performance budget CI if team capable.</p>\n<h2>Deep dive: React vs WordPress للشركات السaudi</h2>\n<p>WordPress suitable simple blog-heavy low budget maintenance accepted — plugin security updates ongoing responsibility. React marketing site custom performance ceiling higher developer skill required but LCP typically wins measurable Saudi mobile networks. Headless WordPress content API + React front possible hybrid — cost middle path. Decision factors: edit frequency non-technical team، performance SLA strict، integrations custom، budget timeline. Enterprise Saudi often choose React/Firebase or Next after bad WordPress hack or speed failure previous vendor.</p>\n<p>Migration WordPress to React: 301 map every URL non-negotiable — traffic loss catastrophic if ignored. Export content cleanup shortcodes garbage. Rebuild IA opportunity improve not clone bad structure old site. Expect 4–8 weeks migration parallel content freeze plan communication stakeholders.</p>\n<h2>خاتمة: خطوتك التالية لتصميم موقع يرتفع في Google</h2>\n<p>اختيار شريك <strong>تصميم مواقع في السaudi Arabia</strong> قرار يؤثر على pipeline مبيعاتك لسنوات. راجع portfolio بنظام scoring: performance proof، SEO depth، Arabic UX، ownership، support. اطلب staging URL قبل التعاقد — Lighthouse mobile report ليس PDF marketing. اربط المشروع بأهداف: leads/month، cost per lead، organic share 12 months realistic. top1markting <strong>استوديو رقمي</strong> يبني مواقع React عالية الأداء — <a href=\"/services/web-design-saudi\">service page</a>، <a href=\"/portfolio\">case studies</a>، <a href=\"/contact\">quote 48h</a>. اقرأ أيضاً <a href=\"/blog/seo-saudi-2026\">SEO 2026</a> و<a href=\"/blog/core-web-vitals-explained\">Core Web Vitals</a> — knowledge قبل RFP يوفر budget ويمنع vendor mismatch.</p>\n<p>تذكر: Google ranking يتبع helpful content + fast experience + trust E-E-A-T — ليس tricks. موقعكم يستحق investment proportional revenue goal — cheapest rarely wins Saudi B2B competitive SERPs 2026.</p>\n<h2>Appendix: glossary quick reference</h2>\n<ul><li>LCP Largest Contentful Paint</li><li>INP Interaction to Next Paint</li><li>CLS Cumulative Layout Shift</li><li>GSC Google Search Console</li><li>RTL Right-to-left Arabic</li><li>CMS Content Management System</li><li>Schema Structured data JSON-LD</li><li>CTA Call to action</li></ul>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "تصميم مواقع في السعودية — دليل 2026",
+      "category": "Web Development",
+      "tags": [
+        "تصميم مواقع"
+      ],
+      "author": "عمر حديد",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "تصميم مواقع السaudi 2026",
+      "metaDescription": "دليل شامل",
+      "metaKeywords": [
+        "تصميم مواقع"
+      ],
+      "seo": {
+        "title": "تصميم مواقع السaudi 2026",
+        "description": "دليل شامل",
+        "keywords": [
+          "تصميم مواقع"
+        ]
+      },
+      "order": 1,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "seo-saudi-2026",
+      "slug": "seo-saudi-2026",
+      "title": "SEO السaudi Arabia 2026",
+      "excerpt": "استرategie google.sa — E-E-A-T، content، local.",
+      "content": "<p><strong>SEO السaudi Arabia</strong> 2026 يتطلب E-E-A-T، Core Web Vitals، helpful Arabic content — no shortcuts. top1markting يشرح استرategie عملية لـ Google ranking في google.sa.</p>\n<h2>What changed in Google 2025–2026</h2>\n<p>Helpful content system rewards depth. AI-generated spam penalized. Experience signals from real users (CrUX) weigh heavily. Local trust for Saudi queries.</p>\n<h2>Technical SEO priorities KSA</h2>\n<ul><li>Index coverage clean</li><li>CWV pass rates</li><li>HTTPS HSTS</li><li>Schema valid</li><li>Canonical discipline</li><li>Internal link hubs /services /blog</li></ul>\n<h2>Content strategy Arabic</h2>\n<p>Pillar + cluster: service pages target commercial intent، blog informational long-tail. Semantic terms: تطوير مواقع، استوديو رقمي، web design Saudi woven naturally.</p>\n<h3>E-E-A-T for agencies and clients</h3>\n<p>Author bios، case studies with numbers، physical contact، reviews authentic. FAQ answers real objections.</p>\n<h2>Local SEO Saudi Arabia</h2>\n<p>GBP optimized، NAP match، local landings <a href=\"/saudi-seo-services\">SEO services</a> linked from hub.</p>\n<h2>Tools stack</h2>\n<ul><li>Google Search Console</li><li>GA4</li><li>PageSpeed Insights</li><li>Screaming Frog</li><li>Optional Ahrefs</li></ul>\n<h2>90-day roadmap example</h2>\n<p>Month 1 audit + quick wins. Month 2 content + schema. Month 3 link internal + refresh underperformers. Measure conversions not just rankings.</p>\n<h2>Case pattern</h2>\n<p>SaaS client: technical fixes + 12 articles → organic demos +64% in 5 months competitive Arabic keywords.</p>\n<h2>Conclusion</h2>\n<p>SEO compound asset. <a href=\"/services/seo-saudi\">SEO service</a> · <a href=\"/blog/google-ranking-guide-saudi\">ranking guide</a> · <a href=\"/contact\">free audit</a>.</p>\n<h2>Keyword research workflow Arabic</h2>\n<p>Seed keywords from clients sales calls questions real — not only tools. Google autocomplete google.sa Arabic suggestions capture long-tail voice informal. Ahrefs/Semrush volume KSA database cross-check GSC actual impressions after 90 days reality check. Group keywords intent clusters map URLs avoid one page tries rank everything cannibalization. Priority score: volume × business value ÷ difficulty pragmatic not academic perfect.</p>\n<h2>Technical crawl priorities</h2>\n<p>404 errors internal links fix first — crawl budget waste equity leak. Redirect chains max one hop 301 permanent. Parameters faceted ecommerce: canonical or noindex policy documented developers implement consistently. XML sitemap only indexable URLs lastmod accurate major updates. Robots.txt block admin staging public accidentally common Firebase hosting check before launch.</p>\n<h2>Content EEAT checklist Saudi</h2>\n<p>Author bio page real person credentials LinkedIn link. About us company history team photos real office address Kingdom. Contact page phone email map embed Google Business linked. Reviews testimonials verifiable client name role company permission legal. Update content dates visible when refreshed blog posts show published updated schema dateModified Article type.</p>\n<h2>Deep dive: content clusters عملية</h2>\n<p>Pillar page «SEO السaudi» or «تصميم مواقع» 1500 words hub. Cluster posts 1200 each linking pillar: cost guide، CWV، ranking guide، UI/UX — internal anchor descriptive not «click here». Google understands topical authority site covers subject comprehensively Saudi market specific examples not generic US blogs translated poorly.</p>\n<p>Update hub quarterly new year stats regulations PDPL references fresh — stale year 2024 in title 2026 hurts CTR SERP users notice ignore click competitor.</p>\n<h2>Technical checklist 40 نقطة</h2>\n<p>HTTPS everywhere، HSTS، no mixed content. XML sitemap submitted GSC. Robots no accidental Disallow /. Canonical self-referencing consistent. Hreflang if bilingual validated. Schema Organization Service FAQ valid JSON. Core Web Vitals pass URLs top traffic. Mobile usability zero errors GSC. Page experience enhancement reports reviewed monthly. Security issues none Search Console. Manual actions none — if penalty resolve before content investment wasted.</p>\n<h2>Arabic keyword intent examples</h2>\n<p>«شركة SEO في الرياض» commercial high intent → service landing pricing signals CTA. «ما هو SEO» informational → blog post link service soft CTA end. «تكلفة SEO» transactional → pricing FAQ schema SAR ranges honest. Map each keyword type URL format mismatch causes pogo-sticking ranking loss even good content wrong page type.</p>\n<h2>Reporting template marketing manager</h2>\n<p>Month summary Arabic one page: organic sessions ±%، leads ±%، top 5 queries new lost، 3 actions next month prioritized. Avoid 40 page PDF nobody reads — adoption reporting increases retainer renewal agency client alignment KSA market relationship business culture trust face-to-face optional Riyadh review quarterly strengthens partnership not only email metrics.</p>\n<h2>خاتمة: نفّذ SEO السaudi كبرنامج وليس مشروع</h2>\n<p><strong>SEO Saudi Arabia</strong> marathon — technical fixes week 1–4، content compound month 3–12. Assign owner internal marketing لا تترك agency alone — collaboration wins. Measure conversions GSC GA4 monthly executive summary Arabic. top1markting <a href=\"/services/seo-saudi\">SEO service</a> audit + retainer — <a href=\"/contact\">free audit request</a>. Related: <a href=\"/blog/google-ranking-guide-saudi\">Google ranking</a>، <a href=\"/blog/saas-seo-strategy\">SaaS SEO</a>.</p>\n<h2>AI Overviews وSEO السaudi</h2>\n<p>SGE AI Overviews google.sa appear selective queries — optimize structured concise answers FAQ schema first paragraph direct answer question H2 then depth follow-up human expert insight AI cannot replicate local Saudi market nuance case examples original research surveys small data proprietary unique value ranking AI era differentiation commodity content dies fast invest original thought leadership Arabic market under served opportunity agencies publish win.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "SEO السaudi Arabia 2026",
+      "category": "SEO",
+      "tags": [
+        "SEO السaudi"
+      ],
+      "author": "هناء صالح",
+      "readTime": 8,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "SEO السaudi 2026",
+      "metaDescription": "Guide",
+      "metaKeywords": [
+        "SEO Saudi Arabia"
+      ],
+      "seo": {
+        "title": "SEO السaudi 2026",
+        "description": "Guide",
+        "keywords": [
+          "SEO Saudi Arabia"
+        ]
+      },
+      "order": 2,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "google-ranking-guide-saudi",
+      "slug": "google-ranking-guide-saudi",
+      "title": "Google Ranking — السaudi",
+      "excerpt": "تحسين ترتيب Google — on-page، technical.",
+      "content": "<p>تحسين <strong>Google ranking</strong> في السaudi يبدأ بفهم intent في google.sa — not global SEO hacks. دليل عملي لـ on-page، technical، content، local.</p>\n<h2>Step 1: Google Search Console baseline</h2>\n<p>Verify property، inspect index coverage، fix excluded pages، submit sitemap dynamic.</p>\n<h2>Step 2: On-page optimization</h2>\n<ul><li>Unique title 50–60 chars with primary keyword</li><li>Meta description CTR-focused</li><li>Single H1 aligned intent</li><li>H2/H3 semantic structure</li><li>Alt text descriptive</li></ul>\n<h2>Step 3: Core Web Vitals</h2>\n<p>Prioritize URLs with impressions. LCP images، defer JS، fix CLS fonts. Lighthouse optimization lab + field data alignment.</p>\n<h2>Step 4: Content depth</h2>\n<p>Thin pages merge or expand 800+. Add FAQ schema. Update quarterly freshness competitive queries.</p>\n<h2>Step 5: Internal linking</h2>\n<p>Hub /services /blog link to money pages with descriptive anchors. Fix orphans.</p>\n<h2>Step 6: Local signals</h2>\n<p>GBP، citations، Saudi address phone consistent.</p>\n<h2>Measure conversions</h2>\n<p>GA4 events: form submit، call click، WhatsApp. Attribute organic channel revenue.</p>\n<h2>Common mistakes KSA</h2>\n<ul><li>Duplicate Arabic/EN without hreflang</li><li>Blocking JS resources</li><li>Keyword stuffing titles</li><li>Ignoring mobile CWV</li></ul>\n<h2>Conclusion</h2>\n<p>Ranking follows helpful fast sites. <a href=\"/services/seo-saudi\">SEO Saudi Arabia service</a> · <a href=\"/contact\">request audit</a>.</p>\n<h2>On-page deep dive Arabic headings</h2>\n<p>H1 one per page matches primary intent keyword variant natural Arabic grammar not awkward English translated. H2 sections answer sub-questions People Also Ask scrape alsoasked tools manual SERP review google.sa incognito. Paragraph length 2–4 sentences mobile readability scannable bold key terms sparingly not over optimization penalty risk low still readability first humans then Google.</p>\n<h2>Link building white hat KSA</h2>\n<p>Guest article industry publication Saudi business magazine digital transformation topic link contextual home or relevant service. Partner integration directory SaaS list partners reciprocal if genuine product integration not link exchange scheme footers sitewide avoid. HARO equivalent regional journalist queries Arabic English respond expert quotes agency founder SEO lead credited link optional brand mention value alone sometimes.</p>\n<h2>Tracking ranking correctly</h2>\n<p>GSC average position not daily rank tracker obsession — focus clicks impressions business KPIs. Local rank tracking Riyadh vs Jeddah if geo service different SERP mobile desktop separate Google primarily mobile-first indexing all sites 2026 assume mobile SERP canonical ranking signal.</p>\n<h2>Deep dive: meta descriptions CTR</h2>\n<p>Meta not direct ranking factor but CTR influences long-term behavioral signals indirect. Write Arabic compelling promise specific «عرض خلال 48 ساعة» «دليل 2026» numbers where honest. Test rewrites GSC page query report low CTR high position — quick win often overlooked teams focus titles only.</p>\n<h2>URL structure best practices</h2>\n<p>Short descriptive Arabic transliteration or English consistent: /services/web-design-saudi not /page?id=42. Hyphens not underscores. Lowercase. Avoid dates in URL unless news blog /blog/2026/topic acceptable sometimes archive clarity. Redirect chains max one hop consolidate legacy CMS messy URLs migration project critical ranking preservation Saudi companies rebrand rename occasionally plan redirects early.</p>\n<h2>Image search opportunity</h2>\n<p>Google Images traffic underrated B2B infographics Arabic alt descriptive file name not IMG_0045.jpg. Portfolio screenshots projects named riyadh-corporate-website-redesign.webp — long-tail discovery brand awareness top funnel.</p>\n<h2>Video embed SEO</h2>\n<p>YouTube Arabic tutorials brand channel embed site lazy load facade click play — performance and SEO transcript description keyword rich YouTube side helps both platforms cross presence SERP video tab occasional win commercial queries demo software agency services.</p>\n<h2>خاتمة: Google ranking م attainable بمنهج</h2>\n<p>Rankings follow fixes + content + patience. Start GSC today — baseline essential. Prioritize URLs impressions high CTR low. <a href=\"/services/seo-saudi\">SEO السaudi team</a> · <a href=\"/blog/seo-saudi-2026\">strategy 2026</a> · <a href=\"/contact\">help</a>.</p>\n<h2>FAQ: أسئلة شائعة عن ترتيب Google في السaudi</h2>\n<h3>هل عدد الزيارات يؤثر على الترتيب؟</h3>\n<p>ليس factor مباشر — لكن engagement patterns وbrand searches correlates. Focus helpful content + technical health — traffic follows ranking improvements lag weeks months competitive keywords patience realistic expectations stakeholders board education agency responsibility set KPIs clicks leads not position #1 vanity alone Saudi B2B long sales cycle organic nurtures awareness multiple touchpoints before RFP.</p>\n<h3>هل social media يساعد SEO؟</h3>\n<p>Indirect — links from posts discovery crawl speed brand queries rise LinkedIn Arabic posts founders KSA B2B effective Twitter/X less B2B Saudi market LinkedIn dominant share professional content repurposed blog snippets link internal pages drive referral traffic modest SEO secondary benefit primary brand building trust E-E-A-T author expertise visible real person not anonymous corporate account.</p>\n<h2>Checklist أسبوعي SEO (30 دقيقة)</h2>\n<ul><li>GSC performance report anomalies</li><li>Fix new 404s internal links broken</li><li>Review top queries new content ideas</li><li>Check CWV failing URLs field data</li><li>Publish or update one content piece</li><li>Monitor competitor SERP changes manual spot check</li></ul>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Google Ranking — السaudi",
+      "category": "SEO",
+      "tags": [
+        "Google ranking"
+      ],
+      "author": "هناء صالح",
+      "readTime": 8,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "Google ranking KSA",
+      "metaDescription": "Guide",
+      "metaKeywords": [
+        "Google ranking"
+      ],
+      "seo": {
+        "title": "Google ranking KSA",
+        "description": "Guide",
+        "keywords": [
+          "Google ranking"
+        ]
+      },
+      "order": 3,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "website-cost-saudi-arabia-2026",
+      "slug": "website-cost-saudi-arabia-2026",
+      "title": "تكلفة تصميم موقع 2026",
+      "excerpt": "أسعار SAR — ROI vs templates.",
+      "content": "<p><strong>تكلفة تصميم موقع في السaudi Arabia</strong> 2026 — ranges واقعية بالريال من <strong>شركة تصميم مواقع</strong> senior. فهم cost drivers قبل RFP.</p>\n<h2>Price ranges SAR 2026</h2>\n<ul><li>Starter marketing 5–8 pages: 18,000–45,000 SAR</li><li>Corporate 10–20 pages + blog: 45,000–120,000 SAR</li><li>Web app / SaaS MVP: 120,000–350,000+ SAR</li><li>Enterprise program: custom RFP</li></ul>\n<h2>What drives cost</h2>\n<p>Page count، custom design vs system، CMS complexity، integrations، multilingual، SEO content writing، photography، performance SLA.</p>\n<h2>Hidden costs to budget</h2>\n<ul><li>Premium hosting CDN</li><li>SSL email</li><li>Maintenance retainer</li><li>Content updates</li><li>Legal privacy pages</li><li>Analytics setup</li></ul>\n<h2>Template vs custom ROI</h2>\n<p>Cheap template often → SEO debt، slow CWV، rework 12 months. Custom React foundation amortizes via organic leads.</p>\n<h2>How to compare quotes</h2>\n<p>Same scope document: pages list، SEO deliverables، ownership، revisions، timeline، support. Lowest price rarely lowest TCO.</p>\n<h2>Payment milestones</h2>\n<p>50/50 or 40/30/30 phased reduces risk both sides.</p>\n<h2>Case: false economy</h2>\n<p>Client saved 8k on template — spent 35k rebuild + lost 6 months organic momentum.</p>\n<h2>Conclusion</h2>\n<p>Invest in asset not expense. <a href=\"/services/web-design-saudi\">Web design Saudi</a> · <a href=\"/contact\">custom quote 48h</a>.</p>\n<h2>Enterprise RFP components</h2>\n<p>Security questionnaire SOC2 if applicable agency policies data handling PDPL. Accessibility WCAG level AA requirement legal sector government adjacent. Performance SLA Lighthouse mobile 90+ acceptance test protocol staging URL documented. Warranty bugfix period 30–90 days standard negotiate. Source code escrow large contracts optional legal template client peace acquisition scenario continuity vendor failure unlikely plan exists mature procurement.</p>\n<h2>ROI calculation framework</h2>\n<p>Estimate organic leads month 6 post SEO launch conservative 10–30 B2B example conversion rate 3% lead to customer average deal size SAR multiply compare website investment payback 12–18 months typical well executed corporate site Saudi competitive niche not instant magic realistic CFO conversation honesty builds trust sales cycle.</p>\n<h2>Deep dive: maintenance line item</h2>\n<p>Budget 1500–5000 SAR/month retainer typical SME: security patches CMS، minor content updates، uptime monitor، monthly backup test restore procedure documented. Skipping maintenance site hack recovery cost 10x panic rebuild emergency — insurance mindset CFO appreciate risk framing not optional luxury.</p>\n<h2>Build vs buy SaaS website builders</h2>\n<p>Wix Squarespace Arabic improving still limitations SEO scale custom integrations enterprise — suitable micro business test idea not serious B2B Saudi corporate brand credibility custom domain yes but performance schema limited developer lock-in migration painful later cheap now expensive later TCO analysis 3 years show custom wins revenue dependent sites.</p>\n<h2>Content production pricing</h2>\n<p>Professional Arabic copy 400–800 SAR/page marketing quality — 10 pages content line item 4000–8000 often forgotten RFP compare agencies apples apples one includes writing one excludes client must supply delay launch waiting client copy bottleneck specify responsibility contract who writes who approves timeline.</p>\n<h2>Payment terms cash flow KSA</h2>\n<p>50% start 50% launch standard SMEs. Enterprise milestone deliverables sign-off wireframes UI staging production reduce dispute clear acceptance criteria objective Lighthouse score threshold example measurable not subjective «we like it» only.</p>\n<h2>خاتمة: invest smart في تطوير موsites</h2>\n<p>Price reflects scope — define clearly. TCO 24 months > sticker price. <a href=\"/services/web-design-saudi\">Web design Saudi</a> · <a href=\"/contact\">quote</a>.</p>\n<h2>مقارنة: agency vs in-house vs freelancer</h2>\n<p>Agency: speed expertise breadth SLA account team continuity cost premium. In-house: control culture fit hiring time 3–6 months Saudi tech talent competitive salaries benefits long-term if volume enough multiple sites products. Freelancer: cheap single skill risk disappearance maintenance crisis — suitable tiny project not corporate brand flagship website revenue dependent choose wisely decision framework stakeholders CFO marketing CTO align.</p>\n<h2>Sample scope document excerpt</h2>\n<p>Pages: home، about، 4 services، contact، privacy، terms، blog template — 9 unique templates. Features: CMS Firestore، forms CRM email، GA4 GTM، Arabic RTL، EN toggle optional. SEO: meta schema sitemap CWV targets Lighthouse 90+. Deliverables: Figma UI، source code GitHub client org، training 2h recorded. Timeline 3 weeks. Support 30 days bugfix. Exclusions: copywriting photography paid media — separate line items clarity prevents dispute mid-project Saudi market relationship important trust transparency pricing scope upfront.</p>\n<h2>تفاوض العقد: بنود SEO وأداء</h2>\n<p>أدرج في العقد: Lighthouse mobile ≥90 على staging قبل الدفعة الأخيرة. sitemap.xml dynamic submitted. meta unique كل صفحة. schema Organization Service FAQ. Core Web Vitals LCP INP CLS targets documented. ملكية Git repo client organization day one. تأخير penalties optional both sides fairness. Saudi courts commercial disputes rare if relationship good clear contract prevents misunderstanding Arabic legal review large deals recommended enterprise.</p>\n<p>Change request hourly rate SAR 350–600 senior dev/design standard market Riyadh 2026 — cap monthly or package hours retainer post-launch predictable budgeting finance appreciate.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "تكلفة تصميم موقع 2026",
+      "category": "Web Development",
+      "tags": [
+        "تكلفة"
+      ],
+      "author": "هناء صالح",
+      "readTime": 8,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "تكلفة موقع السaudi",
+      "metaDescription": "Prices",
+      "metaKeywords": [
+        "تكلفة تصميم موقع"
+      ],
+      "seo": {
+        "title": "تكلفة موقع السaudi",
+        "description": "Prices",
+        "keywords": [
+          "تكلفة تصميم موقع"
+        ]
+      },
+      "order": 4,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "web-performance-optimization",
+      "slug": "web-performance-optimization",
+      "title": "Web Performance & SEO",
+      "excerpt": "Core Web Vitals — LCP INP CLS.",
+      "content": "<p><strong>Web performance optimization</strong> directly impacts <strong>SEO Saudi Arabia</strong> and conversion. Core Web Vitals are ranking factors — this guide covers LCP، INP، CLS fixes for Arabic sites.</p>\n<h2>Why performance = SEO + revenue</h2>\n<p>Google uses CrUX field data. Slow mobile → higher bounce → lower engagement signals. Ads Quality Score penalizes slow landings.</p>\n<h2>LCP optimization</h2>\n<ul><li>Hero image WebP preload fetchpriority</li><li>Server TTFB CDN edge GCC</li><li>Remove render-blocking CSS critical inline</li><li>SSR/SSG for marketing pages</li></ul>\n<h2>INP / interactivity</h2>\n<p>Split long tasks، defer non-critical JS، audit third-party tags GTM quarterly.</p>\n<h2>CLS stability</h2>\n<p>Width/height on images، reserve ad slots، font-display swap with metric overrides careful.</p>\n<h2>Arabic font performance</h2>\n<p>Subset glyphs، variable fonts cautious testing، limit weights loaded.</p>\n<h2>Monitoring stack</h2>\n<ul><li>GSC Page Experience</li><li>RUM optional</li><li>CI Lighthouse budget</li><li>WebPageTest from Middle East</li></ul>\n<h2>Case insight</h2>\n<p>E-commerce Jeddah: LCP 4.1s→1.8s → conversion +19%، organic impressions +12%.</p>\n<h2>Conclusion</h2>\n<p>Performance sprint before SEO content scale. <a href=\"/services/web-design-saudi\">Performance-first web design</a> · <a href=\"/blog/lighthouse-100-guide\">Lighthouse guide</a> · <a href=\"/contact\">audit</a>.</p>\n<h2>React performance patterns</h2>\n<p>Memo expensive components lists virtualization long tables dashboards common B2B portals Saudi enterprise. Avoid inline anonymous functions render heavy lists re-render cascade profile React DevTools flamegraph before micro-optimize blindly. Route lazy import() marketing site enough split admin heavy apps critical INP improvement user clicks menu dashboard load chunk async.</p>\n<h2>Measuring business impact speed</h2>\n<p>Before after GA4 compare bounce rate session conversion rate same traffic source organic paid isolate speed change variable control period 2 weeks seasonal Ramadan exclude compare fairly. Document SAR revenue impact executive report justify retainer performance optimization ongoing not one-time project only.</p>\n<h2>Deep dive: third-party scripts audit</h2>\n<p>List every script GTM: GA4، Meta Pixel، LinkedIn، Hotjar، Clarity، chat widget — each adds INP LCP cost. Load after consent PDPL + after idle or interaction marketing still gets data delayed acceptable tradeoff legal performance both. Saudi sites often 8+ tags bloated agency past campaigns never removed — quarterly audit delete unused.</p>\n<h2>Caching strategy</h2>\n<p>Static assets immutable cache-control max-age 31536000 fingerprinted filenames Vite webpack hash. HTML shorter cache SSR revalidate ISR Next optional marketing blog updates frequent without full rebuild pipeline modern stack advantage explain client why React investment operational agility content team.</p>\n<h2>Database API latency</h2>\n<p>Firestore reads cold start Cloud Functions region me-central1 or closest available latency Saudi users API roundtrip dashboard apps optimize query indexes pagination not load entire collection client side lazy infinite scroll performance UX INP improve measurable.</p>\n<h2>Performance budget document example</h2>\n<p>Home LCP ≤2.0s mobile 4G throttled. Total JS ≤180KB gzip initial route. Hero image ≤120KB WebP. Max 3 third-party tags launch. CI fail PR exceeds 10% regression — team accountability culture performance Saudi competitive SERP speed tiebreaker similar content quality sites.</p>\n<h2>خاتمة: speed = SEO + revenue</h2>\n<p>Fix CWV before scaling ads — Quality Score rewards fast landings. <a href=\"/services/web-design-saudi\">Performance-first build</a> · <a href=\"/blog/lighthouse-100-guide\">Lighthouse</a> · <a href=\"/contact\">audit</a>.</p>\n<h2>Case study: corporate site Jeddah</h2>\n<p>Before: WordPress Elementor LCP 5.8s mobile PSI 42 organic bounce 78%. After: React rebuild CDN Cloudflare images WebP LCP 1.7s PSI 91 bounce 52% organic leads +24% six months same content improved — proof performance SEO UX linked investment justified CFO ROI presentation agency delivered measurable business outcome not technical vanity metric alone client retention referral followed success story portfolio piece E-E-A-T.</p>\n<h2>Tools reference list</h2>\n<ul><li>PageSpeed Insights</li><li>WebPageTest Dubai location</li><li>Chrome DevTools Performance</li><li>GSC Core Web Vitals report</li><li>Bundle analyzer Vite webpack</li><li>Cloudflare analytics if used</li></ul>\n<h2>Edge computing وlatency السaudi</h2>\n<p>Cloudflare Workers Vercel Edge optional personalize geo not always needed marketing static ISR sufficient measure before complexity. Bahrain UAE PoPs benefit KSA users traceroute explain executives infrastructure map visual simple non-technical stakeholders approve CDN cost 20 USD month trivial vs lost leads calculation always business frame technical decisions.</p>\n<p>HTTP/3 QUIC enabled CDN modern protocols marginal gains cumulative optimization philosophy every millisecond Saudi mobile competitive SERP user patience low bounce fast competitor one click away Google ten blue links choice abundant.</p>\n<h2>Image optimization workflow team</h2>\n<p>Designer exports 2x retina max dimensions cap dev compress Squoosh CI hook fail if >200KB hero without approval performance budget cultural shift creative team Saudi agencies traditionally heavy imagery education workshops show LCP impact side by side same design optimized vs raw convincing visual learners executives quick demo effective sell performance investment internal alignment before client even asks Google ranking slow site embarrassing pitch SEO services ironic fix own house first agency credibility.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Web Performance & SEO",
+      "category": "Performance",
+      "tags": [
+        "Core Web Vitals"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Web performance KSA",
+      "metaDescription": "CWV",
+      "metaKeywords": [
+        "Core Web Vitals"
+      ],
+      "seo": {
+        "title": "Web performance KSA",
+        "description": "CWV",
+        "keywords": [
+          "Core Web Vitals"
+        ]
+      },
+      "order": 5,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "lighthouse-100-guide",
+      "slug": "lighthouse-100-guide",
+      "title": "Lighthouse SEO Guide",
+      "excerpt": "Lighthouse optimization للترتيب.",
+      "content": "<p><strong>Lighthouse optimization</strong> for <strong>Google ranking</strong> — practical path to 90+ scores without breaking UX. Lab tool complements Core Web Vitals field data Saudi sites.</p>\n<h2>Performance budget definition</h2>\n<p>Set max KB JS، image weight per route، max third-parties before launch sign-off.</p>\n<h2>Running Lighthouse correctly</h2>\n<ul><li>Mobile throttling default</li><li>Test authenticated? use staging</li><li>Multiple runs median</li><li>Match production build</li></ul>\n<h2>SEO category Lighthouse</h2>\n<p>Meta description، crawlable links، valid robots، tap targets — fix warnings they map to UX SEO.</p>\n<h2>Accessibility wins</h2>\n<p>Contrast Arabic text، labels forms، aria landmarks — helps users and quality signals.</p>\n<h2>CI integration</h2>\n<p>Fail PR if performance drops >5 points on critical URLs.</p>\n<h2>Don't chase 100 blindly</h2>\n<p>Balance analytics tags business needs — optimize loading strategy async.</p>\n<h2>Tools beyond Lighthouse</h2>\n<p>PageSpeed Insights field data، WebPageTest filmstrip، Chrome DevTools Performance panel.</p>\n<h2>Conclusion</h2>\n<p>Lighthouse guides lab improvements. <a href=\"/services/web-design-saudi\">Build fast from day one</a> · <a href=\"/blog/core-web-vitals-explained\">CWV explained</a> · <a href=\"/contact\">talk to engineers</a>.</p>\n<h2>Common Lighthouse failures Arabic sites</h2>\n<p>Oversized Arabic web fonts multiple weights loaded unused — subset critical. Hero slider carousel multiple large images LCP killer — static hero single optimized image often converts better anyway A/B prove. jQuery legacy plugins WordPress migrate React opportunity cost analysis template patch vs rebuild guide separate cost article link internal.</p>\n<h2>Team workflow integration</h2>\n<p>Developers run Lighthouse local pre-PR. Designer receives performance budget doc max hero KB max webfont files. PM accepts tradeoff fewer animations if CWV fail field data business priority leads over fancy motion rarely worth ranking loss.</p>\n<h2>Deep dive: preconnect hints</h2>\n<p>link rel preconnect fonts.googleapis.com gstatic — saves RTT first font load Arabic webfonts multiple weights kill scores — limit 2 weights max regular bold sufficient most corporate sites professional typography without excess.</p>\n<h2>Accessibility SEO overlap</h2>\n<p>Lighthouse accessibility audits help semantic HTML benefits crawlers screen readers — alt text form labels heading order logical H1 once per page SEO basics and a11y same fixes win-win Saudi government adjacent clients increasingly ask WCAG compliance procurement RFP scoring points accessibility explicit requirement budget line justify.</p>\n<h2>Simulated throttling realism</h2>\n<p>Moto G Power Slow 4G default Lighthouse — closer Saudi mass market than desktop fiber office dev team bias dangerous ship fast office test fail field CrUX embarrassing client complaint Google Search Console URL inspection live test real device purchase Android mid-range QA device lab one phone cheap investment agency credibility.</p>\n<h2>خاتمة: Lighthouse guides lab — field data rules</h2>\n<p>Optimize URLs that matter traffic + business. <a href=\"/blog/core-web-vitals-explained\">CWV explained</a> · <a href=\"/contact\">engineers</a>.</p>\n<h2>PWA وLighthouse scores</h2>\n<p>PWA checklist Lighthouse separate category — installable offline service worker only if product need marketing site usually skip avoid complexity score distraction focus performance SEO categories first PWA overkill brochure B2B Saudi corporate unless field app sales catalog offline specific requirement validate user research not assume.</p>\n<h2>Regression prevention</h2>\n<p>Marketing adds GTM tag without dev review — scores drop week later blame dev unfair process gate marketing ops request tag dev assess performance budget approve defer reject alternative server-side tracking GA4 measurement protocol advanced reduce client JS — governance performance culture mature digital teams Saudi enterprises adopt slowly agency educate client workshop quarterly best practices.</p>\n<h2>Auditing competitor sites ethically</h2>\n<p>Run Lighthouse competitor public URLs sales enablement understand gap pitch realistic improvements not guarantee outrank — ethical transparent client education trust long-term agency reputation Saudi market word mouth strong single bad delivery rumor spreads Riyadh business community small world quality non-negotiable senior delivery.</p>\n<p>Document before scores proposal baseline objective prove value post-launch report card celebration internal team morale client testimonial request permission metrics screenshot redact if needed NDA.</p>\n<h2>Mobile lab vs field gap explanation</h2>\n<p>Client asks «Lighthouse 95 why GSC poor?» — explain lab ideal vs real users networks devices CrUX field data truth optimize field URL level prioritized traffic weighting education consultative selling SEO Saudi clients sophisticated increasing questions prepared answer credibly consultant not technician only translate metrics business language revenue impact always tie back leads Google visibility trust professional service differentiation commodity agency competition RFP win rate knowledge display.</p>\n<h2>خطة 30 يوماً لرفع Lighthouse</h2>\n<p>الأسبوع 1: baseline على 5 URLs representative — home، top service، top blog، contact، portfolio. Export JSON compare mobile desktop. الأسبوع 2: images WebP AVIF، font subset Arabic، defer third-party. الأسبوع 3: JS audit remove unused libraries، route-level splitting. الأسبوع 4: retest، document gains، tie GSC CWV report. الهدف ليس 100 vanity — 90+ mobile performance + 95 SEO realistic production sites with analytics.</p>\n<p>فريق top1markting يربط Lighthouse بـ business metrics — سرعة = conversions. <a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/contact\">audit مجاني</a>.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Lighthouse SEO Guide",
+      "category": "Performance",
+      "tags": [
+        "Lighthouse"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Lighthouse SEO",
+      "metaDescription": "Guide",
+      "metaKeywords": [
+        "Lighthouse SEO"
+      ],
+      "seo": {
+        "title": "Lighthouse SEO",
+        "description": "Guide",
+        "keywords": [
+          "Lighthouse SEO"
+        ]
+      },
+      "order": 6,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "ui-ux-best-practices-2026",
+      "slug": "ui-ux-best-practices-2026",
+      "title": "UI/UX Best Practices 2026",
+      "excerpt": "RTL Arabic UX patterns.",
+      "content": "<p><strong>UI/UX best practices 2026</strong> for Arabic digital products — RTL patterns، conversion forms، trust design. Essential for <strong>web design Saudi</strong> competitiveness.</p>\n<h2>RTL UX fundamentals</h2>\n<p>Mirror layout not just CSS direction — icons chevrons، progress bars، slider handles need review.</p>\n<h2>Typography Arabic</h2>\n<ul><li>Line-height 1.6–1.8 body</li><li>Limit line length 60–75 chars</li><li>Hierarchy clear H1–H3</li><li>Avoid all-caps Arabic</li></ul>\n<h2>Mobile-first Saudi</h2>\n<p>Thumb zone CTAs، sticky WhatsApp، minimal typing autocomplete.</p>\n<h2>Forms conversion</h2>\n<p>Progressive disclosure B2B long forms، inline validation Arabic messages، trust badges near submit.</p>\n<h2>Trust patterns KSA</h2>\n<ul><li>Local phone prominent</li><li>Client logos Saudi</li><li>Case metrics</li><li>Privacy reassurance</li></ul>\n<h2>Accessibility</h2>\n<p>Focus states visible، keyboard nav، screen reader labels on icons.</p>\n<h2>Testing methodology</h2>\n<p>5-user usability beats internal opinions. Record sessions (consent).</p>\n<h2>Design systems</h2>\n<p>Tokens synced dev — fewer drift bugs between Figma and React.</p>\n<h2>Conclusion</h2>\n<p>UX is SEO via engagement. <a href=\"/services/ui-ux\">UI/UX service</a> · <a href=\"/services/web-design-saudi\">Web design</a> · <a href=\"/contact\">UX audit</a>.</p>\n<h2>B2B Saudi buyer journey UX</h2>\n<p>Committee decision: technical evaluator marketing manager finance procurement — site must serve multiple personas navigation clear paths case studies technical PDF spec download gated or ungated strategy lead gen tradeoff. Arabic primary English optional toggle header not buried footer GCC visitors expat decision makers English comfort.</p>\n<h2>Form UX Saudi compliance</h2>\n<p>Phone +966 validation mask friendly. Company name CR number field B2B trust optional verify later sales. Privacy checkbox PDPL consent explicit link policy Arabic cannot pre-checked legally ethical best practice trust conversion slight friction worth compliance.</p>\n<h2>Deep dive: dashboard UX B2B</h2>\n<p>Saudi enterprise dashboards Arabic RTL tables numbers LTR cells align right labels Arabic left consistent convention finance users expect Excel-like mental model deviation causes errors trust loss product adoption fails training burden support tickets increase measure task completion time UX metric improve iterate.</p>\n<h2>Navigation depth rule</h2>\n<p>Max 3 clicks any page corporate site 50 pages — flat IA preferred mega menu organized categories Arabic labels tested users understand terminology not internal org chart jargon marketing renames services client-facing language keyword research informs nav labels SEO UX aligned win both.</p>\n<h2>Empty error success states</h2>\n<p>Design all three — success confirmation Arabic clear next step «سنتواصل خلال 24 ساعة» set expectation reduce anxiety support call «did form work» common Saudi users WhatsApp follow-up option secondary CTA after submit high conversion culture direct communication preference respect UX provide.</p>\n<h2>خاتمة: UX investment pays SEO engagement</h2>\n<p><a href=\"/services/ui-ux\">UI/UX service</a> · <a href=\"/services/web-design-saudi\">Web design</a> · <a href=\"/contact\">UX audit</a>.</p>\n<h2>WCAG quick wins Arabic sites</h2>\n<p>Color contrast 4.5:1 body text check tools Stark plugin Figma. Focus visible keyboard tab order logical RTL. Skip link main content screen readers. Video captions Arabic if spoken content accessibility SEO transcript bonus. Government adjacent procurement Saudi increasing a11y requirements align PDPL privacy UX trust comprehensive quality signal professional agency delivery.</p>\n<h2>Prototype testing script example</h2>\n<p>Task: find pricing and request quote — observe path count clicks time confusion points note Arabic comprehension labels clear? 5 users enough Nielsen norm qualitative insights high value low cost remote Zoom Saudi users geographically dispersed Riyadh Jeddah Dammam recruit LinkedIn incentive 200 SAR gift card common UX research practice ethical consent recorded.</p>\n<h2>Design QA cross-browser Saudi</h2>\n<p>Test Safari iOS significant iPhone share executive demographic KSA. Chrome Android various Samsung Huawei older devices still market share test not only latest Pixel dev team favorite. Firefox minor but free check. Edge corporate Windows users B2B desktop office hours traffic analytics validate device report GA4 prioritize testing matrix resources efficiently.</p>\n<p>RTL bug mirror icons chevrons back arrow direction check manually automated visual regression Percy optional budget permitting catch CSS logical properties migration modern codebase recommendation greenfield projects 2026.</p>\n<h2>Voice tone Arabic brand</h2>\n<p>Formal Modern Standard Arabic corporate vs conversational dialect marketing choice audience B2B government formal default B2C youth dialect careful not alienate professional buyers Saudi diverse market expat Arabic second language clear MSA safer UX writing microcopy consistency glossary terms product UI buttons same verb patterns reduce cognitive load learnability System usability scale survey optional metric benchmark iteration.</p>\n<h2>اختبار المستخدم في السعودية</h2>\n<p>Moderated sessions Zoom أو in-person Riyadh — tasks realistic Arabic «احجز استشارة»، «قارن الباقات». Record consent PDPL. Synthesize findings affinity diagram priority fixes sprint next. Remote unmoderated optional Maze Prolific GCC panel budget conscious.</p>\n<p>Design systems Arabic: spacing 8pt grid، type scale responsive clamp، components Button Input Card RTL tested. <a href=\"/services/ui-ux\">UI/UX service</a> · <a href=\"/portfolio\">أعمالنا</a>.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "UI/UX Best Practices 2026",
+      "category": "UI/UX",
+      "tags": [
+        "UI/UX"
+      ],
+      "author": "يوسف كرم",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "UI/UX 2026",
+      "metaDescription": "Arabic",
+      "metaKeywords": [
+        "UI/UX"
+      ],
+      "seo": {
+        "title": "UI/UX 2026",
+        "description": "Arabic",
+        "keywords": [
+          "UI/UX"
+        ]
+      },
+      "order": 7,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "core-web-vitals-explained",
+      "slug": "core-web-vitals-explained",
+      "title": "Core Web Vitals Explained",
+      "excerpt": "LCP INP CLS — SEO impact.",
+      "content": "<p><strong>Core Web Vitals explained</strong> — LCP، INP، CLS — and why they matter for <strong>Google ranking</strong> in <strong>Saudi Arabia</strong>. Field data from real users drives search signals 2026.</p>\n<h2>LCP Largest Contentful Paint</h2>\n<p>Measures loading — usually hero image or large text block. Target ≤2.5s good. Fix: optimize images، CDN، server response.</p>\n<h2>INP Interaction to Next Paint</h2>\n<p>Replaced FID — responsiveness clicks/taps. Target ≤200ms. Fix: reduce JS long tasks، optimize handlers.</p>\n<h2>CLS Cumulative Layout Shift</h2>\n<p>Visual stability — annoying jumps. Target ≤0.1. Fix: size attributes، avoid injecting banners late.</p>\n<h2>Lab vs field</h2>\n<p>Lighthouse lab simulates — CrUX field from Chrome users. Prioritize URLs with traffic failing field thresholds GSC.</p>\n<h2>SEO connection</h2>\n<p>Passing CWV not sole ranking factor but tiebreaker competitive SERPs. Poor vitals + high bounce compound negative.</p>\n<h2>Arabic site specifics</h2>\n<p>Heavy fonts، RTL plugins legacy WP often fail CLS/LCP — rebuild sometimes faster than patch.</p>\n<h2>Improvement workflow</h2>\n<ul><li>GSC export poor URLs</li><li>PSI diagnose</li><li>Fix ship measure</li><li>Repeat monthly</li></ul>\n<h2>Conclusion</h2>\n<p>Speed is UX is SEO. <a href=\"/blog/web-performance-optimization\">Performance guide</a> · <a href=\"/services/web-design-saudi\">Fast web design</a> · <a href=\"/contact\">CWV audit</a>.</p>\n<h2>Fix order priority practical</h2>\n<p>Step 1 LCP if fail worst URL traffic weighted. Step 2 INP if interactive app SaaS. Step 3 CLS if ads embeds news sites less B2B corporate still check font shifts common Arabic fonts FOIT FOUT strategy font-display swap metric override size-adjust advanced CSS optional expert dev.</p>\n<h2>Reporting executives Arabic</h2>\n<p>Translate CWV business language: slow site = lost customers Google visibility down = competitors win clicks explain without jargon LCP loading wait click delay frustration simple analogies executives appreciate clarity request budget fix approve faster.</p>\n<h2>Deep dive: INP debugging</h2>\n<p>Long tasks >50ms main thread React re-renders heavy state updates profile Performance tab record click interaction button menu open measure delay optimize split state memo useTransition React 18+ patterns senior dev required INP not designer fix alone collaboration.</p>\n<h2>LCP element identification</h2>\n<p>Chrome DevTools Performance record reload identify LCP node often hero image sometimes text block H1 large font preload that element specifically not guess — targeted fix fastest win. Responsive images srcset deliver appropriate size mobile not desktop 4K waste bandwidth Saudi mobile majority traffic source analytics confirm device breakdown GA4 report prioritize.</p>\n<h2>CLS from dynamic content</h2>\n<p>Cookie banner push content down without reserved space — set fixed bottom overlay not document flow push. Ad slots if ever used reserve min-height container CLS zero policy corporate B2B often no ads simpler. Font swap layout shift minimize size-adjust CSS advanced or accept system font stack fallback performance priority brand font secondary debate client decision informed tradeoff metrics show.</p>\n<h2>خاتمة: fix field CWV first</h2>\n<p><a href=\"/blog/web-performance-optimization\">Performance guide</a> · <a href=\"/services/web-design-saudi\">Fast sites</a> · <a href=\"/contact\">CWV audit</a>.</p>\n<h2>Historical: FID to INP transition</h2>\n<p>FID measured first input delay only — INP broader all interactions page lifecycle stricter sites passed FID failed INP March 2024 update Google INP Core Web Vital audit older blog posts update terminology credibility E-E-A-T content fresh 2026 references matter ranking helpfulness signals outdated info harms trust professional agency blog maintain.</p>\n<h2>Shared hosting vs edge</h2>\n<p>Cheap shared hosting Europe latency Saudi TTFB high hurts LCP before any front-end optimization — infrastructure decision foundational recommend Cloudflare Vercel Firebase Hosting GCC performance baseline client education hosting savings false economy lost leads exceed hosting cost difference 50 SAR month vs premium edge trivial business impact calculation.</p>\n<h2>Synthetic monitoring setup</h2>\n<p>UptimeRobot Pingdom synthetic checks Riyadh if available or nearest monitor alert Slack performance regression deploy correlation incident response runbook who fixes dev on-call rotation define SLA client enterprise contracts explicit response times severity levels P1 performance outage marketing campaign live peak Ramadan ecommerce if applicable surge capacity plan.</p>\n<p>CrUX monthly review meeting standing agenda SEO dev marketing three stakeholders attendance mandatory silos kill performance SEO UX single metric dashboard shared language business outcomes unify.</p>\n<h2>WordPress to React migration CWV</h2>\n<p>Most dramatic CWV wins Saudi clients come platform migration legacy builder bloated plugins eliminated greenfield React Tailwind budget higher ROI calculation 24 months organic ads savings faster site justify rebuild vs patch recurring plugin fees maintenance security risk hack recovery cost probability increase aged WordPress statistically anecdotal agency observations market 2026 recommend audit honest client trust even if less revenue short project sale long relationship.</p>\n<h2>INP — التفاعل في 2026</h2>\n<p>INP replaces FID — measures responsiveness clicks taps keyboard entire visit. Optimize: break long tasks، web workers heavy calc، minimize main thread React re-renders memoization. Saudi users on mid-range Android — test Moto G Power not only flagship iPhone.</p>\n<p>Monitor CrUX monthly — field data truth. Lab Lighthouse supplement not replace. <a href=\"/services/seo-saudi\">SEO السaudi</a> includes CWV remediation retainer.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Core Web Vitals Explained",
+      "category": "Performance",
+      "tags": [
+        "CWV"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "CWV explained",
+      "metaDescription": "SEO",
+      "metaKeywords": [
+        "Core Web Vitals"
+      ],
+      "seo": {
+        "title": "CWV explained",
+        "description": "SEO",
+        "keywords": [
+          "Core Web Vitals"
+        ]
+      },
+      "order": 8,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "saas-seo-strategy",
+      "slug": "saas-seo-strategy",
+      "title": "SaaS SEO Strategy GCC",
+      "excerpt": "Product-led SEO B2B.",
+      "content": "<p><strong>SaaS SEO strategy</strong> for B2B in GCC — product-led content، bottom-funnel pages، technical foundation. Aligns with <strong>SEO Saudi Arabia</strong> growth for software companies.</p>\n<h2>JTBD keyword research</h2>\n<p>Map jobs customers hire product for — not feature names only. Arabic + English queries google.sa.</p>\n<h2>Page types priority</h2>\n<ul><li>Pricing / plans</li><li>Integrations directory</li><li>Comparison vs competitors</li><li>Use case industries</li><li>Docs indexable</li><li>Blog thought leadership</li></ul>\n<h2>Programmatic caution</h2>\n<p>City spam thin pages hurt — unique value per URL or noindex.</p>\n<h2>Technical SaaS SEO</h2>\n<p>Separate marketing SSR from app SPA. Canonical discipline. Avoid duplicate login/home confusion.</p>\n<h2>Content flywheel</h2>\n<p>Templates، calculators lead magnets → email → product. Track organic assisted conversions GA4.</p>\n<h2>Link building B2B</h2>\n<p>Integration partners، guest posts niche، digital PR product data studies.</p>\n<h2>Case insight</h2>\n<p>SaaS Riyadh: integration pages +12 indexed keywords top 10 in 4 months.</p>\n<h2>Conclusion</h2>\n<p>Compound organic reduces CAC. <a href=\"/services/seo-saudi\">SEO retainer</a> · <a href=\"/services/web-apps\">SaaS development</a> · <a href=\"/contact\">strategy call</a>.</p>\n<h2>Metrics SaaS SEO team</h2>\n<p>North star organic signup trial start not traffic alone. Track landing page to signup rate by keyword cluster content ROI. CAC organic vs paid blend target LTV:CAC ratio finance SaaS Saudi startups growing VC and bootstrap both need unit economics SEO compound reduces blended CAC quarter over quarter patience 6–12 months board realistic.</p>\n<h2>Content ops scale</h2>\n<p>Editorial calendar tied product releases integration launches timely SEO capture news queries. Writer brief template keyword intent outline internal links required 1200 min words quality bar reject thin freelance submissions edit in-house senior SEO review before publish google helpful content standard.</p>\n<h2>Deep dive: comparison landing pages</h2>\n<p>«alternative to X» high intent B2B SaaS GCC — honest feature table legal review trademarks fair comparison factual not defamatory. Capture churn users competitor dissatisfaction ethical content helpful Google rewards authentic not attack ads tone professional Arabic English both if market bilingual product.</p>\n<h2>Documentation SEO dev audience</h2>\n<p>API docs indexable code samples Arabic intro English technical ok hybrid developer audience KSA fintech growing Stripe-like platforms documentation search long-tail integration queries capture before sales call product-led growth PLG motion SEO supports reduce sales touch small deals velocity increase CAC efficiency board metrics startup Riyadh ecosystem 2026 vibrant.</p>\n<h2>Churn and SEO hygiene</h2>\n<p>Deprecate feature — 301 redirect relevant page not 404 equity loss. Communicate sitemap update GSC inspect recrawl. SaaS fast iteration breaks SEO without process owner each release checklist SEO impact URL changes.</p>\n<h2>خاتمة: SaaS SEO compound growth GCC</h2>\n<p><a href=\"/services/seo-saudi\">SEO retainer</a> · <a href=\"/services/web-apps\">SaaS dev</a> · <a href=\"/contact\">call</a>.</p>\n<h2>Freemium SEO considerations</h2>\n<p>Free tier signup pages indexable — balance conversion gating docs public SEO value login walls block crawlers noindex app configure robots carefully marketing site separate subdomain app.domain.com vs domain.com/blog classic architecture SaaS SEO foundation planning day one not retrofit month 12 panic organic flat board questions CMO.</p>\n<h2>International expansion hreflang</h2>\n<p>Saudi primary UAE KW QA BH markets English Arabic mix hreflang x-default Saudi Arabic canonical expansion GCC SaaS common top1markting clients regional strategy content localize not duplicate city spam unique value each locale laws currency SAR AED display UX trust local payment methods integration SEO landing separate qualified.</p>\n<h2>Trial-to-paid SEO funnel</h2>\n<p>Landing pages trial signup indexable optimize «free trial» Arabic keywords intent high competition differentiate unique value prop Saudi localization payment SAR support local phone support hours AST timezone trust signal footer address Kingdom real business not PO box virtual only scam suspicion high consumers B2B due diligence vendor check website quality proxy capability.</p>\n<p>Email nurture drip SEO content support blog links onboarding series educational reduce churn product-market fit SEO top funnel email mid funnel sales bottom synergy marketing ops align metrics one dashboard GA4 HubSpot optional integration.</p>\n<h2>Enterprise SEO account expansion</h2>\n<p>Land SMB expand enterprise GCC same product hreflang multi-currency UX SEO separate sales motion longer cycle content supports both self-serve trial enterprise contact sales dual CTA homepage clarity persona paths UX SEO aligned split testing optimize conversion path each segment analytics segments funnels GA4 explore reports Saudi enterprise procurement security questionnaire SOC2 roadmapped content security page ranks «SOC2 SaaS» trust long sales cycle nurture SEO touches 7+ before close typical B2B statistic apply locally anecdotal agency experience.</p>\n<h2>Product-led SEO للـ B2B SaaS</h2>\n<p>Template pages integrations «تكامل مع Zoho»، comparisons، free tools calculators capture top funnel Arabic queries. Sign-up friction minimal corporate email verify. Changelog blog posts index fast long-tail feature names.</p>\n<p>GCC expansion hreflang en-ar optional subdomain strategy evaluated. <a href=\"/services/web-apps\">تطوير SaaS</a> · <a href=\"/blog/seo-saudi-2026\">SEO 2026</a>.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "SaaS SEO Strategy GCC",
+      "category": "SEO",
+      "tags": [
+        "SaaS SEO"
+      ],
+      "author": "هناء صالح",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "SaaS SEO",
+      "metaDescription": "Playbook",
+      "metaKeywords": [
+        "SaaS SEO"
+      ],
+      "seo": {
+        "title": "SaaS SEO",
+        "description": "Playbook",
+        "keywords": [
+          "SaaS SEO"
+        ]
+      },
+      "order": 9,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "digital-agency-growth-strategies",
+      "slug": "digital-agency-growth-strategies",
+      "title": "نمو الاستوديو الرقمي B2B",
+      "excerpt": "SEO compound، case studies.",
+      "content": "<p><strong>Digital agency growth strategies</strong> B2B — how <strong>استوديو رقمي</strong> scales in KSA via positioning، case studies، <strong>SEO Saudi Arabia</strong> compound inbound.</p>\n<h2>Niche positioning wins</h2>\n<p>«SEO for SaaS GCC» beats generic full-service. Clear ICP → better content → higher close rate.</p>\n<h2>Case studies with numbers</h2>\n<p>E-E-A-T for your own agency site — proof builds trust google.sa and sales cycles shorten.</p>\n<h2>Content compound /blog</h2>\n<p>Guides like web design Saudi، CWV، UI/UX attract founders marketing leaders — nurture to service pages.</p>\n<h2>Referral engine</h2>\n<p>Happy clients + incentive structured — lowest CAC channel mature agencies.</p>\n<h2>Say no bad fit</h2>\n<p>Protect margins reputation — wrong projects drain senior team SEO case study potential.</p>\n<h2>Partnerships</h2>\n<p>Complement not compete — dev shops need design SEO white-label sometimes.</p>\n<h2>Metrics dashboard</h2>\n<ul><li>Inbound leads organic</li><li>Win rate</li><li>ACV</li><li>Utilization</li><li>NPS</li></ul>\n<h2>Conclusion</h2>\n<p>Growth = focus + proof + SEO. <a href=\"/about\">About top1markting</a> · <a href=\"/services\">Services</a> · <a href=\"/contact\">Partner inquiry</a>.</p>\n<h2>Marketing own agency site</h2>\n<p>Eat own cooking — agency ranks «SEO السaudi» «تصميم موsites» proves competence live case self referential valid if metrics real GSC screenshots redact client names if needed methodology transparent blog compound 24 months typical new domain authority build patience founders accept.</p>\n<h2>Client success retention SEO</h2>\n<p>Retainer renewals higher when monthly report ties SEO work leads revenue numbers not activities list only tasks done. Quarterly strategy refresh new keyword opportunities competitor moves market Ramadan seasonal plan proactive not reactive support ticket only relationship commodity avoid race cheapest retainer.</p>\n<h2>Deep dive: case study format SEO</h2>\n<p>Structure: client industry challenge solution metrics timeline quote permission — 800 words portfolio page indexes long-tail «تصميم موقع B2B الرياض» style queries proof E-E-A-T agency own site ranks competitive terms credibility loop new leads case studies feed SEO flywheel business development align content calendar sales wins document fast publish while fresh.</p>\n<h2>LinkedIn + SEO synergy KSA</h2>\n<p>Founder posts Arabic insights link new blog posts — social spike indexing crawl discovery faster Googlebot follows links brand queries rise branded search volume correlates trust not direct ranking factor awareness funnel B2B Saudi relationship selling complements SEO inbound not replace networking events Riyadh tech meetups still valuable hybrid GTM 2026.</p>\n<h2>Pricing transparency SEO experiment</h2>\n<p>Publish pricing ranges SAR — filters unqualified leads saves sales time ranks «تكلفة تصميم موقع» high intent controversial competitors hide prices test 6 months measure lead quality score conversion rate improvement common agency growth tactic Saudi market maturity increasing clients compare online before contact expect transparency millennials decision makers research heavy.</p>\n<h2>خاتمة: grow via proof + SEO compound</h2>\n<p><a href=\"/about\">About</a> · <a href=\"/services\">Services</a> · <a href=\"/contact\">partner</a>.</p>\n<h2>Retainer model SEO Saudi</h2>\n<p>Project-only revenue volatile retainer MRR stability agency cash flow predict hire senior team retain talent Saudi market salary expectations rising compete banks tech companies employer brand culture matters showcase portfolio blog E-E-A-T own site ranks proof credibility flywheel inbound reduces cold outreach dependency founder sales burnout scalable growth model 2026.</p>\n<h2>Partnerships web dev shops</h2>\n<p>Design SEO agency partners dev shops lack SEO UX white label referral fee ethical transparent client knows who does what relationship trust long-term Saudi business culture handshake reputation small market Riyadh Jeddah circles tight deliver quality protect partner brand reciprocal referrals compound network effects B2B services growth lever underused focus outbound only mistake balance.</p>\n<h2>Thought leadership LinkedIn Arabic</h2>\n<p>Founder posts 2/week insights Saudi digital market not only promotional blog link value first algorithm reach engagement comments respond build community trust future clients watch how agency thinks before RFP short list reputation precedes proposal request warm inbound higher win rate cold RFP shotgun lower margin race bottom avoid premium positioning senior studio top1markting model reference.</p>\n<p>Employee advocacy team share company posts amplify reach authentic faces humanize brand E-E-A-T people trust people logos alone insufficient Saudi relationship business culture emphasis personal connection video intro team about page short Arabic clips mobile friendly autoplay muted captions accessibility.</p>\n<h2>Scaling delivery without quality drop</h2>\n<p>Senior-only policy limits capacity intentional — raise prices before hire junior unsupervised Saudi market premium segment startups funded enterprises pay quality avoid volume game burnout team turnover destroys institutional knowledge client continuity account manager leaves relationship fragile document processes Notion playbooks mitigate scale carefully 120 projects milestone 2026 top1markting reference growth controlled quality brand protection long-term SEO reputation compound years not quarter shortsighted.</p>\n<h2>Case studies كأصل SEO</h2>\n<p>Every project publish portfolio KPIs — organic traffic lift، lead increase، performance scores. Structured data Article CaseStudy. Internal link from service pages. Sales cycle shortens prospect sees proof Saudi context not generic stock.</p>\n<p>Referral program clients satisfied — B2B KSA trust peer recommendation. top1markting growth compound content + delivery excellence — <a href=\"/about\">من نحن</a>.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "نمو الاستوديو الرقمي B2B",
+      "category": "SEO",
+      "tags": [
+        "استوديو رقمي"
+      ],
+      "author": "عمر حديد",
+      "readTime": 8,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Agency growth",
+      "metaDescription": "KSA",
+      "metaKeywords": [
+        "digital agency"
+      ],
+      "seo": {
+        "title": "Agency growth",
+        "description": "KSA",
+        "keywords": [
+          "digital agency"
+        ]
+      },
+      "order": 10,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    }
+  ],
+  "portfolio": [
+    {
+      "id": "riyadh-b2b-redesign",
+      "slug": "riyadh-b2b-redesign",
+      "title": "إعادة بناء موقع B2B — الرياض",
+      "category": "Web Design",
+      "description": "Corporate site React — Lighthouse 97، schema، blog-ready.",
+      "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "B2B",
+        "React",
+        "SEO"
+      ],
+      "client": "مجموعة نورا للتقنية",
+      "results": [
+        {
+          "label": "Organic leads",
+          "value": "+38%"
+        },
+        {
+          "label": "LCP mobile",
+          "value": "1.9s"
+        },
+        {
+          "label": "Lighthouse",
+          "value": "97"
+        }
+      ],
+      "order": 1,
+      "status": "published",
+      "metaTitle": "إعادة بناء موقع B2B — الرياض — top1markting",
+      "metaDescription": "Corporate site React — Lighthouse 97، schema، blog-ready.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "jeddah-saas-dashboard",
+      "slug": "jeddah-saas-dashboard",
+      "title": "SaaS Dashboard — جدة",
+      "category": "Web Apps",
+      "description": "MVP admin + onboarding — 9 weeks launch.",
+      "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "SaaS",
+        "Dashboard"
+      ],
+      "client": "منصة GulfScale",
+      "results": [
+        {
+          "label": "Onboarding completion",
+          "value": "+52%"
+        },
+        {
+          "label": "Time to MVP",
+          "value": "9 weeks"
+        }
+      ],
+      "order": 2,
+      "status": "published",
+      "metaTitle": "SaaS Dashboard — جدة — top1markting",
+      "metaDescription": "MVP admin + onboarding — 9 weeks launch.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "dammam-seo-growth",
+      "slug": "dammam-seo-growth",
+      "title": "SEO Growth — الدمام",
+      "category": "SEO",
+      "description": "Technical audit + content cluster 12 months.",
+      "imageUrl": "https://images.unsplash.com/photo-1432888622747-4cef171cf068?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "SEO",
+        "Content"
+      ],
+      "client": "شركة الأفق الصناعي",
+      "results": [
+        {
+          "label": "Organic traffic",
+          "value": "+64%"
+        },
+        {
+          "label": "Top 10 keywords",
+          "value": "28"
+        }
+      ],
+      "order": 3,
+      "status": "published",
+      "metaTitle": "SEO Growth — الدمام — top1markting",
+      "metaDescription": "Technical audit + content cluster 12 months.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "riyadh-ecommerce-ux",
+      "slug": "riyadh-ecommerce-ux",
+      "title": "UX Redesign — متجر إلكتروني",
+      "category": "UI/UX",
+      "description": "RTL checkout flow + mobile-first.",
+      "imageUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "E-commerce",
+        "UX"
+      ],
+      "client": "متجر Bloom",
+      "results": [
+        {
+          "label": "Conversion rate",
+          "value": "+2.1x"
+        },
+        {
+          "label": "Cart abandonment",
+          "value": "-34%"
+        }
+      ],
+      "order": 4,
+      "status": "published",
+      "metaTitle": "UX Redesign — متجر إلكتروني — top1markting",
+      "metaDescription": "RTL checkout flow + mobile-first.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "enterprise-portal-ksa",
+      "slug": "enterprise-portal-ksa",
+      "title": "Enterprise Portal — KSA",
+      "category": "Digital Solutions",
+      "description": "Multi-role portal + SSO integration.",
+      "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "Enterprise",
+        "Portal"
+      ],
+      "client": "مجموعة الرؤية القابضة",
+      "results": [
+        {
+          "label": "Support tickets",
+          "value": "-41%"
+        },
+        {
+          "label": "User adoption",
+          "value": "89%"
+        }
+      ],
+      "order": 5,
+      "status": "published",
+      "metaTitle": "Enterprise Portal — KSA — top1markting",
+      "metaDescription": "Multi-role portal + SSO integration.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    },
+    {
+      "id": "fintech-landing-seo",
+      "slug": "fintech-landing-seo",
+      "title": "FinTech Landing + SEO",
+      "category": "Web Design",
+      "description": "Campaign landings + GTM conversion tracking.",
+      "imageUrl": "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "FinTech",
+        "Landing"
+      ],
+      "client": "PayFlow Arabia",
+      "results": [
+        {
+          "label": "CPL",
+          "value": "-22%"
+        },
+        {
+          "label": "Quality Score",
+          "value": "9/10"
+        }
+      ],
+      "order": 6,
+      "status": "published",
+      "metaTitle": "FinTech Landing + SEO — top1markting",
+      "metaDescription": "Campaign landings + GTM conversion tracking.",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "publishedAt": "2026-07-05T00:00:00.000Z"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "سارة العتيبي",
+      "role": "مديرة التسويق",
+      "company": "مجموعة نورا للتقنية — الرياض",
+      "quote": "أعدت top1markting بناء موقعنا بالكامل. Lighthouse 97 و+41% leads من organic خلال 4 أmonths. أفضل استوديو رقمي worked with في السaudi.",
+      "rating": 5,
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "t2",
+      "name": "فهد القحطاني",
+      "role": "CEO",
+      "company": "GulfScale — جدة",
+      "quote": "MVP dashboard in 9 weeks. Clean React code، transparent sprints. Recommended لأي SaaS في المملكة.",
+      "rating": 5,
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "t3",
+      "name": "نورة الشمري",
+      "role": "Founder",
+      "company": "Bloom Retail — الدمام",
+      "quote": "E-commerce UX redesign — conversion +2.1x. RTL UX ممتاز.",
+      "rating": 4.9,
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "t4",
+      "name": "خالد الدوسري",
+      "role": "Head of Digital",
+      "company": "الأفق الصناعي — الدمام",
+      "quote": "SEO retainer 12 months — traffic +64%. Reports واضحة بالعربية.",
+      "rating": 5,
+      "order": 4,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "t5",
+      "name": "ريم الحربي",
+      "role": "Product Manager",
+      "company": "PayFlow Arabia — الرياض",
+      "quote": "Landing pages + tracking — CPL انخفض 22%. فريق محترف.",
+      "rating": 5,
+      "order": 5,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "t6",
+      "name": "عبدالله الزهراني",
+      "role": "IT Director",
+      "company": "مجموعة الرؤية القابضة",
+      "quote": "Enterprise portal on time. SSO + training. SLA respected.",
+      "rating": 4.8,
+      "order": 6,
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "كم تكلفة تصميم موقع في السaudi؟",
+      "answer": "المواقع التسويقية 5–8 صفحات من ~18,000–45,000 ريال. corporate أعلى. <a href=\"/contact\">عرض مخصص</a>.",
+      "order": 1,
+      "category": "pricing",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-2",
+      "question": "هل SEO included في تصميم المواقع؟",
+      "answer": "نعم basics: meta، schema، speed، sitemap. Advanced retainer منفصل.",
+      "order": 2,
+      "category": "SEO",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-3",
+      "question": "كم مدة تنفيذ موقع corporate؟",
+      "answer": "2–4 أسابيع marketing site؛ 4–8 للمشاريع الأكبر. Sprint أسبوعين.",
+      "order": 3,
+      "category": "delivery",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-4",
+      "question": "هل تدعمون الرياض وجدة والدمام؟",
+      "answer": "نعم remote + workshops الرياض. Local SEO landings available.",
+      "order": 4,
+      "category": "services",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-5",
+      "question": "ما stack التطوير؟",
+      "answer": "React، TypeScript، Firebase/headless CMS. Code ownership كامل.",
+      "order": 5,
+      "category": "services",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-6",
+      "question": "هل يوجد دعم بعد الإطلاق؟",
+      "answer": "30 يوم warranty + retainer optional: SEO، CRO، maintenance.",
+      "order": 6,
+      "category": "support",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-7",
+      "question": "متى نتائج SEO؟",
+      "answer": "3–6 months competitive keywords؛ long-tail أسرع.",
+      "order": 7,
+      "category": "SEO",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-8",
+      "question": "Payment terms؟",
+      "answer": "50% start / 50% launch — أو milestones للمشاريع الكبيرة.",
+      "order": 8,
+      "category": "pricing",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-9",
+      "question": "UI/UX only بدون dev؟",
+      "answer": "نعم — Figma deliverables + handoff للفريق الداخلي.",
+      "order": 9,
+      "category": "services",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-10",
+      "question": "How to start؟",
+      "answer": "<a href=\"/contact\">Contact form</a> أو WhatsApp 966549881368 — reply 24h.",
+      "order": 10,
+      "category": "support",
+      "status": "published",
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z"
+    }
+  ]
+}

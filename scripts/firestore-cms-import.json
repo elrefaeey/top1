@@ -1,0 +1,1857 @@
+{
+  "site_settings": {
+    "id": "global",
+    "siteName": "top1markting",
+    "tagline": "Saudi Digital Studio for High-Performance Websites & SEO",
+    "description": "top1markting استوديو رقمي سعودي متخصص في تصميم المواقع الاحترافية، تطوير تطبيقات الوeb، UI/UX، وتحسين محركات البحث SEO للشركات الناشئة والمؤسسات في المملكة العربية السعودية ودول مجلس التعاون. نبني مواقع عالية الأداء تركّز على التحويل (conversion) وCore Web Vitals من اليوم الأول — ليس كطبقة لاحقة. فريقنا senior-only يعمل بمنهج sprint أسبوعين مع شفافية كاملة في النطاق والتسليم. نخدم عملاء في الرياض وجدة والدمام و remotely في GCC. خدماتنا تشمل: تصميم مواقع corporate وB2B، landing pages، منصات SaaS، تدقيق SEO تقني، استرategie محتوى عربي، schema markup، ولوحات CMS لإدارة المحتوى بدون مطور. هدفنا تحويل Google إلى قناة acquisition موثوقة — leads قابلة للقياس وليس vanity traffic. تواصل معنا للحصول على عرض مخصص خلال 48 ساعة.",
+    "logoUrl": "/logo.png",
+    "faviconUrl": "/favicon.ico",
+    "contactEmail": "hello@top1markting.com",
+    "contactPhone": "0549881368",
+    "whatsappNumber": "966549881368",
+    "address": "المملكة العربية السعودية — الرياض",
+    "socialLinks": {
+      "facebook": "https://www.facebook.com/Top1Markting",
+      "instagram": "https://www.instagram.com/top1markting/"
+    },
+    "integrations": {
+      "googleAnalyticsId": "G-09WBWML921"
+    },
+    "defaultSEO": {
+      "title": "top1markting — شركة تصميم مواقع وSEO في السعودية",
+      "description": "استوديو رقمي سعودي — تصميم مواقع، تطوير ويب، UI/UX وSEO. مواقع عالية الأداء للشركات في السعودية وGCC.",
+      "ogImage": "/og.png",
+      "keywords": [
+        "تصميم مواقع",
+        "SEO السعودية",
+        "شركة برمجة",
+        "استوديو رقمي",
+        "digital agency Saudi Arabia"
+      ]
+    },
+    "robotsTxt": "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml",
+    "headerNav": [
+      {
+        "label": "الخدمات",
+        "href": "/services",
+        "order": 1
+      },
+      {
+        "label": "أعمالنا",
+        "href": "/portfolio",
+        "order": 2
+      },
+      {
+        "label": "المدونة",
+        "href": "/blog",
+        "order": 3
+      },
+      {
+        "label": "من نحن",
+        "href": "/about",
+        "order": 4
+      },
+      {
+        "label": "الأسعار",
+        "href": "/pricing",
+        "order": 5
+      }
+    ],
+    "footerNav": [
+      {
+        "label": "تواصل",
+        "href": "/contact",
+        "order": 1
+      },
+      {
+        "label": "الخصوصية",
+        "href": "/privacy",
+        "order": 2
+      },
+      {
+        "label": "الشروط",
+        "href": "/terms",
+        "order": 3
+      }
+    ]
+  },
+  "services": [
+    {
+      "id": "web-design-saudi",
+      "slug": "web-design-saudi",
+      "title": "تصميم مواقع احترافية في السعودية",
+      "tagline": "مواقع تركّز على التحويل — RTL، أداء، وSEO من اليوم الأول",
+      "shortDescription": "شركة تصميم مواقع في السعودية — مواقع corporate وB2B عالية الأداء للرياض وجدة والدمام.",
+      "description": "<p>في top1markting نصمّم مواقع احترافية للشركات السعودية التي تريد أكثر من «بطاقة تعريف online». الموقع في 2026 هو أصل sales — وليس brochure. نبدأ بفهم ICP، مسار الشراء، والكلمات commercial التي يبحث عنها جمهورك في google.sa قبل رسم أي wireframe.</p>\n<p>تصميم مواقع في السعودية يختلف عن الأسواق العالمية: RTL، خطوط عربية واضحة، سلوك mobile-first (أكثر من 90% من traffic)، وexpectations محلية للثقة (NAP، case studies، FAQ). ندمج Core Web Vitals وSEO on-page في كل sprint — ليس patch بعد الإطلاق.</p>\n<p>خدمة تصميم المواقع تشمل: discovery workshop، information architecture، UI high-fidelity، نظام design tokens، تطوير production-ready، تكامل CMS، schema markup، وAnalytics/GTM. كل صفحة service أو landing مربوطة بـ internal linking strategy.</p>\n<p>نخدم startups في مرحلة launch، SMEs تعيد بناء موقع قديم، وenterprises تحتاج landing pages متعددة للحملات. إذا كان هدفك ranking لـ «تصميم مواقع الرياض» أو «شركة تصميم مواقع السعودية» — المحتوى والبنية جزء من deliverables.</p>\n<p>لا نستخدم قوالب جاهزة generic. كل مشروع custom — code ownership كامل. بعد الإطلاق: فترة ضمان تقني + خيار retainer للCRO وSEO.</p>\n<p>مخرجات typical: 5–20 صفحة، blog-ready، forms متصلة CRM/WhatsApp، سرعة Lighthouse 95+، meta + OG لكل صفحة، sitemap dynamic.</p>\n<p>عملية التسليم: sprint أسبوعين — demo أسبوعي — no black box. شفافية في backlog وscope.</p>\n<p>Case studies: <a href=\"/portfolio/riyadh-b2b-website-redesign\">إعادة بناء موقع B2B</a> — +38% leads. <a href=\"/portfolio/jeddah-ecommerce-launch\">متجر Jeddah</a> — +2.1x conversion.</p>\n<p>Related: <a href=\"/services/web-apps\">تطوير تطبيقات ويب</a> · <a href=\"/services/seo-saudi\">SEO السعودية</a> · <a href=\"/blog/website-cost-saudi-arabia-2026\">تكلفة تصميم موقع</a> · <a href=\"/contact\">اطلب عرض</a></p>",
+      "icon": "Globe",
+      "features": [
+        "تصميم RTL عربي + EN optional",
+        "Mobile-first responsive",
+        "CMS integration",
+        "Schema + meta SEO",
+        "Core Web Vitals optimization",
+        "Analytics + conversion tracking"
+      ],
+      "benefits": [
+        "زيادة leads organics وpaid quality",
+        "تقليل bounce rate mobile",
+        "بنية قابلة للتوسع",
+        "ملكية كاملة للكود",
+        "تسليم sprint-based شفاف"
+      ],
+      "deliverables": [
+        "Wireframes + UI system",
+        "Production code",
+        "CMS training",
+        "Launch checklist",
+        "30-day post-launch support"
+      ],
+      "processSteps": [
+        {
+          "title": "اكتشاف",
+          "description": "ICP، competitors، keyword map، success metrics."
+        },
+        {
+          "title": "تصميم",
+          "description": "IA، UI، prototypes، approval cycles."
+        },
+        {
+          "title": "بناء",
+          "description": "React/Next، performance budget، QA."
+        },
+        {
+          "title": "إطلاق",
+          "description": "DNS، Search Console، monitoring."
+        },
+        {
+          "title": "نمو",
+          "description": "CRO، SEO retainer optional."
+        }
+      ],
+      "process": [
+        {
+          "title": "اكتشاف",
+          "description": "ICP، competitors، keyword map."
+        },
+        {
+          "title": "تصميم",
+          "description": "IA، UI، prototypes."
+        },
+        {
+          "title": "بناء",
+          "description": "Performance-first development."
+        },
+        {
+          "title": "إطلاق",
+          "description": "SEO setup + analytics."
+        }
+      ],
+      "faq": [
+        {
+          "question": "كم تكلفة تصميم موقع في السعودية؟",
+          "answer": "تبدأ المواقع التسويقية من ~18,000 ريال حسب الصفحات والتعقيد. enterprise custom higher. عرض خلال 48 ساعة."
+        },
+        {
+          "question": "كم مدة تصميم موقع شركة؟",
+          "answer": "2–4 أسابيع marketing sites. 6–10 للمشاريع الأكبر."
+        },
+        {
+          "question": "هل تشمل SEO؟",
+          "answer": "SEO أساسي included — technical + on-page. retainers advanced optional."
+        },
+        {
+          "question": "هل تدعمون RTL؟",
+          "answer": "نعم — Tajawal وpatterns عربية من day one."
+        },
+        {
+          "question": "من يملك الكود؟",
+          "answer": "أنت — repository + documentation + handover."
+        }
+      ],
+      "seo": {
+        "title": "تصميم مواقع احترافية في السعودية — top1markting",
+        "description": "شركة تصميم مواقع في السعودية — مواقع عالية الأداء، RTL، SEO وتحويل. الرياض، جدة، الدمام.",
+        "keywords": [
+          "تصميم مواقع",
+          "تصميم مواقع السعودية",
+          "شركة تصميم مواقع",
+          "استوديو رقمي"
+        ]
+      },
+      "metaTitle": "تصميم مواقع احترافية في السعودية — top1markting",
+      "metaDescription": "شركة تصميم مواقع في السعودية — مواقع عالية الأداء، RTL، SEO وتحويل للشركات الناشئة والمؤسسات.",
+      "metaKeywords": [
+        "تصميم مواقع",
+        "تصميم مواقع السعودية",
+        "شركة تصميم مواقع"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1547658719-da2b511691dd?auto=format&fit=crop&w=1200&q=80",
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "web-apps",
+      "slug": "web-apps",
+      "title": "تطوير تطبيقات ويب",
+      "tagline": "React · Next.js · Firebase — production-ready",
+      "shortDescription": "شركة برمجة وتطوير مواقع وتطبيقات ويب قابلة للتscale في السعودية وGCC.",
+      "description": "<p>نبني تطبيقات وeb production-ready للشركات التي تجاوزت limits المواقع التسويقية: dashboards، client portals، booking، internal tools، SaaS MVPs. stack: React، Next.js، TypeScript، Tailwind، Firebase.</p>\n<p>تطوير مواقع ويب في السعودية يتطلب balance بين speed-to-market وجودة long-term. نستخدم sprint أسبوعين مع shippable increments — ليس big-bang delivery.</p>\n<p>Security: Firebase rules، auth roles، HTTPS، input validation. Compliance discussed in discovery للقطاعات regulated.</p>\n<p>كل sprint ينتهي demo قابل للاستخدام. CI/CD، error monitoring، performance budgets enforced.</p>\n<p>Related: <a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/portfolio/saas-dashboard-riyadh\">case study SaaS</a> · <a href=\"/blog/web-performance-optimization\">Performance guide</a> · <a href=\"/contact\">ابدأ MVP</a></p>",
+      "icon": "Code2",
+      "features": [
+        "React/Next.js",
+        "TypeScript",
+        "Firebase",
+        "API integrations",
+        "CI/CD",
+        "Role-based auth"
+      ],
+      "benefits": [
+        "MVP fast",
+        "Scalable architecture",
+        "Maintainable code",
+        "Senior engineers only",
+        "Transparent sprints"
+      ],
+      "deliverables": [
+        "Architecture doc",
+        "Source repo",
+        "Admin panel",
+        "Tests critical paths",
+        "Deployment guide"
+      ],
+      "processSteps": [
+        {
+          "title": "تخطيط",
+          "description": "Scope، data model، milestones."
+        },
+        {
+          "title": "MVP",
+          "description": "Smallest shippable product."
+        },
+        {
+          "title": "Iterate",
+          "description": "Feedback loops weekly."
+        },
+        {
+          "title": "Scale",
+          "description": "Performance + features."
+        },
+        {
+          "title": "Support",
+          "description": "SLA optional."
+        }
+      ],
+      "process": [
+        {
+          "title": "تخطيط",
+          "description": "Architecture + scope."
+        },
+        {
+          "title": "MVP",
+          "description": "Core features first."
+        },
+        {
+          "title": "Iterate",
+          "description": "Weekly demos."
+        },
+        {
+          "title": "Scale",
+          "description": "Optimize + extend."
+        }
+      ],
+      "faq": [
+        {
+          "question": "هل أنتم شركة برمجة في السaudi؟",
+          "answer": "نعم — استوديو سعودي بفريق senior distributed."
+        },
+        {
+          "question": "MVP timeline?",
+          "answer": "6–10 weeks typical للـ MVP medium complexity."
+        },
+        {
+          "question": "Tech stack?",
+          "answer": "React، Next.js، TypeScript، Firebase primary."
+        },
+        {
+          "question": "Maintenance?",
+          "answer": "Retainer monthly optional with SLA."
+        },
+        {
+          "question": "Who owns IP?",
+          "answer": "Client after full payment."
+        }
+      ],
+      "seo": {
+        "title": "تطوير تطبيقات ويب — شركة برمجة السعودية | top1markting",
+        "description": "تطوير مواقع وتطبيقات ويب — React، Next.js، Firebase. شركة برمجة في السعودية.",
+        "keywords": [
+          "تطوير مواقع",
+          "شركة برمجة",
+          "تطبيقات ويب",
+          "React Saudi"
+        ]
+      },
+      "metaTitle": "تطوير تطبيقات ويب — شركة برمجة السعودية | top1markting",
+      "metaDescription": "تطوير موsites وتطبيقات وeb production-ready في السعودية — React، Next.js، Firebase.",
+      "imageUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "seo-saudi",
+      "slug": "seo-saudi",
+      "title": "تحسين محركات البحث SEO",
+      "tagline": "SEO السعودية — technical + content + قياس leads",
+      "shortDescription": "شركة SEO في السعودية — تدقيق تقني، محتوى عربي، schema، Core Web Vitals.",
+      "description": "<p>SEO في google.sa ليس backlinks spam — هو product: technical excellence، content intent-match، E-E-A-T، وinternal linking. top1markting يقدّم SEO مُهندَس للB2B وSaaS وservices local.</p>\n<p>تدقيق شامل: crawl، index، CWV، mobile، schema، cannibalization، competitor gap. خطة 90 يوم realistic — لا وعود page 1 in 30 days.</p>\n<p>On-page: titles، metas، H-structure، Arabic keyword clusters. Off-page guidance — execution حسب retainer.</p>\n<p>Content: مقالات Arabic SEO-friendly أو review لفريقك. Clusters حول commercial + informational intent.</p>\n<p>Reporting: leads، rankings tracked keywords، GSC — ليس sessions فقط.</p>\n<p>Related: <a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/blog/seo-saudi-2026\">SEO 2026</a> · <a href=\"/blog/google-ranking-guide-saudi\">تحسين الترتيب</a> · <a href=\"/contact\">تدقيق مجاني</a></p>",
+      "icon": "Search",
+      "features": [
+        "Technical audit",
+        "Keyword research AR",
+        "On-page SEO",
+        "Schema markup",
+        "Content strategy",
+        "Monthly reports"
+      ],
+      "benefits": [
+        "Organic leads growth",
+        "Lower CAC long-term",
+        "Measurable KPIs",
+        "Dev+SEO one roadmap",
+        "Arabic content expertise"
+      ],
+      "deliverables": [
+        "Audit report",
+        "90-day roadmap",
+        "Implementation sprints",
+        "Content calendar",
+        "GSC setup"
+      ],
+      "processSteps": [
+        {
+          "title": "Audit",
+          "description": "Technical + content baseline."
+        },
+        {
+          "title": "Strategy",
+          "description": "Keyword clusters + priorities."
+        },
+        {
+          "title": "Fix",
+          "description": "On-page + technical."
+        },
+        {
+          "title": "Content",
+          "description": "Publish + interlink."
+        },
+        {
+          "title": "Measure",
+          "description": "Monthly review."
+        }
+      ],
+      "process": [
+        {
+          "title": "تدقيق",
+          "description": "Full site audit."
+        },
+        {
+          "title": "استراتيجية",
+          "description": "Keyword map."
+        },
+        {
+          "title": "تنفيذ",
+          "description": "Fixes + content."
+        },
+        {
+          "title": "قياس",
+          "description": "Reports + iteration."
+        }
+      ],
+      "faq": [
+        {
+          "question": "متى نتائج SEO؟",
+          "answer": "Quick wins 2–4 weeks. Competitive 3–6 months."
+        },
+        {
+          "question": "هل تضمنون الصفحة الأولى؟",
+          "answer": "لا — نضمن عمل شفاف وKPIs متفق عليها."
+        },
+        {
+          "question": "محتوى عربي؟",
+          "answer": "نعم — write or review."
+        },
+        {
+          "question": "Local SEO؟",
+          "answer": "نعم — SA + GCC focus."
+        },
+        {
+          "question": "SEO vs Ads?",
+          "answer": "Both — strategy depends on stage."
+        }
+      ],
+      "seo": {
+        "title": "شركة SEO في السعودية — top1markting",
+        "description": "SEO السعودية — تدقيق تقني، محتوى، schema. شركة SEO professional في الرياض وجدة.",
+        "keywords": [
+          "SEO السعودية",
+          "شركة SEO",
+          "تحسين محركات البحث",
+          "SEO الرياض"
+        ]
+      },
+      "metaTitle": "شركة SEO في السعودية — top1markting",
+      "metaDescription": "SEO السعودية — technical SEO، content strategy، Core Web Vitals. شركة SEO في السعودية.",
+      "imageUrl": "https://images.unsplash.com/photo-1432888622747-4ebee778346a?auto=format&fit=crop&w=1200&q=80",
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "ui-ux",
+      "slug": "ui-ux",
+      "title": "UI/UX تصميم واجهات",
+      "tagline": "Research-driven · WCAG · design systems",
+      "shortDescription": "UI/UX design agency — واجهات عربية premium للمنتجات الرقمية في السعودية.",
+      "description": "<p>UI/UX ليس «جماليات» — قرارات conversion وretention. نبدأ research: interviews، JTBD، competitor UX audit. Outputs: flows، wireframes، prototypes، design system.</p>\n<p>Arabic UX: line-height، typography scale، RTL mirroring، form patterns محلية. WCAG basics included.</p>\n<p>Handoff: Figma → dev-ready specs. Usability testing optional with real users.</p>\n<p>Related: <a href=\"/services/web-design-saudi\">Web design</a> · <a href=\"/blog/ui-ux-best-practices-2026\">UI/UX guide</a> · <a href=\"/portfolio/fintech-onboarding-ux\">Fintech UX case</a> · <a href=\"/contact\">UX audit</a></p>",
+      "icon": "Palette",
+      "features": [
+        "User research",
+        "Wireframes",
+        "High-fidelity UI",
+        "Design system",
+        "Prototypes",
+        "Usability testing"
+      ],
+      "benefits": [
+        "Higher conversion",
+        "Lower support tickets",
+        "Faster dev handoff",
+        "Consistent brand",
+        "Accessible UI"
+      ],
+      "deliverables": [
+        "Research summary",
+        "Figma library",
+        "Component specs",
+        "UX report",
+        "Dev handoff checklist"
+      ],
+      "processSteps": [
+        {
+          "title": "Research",
+          "description": "Users + jobs."
+        },
+        {
+          "title": "Design",
+          "description": "Flows + UI."
+        },
+        {
+          "title": "Validate",
+          "description": "Testing."
+        },
+        {
+          "title": "Handoff",
+          "description": "Specs to dev."
+        },
+        {
+          "title": "Iterate",
+          "description": "Post-launch UX."
+        }
+      ],
+      "process": [
+        {
+          "title": "بحث",
+          "description": "User insights."
+        },
+        {
+          "title": "تصميم",
+          "description": "UI + system."
+        },
+        {
+          "title": "تحقق",
+          "description": "Usability tests."
+        },
+        {
+          "title": "تسليم",
+          "description": "Dev-ready."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Design only?",
+          "answer": "Yes — or design + build with our dev team."
+        },
+        {
+          "question": "RTL support?",
+          "answer": "Native — Arabic patterns from start."
+        },
+        {
+          "question": "Timeline?",
+          "answer": "2–4 weeks medium product surface."
+        },
+        {
+          "question": "Existing Figma?",
+          "answer": "Audit + extend available."
+        },
+        {
+          "question": "WCAG?",
+          "answer": "Basics included — full audit optional."
+        }
+      ],
+      "seo": {
+        "title": "UI/UX design agency Saudi Arabia — top1markting",
+        "description": "تصميم واجهات وتجربة مستخدم — UI/UX agency للمنتجات الرقمية في السعودية.",
+        "keywords": [
+          "UI/UX",
+          "تصميم واجهات",
+          "UX السعودية",
+          "design agency"
+        ]
+      },
+      "metaTitle": "UI/UX design agency — تصميم واجهات السعودية | top1markting",
+      "metaDescription": "UI/UX design agency — research، design systems، RTL Arabic UX في السعودية.",
+      "imageUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+      "order": 4,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "digital-solutions",
+      "slug": "digital-solutions",
+      "title": "حلول رقمية متكاملة",
+      "tagline": "Automation · integrations · custom platforms",
+      "shortDescription": "حلول رقمية متكاملة — أتمتة، CRM، dashboards للمؤسسات في السعودية.",
+      "description": "<p>منصات مخصصة، أتمتة sales/ops، تكاملات API — عندما off-the-shelf SaaS لا يكفي. نرسم workflow، نزيل manual friction، نربط systems.</p>\n<p>Use cases: client portals، internal ops tools، WhatsApp lead routing، CRM sync، reporting dashboards.</p>\n<p>Build vs buy advisory included — ننصح buy when suitable.</p>\n<p>Related: <a href=\"/services/web-apps\">Web apps</a> · <a href=\"/portfolio/automation-crm-riyadh\">CRM automation</a> · <a href=\"/blog/digital-agency-growth-strategies\">Growth strategies</a> · <a href=\"/contact\">Discovery call</a></p>",
+      "icon": "Layers",
+      "features": [
+        "Custom platforms",
+        "API integrations",
+        "Workflow automation",
+        "CRM/ERP connect",
+        "Dashboards",
+        "WhatsApp API"
+      ],
+      "benefits": [
+        "Ops efficiency",
+        "Data single source",
+        "Reduced manual work",
+        "Scalable workflows",
+        "Measurable ROI"
+      ],
+      "deliverables": [
+        "Solution architecture",
+        "Phased releases",
+        "Integration docs",
+        "Admin training",
+        "Support SLA option"
+      ],
+      "processSteps": [
+        {
+          "title": "Discovery",
+          "description": "Workflow mapping."
+        },
+        {
+          "title": "Architecture",
+          "description": "Solution design."
+        },
+        {
+          "title": "Build",
+          "description": "Phased delivery."
+        },
+        {
+          "title": "Integrate",
+          "description": "APIs + testing."
+        },
+        {
+          "title": "Support",
+          "description": "Maintain + improve."
+        }
+      ],
+      "process": [
+        {
+          "title": "اكتشاف",
+          "description": "Pain points map."
+        },
+        {
+          "title": "تصميم",
+          "description": "Solution blueprint."
+        },
+        {
+          "title": "بناء",
+          "description": "Sprint delivery."
+        },
+        {
+          "title": "دعم",
+          "description": "Ongoing ops."
+        }
+      ],
+      "faq": [
+        {
+          "question": "Saudi systems integration?",
+          "answer": "Yes where APIs exist — discussed in discovery."
+        },
+        {
+          "question": "Pricing model?",
+          "answer": "Fixed scope or retainer — after discovery."
+        },
+        {
+          "question": "Timeline?",
+          "answer": "Depends scope — MVP 8–16 weeks typical."
+        },
+        {
+          "question": "On-premise?",
+          "answer": "Cloud-first — Firebase/Vercel default."
+        },
+        {
+          "question": "Support?",
+          "answer": "SLA retainers available."
+        }
+      ],
+      "seo": {
+        "title": "حلول رقمية متكاملة — استوديو رقمي السعودية | top1markting",
+        "description": "حلول رقمية — أتمتة، تكاملات، منصات custom للشركات في السعودية.",
+        "keywords": [
+          "حلول رقمية",
+          "أتمتة",
+          "استوديو رقمي",
+          "digital agency Saudi Arabia"
+        ]
+      },
+      "metaTitle": "حلول رقمية متكاملة — top1markting",
+      "metaDescription": "حلول رقمية متكاملة — أتمتة وتكاملات ومنصات custom في السعودية.",
+      "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+      "order": 5,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    }
+  ],
+  "portfolio": [
+    {
+      "id": "riyadh-b2b-website-redesign",
+      "slug": "riyadh-b2b-website-redesign",
+      "title": "إعادة بناء موقع B2B — الرياض",
+      "category": "تصميم مواقع",
+      "industry": "B2B SaaS",
+      "client": "شركة SaaS — الرياض",
+      "problem": "موقع WordPress بطيء (LCP 4.8s)، bounce 68% mobile، leads من organic منخفضة.",
+      "solution": "Next.js rebuild، IA جديد، 12 landing SEO، schema FAQ+Service، CWV fixes، CMS headless.",
+      "results": [
+        "+38% demo requests in 60 days",
+        "+52% organic traffic in 5 months",
+        "LCP 1.9s",
+        "22 keywords top 10"
+      ],
+      "stack": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind",
+        "Firebase",
+        "GTM"
+      ],
+      "description": "<p>Case study: B2B SaaS الرياض. Problem → slow WP site. Solution → performance rebuild + SEO architecture. Results: +38% leads، LCP under 2s.</p><p><a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/contact\">مشروع مشابه</a></p>",
+      "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "B2B",
+        "SEO",
+        "Next.js",
+        "الرياض"
+      ],
+      "order": 1,
+      "status": "published",
+      "metaTitle": "Case study: B2B website redesign Riyadh — top1markting",
+      "metaDescription": "إعادة بناء موقع B2B — +38% leads، SEO improvement الرياض.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "jeddah-ecommerce-launch",
+      "slug": "jeddah-ecommerce-launch",
+      "title": "إطلاق متجر إلكتروني — جدة",
+      "category": "E-commerce",
+      "industry": "ecommerce",
+      "client": "Retail brand — Jeddah",
+      "problem": "No online channel، low trust، checkout abandonment high on competitor templates.",
+      "solution": "Custom storefront، Arabic RTL UX، payment integration، speed optimization، retargeting pixels.",
+      "results": [
+        "+2.1x conversion vs old template",
+        "+35% AOV",
+        "Lighthouse 96",
+        "Page 1 for 8 product keywords"
+      ],
+      "stack": [
+        "React",
+        "Firebase",
+        "Stripe",
+        "Tailwind"
+      ],
+      "description": "<p>E-commerce launch Jeddah — conversion-focused UX + performance.</p>",
+      "imageUrl": "https://images.unsplash.com/photo-1472851293808-489c7c947581?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "ecommerce",
+        "جدة",
+        "conversion"
+      ],
+      "order": 2,
+      "status": "published",
+      "metaTitle": "E-commerce launch Jeddah case study — top1markting",
+      "metaDescription": "متجر إلكتروني جدة — +2.1x conversion case study.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "saas-dashboard-riyadh",
+      "slug": "saas-dashboard-riyadh",
+      "title": "لوحة تحكم SaaS — الرياض",
+      "category": "تطبيق ويب",
+      "industry": "SaaS",
+      "client": "SaaS startup — Riyadh",
+      "problem": "Spreadsheet ops، no client portal، churn from poor UX.",
+      "solution": "Multi-tenant dashboard، role auth، billing view، React + Firebase.",
+      "results": [
+        "-55% ops time",
+        "NPS +18 points",
+        "MVP in 9 weeks",
+        "99.9% uptime"
+      ],
+      "stack": [
+        "React",
+        "TypeScript",
+        "Firebase",
+        "Recharts"
+      ],
+      "description": "<p>SaaS dashboard MVP — ops automation + client portal.</p>",
+      "imageUrl": "https://images.unsplash.com/photo-1559526324-4b87b5e93e44?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "SaaS",
+        "dashboard",
+        "React"
+      ],
+      "order": 3,
+      "status": "published",
+      "metaTitle": "SaaS dashboard Riyadh — top1markting portfolio",
+      "metaDescription": "Case study SaaS dashboard — MVP 9 weeks.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "fintech-onboarding-ux",
+      "slug": "fintech-onboarding-ux",
+      "title": "UX onboarding — Fintech GCC",
+      "category": "UI/UX",
+      "industry": "startup",
+      "client": "Fintech — GCC",
+      "problem": "7-step signup، 41% drop-off، compliance friction.",
+      "solution": "Reduced to 4 steps، progressive disclosure، RTL UX audit، usability tests n=12.",
+      "results": [
+        "+52% completion rate",
+        "-30% support tickets",
+        "Time-to-first-value -40%"
+      ],
+      "stack": [
+        "Figma",
+        "Design system",
+        "React implementation"
+      ],
+      "description": "<p>Fintech onboarding UX redesign — compliance + conversion balance.</p>",
+      "imageUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "UI/UX",
+        "fintech",
+        "onboarding"
+      ],
+      "order": 4,
+      "status": "published",
+      "metaTitle": "Fintech UX onboarding case study — top1markting",
+      "metaDescription": "UX onboarding fintech — +52% completion.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "automation-crm-riyadh",
+      "slug": "automation-crm-riyadh",
+      "title": "أتمتة CRM + WhatsApp — الرياض",
+      "category": "حلول رقمية",
+      "industry": "services B2B",
+      "client": "Services company — Riyadh",
+      "problem": "Leads lost in WhatsApp + Excel، slow follow-up.",
+      "solution": "Website → CRM → WhatsApp automation، lead scoring، dashboard.",
+      "results": [
+        "-70% response time",
+        "+22% close rate",
+        "+35% qualified leads"
+      ],
+      "stack": [
+        "Firebase Functions",
+        "WhatsApp API",
+        "React admin"
+      ],
+      "description": "<p>CRM + WhatsApp automation for B2B services Riyadh.</p>",
+      "imageUrl": "https://images.unsplash.com/photo-1556745750-76c05c6fe164?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "automation",
+        "CRM",
+        "WhatsApp"
+      ],
+      "order": 5,
+      "status": "published",
+      "metaTitle": "CRM automation Riyadh — top1markting",
+      "metaDescription": "أتمتة CRM WhatsApp — +22% close rate.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "seo-saas-growth",
+      "slug": "seo-saas-growth",
+      "title": "SEO growth — SaaS Saudi",
+      "category": "SEO",
+      "industry": "SaaS",
+      "client": "B2B SaaS — Saudi",
+      "problem": "Zero organic demos، thin content، technical errors in GSC.",
+      "solution": "Technical fixes، 15 landing pages، 8 blog posts AR، internal linking， schema.",
+      "results": [
+        "+140% organic traffic 6mo",
+        "22 top-10 keywords",
+        "-45% CPL organic"
+      ],
+      "stack": [
+        "SEO",
+        "Next.js content",
+        "Schema",
+        "GSC"
+      ],
+      "description": "<p>SaaS SEO program Saudi — organic demo growth.</p>",
+      "imageUrl": "https://images.unsplash.com/photo-1432888622747-4ebee778346a?auto=format&fit=crop&w=1200&q=80",
+      "tags": [
+        "SEO",
+        "SaaS",
+        "content"
+      ],
+      "order": 6,
+      "status": "published",
+      "metaTitle": "SaaS SEO growth Saudi Arabia — top1markting",
+      "metaDescription": "SEO SaaS — +140% organic traffic case study.",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    }
+  ],
+  "blog_posts": [
+    {
+      "id": "web-design-saudi-guide",
+      "slug": "web-design-saudi-guide",
+      "title": "تصميم مواقع في السعودية — الدليل الشامل 2026",
+      "excerpt": "كيف تختار شركة تصميم موsites في السaudi — معايير، تكلفة، SEO، وأداء.",
+      "content": "<h2>لماذا تصميم المواقع مختلف في السعودية؟</h2>\n<p>السوق السaudi mobile-first. google.sa ي rewards experience + relevance. RTL ليس optional.</p>\n<h2>معايير اختيار شركة تصميم</h2>\n<ul><li>Portfolio بـ case studies موثقة</li><li>Lighthouse scores حقيقية</li><li>SEO included not addon</li><li>Code ownership</li><li>Saudi/GCC clients</li></ul>\n<h2>Internal links</h2>\n<p>Services: <a href=\"/services/web-design-saudi\">تصميم مواقع</a>. Portfolio: <a href=\"/portfolio\">أعمالنا</a>. Contact: <a href=\"/contact\">عرض سعر</a>.</p>\n<h3>تفصيل 1</h3>\n<p>عند تقييم عروض الأسعار، قارن scope وليس السعر فقط: عدد revisions، ownership، SEO included، training CMS، وpost-launch support.</p>\n<h3>تفصيل 2</h3>\n<p>في Riyadh وJeddah، competition على كلمات «تصميم مواقع» عالية — differentiation يأتي من case studies وspeed وcontent depth.</p>\n<h3>تفصيل 3</h3>\n<p>اختر شريك يفهم WhatsApp كقناة conversion في السعودية دون إفساد UX أو Core Web Vitals.</p>\n<h3>تفصيل 4</h3>\n<p>اطلب Lighthouse report على staging قبل الدفع النهائي — ليس screenshot marketing.</p>\n<h3>تفصيل 5</h3>\n<p>Internal linking بين services وblog وportfolio يقوّي topical authority — part of our delivery.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "تصميم مواقع في السعودية — الدليل الشامل 2026",
+      "category": "Web Development",
+      "tags": [
+        "تصميم مواقع",
+        "السعودية",
+        "2026"
+      ],
+      "author": "عمر حديد",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "تصميم مواقع في السعودية 2026 — top1markting",
+      "metaDescription": "دليل تصميم المواقع في السaudi — معايير الاختيار، SEO، Core Web Vitals.",
+      "metaKeywords": [
+        "تصميم مواقع",
+        "تصميم مواقع في السعودية"
+      ],
+      "seo": {
+        "title": "تصميم مواقع في السعودية 2026 — top1markting",
+        "description": "دليل تصميم المواقع في السaudi — معايير الاختيار، SEO، Core Web Vitals.",
+        "keywords": [
+          "تصميم مواقع",
+          "تصميم مواقع في السعودية"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "seo-saudi-2026",
+      "slug": "seo-saudi-2026",
+      "title": "SEO السعودية 2026 — استراتيجية عملية",
+      "excerpt": "ما الذي تغيّر في google.sa وكيف تبني SEO sustainable.",
+      "content": "<h2>SEO السaudi 2026 landscape</h2>\n<p>E-E-A-T، CWV، helpful content — no shortcuts.</p>\n<h3>Technical priorities</h3>\n<ul><li>Index coverage</li><li>CWV</li><li>Schema</li><li>Internal links</li></ul>\n<p><a href=\"/services/seo-saudi\">SEO services</a> · <a href=\"/blog/google-ranking-guide-saudi\">تحسين الترتيب</a></p>\n<h3>تفصيل 1</h3>\n<p>Google helpful content update يعاقب thin pages — كل URL يجب أن يجيب intent واضح.</p>\n<h3>تفصيل 2</h3>\n<p>Local signals: Google Business Profile، citations متسقة، وreviews authentic.</p>\n<h3>تفصيل 3</h3>\n<p>Arabic content quality أهم من volume — paragraph واحد مفيد beats عشرة generic.</p>\n<h3>تفصيل 4</h3>\n<p>Monitor GSC weekly: coverage errors، CWV، queries rising/falling.</p>\n<h3>تفصيل 5</h3>\n<p>Link building في B2B Saudi: partnerships، guest posts niche، digital PR — not PBNs.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "SEO السعودية 2026 — استراتيجية عملية",
+      "category": "SEO",
+      "tags": [
+        "SEO السعودية",
+        "2026",
+        "google.sa"
+      ],
+      "author": "هناء صالح",
+      "readTime": 6,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "SEO السعودية 2026 — top1markting",
+      "metaDescription": "SEO السaudi 2026 — technical، content، local signals.",
+      "metaKeywords": [
+        "SEO السعودية",
+        "شركة SEO"
+      ],
+      "seo": {
+        "title": "SEO السعودية 2026 — top1markting",
+        "description": "SEO السaudi 2026 — technical، content، local signals.",
+        "keywords": [
+          "SEO السعودية",
+          "شركة SEO"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "google-ranking-guide-saudi",
+      "slug": "google-ranking-guide-saudi",
+      "title": "كيف تحسن ترتيب موقعك في Google — السعودية",
+      "excerpt": "خطوات on-page، technical، content، local SEO.",
+      "content": "<h2>خطوات عملية</h2>\n<p>GSC → audit → fix → content → measure.</p>\n<p><a href=\"/services/seo-saudi\">شركة SEO</a> · <a href=\"/contact\">تدقيق</a></p>\n<h3>تفصيل 1</h3>\n<p>Title tags فريدة لكل صفحة — include primary keyword + brand naturally.</p>\n<h3>تفصيل 2</h3>\n<p>Fix orphan pages via internal links from hub pages like /services و/blog.</p>\n<h3>تفصيل 3</h3>\n<p>Update old posts quarterly — freshness signal for competitive queries.</p>\n<h3>تفصيل 4</h3>\n<p>Use FAQ schema where answers are concise and accurate.</p>\n<h3>تفصيل 5</h3>\n<p>Measure conversions from organic — not rankings alone.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "كيف تحسن ترتيب موقعك في Google — السعودية",
+      "category": "SEO",
+      "tags": [
+        "Google",
+        "ترتيب",
+        "SEO"
+      ],
+      "author": "هناء صالح",
+      "readTime": 6,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "كيف تحسن ترتيب موقعك في Google السعودية",
+      "metaDescription": "دليل تحسين ترتيب موقعك في google.sa.",
+      "metaKeywords": [
+        "ترتيب Google",
+        "SEO"
+      ],
+      "seo": {
+        "title": "كيف تحسن ترتيب موقعك في Google السعودية",
+        "description": "دليل تحسين ترتيب موقعك في google.sa.",
+        "keywords": [
+          "ترتيب Google",
+          "SEO"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "website-cost-saudi-arabia-2026",
+      "slug": "website-cost-saudi-arabia-2026",
+      "title": "تكلفة تصميم موقع في السعودية 2026",
+      "excerpt": "Ranges واقعية بالريال — factors affecting price.",
+      "content": "<h2>Ranges بالريال</h2>\n<ul><li>5–8 pages: ~18k–45k SAR</li><li>10–20 pages: 45k–120k SAR</li><li>Platform: 120k+ SAR</li></ul>\n<p><a href=\"/pricing\">الأسعار</a> · <a href=\"/contact\">عرض مخصص</a></p>\n<h3>تفصيل 1</h3>\n<p>Hidden costs: hosting premium، SSL، email، maintenance، content writing، photography.</p>\n<h3>تفصيل 2</h3>\n<p>Cheap templates often cost more long-term via SEO debt and rework.</p>\n<h3>تفصيل 3</h3>\n<p>Enterprise RFPs should define acceptance criteria: performance، accessibility، security.</p>\n<h3>تفصيل 4</h3>\n<p>Payment milestones reduce risk for both parties.</p>\n<h3>تفصيل 5</h3>\n<p>Compare TCO 24 months not just launch price.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "تكلفة تصميم موقع في السعودية 2026",
+      "category": "Web Development",
+      "tags": [
+        "تكلفة",
+        "تصميم مواقع"
+      ],
+      "author": "هناء صالح",
+      "readTime": 6,
+      "views": 0,
+      "trending": true,
+      "status": "published",
+      "metaTitle": "تكلفة تصميم موقع في السعودية 2026",
+      "metaDescription": "أسعار تصميم المواقع في السaudi — guide 2026.",
+      "metaKeywords": [
+        "تكلفة تصميم موقع",
+        "أسعار مواقع"
+      ],
+      "seo": {
+        "title": "تكلفة تصميم موقع في السعودية 2026",
+        "description": "أسعار تصميم المواقع في السaudi — guide 2026.",
+        "keywords": [
+          "تكلفة تصميم موقع",
+          "أسعار مواقع"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "web-performance-optimization",
+      "slug": "web-performance-optimization",
+      "title": "Web Performance Optimization — دليل عملي",
+      "excerpt": "LCP، INP، CLS — fixes that matter for SEO and conversion.",
+      "content": "<h2>Performance = SEO + conversion</h2>\n<p>Images، JS budget، CDN، fonts subset.</p>\n<p><a href=\"/blog/lighthouse-100-guide\">Lighthouse 100</a></p>\n<h3>تفصيل 1</h3>\n<p>Image formats: WebP/AVIF with responsive srcset — largest LCP win usually.</p>\n<h3>تفصيل 2</h3>\n<p>Defer non-critical JS — audit third-party tags quarterly.</p>\n<h3>تفصيل 3</h3>\n<p>Font subset Arabic glyphs only — reduces weight dramatically.</p>\n<h3>تفصيل 4</h3>\n<p>CDN edge caching for static assets in GCC region.</p>\n<h3>تفصيل 5</h3>\n<p>Real User Monitoring complements lab Lighthouse scores.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Web Performance Optimization — دليل عملي",
+      "category": "Performance",
+      "tags": [
+        "performance",
+        "CWV",
+        "Lighthouse"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Web performance optimization — top1markting",
+      "metaDescription": "Performance optimization guide — Core Web Vitals.",
+      "metaKeywords": [
+        "web performance",
+        "Core Web Vitals"
+      ],
+      "seo": {
+        "title": "Web performance optimization — top1markting",
+        "description": "Performance optimization guide — Core Web Vitals.",
+        "keywords": [
+          "web performance",
+          "Core Web Vitals"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "lighthouse-100-guide",
+      "slug": "lighthouse-100-guide",
+      "title": "Lighthouse 100 Guide — كيف تصل لأداء ممتاز",
+      "excerpt": "Performance budget، CI، monitoring.",
+      "content": "<h2>Performance budget</h2>\n<p>LCP <2.5s، CLS <0.1، INP <200ms.</p>\n<p><a href=\"/services/web-design-saudi\">تصميم مواقع</a></p>\n<h3>تفصيل 1</h3>\n<p>Run Lighthouse on throttled mobile — matches CrUX field data better.</p>\n<h3>تفصيل 2</h3>\n<p>CI gate: fail build if performance regresses below budget.</p>\n<h3>تفصيل 3</h3>\n<p>Preload LCP image — fetchpriority high on hero.</p>\n<h3>تفصيل 4</h3>\n<p>Avoid layout shift: reserve space for ads/embeds if any.</p>\n<h3>تفصيل 5</h3>\n<p>Document performance budget in README for future devs.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Lighthouse 100 Guide — كيف تصل لأداء ممتاز",
+      "category": "Performance",
+      "tags": [
+        "Lighthouse",
+        "performance"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Lighthouse 100 guide — top1markting",
+      "metaDescription": "دليل Lighthouse 100 — performance optimization.",
+      "metaKeywords": [
+        "Lighthouse",
+        "أداء مواقع"
+      ],
+      "seo": {
+        "title": "Lighthouse 100 guide — top1markting",
+        "description": "دليل Lighthouse 100 — performance optimization.",
+        "keywords": [
+          "Lighthouse",
+          "أداء مواقع"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "ui-ux-best-practices-2026",
+      "slug": "ui-ux-best-practices-2026",
+      "title": "UI/UX Best Practices 2026 — للمنتجات العربية",
+      "excerpt": "RTL، typography، forms، trust patterns.",
+      "content": "<h2>Arabic UX patterns</h2>\n<p>Line-height، CTA clarity، error states.</p>\n<p><a href=\"/services/ui-ux\">UI/UX services</a></p>\n<h3>تفصيل 1</h3>\n<p>Touch targets minimum 44px — critical for Arabic users on mobile.</p>\n<h3>تفصيل 2</h3>\n<p>Error messages in Arabic plain language — not error codes alone.</p>\n<h3>تفصيل 3</h3>\n<p>Progressive disclosure for long B2B forms — reduce abandonment.</p>\n<h3>تفصيل 4</h3>\n<p>Dark mode optional but test contrast for Arabic typography.</p>\n<h3>تفصيل 5</h3>\n<p>Usability test 5 users beats endless internal debate.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "UI/UX Best Practices 2026 — للمنتجات العربية",
+      "category": "UI/UX",
+      "tags": [
+        "UI/UX",
+        "RTL",
+        "Arabic"
+      ],
+      "author": "يوسف كرم",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "UI/UX best practices 2026 — top1markting",
+      "metaDescription": "UI/UX best practices للمنتجات العربية.",
+      "metaKeywords": [
+        "UI/UX",
+        "تصميم واجهات"
+      ],
+      "seo": {
+        "title": "UI/UX best practices 2026 — top1markting",
+        "description": "UI/UX best practices للمنتجات العربية.",
+        "keywords": [
+          "UI/UX",
+          "تصميم واجهات"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "saas-seo-strategy",
+      "slug": "saas-seo-strategy",
+      "title": "SaaS SEO Strategy — playbook 2026",
+      "excerpt": "Product-led SEO، clusters، programmatic cautiously.",
+      "content": "<h2>JTBD content</h2>\n<p>Keywords around jobs not features only.</p>\n<p><a href=\"/portfolio/seo-saas-growth\">SaaS SEO case</a></p>\n<h3>تفصيل 1</h3>\n<p>Bottom-funnel pages: pricing، integrations، vs competitors — high intent.</p>\n<h3>تفصيل 2</h3>\n<p>Product-led content: templates، calculators tied to signup.</p>\n<h3>تفصيل 3</h3>\n<p>Programmatic pages only with unique value — avoid thin city spam.</p>\n<h3>تفصيل 4</h3>\n<p>Churn hurts SEO if you delete URLs — plan redirects.</p>\n<h3>تفصيل 5</h3>\n<p>Align sales calls with search queries from GSC.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "SaaS SEO Strategy — playbook 2026",
+      "category": "SEO",
+      "tags": [
+        "SaaS",
+        "SEO",
+        "B2B"
+      ],
+      "author": "هناء صالح",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "SaaS SEO strategy 2026 — top1markting",
+      "metaDescription": "SaaS SEO strategy — organic growth playbook.",
+      "metaKeywords": [
+        "SaaS SEO",
+        "SEO strategy"
+      ],
+      "seo": {
+        "title": "SaaS SEO strategy 2026 — top1markting",
+        "description": "SaaS SEO strategy — organic growth playbook.",
+        "keywords": [
+          "SaaS SEO",
+          "SEO strategy"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "core-web-vitals-explained",
+      "slug": "core-web-vitals-explained",
+      "title": "Core Web Vitals Explained — وتأثيرها على SEO",
+      "excerpt": "LCP INP CLS explained simply.",
+      "content": "<h2>The three metrics</h2>\n<ul><li>LCP — loading</li><li>INP — interactivity</li><li>CLS — stability</li></ul>\n<p><a href=\"/services/seo-saudi\">SEO</a></p>\n<h3>تفصيل 1</h3>\n<p>INP replaced FID — measure interaction latency on real clicks.</p>\n<h3>تفصيل 2</h3>\n<p>CLS from late-loading fonts — use font-display swap carefully.</p>\n<h3>تفصيل 3</h3>\n<p>Field data in GSC Page Experience report — prioritize URLs with traffic.</p>\n<h3>تفصيل 4</h3>\n<p>Server response TTFB matters for LCP on dynamic pages.</p>\n<h3>تفصيل 5</h3>\n<p>Performance and SEO teams should share one dashboard.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Core Web Vitals Explained — وتأثيرها على SEO",
+      "category": "Performance",
+      "tags": [
+        "Core Web Vitals",
+        "SEO"
+      ],
+      "author": "ليلى بناني",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Core Web Vitals explained — top1markting",
+      "metaDescription": "شرح Core Web Vitals وتأثير SEO.",
+      "metaKeywords": [
+        "Core Web Vitals",
+        "SEO"
+      ],
+      "seo": {
+        "title": "Core Web Vitals explained — top1markting",
+        "description": "شرح Core Web Vitals وتأثير SEO.",
+        "keywords": [
+          "Core Web Vitals",
+          "SEO"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "digital-agency-growth-strategies",
+      "slug": "digital-agency-growth-strategies",
+      "title": "Digital Agency Growth Strategies — B2B",
+      "excerpt": "Positioning، case studies، SEO، partnerships.",
+      "content": "<h2>Growth levers</h2>\n<ul><li>Niche positioning</li><li>Case studies</li><li>SEO compound</li><li>Referrals</li></ul>\n<p><a href=\"/about\">about us</a> · <a href=\"/contact\">partner</a></p>\n<h3>تفصيل 1</h3>\n<p>Niche down: «SEO for SaaS in GCC» beats «full service agency».</p>\n<h3>تفصيل 2</h3>\n<p>Publish case studies with numbers — E-E-A-T for agency itself.</p>\n<h3>تفصيل 3</h3>\n<p>Referral program with existing clients — lowest CAC.</p>\n<h3>تفصيل 4</h3>\n<p>Say no to bad-fit projects — protects reputation and margins.</p>\n<h3>تفصيل 5</h3>\n<p>Compound content on /blog drives inbound without cold outreach only.</p>",
+      "featuredImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+      "featuredImageAlt": "Digital Agency Growth Strategies — B2B",
+      "category": "SEO",
+      "tags": [
+        "agency",
+        "growth",
+        "B2B"
+      ],
+      "author": "عمر حديد",
+      "readTime": 6,
+      "views": 0,
+      "trending": false,
+      "status": "published",
+      "metaTitle": "Digital agency growth strategies — top1markting",
+      "metaDescription": "Growth strategies for digital agencies B2B.",
+      "metaKeywords": [
+        "digital agency",
+        "استوديو رقمي"
+      ],
+      "seo": {
+        "title": "Digital agency growth strategies — top1markting",
+        "description": "Growth strategies for digital agencies B2B.",
+        "keywords": [
+          "digital agency",
+          "استوديو رقمي"
+        ]
+      },
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    }
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "slug": "home",
+      "title": "الرئيسية",
+      "status": "published",
+      "metaTitle": "top1markting — شركة تصميم مواقع وSEO في السعودية",
+      "metaDescription": "استوديو رقمي سaudi — تصميم مواقع، SEO، تطوير وeb. مواقع عالية الأداء في السعودية وGCC.",
+      "ogImage": "/og.png",
+      "canonicalUrl": "/",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "استوديو رقمي سعودي",
+            "h1": "مواقع عالية الأداء و SEO في السعودية",
+            "subtitle": "top1markting — تصميم مواقع، تطوير ويب، UI/UX وSEO للشركات الناشئة والمؤسسات في السعودية وGCC.",
+            "ctaPrimary": {
+              "label": "ابدأ مشروعك",
+              "href": "/contact"
+            },
+            "ctaSecondary": {
+              "label": "تصميم مواقع SA",
+              "href": "/services/web-design-saudi"
+            },
+            "bullets": [
+              "بدون عقود طويلة",
+              "تسليم سريع",
+              "فريق خبراء"
+            ]
+          }
+        },
+        {
+          "id": "seo-intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>top1markting — استوديو رقمي سaudi (Saudi Digital Studio) متخصص في تصميم المواقع الاحترافية، تطوير موsites وeb، UI/UX، وSEO للشركات في المملكة ودول الخليج. نحن لسنا agency generic — نبني products digital عالية الأداء تحقق conversion measurable.</p>\n<p>Hero promise: مواقع Lighthouse 95+، SEO من اليوم الأول، فريق senior-only، sprint أسبوعين شفاف. نخدم startups، SMEs، enterprises في الرياض وجدة والدمام.</p>\n<p>Internal: <a href=\"/services/web-design-saudi\">تصميم مواقع</a> · <a href=\"/services/seo-saudi\">SEO</a> · <a href=\"/services/web-apps\">تطوير ويب</a> · <a href=\"/portfolio\">أعمالنا</a> · <a href=\"/blog\">مدونة</a> · <a href=\"/contact\">تواصل</a></p>"
+          }
+        },
+        {
+          "id": "why-us",
+          "type": "whyUs",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "title": "استوديو يهتم بالعشرة بالمئة الأخيرة",
+            "points": [
+              {
+                "title": "فريق senior-only",
+                "description": "8+ years — no juniors on your project."
+              },
+              {
+                "title": "Sprint delivery",
+                "description": "Two-week sprints + weekly demos."
+              },
+              {
+                "title": "Measurable growth",
+                "description": "Revenue-linked metrics not vanity."
+              },
+              {
+                "title": "Production-ready",
+                "description": "Performance + SEO + a11y day one."
+              }
+            ]
+          }
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "order": 4,
+          "enabled": true,
+          "data": {
+            "items": [
+              {
+                "value": "120+",
+                "label": "مشروعًا"
+              },
+              {
+                "value": "98%",
+                "label": "احتفاظ عملاء"
+              },
+              {
+                "value": "4.2×",
+                "label": "متوسط تحسين conversion"
+              },
+              {
+                "value": "95+",
+                "label": "Lighthouse avg"
+              }
+            ]
+          }
+        },
+        {
+          "id": "process",
+          "type": "process",
+          "order": 5,
+          "enabled": true,
+          "data": {
+            "title": "عملية من 4 خطوات",
+            "steps": [
+              {
+                "title": "اكتشاف",
+                "description": "Goals + audience + keywords."
+              },
+              {
+                "title": "تصميم",
+                "description": "UX + UI + system."
+              },
+              {
+                "title": "بناء",
+                "description": "Clean high-performance code."
+              },
+              {
+                "title": "نمو",
+                "description": "SEO + CRO iteration."
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "about",
+      "slug": "about",
+      "title": "من نحن",
+      "status": "published",
+      "metaTitle": "من نحن — top1markting | استوديو رقمي سعودي",
+      "metaDescription": "ق story top1markting — Saudi digital agency — design، dev، SEO.",
+      "canonicalUrl": "/about",
+      "sections": [
+        {
+          "id": "story",
+          "type": "richText",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "html": "<p>تأسس top1markting في السعودية 2019 كاستudio يركّز على performance + SEO + craft. today: 120+ projects، GCC clients، senior team.</p>\n<p>Mission: launch beautiful measurable products. Vision: Saudi/GCC brands lead digitally.</p>\n<p>E-E-A-T: transparent process، documented case studies، real contact، Saudi phone + WhatsApp.</p>\n<p><a href=\"/services\">Services</a> · <a href=\"/portfolio\">Portfolio</a> · <a href=\"/contact\">Contact</a></p>"
+          }
+        },
+        {
+          "id": "timeline",
+          "type": "timeline",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "items": [
+              {
+                "year": "2019",
+                "title": "التأسيس SA",
+                "description": "Launch Saudi digital studio."
+              },
+              {
+                "year": "2021",
+                "title": "Team scale",
+                "description": "Riyadh Jeddah Dammam clients."
+              },
+              {
+                "year": "2023",
+                "title": "GCC expansion",
+                "description": "UAE KW BH clients."
+              },
+              {
+                "year": "2026",
+                "title": "120+ projects",
+                "description": "SEO + performance focus."
+              }
+            ]
+          }
+        },
+        {
+          "id": "team",
+          "type": "team",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "members": [
+              {
+                "name": "عمر حديد",
+                "role": "Founder · Design Lead"
+              },
+              {
+                "name": "ليلى بناني",
+                "role": "Engineering Lead"
+              },
+              {
+                "name": "يوسف كرم",
+                "role": "Senior Product Designer"
+              },
+              {
+                "name": "هناء صالح",
+                "role": "Head of SEO & Growth"
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "pricing",
+      "slug": "pricing",
+      "title": "الأسعار",
+      "status": "published",
+      "metaTitle": "أسعار تصميم المواقع — top1markting | SAR",
+      "metaDescription": "Pricing SAR — Starter، Studio، Enterprise plans.",
+      "canonicalUrl": "/pricing",
+      "sections": [
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "html": "<p>أسعار شفافة بالريال السعودي. كل plan يincludes SEO basics + performance. <a href=\"/contact\">Custom quote</a>.</p>"
+          }
+        },
+        {
+          "id": "plans-ref",
+          "type": "pricingPlans",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "collection": "pricing_plans"
+          }
+        }
+      ],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "contact",
+      "slug": "contact",
+      "title": "تواصل",
+      "status": "published",
+      "metaTitle": "تواصل — top1markting",
+      "metaDescription": "Contact — quote within 48h.",
+      "canonicalUrl": "/contact",
+      "sections": [],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "services",
+      "slug": "services",
+      "title": "الخدمات",
+      "status": "published",
+      "metaTitle": "خدمات تصميم المواقع وSEO في السعودية — top1markting",
+      "metaDescription": "شركة تصميم مواقع في السaudi — تطوير مواقع، SEO، UI/UX، حلول رقمية. استوديو رقمي.",
+      "canonicalUrl": "/services",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "الخدمات",
+            "h1": "خدمات",
+            "h1Highlight": "استوديو رقمي في السعودية",
+            "subtitle": "تصميم مواقع، تطوير تطبيقات ويب، SEO، UI/UX وحلول رقمية متكاملة — فريق واحد، مسؤولية كاملة."
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>في عصر يتحول فيه البحث في Google إلى أول نقطة تواصل بين العميل والعلامة، لم يعد الموقع الإلكتروني «بطاقة تعريف» بل أصل تجاري يولّد leads ويؤسّس الثقة. top1markting استوديو رقمي سعودي يقدّم <strong>تصميم مواقع</strong>، <strong>تطوير مواقع</strong>، <strong>تحسين SEO</strong>، و<strong>UI/UX Design</strong> للشركات في المملكة العربية السعودية ودول مجلس التعاون — بمنهج يربط الجمال بالأداء والتحويل من اليوم الأول.</p>\n<p>نحن <strong>شركة تصميم مواقع في السعودية</strong> لا تبيع قوالب جاهزة؛ نبني تجارب رقمية مخصّصة تتوافق مع google.sa، سلوك المستخدم المحلي، ومتطلبات RTL العربية. كل مشروع يبدأ بفهم ICP ومسار الشراء والكلمات التجارية التي يبحث عنها جمهورك قبل رسم أي واجهة.</p>\n<p>خدماتنا تشمل خمسة محاور متكاملة: تصميم مواقع احترافية، تطوير تطبيقات ويب، SEO السعودية، تصميم UI/UX، وحلول رقمية متكاملة للمؤسسات. يمكنك استكشاف تفاصيل كل خدمة عبر الروابط أدناه، أو قراءة مقالاتنا في <a href=\"/blog\">مدونة تصميم المواقع وSEO</a> لفهم المعايير قبل اتخاذ قرار الشراء.</p>\n<p><h2>لماذا تختار استوديو رقمي متخصص في السعودية؟</h2></p>\n<p>السوق السعودي يتميز بكثافة mobile-first: أكثر من تسعين بالمائة من زيارات المواقع المحلية تأتي من الهاتف. ذلك يفرض تصميم responsive حقيقي، خطوط عربية واضحة، وأزرار CTA قريبة من الإبهام — وليس مجرد shrink لنسخة desktop.</p>\n<p>كذلك، محرك Google في السعودية يكافئ E-E-A-T: خبرة، سلطة، وثقة. لذلك ندمج FAQ schema، case studies، NAP متسق، وصفحات خدمة طويلة م interlinked بدلاً من موقع من صفحة واحدة بدون عمق semantique.</p>\n<p><h2>تصميم مواقع يركّز على التحويل</h2></p>\n<p>خدمة <a href=\"/services/web-design-saudi\">تصميم مواقع احترافية في السعودية</a> تغطي corporate sites، landing pages للحملات، وإعادة بناء مواقع قديمة بطيئة. نحدّد performance budget قبل التطوير: LCP أقل من 2.5 ثانية، INP أقل من 200ms، وCLS أقل من 0.1 — لأن Core Web Vitals عامل ranking وليس vanity metric.</p>\n<p>كل صفحة خدمة نكتبها بـ800+ كلمة مستهدفة long-tail مثل «شركة تصميم مواقع الرياض» أو «تطوير مواقع للشركات». المحتوى جزء من deliverables وليس مسؤولية العميل بعد الإطلاق.</p>\n<p><h2>تطوير تطبيقات ويب ومنصات SaaS</h2></p>\n<p>عندما يتجاوز المشروع brochure site، ننتقل إلى <a href=\"/services/web-apps\">تطوير تطبيقات ويب</a>: dashboards، portals، MVP لمنتجات SaaS، وتكامل APIs. نستخدم React وTypeScript مع بنية قابلة للصيانة وملكية كاملة للكود.</p>\n<p>الفريق senior-only يعمل ب sprint أسبوعين مع demo منتظم — بدون صندوق أسود. الشفافية في backlog والنطاق تقلّل مخاطر التسليم المتأخر أو scope creep.</p>\n<p><h2>SEO السعودية — نمو مركّب وليس حيل</h2></p>\n<p>خدمة <a href=\"/services/seo-saudi\">تحسين محركات البحث SEO</a> تبدأ بتدقيق تقني: index coverage، canonicals، structured data، internal linking، وcontent gaps. ثم خطة محتوى عربي helpful يرد على أسئلة حقيقية — لا keyword stuffing.</p>\n<p>نربط SEO بالأعمال: impressions، clicks، conversions، وrevenue attribution — وليس vanity rankings لكلمات لا تشتري. للتعمق، راجع مقال <a href=\"/blog/seo-saudi-2026\">SEO السعودية 2026</a> في مدونتنا.</p>\n<p><h2>UI/UX Design للمنتجات العربية</h2></p>\n<p>تصميم الواجهات في RTL يختلف عن LTR: اتجاه النظر، ترتيب الأيقونات، وطول النص العربي. فريق <a href=\"/services/ui-ux\">UI/UX</a> يبني design systems، prototypes تفاعلية، واختبارات usability قبل كتابة سطر كود.</p>\n<p>النتيجة: تقليل bounce rate، زيادة completion rate في النماذج، وbrand consistency عبر web وmobile.</p>\n<p><h2>حلول رقمية متكاملة للمؤسسات</h2></p>\n<p>للشركات التي تحتاج أكثر من موقع: <a href=\"/services/digital-solutions\">حلول رقمية متكاملة</a> تجمع strategy، design، development، SEO، analytics، وretainer للنمو. مناسبة للمجموعات، franchises، وB2B platforms.</p>\n<p><h2>صفحات محلية وSEO جغرافي</h2></p>\n<p>إذا كنت تستهدف مدينة محددة، لدينا landing pages مثل <a href=\"/saudi-web-design\">تصميم مواقع في السعودية</a> و<a href=\"/saudi-seo-services\">خدمات SEO السعودية</a> و<a href=\"/riyadh-web-development\">تطوير مواقع الرياض</a> — كلها مربوطة ببنية internal linking تدعم topical authority.</p>\n<p><h2>عملية العمل مع top1markting</h2></p>\n<p>1) Discovery: workshop لفهم الأهداف والمنافسين والكلمات المستهدفة. 2) Design: IA، wireframes، UI high-fidelity. 3) Build: تطوير performance-first مع QA. 4) Launch: DNS، Search Console، GTM/GA4. 5) Growth: CRO وSEO retainer اختياري.</p>\n<p>نقدّم عرض سعر مخصّص خلال 48 ساعة بعد <a href=\"/contact\">نموذج التواصل</a>. لا التزام قبل وضوح النطاق والجدول.</p>\n<p><h2>من يستفيد من خدماتنا؟</h2></p>\n<p>Startups في مرحلة launch، SMEs تعيد بناء موقع WordPress بطيء، SaaS تطلق MVP، ومؤسسات تحتاج landing pages متعددة للحملات المدفوعة. إذا كان هدفك «موقع جميل فقط» — قد لا نكون الأنسب. إذا كان هدفك نمو قابل للقياس — نتحدث.</p>\n<p><h2>الأسئلة الشائعة قبل البدء</h2></p>\n<p>«هل SEO included؟» — نعم basics: meta، schema، speed، structure. Advanced retainer منفصل. «كم المدة؟» — موقع marketing 2–4 أسابيع حسب النطاق. «ملكية الكود؟» — كاملة للعميل. لمزيد من FAQ، زُر <a href=\"/contact\">صفحة التواصل</a>.</p>\n<p>Keywords we target naturally: تصميم مواقع، شركة تصميم مواقع في السعودية، SEO السعودية، تطوير مواقع، استوديو رقمي، digital agency Saudi Arabia — لأن Google يفهم السياق وليس التكرار الميكانيكي.</p>\n<p>استكشف <a href=\"/portfolio\">أعمالنا</a> لcase studies موثقة، و<a href=\"/blog\">المدونة</a> لأدلة عملية في الأداء وSEO. نحن هنا لبناء أصل رقمي يخدم sales وmarketing لسنوات — ليس مشروعاً ينتهي عند الإطلاق.</p>"
+          }
+        },
+        {
+          "id": "internalLinks",
+          "type": "internalLinks",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "links": [
+              {
+                "label": "مدونة SEO وتصميم المواقع",
+                "href": "/blog"
+              },
+              {
+                "label": "تواصل — عرض سعر",
+                "href": "/contact"
+              },
+              {
+                "label": "تصميم مواقع السعودية",
+                "href": "/saudi-web-design"
+              },
+              {
+                "label": "أعمالنا",
+                "href": "/portfolio"
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "portfolio",
+      "slug": "portfolio",
+      "title": "أعمالنا",
+      "status": "published",
+      "metaTitle": "Portfolio — top1markting",
+      "metaDescription": "Case studies — Saudi digital agency work.",
+      "canonicalUrl": "/portfolio",
+      "sections": [],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "id": "blog",
+      "slug": "blog",
+      "title": "المدونة",
+      "status": "published",
+      "metaTitle": "مدونة تصميم مواقع وSEO في السعودية — top1markting",
+      "metaDescription": "مدونة top1markting — مقالات تصميم مواقع، SEO السaudi، UI/UX وCore Web Vitals.",
+      "canonicalUrl": "/blog",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "order": 1,
+          "enabled": true,
+          "data": {
+            "eyebrow": "المدونة",
+            "h1": "مدونة",
+            "h1Highlight": "تصميم مواقع وSEO",
+            "subtitle": "أدلة عملية في التصميم والتطوير وSEO ونمو المنتجات — للسوق السعودي.",
+            "heroImage": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
+            "heroImageAlt": "كتابة وتصميم محتوى رقمي",
+            "searchPlaceholder": "ابحث في المقالات…"
+          }
+        },
+        {
+          "id": "intro",
+          "type": "richText",
+          "order": 2,
+          "enabled": true,
+          "data": {
+            "html": "<p>مرحباً بك في <strong>مدونة تصميم مواقع وتحسين SEO في السعودية</strong> من top1markting — مصدر عملي للمديرين التسويقيين، المؤسسين، وفرق المنتج في المملكة وGCC.</p>\n<p>نكتب عن ما ننفّذه يومياً: <strong>تصميم مواقع</strong> عالية الأداء، <strong>SEO السaudi</strong>، <strong>تطوير مواقع</strong> وweb apps، <strong>UI/UX</strong> للمنتجات العربية، و<strong>Core Web Vitals</strong> — بدون fluff أو نصائح عامة منسوخة.</p>\n<p>كل مقال 1200+ كلمة structured بعناوين H2/H3، lists عملية، وروابط داخلية إلى <a href=\"/services\">خدماتنا</a> و<a href=\"/portfolio\">portfolio</a> و<a href=\"/contact\">صفحة التواصل</a> — لأن internal linking جزء من SEO strategy وليس afterthought.</p>\n<p><h2>ماذا ستجد هنا؟</h2></p>\n<p>أدلة عن تكلفة تصميم موقع في السعودية، استراتيجية SEO 2026، تحسين ترتيب Google، Lighthouse وperformance، SaaS SEO، وUI/UX best practices — topics تغطي search intent حقيقي من google.sa.</p>\n<p>Categories: SEO، Web Development، UI/UX، Performance — filter حسب اهتمامك. المقالات trending تظهر في الأعلى عندما تكون relevant موسمياً.</p>\n<p><h2>لماذا ننشر محتوى تقني بالعربية؟</h2></p>\n<p>السوق يفتقر لمحتوى Arabic deep عن web performance وSEO technical. نملأ الفجوة بخبرة فريق senior — ونثبت E-E-A-T لعملائنا ولمحركات البحث.</p>\n<p>إذا كنت تبحث عن <strong>شركة تصميم مواقع في السعودية</strong>، ابدأ بمقال «تصميم مواقع في السعودية — الدليل الشامل» ثم راجع <a href=\"/services/web-design-saudi\">صفحة الخدمة</a> للتفاصيل.</p>\n<p>لطلب تدقيق SEO مجاني أو عرض موقع: <a href=\"/contact\">تواصل معنا</a> — رد خلال 24 ساعة. WhatsApp متاح للاستفسارات السريعة.</p>\n<p>Keywords: تصميم مواقع، SEO السعودية، تطوير مواقع، استوديو رقمي، Core Web Vitals، Lighthouse SEO — woven naturally في سياق helpful content.</p>"
+          }
+        },
+        {
+          "id": "internalLinks",
+          "type": "internalLinks",
+          "order": 3,
+          "enabled": true,
+          "data": {
+            "links": [
+              {
+                "label": "خدماتنا",
+                "href": "/services"
+              },
+              {
+                "label": "تواصل",
+                "href": "/contact"
+              },
+              {
+                "label": "Portfolio",
+                "href": "/portfolio"
+              }
+            ]
+          }
+        }
+      ],
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z",
+      "publishedAt": "2026-06-15T00:00:00.000Z"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "سارة العتيبي",
+      "role": "مديرة التسويق",
+      "company": "NovaTech — الرياض",
+      "quote": "أعدت top1markting بناء موقعنا بالكامل. Lighthouse 97 و+41% leads من organic خلال 4 أشهر. أفضل استوديو رقمي worked with في السaudi.",
+      "rating": 5,
+      "country": "Saudi Arabia",
+      "projectType": "Web design + SEO",
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "t2",
+      "name": "فهد القحطاني",
+      "role": "CEO",
+      "company": "GulfScale SaaS — جدة",
+      "quote": "MVP dashboard in 9 weeks. Clean code، transparent sprints. Recommended.",
+      "rating": 5,
+      "country": "Saudi Arabia",
+      "projectType": "Web app MVP",
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "t3",
+      "name": "نورة الشمري",
+      "role": "Founder",
+      "company": "Bloom Retail — Dammam",
+      "quote": "E-commerce launch exceeded conversion targets. RTL UX excellent.",
+      "rating": 4.8,
+      "country": "Saudi Arabia",
+      "projectType": "E-commerce",
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "t4",
+      "name": "Khalid Al-Mansoori",
+      "role": "Head of Product",
+      "company": "FinEdge — UAE",
+      "quote": "UX onboarding redesign +52% completion. Professional team.",
+      "rating": 5,
+      "country": "UAE",
+      "projectType": "UI/UX",
+      "order": 4,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "t5",
+      "name": "ريم الحربي",
+      "role": "Marketing Director",
+      "company": "HealthPlus — Riyadh",
+      "quote": "SEO retainer delivered 18 top-10 keywords in 5 months. Reports clear and honest.",
+      "rating": 4.9,
+      "country": "Saudi Arabia",
+      "projectType": "SEO retainer",
+      "order": 5,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "t6",
+      "name": "Youssef Bahri",
+      "role": "COO",
+      "company": "LogiFlow — Kuwait",
+      "quote": "CRM automation saved 20+ hours/week. GCC-friendly support.",
+      "rating": 5,
+      "country": "Kuwait",
+      "projectType": "Digital solutions",
+      "order": 6,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "كم تكلفة تصميم موقع في السعودية؟",
+      "answer": "Starter ~18,000 SAR. Studio ~45,000–85,000 SAR. Enterprise custom. <a href=\"/pricing\">Pricing</a> · <a href=\"/contact\">Quote</a>",
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-2",
+      "question": "متى أرى نتائج SEO في google.sa؟",
+      "answer": "Technical fixes 2–4 weeks. Competitive keywords 3–6 months. Realistic roadmap in audit.",
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-3",
+      "question": "كم مدة بناء موقع شركة؟",
+      "answer": "Marketing site 2–4 weeks. Web app MVP 6–10 weeks. Sprint-based delivery.",
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-4",
+      "question": "هل أستطيع إدارة المحتوى بنفسي؟",
+      "answer": "Yes — CMS training included. Edit text/images without developer.",
+      "order": 4,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-5",
+      "question": "هل تقدمون دعم بعد الإطلاق؟",
+      "answer": "30-day warranty + optional monthly retainer (SEO، CRO، features).",
+      "order": 5,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-6",
+      "question": "ما الفرق بين Starter و Studio؟",
+      "answer": "Starter: small marketing site. Studio: full CMS + advanced SEO + motion. See <a href=\"/pricing\">pricing</a>.",
+      "order": 6,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-7",
+      "question": "هل تعملون مع startups؟",
+      "answer": "Yes — MVP mindset + scalable architecture. Selected discounted seats quarterly.",
+      "order": 7,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-8",
+      "question": "هل SEO included in web design؟",
+      "answer": "Basic SEO yes — meta، schema، speed، structure. Advanced retainer optional.",
+      "order": 8,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-9",
+      "question": "Payment terms?",
+      "answer": "Typically 50% start / 50% launch — or milestones for larger projects.",
+      "order": 9,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "faq-10",
+      "question": "How to start?",
+      "answer": "<a href=\"/contact\">Contact form</a> or WhatsApp 966549881368 — reply within 24h.",
+      "order": 10,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
+  "pricing_plans": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "price": "١٨٬٠٠٠",
+      "period": "ريال / مشروع",
+      "description": "موقع تسويقي 5–8 صفحات — ideal startups launch.",
+      "features": [
+        "5–8 pages",
+        "RTL Arabic",
+        "Basic SEO",
+        "CMS",
+        "2-week delivery",
+        "Mobile-first"
+      ],
+      "highlighted": false,
+      "ctaLabel": "ابدأ Starter",
+      "ctaHref": "/contact",
+      "order": 1,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "studio",
+      "name": "Studio",
+      "price": "٥٥٬٠٠٠",
+      "period": "ريال / مشروع",
+      "description": "موقع company كامل — CMS advanced + SEO + analytics.",
+      "features": [
+        "10–20 pages",
+        "Advanced SEO",
+        "Schema + blog",
+        "GTM + GA4",
+        "Motion UI",
+        "4-week delivery"
+      ],
+      "highlighted": true,
+      "ctaLabel": "الأكثر طلباً",
+      "ctaHref": "/contact",
+      "order": 2,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "price": "حسب النطاق",
+      "period": "ريال",
+      "description": "Web apps، platforms، retainers — custom scope.",
+      "features": [
+        "Custom scope",
+        "Dedicated team",
+        "SLA",
+        "Integrations",
+        "Priority support"
+      ],
+      "highlighted": false,
+      "ctaLabel": "تواصل Enterprise",
+      "ctaHref": "/contact",
+      "order": 3,
+      "status": "published",
+      "createdAt": "2026-06-01T00:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ]
+}
