@@ -48,7 +48,7 @@ export const auth = new Proxy({} as Auth, {
 
 export async function loginWithEmail(email: string, password: string) {
   if (!isFirebaseConfigured()) {
-    throw new Error("Firebase غير مُعد — أضف متغيرات VITE_FIREBASE_* في Vercel ثم أعد النشر");
+    throw new Error("Firebase غير مُعد — أضف متغيرات VITE_FIREBASE_* في بيئة الإنتاج ثم أعد البناء والنشر");
   }
   return signInWithEmailAndPassword(getAuthInstance(), email, password);
 }

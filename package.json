@@ -3,9 +3,15 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:hostinger": "node scripts/build-hostinger.mjs",
+    "start:hostinger": "node .output/server/index.mjs",
+    "preview:hostinger": "node .output/server/index.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",

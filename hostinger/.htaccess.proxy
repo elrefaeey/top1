@@ -1,0 +1,18 @@
+# Hostinger Apache → Node.js reverse proxy (VPS or plans with mod_proxy)
+# Place in public_html when Nitro runs on 127.0.0.1:3000 (PM2)
+# Enable: a2enmod proxy proxy_http rewrite
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+</IfModule>
+
+<IfModule mod_proxy.c>
+  ProxyPreserveHost On
+  ProxyPass / http://127.0.0.1:3000/
+  ProxyPassReverse / http://127.0.0.1:3000/
+</IfModule>
