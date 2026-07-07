@@ -5,17 +5,19 @@ import { siteImages } from "@/lib/site-images";
 
 import { SITE_NAME } from "@/lib/site-config";
 
+import { buildStaticPageHead } from "@/lib/seo";
+import { loadPublishedPageSeo } from "@/lib/seo/cms-page-seo";
+
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: `من نحن — ${SITE_NAME}` },
-      { name: "description", content: `${SITE_NAME} استوديو منتجات رقمية يبني تجارب رقمية لفرق طموحة. تعرّف على الفريق والرسالة والقيم.` },
-      { property: "og:title", content: `من نحن — ${SITE_NAME}` },
-      { property: "og:description", content: `تعرّف على فريق ${SITE_NAME} — رسالتنا ورؤيتنا وقيمنا.` },
-      { property: "og:url", content: "/about" },
-    ],
-    links: [{ rel: "canonical", href: "/about" }],
-  }),
+  loader: () => loadPublishedPageSeo("about"),
+  head: ({ loaderData }) =>
+    buildStaticPageHead("about", "/about", {
+      cms: loaderData,
+      breadcrumbs: [
+        { name: "الرئيسية", path: "/" },
+        { name: "من نحن", path: "/about" },
+      ],
+    }),
   component: About,
 });
 

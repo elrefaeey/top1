@@ -16,23 +16,7 @@ function inlineDataUrlFallback(bytes: ArrayBuffer, contentType: string): string 
   return bytesToDataUrl(bytes, contentType);
 }
 
-export async function verifyFirebaseIdToken(idToken: string): Promise<void> {
-  const apiKey = env("FIREBASE_API_KEY") || env("VITE_FIREBASE_API_KEY");
-  if (!apiKey) throw new Error("Firebase API key missing on server");
-
-  const res = await fetch(
-    `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(apiKey)}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idToken }),
-    },
-  );
-
-  if (!res.ok) throw new Error("رمز الدخول غير صالح — سجّل الدخول مرة أخرى");
-  const data = (await res.json()) as { users?: unknown[] };
-  if (!data.users?.length) throw new Error("رمز الدخول غير صالح");
-}
+import { verifyFirebaseEditorRole } from "@/lib/security/firebase-auth-server";
 
 function storageDownloadUrl(bucket: string, objectName: string, downloadToken: string) {
   return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(objectName)}?alt=media&token=${downloadToken}`;
@@ -119,6 +103,35 @@ export function assertFileSize(bytes: ArrayBuffer) {
   }
 }
 
+function detectImageMime(bytes: Uint8Array): string | null {
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+    return "image/jpeg";
+  }
+  if (
+    bytes.length >= 8 &&
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47
+  ) {
+    return "image/png";
+  }
+  if (
+    bytes.length >= 12 &&
+    bytes[0] === 0x52 &&
+    bytes[1] === 0x49 &&
+    bytes[2] === 0x46 &&
+    bytes[3] === 0x46 &&
+    bytes[8] === 0x57 &&
+    bytes[9] === 0x45 &&
+    bytes[10] === 0x42 &&
+    bytes[11] === 0x50
+  ) {
+    return "image/webp";
+  }
+  return null;
+}
+
 export async function handleImageUploadRequest(request: Request): Promise<Response> {
   try {
     const authHeader = request.headers.get("Authorization");
@@ -127,7 +140,7 @@ export async function handleImageUploadRequest(request: Request): Promise<Respon
     }
 
     const idToken = authHeader.slice(7);
-    await verifyFirebaseIdToken(idToken);
+    await verifyFirebaseEditorRole(idToken);
 
     const form = await request.formData();
     const file = form.get("file");
@@ -140,8 +153,13 @@ export async function handleImageUploadRequest(request: Request): Promise<Respon
     const bytes = await file.arrayBuffer();
     assertFileSize(bytes);
 
+    const detectedMime = detectImageMime(new Uint8Array(bytes));
+    if (!detectedMime) {
+      return Response.json({ error: "نوع الملف غير مدعوم — استخدم JPG أو PNG أو WebP" }, { status: 400 });
+    }
+
     const objectPath = `media/${folder}/${Date.now()}-${safeUploadFileName(file.name)}`;
-    const contentType = file.type || "image/jpeg";
+    const contentType = detectedMime;
 
     try {
       const url = await uploadToFirebaseStorageServer(objectPath, bytes, contentType, idToken);
@@ -178,7 +196,12 @@ export async function handleImageUploadRequest(request: Request): Promise<Respon
       );
     }
   } catch (err) {
+    console.error("[upload-image]", err);
     const message = err instanceof Error ? err.message : "فشل الرفع";
-    return Response.json({ error: message }, { status: 500 });
+    const safe =
+      message.includes("صلاحية") || message.includes("رمز") || message.includes("نوع")
+        ? message
+        : "فشل رفع الصورة";
+    return Response.json({ error: safe }, { status: 500 });
   }
 }

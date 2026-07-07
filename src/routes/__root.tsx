@@ -16,15 +16,17 @@ import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
 import { FirebaseAnalytics } from "../components/site/FirebaseAnalytics";
+import { GoogleTagManager } from "../components/site/GoogleTagManager";
 import { AuthProvider } from "../providers/AuthProvider";
 import { FirebaseProvider } from "../providers/FirebaseProvider";
 import { SITE_NAME, SITE_LOGO_URL, SITE_TWITTER } from "@/lib/site-config";
+import { rootJsonLdScripts } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 text-center">
+    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 text-center" role="main" aria-labelledby="not-found-title">
       <span className="eyebrow">٤٠٤ · غير موجود</span>
-      <h1 className="mt-6 text-6xl md:text-7xl font-bold tracking-tight">الصفحة غير موجودة.</h1>
+      <h1 id="not-found-title" className="mt-6 text-6xl md:text-7xl font-bold tracking-tight">الصفحة غير موجودة.</h1>
       <p className="mt-3 max-w-md text-muted-foreground">
         الصفحة التي تبحث عنها غير موجودة أو تم نقلها.
       </p>
@@ -66,40 +68,34 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
+  head: () => {
+    const meta: Array<Record<string, string>> = [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: `${SITE_NAME} — تصميم مواقع وتطبيقات وSEO احترافي` },
-      { name: "description", content: `${SITE_NAME} استوديو رقمي متخصص في تصميم المواقع، تطبيقات الويب، UI/UX وSEO لتحويل الزوار إلى عملاء.` },
       { name: "author", content: SITE_NAME },
       { name: "theme-color", content: "#4F46E5" },
-      { property: "og:site_name", content: SITE_NAME },
-      { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: SITE_TWITTER },
-    ],
-    links: [
+    ];
+    const gsc = import.meta.env.VITE_GSC_VERIFICATION?.trim();
+    if (gsc) {
+      meta.push({ name: "google-site-verification", content: gsc });
+    }
+    return {
+      meta,
+      links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" },
-      { rel: "icon", href: SITE_LOGO_URL, type: "image/jpeg" },
-    ],
-    scripts: [
       {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: SITE_NAME,
-          url: "/",
-          logo: SITE_LOGO_URL,
-          sameAs: [],
-        }),
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap",
       },
-    ],
-  }),
+      { rel: "icon", href: SITE_LOGO_URL, type: "image/jpeg" },
+      ],
+      scripts: rootJsonLdScripts(),
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -129,6 +125,7 @@ function RootComponent() {
       <FirebaseProvider>
       <AuthProvider>
         <FirebaseAnalytics />
+        <GoogleTagManager />
         {isAdminRoute ? (
           <Outlet />
         ) : (

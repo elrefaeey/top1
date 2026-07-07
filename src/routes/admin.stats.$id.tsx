@@ -8,7 +8,8 @@ import {
 import { nowIso } from "@/lib/cms/admin-utils";
 import { STAT_ICON_OPTIONS } from "@/lib/stat-icons";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
-import { useAdminSiteStat, useSaveSiteStat, useDeleteSiteStat } from "@/hooks/use-admin-cms";
+import { useAdminSiteStat, useSaveSiteStat, useDeleteSiteStat, useAdminSiteStats } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 
 export const Route = createFileRoute("/admin/stats/$id")({
   component: AdminStatEdit,
@@ -29,10 +30,12 @@ function AdminStatEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminSiteStat(id, !isNew);
+  const { data: allItems } = useAdminSiteStats();
   const save = useSaveSiteStat();
   const remove = useDeleteSiteStat();
   const [form, setForm] = useState(empty());
   const [saveError, setSaveError] = useState("");
+  useApplyNextOrder(isNew, allItems, setForm);
 
   useEffect(() => { if (data) setForm({ ...data }); }, [data]);
   const patch = (p: Partial<Omit<SiteStat, "id">>) => setForm((f) => ({ ...f, ...p }));
@@ -43,7 +46,7 @@ function AdminStatEdit() {
     const docId = isNew ? `stat-${Date.now()}` : id;
     try {
       await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
-      navigate({ to: isNew ? "/admin/stats" : "/admin/stats/$id", ...(isNew ? {} : { params: { id: docId } }) });
+      navigate({ to: "/admin/stats" });
     } catch (err) {
       setSaveError(formatAdminFirestoreError(err));
     }

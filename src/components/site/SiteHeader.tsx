@@ -48,11 +48,11 @@ export function SiteHeader() {
     <>
       <header className="site-header relative z-40 w-full border-b border-border/80 bg-background/95 backdrop-blur-sm">
         <div className="container-page flex h-[3.75rem] lg:h-[4.25rem] items-center justify-between gap-3">
-          <Link to="/" className="group flex items-center min-w-0 shrink-0">
+          <Link to="/" className="group flex items-center min-w-0 shrink-0" aria-label={`${settings?.siteName ?? "Top1Markting"} — الصفحة الرئيسية`}>
             <SiteLogo />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1" aria-label="التنقل الرئيسي">
             {navLinks.map((l) => (
               <Link
                 key={l.href}
@@ -98,7 +98,7 @@ export function SiteHeader() {
           open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none",
         )}
       >
-        <nav className="mx-4 rounded-2xl border border-border bg-surface p-2 shadow-[var(--shadow-card-hover)]">
+        <nav className="mx-4 rounded-2xl border border-border bg-surface p-2 shadow-[var(--shadow-card-hover)]" aria-label="التنقل الرئيسي">
           {navLinks.map((l) => (
             <Link
               key={l.href}

@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { cmsClient } from "@/lib/cms/cms-client";
-import { createLead } from "@/lib/cms/content-service";
 import type {
   BlogPost,
   CmsPage,
@@ -153,5 +152,14 @@ export function useSiteStats() {
 }
 
 export function useSubmitLead() {
-  return useMutation({ mutationFn: createLead });
+  return useMutation({
+    mutationFn: (input: {
+      name: string;
+      email: string;
+      phone?: string;
+      message: string;
+      source?: string;
+      website?: string;
+    }) => cmsClient.submitLead(input),
+  });
 }

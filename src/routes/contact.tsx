@@ -9,17 +9,13 @@ import { SITE_CONTACT_PHONE, SITE_NAME } from "@/lib/site-config";
 import { telHref } from "@/lib/phone";
 import { whatsAppHref } from "@/lib/whatsapp";
 
+import { sanitizeCmsHtml } from "@/lib/security/sanitize-html";
+import { buildContactPageHead } from "@/lib/seo/static-page-head";
+import { loadContactRouteSeo } from "@/lib/seo/static-page-loaders";
+
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: `تواصل — ${SITE_NAME}` },
-      { name: "description", content: "أخبرنا عن مشروعك. نرد خلال 24 ساعة ونرسل عرضاً مخصصاً خلال 48 ساعة." },
-      { property: "og:title", content: `تواصل — ${SITE_NAME}` },
-      { property: "og:description", content: `أخبرنا عن مشروعك — ${SITE_NAME}.` },
-      { property: "og:url", content: "/contact" },
-    ],
-    links: [{ rel: "canonical", href: "/contact" }],
-  }),
+  loader: () => loadContactRouteSeo(),
+  head: ({ loaderData }) => buildContactPageHead(loaderData),
   component: Contact,
 });
 
@@ -46,6 +42,16 @@ function Contact() {
     const budget = String(fd.get("budget") ?? "").trim();
     const projectType = String(fd.get("type") ?? "").trim();
     const msg = String(fd.get("msg") ?? "").trim();
+    const website = String(fd.get("website") ?? "").trim();
+
+    if (!name || !emailVal || !msg) {
+      alert("يرجى تعبئة الاسم والبريد والرسالة.");
+      return;
+    }
+    if (name.length > 120 || emailVal.length > 254 || msg.length > 5000) {
+      alert("تحقق من طول الحقول وحاول مرة أخرى.");
+      return;
+    }
 
     const details = [
       projectType && `نوع المشروع: ${projectType}`,
@@ -62,6 +68,7 @@ function Contact() {
         phone: phoneVal || undefined,
         message,
         source: "contact_form",
+        website,
       });
       setSent(true);
       e.currentTarget.reset();
@@ -78,7 +85,7 @@ function Contact() {
         desc="أخبرنا عن مشروعك — نرد خلال 24 ساعة ونرسل عرضاً مخصصاً خلال 48 ساعة."
       />
 
-      <section className="contact-page section pt-0">
+      <section className="contact-page section">
         <div className="container-page contact-layout">
           <aside className="contact-aside">
             <a
@@ -147,6 +154,14 @@ function Contact() {
               </div>
             ) : (
               <form onSubmit={onSubmit} className="contact-form surface-card">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div className="contact-form-head">
                   <h2 className="contact-form-title">أرسل تفاصيل مشروعك</h2>
                   <p className="contact-form-desc">الحقول بـ * مطلوبة</p>
@@ -231,7 +246,7 @@ function ContactFaq() {
   if (items.length === 0) return null;
 
   return (
-    <section className="contact-faq section pt-0">
+    <section className="contact-faq section">
       <div className="container-page contact-faq-inner">
         <div className="contact-faq-head">
           <span className="page-intro-eyebrow">
@@ -260,7 +275,7 @@ function ContactFaq() {
                 {isOpen && (
                   <div
                     className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: f.answer }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(f.answer) }}
                   />
                 )}
               </div>

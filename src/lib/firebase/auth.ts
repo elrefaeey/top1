@@ -46,60 +46,11 @@ export const auth = new Proxy({} as Auth, {
   },
 });
 
-import { getBootstrapAdminEmail } from "./env";
-
-export function isBootstrapAdminEmail(email: string | null | undefined): boolean {
-  const bootstrap = getBootstrapAdminEmail();
-  if (!bootstrap || !email) return false;
-  return email.toLowerCase().trim() === bootstrap;
-}
-
-export async function ensureBootstrapAdminRole(user: User): Promise<UserRole | null> {
-  const existing = await getUserRole(user.uid);
-  if (existing) return existing;
-
-  const role: UserRole = isBootstrapAdminEmail(user.email) ? "admin" : "editor";
-
-  try {
-    const { doc, setDoc, updateDoc, getDoc, serverTimestamp } = await import("firebase/firestore");
-    const { getDb, withFirestoreTimeout } = await import("./firestore");
-    const ref = doc(getDb(), "users", user.uid);
-    const snap = await withFirestoreTimeout(getDoc(ref), 5000);
-
-    if (!snap.exists()) {
-      await withFirestoreTimeout(
-        setDoc(ref, {
-          role,
-          email: user.email,
-          createdAt: serverTimestamp(),
-        }),
-        8000,
-      );
-    } else {
-      const currentRole = snap.data()?.role as UserRole | undefined;
-      if (currentRole === "admin" || currentRole === "editor") return currentRole;
-      await withFirestoreTimeout(
-        updateDoc(ref, { role, email: user.email }),
-        8000,
-      );
-    }
-    return role;
-  } catch (err) {
-    console.error("[auth] bootstrap role failed:", err);
-    if (import.meta.env.DEV) {
-      return isBootstrapAdminEmail(user.email) ? "admin" : "editor";
-    }
-    return null;
-  }
-}
-
 export async function loginWithEmail(email: string, password: string) {
   if (!isFirebaseConfigured()) {
     throw new Error("Firebase غير مُعد — أضف متغيرات VITE_FIREBASE_* في Vercel ثم أعد النشر");
   }
-  const credential = await signInWithEmailAndPassword(getAuthInstance(), email, password);
-  await ensureBootstrapAdminRole(credential.user);
-  return credential;
+  return signInWithEmailAndPassword(getAuthInstance(), email, password);
 }
 
 export async function logout() {
@@ -125,18 +76,13 @@ export async function getUserRole(uid: string): Promise<UserRole | null> {
       if (role === "admin" || role === "editor") return role;
     }
   } catch {
+    // ignore
   }
   return null;
 }
 
 export async function toAppUser(user: User): Promise<AppUser> {
-  let role = await getUserRole(user.uid);
-  if (!role) {
-    role = await ensureBootstrapAdminRole(user);
-  }
-  if (!role && import.meta.env.DEV) {
-    role = isBootstrapAdminEmail(user.email) ? "admin" : "editor";
-  }
+  const role = await getUserRole(user.uid);
   return {
     uid: user.uid,
     email: user.email,

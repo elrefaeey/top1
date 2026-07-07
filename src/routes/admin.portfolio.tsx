@@ -1,6 +1,13 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Pencil, Trash2 } from "lucide-react";
-import { AdminEmpty, AdminFetchingBar, AdminPageHeader, AdminStatusBadge, useAdminChildRoute } from "@/components/admin/AdminUi";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  AdminEmpty,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminRowActions,
+  AdminStatusBadge,
+  AdminTableCard,
+  useAdminChildRoute,
+} from "@/components/admin/AdminUi";
 import { useAdminPortfolio, useDeletePortfolioItem } from "@/hooks/use-admin-cms";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -17,30 +24,53 @@ function AdminPortfolioList() {
 
   return (
     <div className="p-6 md:p-8">
-      <AdminPageHeader title="أعمالنا" description="إدارة مشاريع Portfolio." actionTo="/admin/portfolio/$id" actionParams={{ id: "new" }} actionLabel="مشروع جديد" />
+      <AdminPageHeader
+        title="أعمالنا"
+        description="إدارة مشاريع Portfolio."
+        actionTo="/admin/portfolio/$id"
+        actionParams={{ id: "new" }}
+        actionLabel="مشروع جديد"
+      />
       <AdminFetchingBar show={isFetching} />
-      {!isFetching && data.length === 0 && <AdminEmpty message="لا توجد مشاريع." actionTo="/admin/portfolio/$id" actionParams={{ id: "new" }} actionLabel="إضافة مشروع" />}
+      {!isFetching && data.length === 0 && (
+        <AdminEmpty
+          message="لا توجد مشاريع."
+          actionTo="/admin/portfolio/$id"
+          actionParams={{ id: "new" }}
+          actionLabel="إضافة مشروع"
+        />
+      )}
       {data.length > 0 && (
-        <div className="surface-card overflow-hidden">
-          <Table>
-            <TableHeader><TableRow><TableHead>العنوان</TableHead><TableHead>التصنيف</TableHead><TableHead>الحالة</TableHead><TableHead className="w-28" /></TableRow></TableHeader>
+        <AdminTableCard>
+          <Table className="table-fixed">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[40%]">العنوان</TableHead>
+                <TableHead className="w-[25%]">التصنيف</TableHead>
+                <TableHead className="w-[15%]">الحالة</TableHead>
+                <TableHead className="w-[20%] text-end">إجراءات</TableHead>
+              </TableRow>
+            </TableHeader>
             <TableBody>
               {data.map((p) => (
                 <TableRow key={p.id}>
                   <TableCell className="font-medium">{p.title}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{p.category}</TableCell>
-                  <TableCell><AdminStatusBadge status={p.status} /></TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Link to="/admin/portfolio/$id" params={{ id: p.id }} className="grid h-8 w-8 place-items-center rounded-md hover:bg-accent"><Pencil className="h-3.5 w-3.5" /></Link>
-                      <button type="button" onClick={() => confirm("حذف؟") && del.mutate(p.id)} className="grid h-8 w-8 place-items-center rounded-md hover:bg-destructive/10 text-destructive"><Trash2 className="h-3.5 w-3.5" /></button>
-                    </div>
+                    <AdminStatusBadge status={p.status} />
+                  </TableCell>
+                  <TableCell>
+                    <AdminRowActions
+                      editTo="/admin/portfolio/$id"
+                      editParams={{ id: p.id }}
+                      onDelete={() => confirm("حذف هذا المشروع؟") && del.mutate(p.id)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </div>
+        </AdminTableCard>
       )}
     </div>
   );

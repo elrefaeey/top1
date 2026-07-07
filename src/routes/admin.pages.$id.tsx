@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CmsPage, PublishStatus } from "@/types/cms";
 import {
   AdminCard, AdminField, AdminFormActions, AdminFetchingBar, AdminPageHeader,
   AdminPublishSelect, AdminSeoSection, adminInputClass,
 } from "@/components/admin/AdminUi";
+import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { useAdminPage, useSavePage } from "@/hooks/use-admin-cms";
 
@@ -35,25 +36,50 @@ function AdminPageEdit() {
   const { data, isFetching } = useAdminPage(id, !isNew);
   const save = useSavePage();
   const [form, setForm] = useState(empty(isNew ? "" : id));
+  const [saveError, setSaveError] = useState("");
+  const hydratedKey = useRef<string | null>(null);
 
   useEffect(() => {
-    if (data) setForm({ ...data });
-    else if (!isNew && PAGE_TITLES[id]) setForm(empty(id));
-  }, [data, id, isNew]);
+    if (isFetching) return;
+    const key = `${id}:${data?.updatedAt ?? "new"}`;
+    if (hydratedKey.current === key) return;
+    if (data) {
+      setForm({ ...data });
+    } else if (!isNew && PAGE_TITLES[id]) {
+      setForm(empty(id));
+    }
+    hydratedKey.current = key;
+  }, [data, id, isNew, isFetching]);
 
   const patch = (p: Partial<Omit<CmsPage, "id">>) => setForm((f) => ({ ...f, ...p }));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setSaveError("");
     const docId = isNew ? form.slug || "page" : id;
-    await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
-    navigate({ to: isNew ? "/admin/pages" : "/admin/pages/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    const payload: Omit<CmsPage, "id"> = {
+      ...form,
+      slug: form.slug?.trim() || docId,
+      title: form.title || PAGE_TITLES[docId] || form.slug || "صفحة",
+      updatedAt: nowIso(),
+    };
+    try {
+      await save.mutateAsync({ id: docId, data: payload });
+      navigate({ to: "/admin/pages" });
+    } catch (err) {
+      setSaveError(formatAdminFirestoreError(err));
+    }
   }
 
   return (
     <div className="p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader title={`SEO — ${form.title}`} backTo="/admin/pages" />
+      {saveError && (
+        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {saveError}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <AdminCard className="space-y-4">
           {isNew && (
@@ -63,12 +89,14 @@ function AdminPageEdit() {
             </>
           )}
           {!isNew && PAGE_TITLES[id] && (
-            <p className="text-sm text-muted-foreground">تحرير بيانات SEO لهذه الصفحة. المحتوى الأساسي في ملفات الموقع.</p>
+            <p className="text-sm text-muted-foreground">
+              تحرير بيانات SEO لهذه الصفحة. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع.
+            </p>
           )}
           <AdminPublishSelect value={form.status as PublishStatus} onChange={(status) => patch({ status })} />
         </AdminCard>
         <AdminSeoSection
-          slug={form.slug}
+          slug={form.slug || id}
           metaTitle={form.metaTitle}
           metaDescription={form.metaDescription}
           onSlug={(slug) => patch({ slug })}

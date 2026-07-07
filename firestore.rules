@@ -7,28 +7,31 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
     function isAdmin() {
       return isSignedIn() &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+        userDoc().data.role == 'admin';
     }
 
     function isEditor() {
       return isSignedIn() &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'editor'];
+        userDoc().data.role in ['admin', 'editor'];
     }
 
-    // User profiles — أول تسجيل دخول ينشئ مستند role لنفسه
+    // User profiles — الإنشاء والصلاحيات بواسطة admin فقط
     match /users/{userId} {
       allow read: if isSignedIn() && request.auth.uid == userId;
-      allow create: if isSignedIn() &&
-        request.auth.uid == userId &&
-        !exists(/databases/$(database)/documents/users/$(userId)) &&
+      allow create: if isAdmin() &&
+        request.resource.data.keys().hasOnly(['role', 'email', 'createdAt']) &&
         request.resource.data.role in ['admin', 'editor'];
       allow update: if isAdmin() || (
         isSignedIn() &&
         request.auth.uid == userId &&
-        (!('role' in resource.data) || resource.data.role == null) &&
-        request.resource.data.role in ['admin', 'editor']
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.keys().hasOnly(['role', 'email', 'createdAt'])
       );
       allow delete: if isAdmin();
     }
@@ -100,7 +103,24 @@ service cloud.firestore {
     }
 
     match /leads/{docId} {
-      allow create: if true;
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'name', 'email', 'phone', 'message', 'source', 'status', 'createdAt', 'updatedAt'
+        ]) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 120 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.size() > 0 &&
+        request.resource.data.email.size() <= 254 &&
+        request.resource.data.message is string &&
+        request.resource.data.message.size() > 0 &&
+        request.resource.data.message.size() <= 5000 &&
+        (!('phone' in request.resource.data) ||
+          (request.resource.data.phone is string && request.resource.data.phone.size() <= 30)) &&
+        request.resource.data.source is string &&
+        request.resource.data.source.size() <= 64 &&
+        request.resource.data.status == 'new';
       allow read, update, delete: if isEditor();
     }
   }

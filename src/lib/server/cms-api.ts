@@ -30,28 +30,13 @@ export async function handleCmsApiGet(
   switch (resource) {
     case "health": {
       try {
-        const { collection, getDocs, query, where } = await import("firebase/firestore");
-        const { getDb } = await import("@/lib/firebase/firestore");
-        const snap = await getDocs(
-          query(collection(getDb(), "services"), where("status", "==", "published")),
-        );
         const services = await getServices();
-        const blog = await getBlogPosts();
-        const portfolio = await getPortfolio();
         return {
           ok: true,
-          firebase: true,
-          directQueryCount: snap.size,
           servicesCount: services.length,
-          blogCount: blog.length,
-          portfolioCount: portfolio.length,
         };
-      } catch (err) {
-        return {
-          ok: false,
-          firebase: true,
-          error: err instanceof Error ? err.message : "CMS health check failed",
-        };
+      } catch {
+        return { ok: false };
       }
     }
     case "settings":

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { ImagePlus, Loader2, Link2 } from "lucide-react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
+import { isSafeExternalUrl } from "@/lib/security/validate";
 import { cn } from "@/lib/utils";
 
 type ImageUploadFieldProps = {
@@ -51,6 +52,16 @@ export function ImageUploadField({
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
     }
+  }
+
+  function handleUrlChange(next: string) {
+    const value = next.trim();
+    if (value && !value.startsWith("data:image/") && !isSafeExternalUrl(value)) {
+      setError("رابط غير صالح — استخدم https://");
+      return;
+    }
+    setError("");
+    onChange(value);
   }
 
   return (
@@ -111,7 +122,7 @@ export function ImageUploadField({
             dir="ltr"
             required={required && !value}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleUrlChange(e.target.value)}
             placeholder="https://…"
             className={adminInputClass("text-start")}
           />

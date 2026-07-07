@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight, ArrowUpRight, Sparkles, Check, Star,
   ShieldCheck, Zap, BarChart3, Rocket,
-  MessageSquareQuote, Plus, Minus, TrendingUp, Target, Megaphone,
+  MessageSquareQuote, Plus, Minus, TrendingUp, Target,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
@@ -14,29 +14,27 @@ import { formatPostDate } from "@/lib/date-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
+import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
+import { loadPublishedPageSeo } from "@/lib/seo/cms-page-seo";
 import { SectionIntro } from "@/components/site/SectionIntro";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: `${SITE_NAME} — تسويق رقمي · تصميم مواقع · SEO` },
-      { name: "description", content: `${SITE_NAME} — وكالة تسويق رقمي متخصصة في تصميم المواقع، SEO، والإعلانات لتحويل الزوار إلى عملاء.` },
-      { property: "og:title", content: `${SITE_NAME} — تسويق رقمي · تصميم مواقع · SEO` },
-      { property: "og:description", content: "نسوّق نشاطك ونبني حضورك الرقمي — مواقع سريعة، SEO، وتحويل حقيقي." },
-      { property: "og:url", content: "/" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [{
-      type: "application/ld+json",
-      children: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        name: SITE_NAME,
-        url: "/",
-      }),
-    }],
-  }),
+  loader: () => loadPublishedPageSeo("home"),
+  head: ({ loaderData }) => {
+    const image = resolveStaticPageOgImage("home", loaderData);
+    return buildStaticPageHead("home", "/", {
+      cms: loaderData,
+      image,
+      extraLinks: [
+        {
+          rel: "preload",
+          as: "image",
+          href: absoluteImageUrl(image),
+          fetchpriority: "high",
+        },
+      ],
+    });
+  },
   component: Home,
 });
 
@@ -71,86 +69,102 @@ function Hero() {
 
   const stats = [
     { icon: TrendingUp, label: "ارتفاع التحويل", value: "+47%" },
-    { icon: BarChart3, label: "زيارات", value: "284K", title: "زيارات organic" },
+    { icon: BarChart3, label: "زيارات organic", value: "284K" },
     { icon: Zap, label: "Lighthouse", value: "99" },
   ];
 
   return (
-    <section className="hero-v2">
-      <div className="hero-v2-bg" aria-hidden>
-        <div className="hero-v2-grid" />
-        <div className="hero-v2-glow hero-v2-glow--1" />
-        <div className="hero-v2-glow hero-v2-glow--2" />
+    <section className="hero-v3">
+      <div className="hero-v3-bg" aria-hidden>
+        <div className="hero-v3-aurora hero-v3-aurora--1" />
+        <div className="hero-v3-aurora hero-v3-aurora--2" />
+        <div className="hero-v3-aurora hero-v3-aurora--3" />
+        <div className="hero-v3-gridlines" />
       </div>
 
-      <div className="container-page hero-v2-inner">
-        <div className="hero-v2-layout">
-          {/* الصورة أولاً في DOM = فوق النص على الموبايل */}
-          <div className="hero-v2-visual animate-hero">
-            <div className="hero-v2-frame">
-              <div className="hero-v2-frame-ring" aria-hidden />
+      <div className="container-page hero-v3-inner">
+        <div className="hero-v3-layout">
+          <div className="hero-v3-copy">
+            <div className="hero-v3-trust animate-hero animate-hero-delay-1">
+              <div className="hero-v3-stars" aria-hidden>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <span>وكالة تسويق رقمي · {SITE_NAME}</span>
+            </div>
+
+            <h1 className="hero-v3-title animate-hero animate-hero-delay-2">
+              حضور رقمي
+              <span className="hero-v3-title-accent"> يبيع ويُقنع</span>
+              <span className="hero-v3-title-sub"> — مو بس يعرض</span>
+            </h1>
+
+            <p className="hero-v3-desc animate-hero animate-hero-delay-3">
+              مواقع سريعة، SEO، وحملات مدفوعة — فريق واحد يفهم السوق السعودي
+              ويحوّل الزوار لعملاء حقيقيين.
+            </p>
+
+            <div className="hero-v3-actions animate-hero animate-hero-delay-4">
+              <Link to="/contact" className="hero-v3-btn-primary">
+                <Rocket className="h-4 w-4" />
+                <span>ابدأ مشروعك مجاناً</span>
+              </Link>
+              <Link to="/portfolio" className="hero-v3-btn-secondary">
+                <span>شاهد أعمالنا</span>
+                <ArrowUpRight className="h-4 w-4 rtl-flip" />
+              </Link>
+            </div>
+
+            <ul className="hero-v3-features animate-hero animate-hero-delay-5">
+              {["استشارة مجانية", "عرض خلال 48 ساعة", "بدون عقود طويلة"].map((t) => (
+                <li key={t}>
+                  <Check className="h-3.5 w-3.5" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="hero-v3-visual animate-hero">
+            <div className="hero-v3-photo-wrap">
               <SiteImage
                 src={heroSrc}
                 alt={heroAlt}
                 loading="eager"
                 fetchPriority="high"
-                wrapperClassName="hero-v2-image aspect-[5/4] w-full"
-                className="hero-v2-image-inner"
+                width={1400}
+                height={875}
+                wrapperClassName="hero-v3-photo w-full"
+                className="hero-v3-photo-img"
               />
+              <div className="hero-v3-photo-shade" aria-hidden />
+            </div>
+
+            <div className="hero-v3-chip hero-v3-chip--top">
+              <ShieldCheck className="h-4 w-4" />
+              <span>موثوق من +120 عميل</span>
+            </div>
+
+            <div className="hero-v3-chip hero-v3-chip--bottom">
+              <Sparkles className="h-4 w-4 text-amber-300" />
+              <span>ROI قابل للقياس</span>
             </div>
           </div>
+        </div>
 
-          <div className="hero-v2-copy">
-            <div className="hero-v2-badge animate-hero animate-hero-delay-1">
-              <span className="hero-v2-badge-dot" />
-              <Megaphone className="h-3.5 w-3.5" />
-              وكالة تسويق رقمي · {SITE_NAME}
+        <div className="hero-v3-metrics animate-hero animate-hero-delay-5">
+          {stats.map((s) => (
+            <div key={s.label} className="hero-v3-metric">
+              <span className="hero-v3-metric-icon">
+                <s.icon className="h-4 w-4" />
+              </span>
+              <div>
+                <div className="hero-v3-metric-value">{s.value}</div>
+                <div className="hero-v3-metric-label">{s.label}</div>
+              </div>
             </div>
-
-            <h1 className="hero-v2-title animate-hero animate-hero-delay-2">
-              <span className="hero-v2-title-line">حوّل زوارك</span>
-              <span className="hero-v2-title-highlight">لعملاء حقيقيين</span>
-            </h1>
-
-            <p className="hero-v2-desc animate-hero animate-hero-delay-3">
-              نصمّم مواقع سريعة، نُحسّن ظهورك في Google، وندير حملاتك —
-              كل ذلك من فريق واحد يفهم السوق السعودي.
-            </p>
-
-            <div className="hero-v2-actions animate-hero animate-hero-delay-4">
-              <Link to="/contact" className="hero-v2-btn-primary">
-                <span>ابدأ مشروعك مجاناً</span>
-                <ArrowRight className="h-4 w-4 rtl-flip" />
-              </Link>
-              <Link to="/portfolio" className="hero-v2-btn-secondary">
-                <ArrowUpRight className="h-4 w-4 rtl-flip" />
-                <span>شاهد أعمالنا</span>
-              </Link>
-            </div>
-
-            <div className="hero-v2-pills animate-hero animate-hero-delay-5">
-              {["استشارة مجانية", "عرض خلال 48 س", "بدون عقود طويلة"].map((t) => (
-                <span key={t} className="hero-v2-pill">
-                  <Check className="h-3 w-3 text-primary" />
-                  {t}
-                </span>
-              ))}
-            </div>
-
-            <div className="hero-v2-stats-row animate-hero animate-hero-delay-5">
-              {stats.map((s, i) => (
-                <div key={s.label} className={`hero-v2-stat hero-v2-stat--${i + 1}`} title={"title" in s ? s.title : undefined}>
-                  <span className="hero-v2-stat-icon">
-                    <s.icon className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <div className="hero-v2-stat-value">{s.value}</div>
-                    <div className="hero-v2-stat-label">{s.label}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -319,7 +333,7 @@ function Stats() {
   if (items.length === 0) return null;
 
   return (
-    <section className="section pt-0">
+    <section className="section section-compact-top">
       <div className="container-page">
         <div className="stats-band">
           <div className="stats-band-grid">
@@ -428,11 +442,7 @@ function Testimonials() {
               <MessageSquareQuote className="h-6 w-6 text-primary" />
               <blockquote className="mt-4 text-[15px] leading-relaxed flex-1">&ldquo;{t.quote}&rdquo;</blockquote>
               <figcaption className="mt-6 pt-5 border-t border-border flex items-center gap-3">
-                {t.avatarUrl ? (
-                  <SiteImage src={t.avatarUrl} alt={t.name} wrapperClassName="h-10 w-10 shrink-0 rounded-full" />
-                ) : (
-                  <span className="h-10 w-10 rounded-full bg-primary/10 grid place-items-center font-semibold text-primary">{t.name[0]}</span>
-                )}
+                <span className="h-10 w-10 rounded-full bg-primary/10 grid place-items-center font-semibold text-primary">{t.name[0]}</span>
                 <div className="min-w-0">
                   <div className="text-sm font-semibold truncate">{t.name}</div>
                   <div className="text-xs text-muted-foreground truncate">{t.role}, {t.company}</div>
@@ -524,7 +534,7 @@ function FAQ() {
 
 function CTA() {
   return (
-    <section className="section pt-0 pb-16">
+    <section className="section section-compact-top pb-16">
       <div className="container-page">
         <div className="home-cta-block relative">
           <span className="relative page-intro-eyebrow !bg-white/15 !text-white !border-white/25">

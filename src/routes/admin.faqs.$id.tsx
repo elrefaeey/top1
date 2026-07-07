@@ -6,7 +6,8 @@ import {
   AdminPublishSelect, adminInputClass,
 } from "@/components/admin/AdminUi";
 import { nowIso } from "@/lib/cms/admin-utils";
-import { useAdminFaq, useSaveFaq, useDeleteFaq } from "@/hooks/use-admin-cms";
+import { useAdminFaq, useSaveFaq, useDeleteFaq, useAdminFaqs } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 
 export const Route = createFileRoute("/admin/faqs/$id")({
   component: AdminFaqEdit,
@@ -21,9 +22,11 @@ function AdminFaqEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminFaq(id, !isNew);
+  const { data: allItems } = useAdminFaqs();
   const save = useSaveFaq();
   const remove = useDeleteFaq();
   const [form, setForm] = useState(empty());
+  useApplyNextOrder(isNew, allItems, setForm);
   useEffect(() => { if (data) setForm({ ...data }); }, [data]);
   const patch = (p: Partial<Omit<FaqItem, "id">>) => setForm((f) => ({ ...f, ...p }));
 
@@ -31,7 +34,7 @@ function AdminFaqEdit() {
     e.preventDefault();
     const docId = isNew ? `faq-${Date.now()}` : id;
     await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
-    navigate({ to: isNew ? "/admin/faqs" : "/admin/faqs/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/faqs" });
   }
 
   return (

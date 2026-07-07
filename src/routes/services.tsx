@@ -1,30 +1,28 @@
 import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { ArrowLeft, Check } from "lucide-react";
-import { useServices } from "@/hooks/use-cms";
+import { useFaqs, useServices } from "@/hooks/use-cms";
 import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
 import { PageIntro } from "@/components/site/SectionIntro";
+import { SeoScreenReaderCopy } from "@/components/seo/SeoScreenReaderCopy";
 import { serviceImage } from "@/lib/site-images";
 
 import { SITE_NAME } from "@/lib/site-config";
 
+import { loadServicesRouteSeo } from "@/lib/seo/static-page-loaders";
+import { buildServicesListingHead } from "@/lib/seo/static-page-head";
+import { servicesPageInternalLinks } from "@/lib/seo/internal-links";
+
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: `الخدمات — ${SITE_NAME}` },
-      { name: "description", content: "تصميم مواقع، تطبيقات ويب، SEO، UI/UX وحلول رقمية — فريق محترف لعلامات طموحة." },
-      { property: "og:title", content: `الخدمات — ${SITE_NAME}` },
-      { property: "og:description", content: "تصميم مواقع، تطبيقات وSEO وحلول رقمية لفرق طموحة." },
-      { property: "og:url", content: "/services" },
-    ],
-    links: [{ rel: "canonical", href: "/services" }],
-  }),
+  loader: () => loadServicesRouteSeo(),
+  head: ({ loaderData }) => buildServicesListingHead(loaderData),
   component: Services,
 });
 
 function Services() {
   const isDetail = useMatch({ from: "/services/$slug", shouldThrow: false });
   const { data: services = [], isLoading } = useServices();
+  const { data: faqs = [] } = useFaqs();
 
   if (isDetail) return <Outlet />;
 
@@ -36,8 +34,70 @@ function Services() {
         desc="فريق محترف واحد. مسؤولية كاملة. من أول sketch لآخر dashboard تحليلات."
       />
 
-      <section className="section pt-0">
-        <div className="container-page space-y-5">
+      {!isLoading && services.length > 0 && (
+        <SeoScreenReaderCopy>
+          <article>
+            <h2>خدمات {SITE_NAME}</h2>
+            {services.map((s) => (
+              <section key={s.id}>
+                <h2>{s.title}</h2>
+                {s.tagline ? <p>{s.tagline}</p> : null}
+                <p>{s.shortDescription}</p>
+                <p>{s.description}</p>
+                {s.features.length > 0 ? (
+                  <ul>
+                    {s.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                {s.deliverables && s.deliverables.length > 0 ? (
+                  <ul>
+                    {s.deliverables.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                ) : null}
+                {s.process && s.process.length > 0 ? (
+                  <div>
+                    {s.process.map((step) => (
+                      <p key={step.title}>
+                        <strong>{step.title}:</strong> {step.description}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
+              </section>
+            ))}
+            {faqs.length > 0 ? (
+              <section>
+                <h2>أسئلة شائعة</h2>
+                {faqs.map((faq) => (
+                  <div key={faq.id}>
+                    <h3>{faq.question}</h3>
+                    <p>{faq.answer}</p>
+                  </div>
+                ))}
+              </section>
+            ) : null}
+            <nav aria-label="روابط داخلية للخدمات">
+              <ul>
+                {servicesPageInternalLinks(services).map((link) => (
+                  <li key={link.href}>
+                    <Link to={link.href}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <p>
+              <Link to="/contact">تواصل معنا</Link>
+            </p>
+          </article>
+        </SeoScreenReaderCopy>
+      )}
+
+      <section className="section">
+        <div className="container-page space-y-8">
           {isLoading && (
             <div className="text-center py-12 text-muted-foreground text-sm">جاري تحميل الخدمات…</div>
           )}

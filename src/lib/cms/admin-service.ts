@@ -56,6 +56,9 @@ function classifyFirestoreError(err: unknown): "timeout" | "permission" | "unkno
 
 export function formatAdminFirestoreError(err: unknown): string {
   const kind = classifyFirestoreError(err);
+  const msg = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
+  const code =
+    typeof err === "object" && err && "code" in err ? String((err as { code: string }).code) : "";
   if (kind === "permission") {
     return "صلاحية غير كافية. تأكد أن حسابك له دور admin/editor في Firestore (users/{uid}) وانشر firestore.rules.";
   }

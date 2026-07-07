@@ -8,7 +8,6 @@ import {
 } from "@/lib/firebase/config";
 import {
   isValidFirebaseConfig,
-  setAppRuntimeConfig,
   type FirebasePublicConfig,
 } from "@/lib/firebase/env";
 
@@ -18,15 +17,11 @@ export function useFirebaseReady() {
   return useContext(FirebaseReadyContext);
 }
 
-type ServerFirebasePayload = FirebasePublicConfig & {
-  bootstrapAdminEmail?: string;
-};
-
-async function fetchServerFirebaseConfig(): Promise<ServerFirebasePayload | null> {
+async function fetchServerFirebaseConfig(): Promise<FirebasePublicConfig | null> {
   try {
     const res = await fetch("/api/firebase-config");
     if (!res.ok) return null;
-    const config = (await res.json()) as ServerFirebasePayload;
+    const config = (await res.json()) as FirebasePublicConfig;
     return isValidFirebaseConfig(config) ? config : null;
   } catch {
     return null;
@@ -44,13 +39,8 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
       if (typeof window !== "undefined") {
         const config = await fetchServerFirebaseConfig();
         if (cancelled) return;
-        if (config) {
-          if (!isFirebaseConfigured()) {
-            setFirebaseConfig(config);
-          }
-          if (config.bootstrapAdminEmail) {
-            setAppRuntimeConfig({ bootstrapAdminEmail: config.bootstrapAdminEmail });
-          }
+        if (config && !isFirebaseConfigured()) {
+          setFirebaseConfig(config);
         }
       }
 

@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 type SiteImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
   wrapperClassName?: string;
   overlay?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
 };
 
 export function SiteImage({
@@ -12,14 +13,20 @@ export function SiteImage({
   alt,
   loading = "lazy",
   decoding = "async",
+  fetchPriority,
+  width,
+  height,
   ...props
 }: SiteImageProps) {
   return (
     <div className={cn("relative overflow-hidden bg-muted max-w-full", wrapperClassName)}>
       <img
-        alt={alt}
+        alt={alt ?? ""}
         loading={loading}
         decoding={decoding}
+        fetchPriority={fetchPriority}
+        width={width}
+        height={height}
         className={cn("h-full w-full max-w-full object-cover", className)}
         {...props}
       />

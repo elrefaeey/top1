@@ -29,4 +29,28 @@ export const cmsClient = {
   getSiteStats: () => fetchCmsApi("stats"),
   getPageBySlug: (slug: string) => fetchCmsApi("page", { slug }),
   getPageById: (id: string) => fetchCmsApi("page-id", { id }),
+  submitLead: async (input: {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+    source?: string;
+    website?: string;
+  }) => {
+    const res = await fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    if (!res.ok) {
+      let message = "تعذّر إرسال الرسالة";
+      try {
+        const body = (await res.json()) as { error?: string };
+        if (body.error) message = body.error;
+      } catch {
+        // ignore
+      }
+      throw new Error(message);
+    }
+  },
 };

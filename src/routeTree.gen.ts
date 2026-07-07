@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
+import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SeoServicesRouteImport } from './routes/seo-services'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as EcommerceDevelopmentRouteImport } from './routes/ecommerce-development'
+import { Route as DigitalMarketingRouteImport } from './routes/digital-marketing'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -21,6 +27,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
+import { Route as ApiLeadsRouteImport } from './routes/api/leads'
 import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminStatsRouteImport } from './routes/admin.stats'
@@ -44,6 +51,16 @@ import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
 
+const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
+  id: '/web-design-saudi-arabia',
+  path: '/web-design-saudi-arabia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
+  id: '/web-design-egypt',
+  path: '/web-design-egypt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -54,9 +71,29 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SeoServicesRoute = SeoServicesRouteImport.update({
+  id: '/seo-services',
+  path: '/seo-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcommerceDevelopmentRoute = EcommerceDevelopmentRouteImport.update({
+  id: '/ecommerce-development',
+  path: '/ecommerce-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DigitalMarketingRoute = DigitalMarketingRouteImport.update({
+  id: '/digital-marketing',
+  path: '/digital-marketing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -102,6 +139,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
   id: '/api/upload-image',
   path: '/api/upload-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLeadsRoute = ApiLeadsRouteImport.update({
+  id: '/api/leads',
+  path: '/api/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiFirebaseConfigRoute = ApiFirebaseConfigRouteImport.update({
@@ -221,9 +263,15 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/digital-marketing': typeof DigitalMarketingRoute
+  '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -237,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -256,9 +305,15 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/digital-marketing': typeof DigitalMarketingRoute
+  '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -272,6 +327,7 @@ export interface FileRoutesByTo {
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -293,9 +349,15 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/digital-marketing': typeof DigitalMarketingRoute
+  '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -309,6 +371,7 @@ export interface FileRoutesById {
   '/admin/stats': typeof AdminStatsRouteWithChildren
   '/admin/testimonials': typeof AdminTestimonialsRouteWithChildren
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
+  '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -331,9 +394,15 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
+    | '/digital-marketing'
+    | '/ecommerce-development'
     | '/portfolio'
+    | '/robots.txt'
+    | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/web-design-egypt'
+    | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -347,6 +416,7 @@ export interface FileRouteTypes {
     | '/admin/stats'
     | '/admin/testimonials'
     | '/api/firebase-config'
+    | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -366,9 +436,15 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/contact'
+    | '/digital-marketing'
+    | '/ecommerce-development'
     | '/portfolio'
+    | '/robots.txt'
+    | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/web-design-egypt'
+    | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -382,6 +458,7 @@ export interface FileRouteTypes {
     | '/admin/stats'
     | '/admin/testimonials'
     | '/api/firebase-config'
+    | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -402,9 +479,15 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
+    | '/digital-marketing'
+    | '/ecommerce-development'
     | '/portfolio'
+    | '/robots.txt'
+    | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/web-design-egypt'
+    | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -418,6 +501,7 @@ export interface FileRouteTypes {
     | '/admin/stats'
     | '/admin/testimonials'
     | '/api/firebase-config'
+    | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
     | '/services/$slug'
@@ -439,16 +523,37 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
+  DigitalMarketingRoute: typeof DigitalMarketingRoute
+  EcommerceDevelopmentRoute: typeof EcommerceDevelopmentRoute
   PortfolioRoute: typeof PortfolioRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SeoServicesRoute: typeof SeoServicesRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  WebDesignEgyptRoute: typeof WebDesignEgyptRoute
+  WebDesignSaudiArabiaRoute: typeof WebDesignSaudiArabiaRoute
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
+  ApiLeadsRoute: typeof ApiLeadsRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-design-saudi-arabia': {
+      id: '/web-design-saudi-arabia'
+      path: '/web-design-saudi-arabia'
+      fullPath: '/web-design-saudi-arabia'
+      preLoaderRoute: typeof WebDesignSaudiArabiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-egypt': {
+      id: '/web-design-egypt'
+      path: '/web-design-egypt'
+      fullPath: '/web-design-egypt'
+      preLoaderRoute: typeof WebDesignEgyptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -463,11 +568,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/seo-services': {
+      id: '/seo-services'
+      path: '/seo-services'
+      fullPath: '/seo-services'
+      preLoaderRoute: typeof SeoServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio': {
       id: '/portfolio'
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecommerce-development': {
+      id: '/ecommerce-development'
+      path: '/ecommerce-development'
+      fullPath: '/ecommerce-development'
+      preLoaderRoute: typeof EcommerceDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/digital-marketing': {
+      id: '/digital-marketing'
+      path: '/digital-marketing'
+      fullPath: '/digital-marketing'
+      preLoaderRoute: typeof DigitalMarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -531,6 +664,13 @@ declare module '@tanstack/react-router' {
       path: '/api/upload-image'
       fullPath: '/api/upload-image'
       preLoaderRoute: typeof ApiUploadImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/leads': {
+      id: '/api/leads'
+      path: '/api/leads'
+      fullPath: '/api/leads'
+      preLoaderRoute: typeof ApiLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/firebase-config': {
@@ -847,10 +987,17 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
+  DigitalMarketingRoute: DigitalMarketingRoute,
+  EcommerceDevelopmentRoute: EcommerceDevelopmentRoute,
   PortfolioRoute: PortfolioRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SeoServicesRoute: SeoServicesRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  WebDesignEgyptRoute: WebDesignEgyptRoute,
+  WebDesignSaudiArabiaRoute: WebDesignSaudiArabiaRoute,
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
+  ApiLeadsRoute: ApiLeadsRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
 }

@@ -1,25 +1,23 @@
 import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { Search, ArrowUpLeft, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useBlogPosts } from "@/hooks/use-cms";
+import { useBlogPosts, usePage } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
 import { SiteImage } from "@/components/site/SiteImage";
+import { SeoScreenReaderCopy } from "@/components/seo/SeoScreenReaderCopy";
 import { siteImages } from "@/lib/site-images";
 
 import { SITE_NAME } from "@/lib/site-config";
 
+import { featuredBlogCategories } from "@/lib/seo/static-page-content";
+import { blogListingInternalLinks } from "@/lib/seo/internal-links";
+import { loadBlogRouteSeo } from "@/lib/seo/static-page-loaders";
+import { buildBlogListingHead } from "@/lib/seo/static-page-head";
+
 export const Route = createFileRoute("/blog")({
-  head: () => ({
-    meta: [
-      { title: `المدونة — ${SITE_NAME}` },
-      { name: "description", content: `مقالات عن التصميم والتطوير وSEO ونمو المنتجات من ${SITE_NAME}.` },
-      { property: "og:title", content: `المدونة — ${SITE_NAME}` },
-      { property: "og:description", content: "مقالات عن التصميم والتطوير وSEO ونمو المنتجات." },
-      { property: "og:url", content: "/blog" },
-    ],
-    links: [{ rel: "canonical", href: "/blog" }],
-  }),
+  loader: () => loadBlogRouteSeo(),
+  head: ({ loaderData }) => buildBlogListingHead(loaderData),
   component: Blog,
 });
 
@@ -28,11 +26,15 @@ function Blog() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("الكل");
   const { data: posts = [], isLoading } = useBlogPosts();
+  const { data: cmsPage } = usePage("blog");
 
   const categories = useMemo(() => {
     const cats = [...new Set(posts.map((p) => p.category).filter(Boolean))];
     return ["الكل", ...cats];
   }, [posts]);
+
+  const featuredCategories = useMemo(() => featuredBlogCategories(posts), [posts]);
+  const blogDescription = cmsPage?.metaDescription?.trim();
 
   const filtered = useMemo(
     () =>
@@ -80,9 +82,47 @@ function Blog() {
         </div>
       </section>
 
-      <section className="section pt-0">
+      {!isLoading && posts.length > 0 && (
+        <SeoScreenReaderCopy>
+          <article>
+            <h2>مدونة {SITE_NAME}</h2>
+            {blogDescription ? <p>{blogDescription}</p> : null}
+            {featuredCategories.length > 0 ? (
+              <section>
+                <h2>أقسام مميزة</h2>
+                <ul>
+                  {featuredCategories.map((category) => (
+                    <li key={category}>{category}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+            {posts.map((post) => (
+              <section key={post.id}>
+                <h2>{post.title}</h2>
+                <p>{post.excerpt}</p>
+                <p>{post.category}</p>
+              </section>
+            ))}
+            <nav aria-label="روابط داخلية للمدونة">
+              <ul>
+                {blogListingInternalLinks(posts).map((link) => (
+                  <li key={link.href}>
+                    <Link to={link.href}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <p>
+              <Link to="/contact">تواصل معنا</Link>
+            </p>
+          </article>
+        </SeoScreenReaderCopy>
+      )}
+
+      <section className="section">
         <div className="container-page">
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="flex flex-wrap gap-2 mb-12">
             {categories.map((c) => (
               <button
                 key={c}
@@ -109,11 +149,15 @@ function Blog() {
           )}
 
           {!isLoading && trending.length > 0 && cat === "الكل" && q === "" && (
-            <div className="mb-10">
-              <div className="flex items-center gap-2 text-sm font-semibold mb-4">
+            <div className="mb-12">
+              <div className="flex items-center gap-2 text-sm font-semibold mb-5">
                 <TrendingUp className="h-4 w-4 text-primary" /> الأكثر رواجاً
               </div>
-              <div className="grid gap-5 md:grid-cols-2">
+              <div
+                className={`grid gap-5 w-full ${
+                  trending.length > 1 ? "md:grid-cols-2" : "max-w-xl mx-auto"
+                }`}
+              >
                 {trending.map((p) => (
                   <Link key={p.id} to="/blog/$slug" params={{ slug: blogPostSlug(p) }} className="card-interactive overflow-hidden group block">
                     {p.featuredImage && (

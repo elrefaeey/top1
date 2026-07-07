@@ -9,7 +9,6 @@ import {
   auth,
   subscribeToAuth,
   toAppUser,
-  ensureBootstrapAdminRole,
   type AppUser,
 } from "@/lib/firebase/auth";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
@@ -71,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setLoading(true);
     try {
-      await ensureBootstrapAdminRole(firebaseUser);
       setUser(await toAppUser(firebaseUser));
     } finally {
       setLoading(false);

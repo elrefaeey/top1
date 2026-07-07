@@ -1,8 +1,14 @@
 import type { ReactNode } from "react";
 import { Link, useMatch } from "@tanstack/react-router";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import type { PublishStatus } from "@/types/cms";
 import { cn } from "@/lib/utils";
+import {
+  checkIcon,
+  evaluateStaticPageSeo,
+  getSummaryChecks,
+  type AdminSeoScoreInput,
+} from "@/lib/seo/admin-seo-score";
 
 export function AdminPageHeader({
   title,
@@ -168,19 +174,39 @@ export function AdminSeoSection({
   onSlug: (v: string) => void;
   showSlug?: boolean;
 }) {
+  const titleLen = metaTitle.length;
+  const descLen = metaDescription.length;
+  const titleHint =
+    titleLen === 0
+      ? "فارغ — سيُستخدم النص الافتراضي للموقع"
+      : titleLen >= 30 && titleLen <= 60
+        ? `${titleLen} حرف — طول مثالي`
+        : `${titleLen} حرف — المثالي 30–60`;
+  const descHint =
+    descLen === 0
+      ? "فارغ — سيُستخدم النص الافتراضي للموقع"
+      : descLen >= 120 && descLen <= 160
+        ? `${descLen} حرف — طول مثالي`
+        : `${descLen} حرف — المثالي 120–160`;
+
   return (
     <AdminCard className="space-y-4">
-      <h2 className="font-semibold">SEO</h2>
+      <div>
+        <h2 className="font-semibold">SEO</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          العناوين والوصف تظهر في Google ومشاركات السوشيال ميديا.
+        </p>
+      </div>
       {showSlug && (
-        <AdminField label="Slug" id="slug">
+        <AdminField label="Slug" id="slug" hint="معرّف الصفحة في الرابط — بالإنجليزية.">
           <input id="slug" dir="ltr" value={slug} onChange={(e) => onSlug(e.target.value)} className={adminInputClass("text-start")} />
         </AdminField>
       )}
-      <AdminField label="Meta Title" id="metaTitle">
-        <input id="metaTitle" value={metaTitle} onChange={(e) => onMetaTitle(e.target.value)} className={adminInputClass()} />
+      <AdminField label="Meta Title" id="metaTitle" hint={titleHint}>
+        <input id="metaTitle" value={metaTitle} onChange={(e) => onMetaTitle(e.target.value)} className={adminInputClass()} placeholder="عنوان يظهر في نتائج البحث" />
       </AdminField>
-      <AdminField label="Meta Description" id="metaDescription">
-        <textarea id="metaDescription" rows={3} value={metaDescription} onChange={(e) => onMetaDescription(e.target.value)} className={adminInputClass()} />
+      <AdminField label="Meta Description" id="metaDescription" hint={descHint}>
+        <textarea id="metaDescription" rows={4} value={metaDescription} onChange={(e) => onMetaDescription(e.target.value)} className={adminInputClass()} placeholder="وصف مختصر يشجّع على النقر" />
       </AdminField>
     </AdminCard>
   );
@@ -201,5 +227,234 @@ export function AdminPublishSelect({
         <option value="scheduled">مجدول</option>
       </select>
     </AdminField>
+  );
+}
+
+/** غلاف قسم داخل صفحة الأدمن */
+export function AdminSection({
+  title,
+  description,
+  children,
+  className,
+}: {
+  title: string;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("mb-8", className)}>
+      <div className="mb-3">
+        <h2 className="text-base font-semibold">{title}</h2>
+        {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** جدول داخل بطاقة مع تنسيق موحّد */
+export function AdminTableCard({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("surface-card overflow-hidden", className)}>{children}</div>;
+}
+
+export function AdminActionLink({
+  to,
+  params,
+  href,
+  label,
+  icon: Icon = Pencil,
+}: {
+  to?: string;
+  params?: Record<string, string>;
+  href?: string;
+  label?: string;
+  icon?: typeof Pencil;
+}) {
+  const className =
+    "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors";
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        <Icon className="h-3.5 w-3.5" />
+        {label ?? "فتح"}
+      </a>
+    );
+  }
+
+  if (!to) return null;
+
+  return (
+    <Link to={to} params={params} className={className}>
+      <Icon className="h-3.5 w-3.5" />
+      {label ?? "تحرير"}
+    </Link>
+  );
+}
+
+export function AdminRowActions({
+  editTo,
+  editParams,
+  onDelete,
+  deleteLabel = "حذف",
+}: {
+  editTo: string;
+  editParams: Record<string, string>;
+  onDelete?: () => void;
+  deleteLabel?: string;
+}) {
+  return (
+    <div className="flex items-center justify-end gap-1">
+      <Link
+        to={editTo}
+        params={editParams}
+        className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        title="تحرير"
+      >
+        <Pencil className="h-4 w-4" />
+      </Link>
+      {onDelete && (
+        <button
+          type="button"
+          onClick={onDelete}
+          className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+          title={deleteLabel}
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function scoreBarColor(score: number): string {
+  if (score >= 90) return "bg-emerald-500";
+  if (score >= 70) return "bg-emerald-400";
+  if (score >= 50) return "bg-amber-500";
+  return "bg-destructive";
+}
+
+/** لوحة تقييم SEO — للبطاقات أو الجداول */
+export function AdminSeoScorePanel({
+  title,
+  subtitle,
+  editTo,
+  editParams,
+  ...input
+}: AdminSeoScoreInput & {
+  title: string;
+  subtitle?: string;
+  editTo?: string;
+  editParams?: Record<string, string>;
+}) {
+  const result = evaluateStaticPageSeo(input);
+  const items = getSummaryChecks(result.checks).slice(0, 5);
+
+  return (
+    <div className="surface-card flex h-full flex-col p-4 md:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="font-semibold truncate">{title}</h3>
+          {subtitle && (
+            <p className="mt-0.5 text-xs text-muted-foreground truncate" dir="ltr">
+              {subtitle}
+            </p>
+          )}
+        </div>
+        <div className="shrink-0 text-end">
+          <div className="text-2xl font-bold tabular-nums leading-none" dir="ltr">
+            {result.score}
+          </div>
+          <div className="text-[10px] text-muted-foreground" dir="ltr">
+            / 100
+          </div>
+          <div className={cn("mt-1 text-xs font-medium", result.labelClassName)}>{result.label}</div>
+        </div>
+      </div>
+
+      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-muted">
+        <div
+          className={cn("h-full rounded-full transition-all", scoreBarColor(result.score))}
+          style={{ width: `${result.score}%` }}
+        />
+      </div>
+
+      <ul className="mt-4 flex-1 space-y-1.5">
+        {items.map((item) => (
+          <li key={item.id} className="flex items-start gap-2 text-xs leading-snug">
+            <span className="shrink-0">{checkIcon(item.status)}</span>
+            <span className={item.status === "pass" ? "text-foreground" : "text-muted-foreground"}>
+              {item.label}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {editTo && (
+        <div className="mt-4 pt-3 border-t border-border">
+          <AdminActionLink to={editTo} params={editParams} label="تحرير SEO" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** معاينة نص SEO — يدعم العربية والإنجليزية بدون عكس الكلمات */
+export function AdminMetaPreview({
+  text,
+  fallback = "نص افتراضي",
+}: {
+  text?: string;
+  fallback?: string;
+}) {
+  const value = text?.trim() || fallback;
+  const isDefault = !text?.trim();
+  return (
+    <p
+      className={cn(
+        "text-xs leading-relaxed line-clamp-2 [unicode-bidi:plaintext]",
+        isDefault ? "text-muted-foreground italic" : "text-foreground/80",
+      )}
+      dir="auto"
+      title={value}
+    >
+      {value}
+    </p>
+  );
+}
+
+/** شارة تقييم SEO مدمجة — للجداول */
+export function AdminSeoScoreBadge(input: AdminSeoScoreInput) {
+  const result = evaluateStaticPageSeo(input);
+  const topIssue = getSummaryChecks(result.checks).find((c) => c.status !== "pass");
+
+  return (
+    <div
+      className="inline-flex flex-col gap-1.5"
+      title={topIssue ? `${topIssue.label}` : undefined}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            "inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-bold tabular-nums",
+            result.score >= 90 && "bg-emerald-500/15 text-emerald-700",
+            result.score >= 70 && result.score < 90 && "bg-emerald-500/10 text-emerald-600",
+            result.score >= 50 && result.score < 70 && "bg-amber-500/15 text-amber-700",
+            result.score < 50 && "bg-destructive/10 text-destructive",
+          )}
+          dir="ltr"
+        >
+          {result.score}
+        </span>
+        <span className={cn("text-xs font-medium", result.labelClassName)}>{result.label}</span>
+      </div>
+      <div className="h-1 w-full max-w-[5.5rem] overflow-hidden rounded-full bg-muted">
+        <div
+          className={cn("h-full rounded-full", scoreBarColor(result.score))}
+          style={{ width: `${result.score}%` }}
+        />
+      </div>
+    </div>
   );
 }

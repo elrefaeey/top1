@@ -6,7 +6,8 @@ import {
   AdminPublishSelect, adminInputClass,
 } from "@/components/admin/AdminUi";
 import { arrayToLines, linesToArray, nowIso } from "@/lib/cms/admin-utils";
-import { useAdminPricingPlan, useSavePricingPlan, useDeletePricingPlan } from "@/hooks/use-admin-cms";
+import { useAdminPricingPlan, useSavePricingPlan, useDeletePricingPlan, useAdminPricing } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 
 export const Route = createFileRoute("/admin/pricing/$id")({
   component: AdminPricingEdit,
@@ -23,10 +24,12 @@ function AdminPricingEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminPricingPlan(id, !isNew);
+  const { data: allPlans } = useAdminPricing();
   const save = useSavePricingPlan();
   const remove = useDeletePricingPlan();
   const [form, setForm] = useState(empty());
   const [featuresText, setFeaturesText] = useState("");
+  useApplyNextOrder(isNew, allPlans, setForm);
 
   useEffect(() => { if (data) { setForm({ ...data }); setFeaturesText(arrayToLines(data.features)); } }, [data]);
   const patch = (p: Partial<Omit<PricingPlan, "id">>) => setForm((f) => ({ ...f, ...p }));
@@ -35,7 +38,7 @@ function AdminPricingEdit() {
     e.preventDefault();
     const docId = isNew ? form.name.toLowerCase().replace(/\s+/g, "-") || "plan" : id;
     await save.mutateAsync({ id: docId, data: { ...form, features: linesToArray(featuresText), updatedAt: nowIso() } });
-    navigate({ to: isNew ? "/admin/pricing" : "/admin/pricing/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/pricing" });
   }
 
   return (

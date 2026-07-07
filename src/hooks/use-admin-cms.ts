@@ -370,8 +370,9 @@ export function useSavePage() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Omit<CmsPage, "id"> }) => saveAdminPage(id, data),
-    onSuccess: async () => {
+    onSuccess: async (_result, { id }) => {
       await qc.invalidateQueries({ queryKey: adminKeys.pages() });
+      await qc.invalidateQueries({ queryKey: adminKeys.page(id) });
       await invalidatePublic(qc);
     },
   });

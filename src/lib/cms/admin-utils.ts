@@ -17,6 +17,12 @@ export function nowIso(): string {
   return new Date().toISOString();
 }
 
+/** Next display order when adding a new ordered CMS item. */
+export function nextOrderFromList(items: Array<{ order?: number }>): number {
+  if (!items.length) return 1;
+  return Math.max(...items.map((item) => item.order ?? 0)) + 1;
+}
+
 export function linesToArray(value: string): string[] {
   return value
     .split("\n")

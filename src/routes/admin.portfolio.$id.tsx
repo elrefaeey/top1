@@ -6,7 +6,8 @@ import {
   AdminPublishSelect, AdminSeoSection, adminInputClass,
 } from "@/components/admin/AdminUi";
 import { arrayToComma, commaToArray, nowIso, slugify } from "@/lib/cms/admin-utils";
-import { useAdminPortfolioItem, useSavePortfolioItem, useDeletePortfolioItem } from "@/hooks/use-admin-cms";
+import { useAdminPortfolioItem, useSavePortfolioItem, useDeletePortfolioItem, useAdminPortfolio } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export const Route = createFileRoute("/admin/portfolio/$id")({
@@ -24,10 +25,12 @@ function AdminPortfolioEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminPortfolioItem(id, !isNew);
+  const { data: allItems } = useAdminPortfolio();
   const save = useSavePortfolioItem();
   const remove = useDeletePortfolioItem();
   const [form, setForm] = useState(empty());
   const [tagsText, setTagsText] = useState("");
+  useApplyNextOrder(isNew, allItems, setForm);
 
   useEffect(() => { if (data) { setForm({ ...data }); setTagsText(arrayToComma(data.tags)); } }, [data]);
   const patch = (p: Partial<Omit<PortfolioItem, "id">>) => setForm((f) => ({ ...f, ...p }));
@@ -36,7 +39,7 @@ function AdminPortfolioEdit() {
     e.preventDefault();
     const docId = isNew ? form.slug || slugify(form.title) : id;
     await save.mutateAsync({ id: docId, data: { ...form, slug: form.slug || slugify(form.title), tags: commaToArray(tagsText), updatedAt: nowIso() } });
-    navigate({ to: isNew ? "/admin/portfolio" : "/admin/portfolio/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/portfolio" });
   }
 
   return (

@@ -12,7 +12,8 @@ import {
   adminInputClass,
 } from "@/components/admin/AdminUi";
 import { arrayToLines, linesToArray, nowIso, slugify } from "@/lib/cms/admin-utils";
-import { useAdminService, useSaveService, useDeleteService } from "@/hooks/use-admin-cms";
+import { useAdminService, useSaveService, useDeleteService, useAdminServices } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export const Route = createFileRoute("/admin/services/$id")({
@@ -41,11 +42,13 @@ function AdminServiceEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminService(id, !isNew);
+  const { data: allServices } = useAdminServices();
   const save = useSaveService();
   const remove = useDeleteService();
 
   const [form, setForm] = useState(emptyService());
   const [featuresText, setFeaturesText] = useState("");
+  useApplyNextOrder(isNew, allServices, setForm);
 
   useEffect(() => {
     if (data) {
@@ -70,7 +73,7 @@ function AdminServiceEdit() {
       publishedAt: form.status === "published" ? form.publishedAt ?? nowIso() : form.publishedAt,
     };
     await save.mutateAsync({ id: docId, data: payload });
-    navigate({ to: isNew ? "/admin/services" : "/admin/services/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/services" });
   }
 
   async function handleDelete() {

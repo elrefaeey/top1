@@ -6,8 +6,8 @@ import {
   AdminPublishSelect, adminInputClass,
 } from "@/components/admin/AdminUi";
 import { nowIso } from "@/lib/cms/admin-utils";
-import { useAdminTestimonial, useSaveTestimonial, useDeleteTestimonial } from "@/hooks/use-admin-cms";
-import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { useAdminTestimonial, useSaveTestimonial, useDeleteTestimonial, useAdminTestimonials } from "@/hooks/use-admin-cms";
+import { useApplyNextOrder } from "@/hooks/use-auto-order";
 
 export const Route = createFileRoute("/admin/testimonials/$id")({
   component: AdminTestimonialEdit,
@@ -23,9 +23,11 @@ function AdminTestimonialEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminTestimonial(id, !isNew);
+  const { data: allItems } = useAdminTestimonials();
   const save = useSaveTestimonial();
   const remove = useDeleteTestimonial();
   const [form, setForm] = useState(empty());
+  useApplyNextOrder(isNew, allItems, setForm);
   useEffect(() => { if (data) setForm({ ...data }); }, [data]);
   const patch = (p: Partial<Omit<Testimonial, "id">>) => setForm((f) => ({ ...f, ...p }));
 
@@ -33,7 +35,7 @@ function AdminTestimonialEdit() {
     e.preventDefault();
     const docId = isNew ? form.name.toLowerCase().replace(/\s+/g, "-") || "testimonial" : id;
     await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
-    navigate({ to: isNew ? "/admin/testimonials" : "/admin/testimonials/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/testimonials" });
   }
 
   return (
@@ -48,7 +50,6 @@ function AdminTestimonialEdit() {
             <AdminField label="الشركة" id="company"><input id="company" value={form.company} onChange={(e) => patch({ company: e.target.value })} className={adminInputClass()} /></AdminField>
           </div>
           <AdminField label="الاقتباس" id="quote"><textarea id="quote" rows={4} required value={form.quote} onChange={(e) => patch({ quote: e.target.value })} className={adminInputClass()} /></AdminField>
-          <ImageUploadField id="avatarUrl" label="صورة العميل" folder="testimonials" value={form.avatarUrl ?? ""} onChange={(avatarUrl) => patch({ avatarUrl })} />
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="التقييم (1-5)" id="rating"><input id="rating" type="number" min={1} max={5} value={form.rating} onChange={(e) => patch({ rating: Number(e.target.value) })} className={adminInputClass()} /></AdminField>
             <AdminField label="الترتيب" id="order"><input id="order" type="number" value={form.order} onChange={(e) => patch({ order: Number(e.target.value) })} className={adminInputClass()} /></AdminField>

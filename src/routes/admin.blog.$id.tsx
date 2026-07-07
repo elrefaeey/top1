@@ -50,7 +50,7 @@ function AdminBlogEdit() {
         publishedAt: form.status === "published" ? form.publishedAt ?? nowIso() : form.publishedAt,
       },
     });
-    navigate({ to: isNew ? "/admin/blog" : "/admin/blog/$id", ...(isNew ? {} : { params: { id: docId } }) });
+    navigate({ to: "/admin/blog" });
   }
 
   return (
