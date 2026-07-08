@@ -5,10 +5,9 @@ import {
   Briefcase,
   Image,
   BookOpen,
-  DollarSign,
   MessageSquare,
   HelpCircle,
-  Users,
+  Inbox,
   Settings,
   Search,
   LogOut,
@@ -21,15 +20,14 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/admin", label: "لوحة التحكم", icon: LayoutDashboard, exact: true },
+  { to: "/admin/leads", label: "الرسائل", icon: Inbox },
   { to: "/admin/pages", label: "الصفحات", icon: FileText },
   { to: "/admin/services", label: "الخدمات", icon: Briefcase },
   { to: "/admin/portfolio", label: "أعمالنا", icon: Image },
   { to: "/admin/blog", label: "المدونة", icon: BookOpen },
-  { to: "/admin/pricing", label: "الأسعار", icon: DollarSign },
   { to: "/admin/testimonials", label: "آراء العملاء", icon: MessageSquare },
   { to: "/admin/stats", label: "الإحصائيات", icon: BarChart3 },
   { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle },
-  { to: "/admin/leads", label: "العملاء المحتملون", icon: Users },
   { to: "/admin/seo", label: "SEO", icon: Search },
   { to: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];

@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  ArrowRight, ArrowUpRight, Sparkles, Check, Star,
-  ShieldCheck, Zap, BarChart3, Rocket,
+  ArrowRight, ArrowUpRight, Sparkles, Star,
+  ShieldCheck, Zap,
   MessageSquareQuote, Plus, Minus, TrendingUp, Target,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
-import { useBlogPosts, useFaqs, usePortfolio, usePricingPlans, useServices, useSiteSettings, useSiteStats, useTestimonials } from "@/hooks/use-cms";
+import { useBlogPosts, useFaqs, usePortfolio, useServices, useSiteSettings, useSiteStats, useTestimonials } from "@/hooks/use-cms";
 import { statIcon } from "@/lib/stat-icons";
-import { blogPostSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { siteImages } from "@/lib/site-images";
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
           rel: "preload",
           as: "image",
           href: absoluteImageUrl(image),
-          fetchpriority: "high",
+          fetchPriority: "high",
         },
       ],
     });
@@ -53,7 +53,6 @@ function Home() {
       <Portfolio />
       <Stats />
       <Process />
-      <Pricing />
       <Testimonials />
       <BlogPreview />
       <FAQ />
@@ -67,104 +66,45 @@ function Hero() {
   const heroSrc = settings?.heroImageUrl?.trim() || siteImages.hero.main;
   const heroAlt = settings?.heroImageAlt?.trim() || siteImages.hero.mainAlt;
 
-  const stats = [
-    { icon: TrendingUp, label: "ارتفاع التحويل", value: "+47%" },
-    { icon: BarChart3, label: "زيارات organic", value: "284K" },
-    { icon: Zap, label: "Lighthouse", value: "99" },
-  ];
-
   return (
-    <section className="hero-v3">
-      <div className="hero-v3-bg" aria-hidden>
-        <div className="hero-v3-aurora hero-v3-aurora--1" />
-        <div className="hero-v3-aurora hero-v3-aurora--2" />
-        <div className="hero-v3-aurora hero-v3-aurora--3" />
-        <div className="hero-v3-gridlines" />
-      </div>
+    <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
+      <div className="container-page hero-studio-grid">
+        <div className="hero-studio-copy">
+          <p className="hero-studio-brand animate-hero animate-hero-delay-1">
+            {SITE_NAME}
+          </p>
 
-      <div className="container-page hero-v3-inner">
-        <div className="hero-v3-layout">
-          <div className="hero-v3-copy">
-            <div className="hero-v3-trust animate-hero animate-hero-delay-1">
-              <div className="hero-v3-stars" aria-hidden>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span>وكالة تسويق رقمي · {SITE_NAME}</span>
-            </div>
+          <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
+            نصمّم حضوراً رقمياً
+            <span className="hero-studio-title-line">يحوّل الزوار إلى عملاء.</span>
+          </h1>
 
-            <h1 className="hero-v3-title animate-hero animate-hero-delay-2">
-              حضور رقمي
-              <span className="hero-v3-title-accent"> يبيع ويُقنع</span>
-              <span className="hero-v3-title-sub"> — مو بس يعرض</span>
-            </h1>
+          <p className="hero-studio-desc animate-hero animate-hero-delay-3">
+            مواقع، SEO، وتسويق — لعلامات تريد نتائج واضحة في السعودية والإمارات.
+          </p>
 
-            <p className="hero-v3-desc animate-hero animate-hero-delay-3">
-              مواقع سريعة، SEO، وحملات مدفوعة — فريق واحد يفهم السوق السعودي
-              ويحوّل الزوار لعملاء حقيقيين.
-            </p>
-
-            <div className="hero-v3-actions animate-hero animate-hero-delay-4">
-              <Link to="/contact" className="hero-v3-btn-primary">
-                <Rocket className="h-4 w-4" />
-                <span>ابدأ مشروعك مجاناً</span>
-              </Link>
-              <Link to="/portfolio" className="hero-v3-btn-secondary">
-                <span>شاهد أعمالنا</span>
-                <ArrowUpRight className="h-4 w-4 rtl-flip" />
-              </Link>
-            </div>
-
-            <ul className="hero-v3-features animate-hero animate-hero-delay-5">
-              {["استشارة مجانية", "عرض خلال 48 ساعة", "بدون عقود طويلة"].map((t) => (
-                <li key={t}>
-                  <Check className="h-3.5 w-3.5" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="hero-v3-visual animate-hero">
-            <div className="hero-v3-photo-wrap">
-              <SiteImage
-                src={heroSrc}
-                alt={heroAlt}
-                loading="eager"
-                fetchPriority="high"
-                width={1400}
-                height={875}
-                wrapperClassName="hero-v3-photo w-full"
-                className="hero-v3-photo-img"
-              />
-              <div className="hero-v3-photo-shade" aria-hidden />
-            </div>
-
-            <div className="hero-v3-chip hero-v3-chip--top">
-              <ShieldCheck className="h-4 w-4" />
-              <span>موثوق من +120 عميل</span>
-            </div>
-
-            <div className="hero-v3-chip hero-v3-chip--bottom">
-              <Sparkles className="h-4 w-4 text-amber-300" />
-              <span>ROI قابل للقياس</span>
-            </div>
+          <div className="hero-studio-actions animate-hero animate-hero-delay-4">
+            <Link to="/contact" className="btn-primary">
+              تواصل معنا
+              <ArrowRight className="h-4 w-4 rtl-flip" />
+            </Link>
+            <Link to="/portfolio" className="btn-ghost">
+              شاهد أعمالنا
+            </Link>
           </div>
         </div>
 
-        <div className="hero-v3-metrics animate-hero animate-hero-delay-5">
-          {stats.map((s) => (
-            <div key={s.label} className="hero-v3-metric">
-              <span className="hero-v3-metric-icon">
-                <s.icon className="h-4 w-4" />
-              </span>
-              <div>
-                <div className="hero-v3-metric-value">{s.value}</div>
-                <div className="hero-v3-metric-label">{s.label}</div>
-              </div>
-            </div>
-          ))}
+        <div className="hero-studio-visual animate-hero animate-hero-delay-3">
+          <SiteImage
+            src={heroSrc}
+            alt={heroAlt}
+            loading="eager"
+            fetchPriority="high"
+            width={960}
+            height={720}
+            wrapperClassName="hero-studio-photo"
+            className="hero-studio-photo-img"
+          />
         </div>
       </div>
     </section>
@@ -268,8 +208,8 @@ function WhyUs() {
             {points.map((p, i) => (
               <Reveal key={p.t} delay={i * 80}>
                 <div className="surface-card p-5 h-full hover:shadow-[var(--shadow-card-hover)] transition-shadow">
-                  <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary mb-3">
-                    <p.icon className="h-5 w-5" />
+                  <span className="bento-icon mb-3">
+                    <p.icon />
                   </span>
                   <h3 className="font-semibold text-[0.9375rem]">{p.t}</h3>
                   <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">{p.d}</p>
@@ -300,7 +240,7 @@ function Portfolio() {
         <div className="section-body portfolio-home-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {preview.map((p, i) => (
             <Reveal key={p.id} delay={i * 100} className="h-full min-w-0 w-full">
-              <Link to="/portfolio" className="group bento-card portfolio-home-card block h-full w-full min-w-0 max-w-full overflow-hidden">
+              <Link to="/portfolio/$slug" params={{ slug: portfolioItemSlug(p) }} className="group bento-card portfolio-home-card block h-full w-full min-w-0 max-w-full overflow-hidden">
                 {p.imageUrl ? (
                   <SiteImage
                     src={p.imageUrl}
@@ -378,49 +318,6 @@ function Process() {
               <span className="process-num">{s.n}</span>
               <h3 className="font-semibold">{s.t}</h3>
               <p className="mt-1.5 text-sm text-muted-foreground">{s.d}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Pricing() {
-  const { data: plans = [] } = usePricingPlans();
-  if (plans.length === 0) return null;
-  return (
-    <section className="section bg-surface/50">
-      <div className="container-page">
-        <SectionIntro eyebrow="الأسعار" title="باقات واضحة." desc="اختر نقطة البداية — نخصص الباقة حسب احتياجك." centered />
-        <div className="section-body grid gap-5 md:grid-cols-3">
-          {plans.map((p) => (
-            <div
-              key={p.name}
-              className={`pricing-card-new ${p.highlighted ? "pricing-card-new--highlight" : ""}`}
-            >
-              {p.highlighted && (
-                <span className="absolute -top-3 start-6 eyebrow !py-1 bg-[var(--gradient-primary)] !text-white !border-transparent text-xs">
-                  الأكثر طلباً
-                </span>
-              )}
-              <h3 className="font-semibold text-lg">{p.name}</h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-4xl font-bold tracking-tight">{p.price}</span>
-                <span className="text-sm text-muted-foreground">{p.period}</span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{p.description}</p>
-              <ul className="mt-6 space-y-2.5">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm">
-                    <Check className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link to={p.ctaHref} className={`mt-7 w-full ${p.highlighted ? "btn-primary" : "btn-ghost"}`}>
-                {p.ctaLabel}
-              </Link>
             </div>
           ))}
         </div>
@@ -544,7 +441,7 @@ function CTA() {
             جاهز تضاعف leads من Google؟
           </h2>
           <p className="relative mt-2.5 text-white/80 max-w-lg mx-auto text-sm">
-            أخبرنا عن مشروعك — نرد خلال 24 ساعة ونرسل عرضاً مخصصاً.
+            تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
           </p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
             <Link to="/contact" className="btn-primary">تواصل معنا <ArrowRight className="h-4 w-4 rtl-flip" /></Link>

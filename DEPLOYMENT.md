@@ -70,7 +70,7 @@ This produces:
 | `.output/public/` | Static assets (JS, CSS, images) |
 | `dist/` | Mirror of static assets (+ `.htaccess`) for reference |
 
-Default `npm run build` still targets **Vercel** (Lovable sync).
+Default `npm run build` still targets **Vercel**.
 
 ---
 

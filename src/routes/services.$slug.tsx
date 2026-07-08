@@ -120,11 +120,8 @@ function ServiceDetail() {
       <section className="section">
         <div className="container-page grid gap-10 md:grid-cols-[1fr_1.4fr]">
           <div>
-            <span
-              className="grid h-12 w-12 place-items-center rounded-xl bg-[var(--gradient-primary)] text-white"
-              aria-hidden
-            >
-              <Icon className="h-5 w-5" />
+            <span className="service-card-icon" aria-hidden>
+              <Icon />
             </span>
             <h2 className="mt-5 text-2xl md:text-3xl font-bold tracking-tight">ما ستحصل عليه</h2>
           </div>
@@ -200,7 +197,7 @@ function ServiceDetail() {
         <div className="container-page max-w-3xl text-center">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">جاهز للبدء؟</h2>
           <p className="mt-3 text-muted-foreground">
-            احصل على استشارة مجانية وعرض سعر مخصص خلال 48 ساعة.
+            تواصل معنا عبر واتساب أو النموذج — نرد خلال 24 ساعة.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link to="/contact" className="btn-primary">تواصل معنا</Link>

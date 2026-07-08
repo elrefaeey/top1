@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/leads")({
 
           const lead = validateLeadInput({
             name: String(body.name ?? ""),
-            email: String(body.email ?? ""),
+            email: body.email ? String(body.email) : undefined,
             phone: body.phone ? String(body.phone) : undefined,
             message: String(body.message ?? ""),
             source: body.source ? String(body.source) : "contact_form",

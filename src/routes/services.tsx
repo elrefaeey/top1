@@ -110,9 +110,11 @@ function Services() {
             const Icon = getServiceIcon(s.icon);
             const flip = idx % 2 === 1;
             return (
-              <article
+              <Link
                 key={s.slug}
-                className="service-card surface-card overflow-hidden grid gap-0 lg:grid-cols-2 lg:items-stretch transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)]"
+                to="/services/$slug"
+                params={{ slug: s.slug }}
+                className="service-card surface-card overflow-hidden grid gap-0 lg:grid-cols-2 lg:items-stretch transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <div className={`service-card-body ${flip ? "lg:order-2" : "lg:order-1"}`}>
                   <span className="service-card-icon">
@@ -131,9 +133,9 @@ function Services() {
                       </li>
                     ))}
                   </ul>
-                  <Link to="/services/$slug" params={{ slug: s.slug }} className="mt-4 inline-flex btn-ghost w-fit text-sm py-2">
+                  <span className="mt-4 inline-flex btn-ghost w-fit text-sm py-2 pointer-events-none">
                     اعرف المزيد <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
-                  </Link>
+                  </span>
                 </div>
                 <div className={`service-card-media-wrap ${flip ? "lg:order-1" : "lg:order-2"}`}>
                   <SiteImage
@@ -143,7 +145,7 @@ function Services() {
                     className="object-cover object-center"
                   />
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>

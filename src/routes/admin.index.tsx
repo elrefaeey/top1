@@ -4,12 +4,11 @@ import {
   Briefcase,
   BookOpen,
   Image,
-  Users,
+  Inbox,
   Database,
   CheckCircle2,
   AlertCircle,
   HelpCircle,
-  DollarSign,
   Search,
 } from "lucide-react";
 import { useState } from "react";
@@ -19,7 +18,6 @@ import {
   useAdminFaqs,
   useAdminLeads,
   useAdminPortfolio,
-  useAdminPricing,
   useAdminServices,
   useAdminTestimonials,
 } from "@/hooks/use-admin-cms";
@@ -33,13 +31,12 @@ export const Route = createFileRoute("/admin/")({
 });
 
 const quickLinks = [
+  { to: "/admin/leads", label: "الرسائل", icon: Inbox, desc: "استفسارات الزوار" },
   { to: "/admin/services", label: "الخدمات", icon: Briefcase, desc: "إدارة الخدمات" },
   { to: "/admin/blog", label: "المدونة", icon: BookOpen, desc: "المقالات وSEO" },
   { to: "/admin/portfolio", label: "أعمالنا", icon: Image, desc: "عرض المشاريع" },
-  { to: "/admin/pricing", label: "الأسعار", icon: DollarSign, desc: "باقات التسعير" },
   { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle, desc: "أسئلة وأجوبة" },
   { to: "/admin/pages", label: "الصفحات", icon: FileText, desc: "SEO الصفحات" },
-  { to: "/admin/leads", label: "العملاء المحتملون", icon: Users, desc: "رسائل التواصل" },
   { to: "/admin/seo", label: "SEO", icon: Search, desc: "نظرة عامة SEO" },
 ];
 
@@ -49,7 +46,6 @@ function AdminDashboard() {
   const { data: blogPosts = [] } = useAdminBlogPosts();
   const { data: services = [] } = useAdminServices();
   const { data: portfolio = [] } = useAdminPortfolio();
-  const { data: pricing = [] } = useAdminPricing();
   const { data: testimonials = [] } = useAdminTestimonials();
   const { data: faqs = [] } = useAdminFaqs();
   const { data: leads = [] } = useAdminLeads();
@@ -65,7 +61,7 @@ function AdminDashboard() {
       await queryClient.invalidateQueries({ queryKey: adminKeys.all });
       setSeedMessage({
         type: "success",
-        text: `تم استيراد ${result.services} خدمة، ${result.blogPosts} مقال، ${result.testimonials} رأي عميل، ${result.pricingPlans} باقة أسعار، ${result.faqs} سؤال شائع، ${result.siteStats} إحصائية.`,
+        text: `تم استيراد ${result.services} خدمة، ${result.blogPosts} مقال، ${result.testimonials} رأي عميل، ${result.faqs} سؤال شائع، ${result.siteStats} إحصائية.`,
       });
     } catch (err) {
       setSeedMessage({
@@ -78,12 +74,11 @@ function AdminDashboard() {
   }
 
   const stats = [
+    { label: "الرسائل", value: leads.length, icon: Inbox },
     { label: "الخدمات", value: services.length, icon: Briefcase },
     { label: "المقالات", value: blogPosts.length, icon: BookOpen },
     { label: "المشاريع", value: portfolio.length, icon: Image },
-    { label: "العملاء المحتملون", value: leads.length, icon: Users },
-    { label: "باقات الأسعار", value: pricing.length, icon: DollarSign },
-    { label: "آراء العملاء", value: testimonials.length, icon: Users },
+    { label: "آراء العملاء", value: testimonials.length, icon: Inbox },
     { label: "الأسئلة الشائعة", value: faqs.length, icon: HelpCircle },
     { label: "الصفحات", value: 6, icon: FileText },
   ];
@@ -120,7 +115,7 @@ function AdminDashboard() {
               استيراد محتوى Firestore
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              استيراد الخدمات والمقالات والأسعار وآراء العملاء والأسئلة الشائعة.
+              استيراد الخدمات والمقالات وآراء العملاء والأسئلة الشائعة.
             </p>
           </div>
           <button

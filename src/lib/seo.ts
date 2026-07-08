@@ -3,8 +3,8 @@ import { SITE_CONTACT_PHONE, SITE_LOGO_URL, SITE_NAME, SITE_TWITTER } from "@/li
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { siteImages } from "@/lib/site-images";
-import type { BlogPost, CmsPage, FaqItem, Service } from "@/types/cms";
-import { blogPostSlug } from "@/lib/cms/admin-utils";
+import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
+import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 
 export const SITE_TAGLINE_EN =
   "Digital Agency serving Saudi Arabia and the United Arab Emirates";
@@ -395,6 +395,53 @@ export function buildServiceHead(
     image: service.imageUrl ?? DEFAULT_OG_IMAGE,
     scripts,
   });
+}
+
+export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
+  const slug = portfolioItemSlug({ slug: item.slug, id: slugParam });
+  const path = `/portfolio/${slug}`;
+  const title = item.metaTitle?.trim() || `${item.title} | ${SITE_NAME}`;
+  const description = item.metaDescription?.trim() || item.description || item.category;
+  return buildPageHead({
+    title,
+    description,
+    path,
+    type: "website",
+    image: item.imageUrl || DEFAULT_OG_IMAGE,
+    scripts: [
+      jsonLdScript({
+        "@context": "https://schema.org",
+        ...creativeWorkSchemaForHead(item, path),
+      }),
+      jsonLdScript(
+        breadcrumbSchema([
+          { name: "الرئيسية", path: "/" },
+          { name: "أعمالنا", path: "/portfolio" },
+          { name: item.title, path },
+        ]),
+      ),
+    ],
+  });
+}
+
+function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
+  return {
+    "@type": "CreativeWork",
+    name: item.title,
+    description: item.description || item.metaDescription || item.category,
+    image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
+    url: absoluteUrl(path),
+    genre: item.category,
+    keywords: item.tags?.length ? item.tags.join(", ") : undefined,
+    ...(item.client
+      ? {
+          creator: {
+            "@type": "Organization",
+            name: item.client,
+          },
+        }
+      : {}),
+  };
 }
 
 export function buildLandingPageHead(page: LandingPageContent) {

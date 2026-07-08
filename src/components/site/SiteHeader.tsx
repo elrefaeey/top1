@@ -69,7 +69,7 @@ export function SiteHeader() {
               to="/contact"
               className="hidden sm:inline-flex btn-primary !py-2.5 !px-5 !text-[0.9375rem]"
             >
-              اطلب عرض سعر
+              تواصل معنا
             </Link>
             <button
               type="button"
@@ -119,7 +119,7 @@ export function SiteHeader() {
             onClick={() => setOpen(false)}
             className="btn-primary mt-2 w-full justify-center !text-sm"
           >
-            اطلب عرض سعر
+            تواصل معنا
           </Link>
         </nav>
       </div>

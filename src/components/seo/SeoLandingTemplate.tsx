@@ -94,7 +94,7 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
         <div className="container-page text-center max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">جاهز للبدء؟</h2>
           <p className="mt-3 text-muted-foreground">
-            تواصل معنا اليوم واحصل على استشارة مجانية وعرض سعر خلال 48 ساعة.
+            تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link to="/contact" className="btn-primary">تواصل معنا</Link>

@@ -32,8 +32,8 @@ function AdminLeadsList() {
   return (
     <div className="p-6 md:p-8">
       <AdminPageHeader
-        title="العملاء المحتملون"
-        description="رسائل نموذج التواصل الواردة من الموقع."
+        title="الرسائل"
+        description="استفسارات الزوار من نموذج التواصل — الاسم ورقم الجوال والرسالة."
       />
 
       <AdminFetchingBar show={isFetching} />
@@ -47,9 +47,8 @@ function AdminLeadsList() {
             <TableHeader>
               <TableRow>
                 <TableHead>الاسم</TableHead>
-                <TableHead>البريد</TableHead>
-                <TableHead>الرسالة</TableHead>
-                <TableHead>المصدر</TableHead>
+                <TableHead>رقم الجوال</TableHead>
+                <TableHead>الاستفسار</TableHead>
                 <TableHead>الحالة</TableHead>
                 <TableHead>التاريخ</TableHead>
               </TableRow>
@@ -58,10 +57,15 @@ function AdminLeadsList() {
               {data.map((lead) => (
                 <TableRow key={lead.id}>
                   <TableCell className="font-medium">{lead.name}</TableCell>
-                  <TableCell dir="ltr" className="text-xs text-muted-foreground">{lead.email}</TableCell>
-                  <TableCell className="text-sm max-w-[240px] truncate">{lead.message}</TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{lead.source}</TableCell>
-                  <TableCell><AdminStatusBadge status={lead.status} /></TableCell>
+                  <TableCell dir="ltr" className="text-sm">
+                    {lead.phone || "—"}
+                  </TableCell>
+                  <TableCell className="text-sm max-w-[320px] whitespace-pre-wrap">
+                    {lead.message}
+                  </TableCell>
+                  <TableCell>
+                    <AdminStatusBadge status={lead.status} />
+                  </TableCell>
                   <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
                     {formatDate(lead.createdAt)}
                   </TableCell>

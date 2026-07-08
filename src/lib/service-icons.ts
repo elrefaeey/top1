@@ -6,6 +6,10 @@ import {
   Layers,
   Rocket,
   Zap,
+  MonitorSmartphone,
+  LineChart,
+  Megaphone,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -17,9 +21,13 @@ const ICONS: Record<string, LucideIcon> = {
   Layers,
   Rocket,
   Zap,
+  MonitorSmartphone,
+  LineChart,
+  Megaphone,
+  Sparkles,
 };
 
 export function serviceIcon(name?: string): LucideIcon {
-  if (!name) return Globe;
-  return ICONS[name] ?? Globe;
+  if (!name) return MonitorSmartphone;
+  return ICONS[name] ?? MonitorSmartphone;
 }

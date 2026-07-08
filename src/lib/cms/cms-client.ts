@@ -19,6 +19,7 @@ export const cmsClient = {
   getServices: () => fetchCmsApi("services"),
   getServiceBySlug: (slug: string) => fetchCmsApi("service", { slug }),
   getPortfolio: () => fetchCmsApi("portfolio"),
+  getPortfolioItemBySlug: (slug: string) => fetchCmsApi("portfolio-item", { slug }),
   getBlogPosts: (max?: number) =>
     fetchCmsApi("blog", max !== undefined ? { max: String(max) } : undefined),
   getBlogPostBySlug: (slug: string) => fetchCmsApi("blog-post", { slug }),
@@ -31,7 +32,7 @@ export const cmsClient = {
   getPageById: (id: string) => fetchCmsApi("page-id", { id }),
   submitLead: async (input: {
     name: string;
-    email: string;
+    email?: string;
     phone?: string;
     message: string;
     source?: string;

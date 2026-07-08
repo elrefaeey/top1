@@ -1,26 +1,27 @@
-type LovableErrorOptions = {
+type ClientErrorOptions = {
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
   handled?: boolean;
   severity?: "error" | "warning" | "info";
 };
 
-type LovableEvents = {
+type ClientErrorBridge = {
   captureException?: (
     error: unknown,
     context?: Record<string, unknown>,
-    options?: LovableErrorOptions,
+    options?: ClientErrorOptions,
   ) => void;
 };
 
 declare global {
   interface Window {
-    __lovableEvents?: LovableEvents;
+    __clientErrorBridge?: ClientErrorBridge;
   }
 }
 
-export function reportLovableError(error: unknown, context: Record<string, unknown> = {}) {
+/** Report client errors to an optional monitoring bridge (if present). */
+export function reportClientError(error: unknown, context: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
-  window.__lovableEvents?.captureException?.(
+  window.__clientErrorBridge?.captureException?.(
     error,
     {
       source: "react_error_boundary",

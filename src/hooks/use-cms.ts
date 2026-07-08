@@ -19,6 +19,7 @@ export const cmsKeys = {
   services: () => [...cmsKeys.all, "services"] as const,
   service: (slug: string) => [...cmsKeys.all, "service", slug] as const,
   portfolio: () => [...cmsKeys.all, "portfolio"] as const,
+  portfolioItem: (slug: string) => [...cmsKeys.all, "portfolio", slug] as const,
   blog: () => [...cmsKeys.all, "blog"] as const,
   blogPost: (slug: string) => [...cmsKeys.all, "blog", slug] as const,
   trending: () => [...cmsKeys.all, "trending"] as const,
@@ -84,6 +85,15 @@ export function usePortfolio() {
     queryKey: cmsKeys.portfolio(),
     queryFn: () => cmsClient.getPortfolio() as Promise<WithId<PortfolioItem>[]>,
     placeholderData: [],
+    ...cmsQuery,
+  });
+}
+
+export function usePortfolioItem(slug: string) {
+  return useQuery({
+    queryKey: cmsKeys.portfolioItem(slug),
+    queryFn: () => cmsClient.getPortfolioItemBySlug(slug) as Promise<WithId<PortfolioItem> | null>,
+    enabled: !!slug,
     ...cmsQuery,
   });
 }
@@ -155,7 +165,7 @@ export function useSubmitLead() {
   return useMutation({
     mutationFn: (input: {
       name: string;
-      email: string;
+      email?: string;
       phone?: string;
       message: string;
       source?: string;

@@ -48,12 +48,14 @@ function AdminServiceEdit() {
 
   const [form, setForm] = useState(emptyService());
   const [featuresText, setFeaturesText] = useState("");
+  const [deliverablesText, setDeliverablesText] = useState("");
   useApplyNextOrder(isNew, allServices, setForm);
 
   useEffect(() => {
     if (data) {
       setForm({ ...data });
       setFeaturesText(arrayToLines(data.features));
+      setDeliverablesText(arrayToLines(data.deliverables));
     }
   }, [data]);
 
@@ -69,6 +71,7 @@ function AdminServiceEdit() {
       ...form,
       slug: form.slug || slugify(form.title),
       features: linesToArray(featuresText),
+      deliverables: linesToArray(deliverablesText),
       updatedAt: nowIso(),
       publishedAt: form.status === "published" ? form.publishedAt ?? nowIso() : form.publishedAt,
     };
@@ -110,10 +113,13 @@ function AdminServiceEdit() {
           <AdminField label="الميزات (سطر لكل ميزة)" id="features">
             <textarea id="features" rows={4} value={featuresText} onChange={(e) => setFeaturesText(e.target.value)} className={adminInputClass()} />
           </AdminField>
+          <AdminField label="ماذا ستحصل عليه (سطر لكل بند)" id="deliverables" hint="يظهر في صفحة تفاصيل الخدمة تحت عنوان «ما ستحصل عليه»">
+            <textarea id="deliverables" rows={5} value={deliverablesText} onChange={(e) => setDeliverablesText(e.target.value)} className={adminInputClass()} />
+          </AdminField>
           <ImageUploadField id="imageUrl" label="صورة الخدمة" folder="services" value={form.imageUrl ?? ""} onChange={(imageUrl) => patch({ imageUrl })} />
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="الأيقونة" id="icon">
-              <input id="icon" dir="ltr" value={form.icon} onChange={(e) => patch({ icon: e.target.value })} className={adminInputClass("text-start")} placeholder="Globe, Code2, Search…" />
+              <input id="icon" dir="ltr" value={form.icon} onChange={(e) => patch({ icon: e.target.value })} className={adminInputClass("text-start")} placeholder="MonitorSmartphone, Search, Palette…" />
             </AdminField>
             <AdminField label="الترتيب" id="order">
               <input id="order" type="number" value={form.order} onChange={(e) => patch({ order: Number(e.target.value) })} className={adminInputClass()} />

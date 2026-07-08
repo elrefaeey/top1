@@ -19,7 +19,7 @@ export const Route = createFileRoute("/contact")({
   component: Contact,
 });
 
-const PERKS = ["رد خلال 24 ساعة", "عرض سعر خلال 48 س", "استشارة مجانية"];
+const PERKS = ["رد خلال 24 ساعة", "استشارة مجانية", "لا التزام"];
 
 function Contact() {
   const { data: settings } = useSiteSettings();
@@ -36,37 +36,24 @@ function Contact() {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const name = String(fd.get("name") ?? "").trim();
-    const emailVal = String(fd.get("email") ?? "").trim();
     const phoneVal = String(fd.get("phone") ?? "").trim();
-    const company = String(fd.get("company") ?? "").trim();
-    const budget = String(fd.get("budget") ?? "").trim();
-    const projectType = String(fd.get("type") ?? "").trim();
     const msg = String(fd.get("msg") ?? "").trim();
     const website = String(fd.get("website") ?? "").trim();
 
-    if (!name || !emailVal || !msg) {
-      alert("يرجى تعبئة الاسم والبريد والرسالة.");
+    if (!name || !phoneVal || !msg) {
+      alert("يرجى تعبئة الاسم ورقم الجوال والاستفسار.");
       return;
     }
-    if (name.length > 120 || emailVal.length > 254 || msg.length > 5000) {
+    if (name.length > 120 || phoneVal.length > 30 || msg.length > 5000) {
       alert("تحقق من طول الحقول وحاول مرة أخرى.");
       return;
     }
 
-    const details = [
-      projectType && `نوع المشروع: ${projectType}`,
-      company && `الشركة: ${company}`,
-      budget && `الميزانية: ${budget}`,
-    ].filter(Boolean);
-
-    const message = [...details, msg].join("\n\n");
-
     try {
       await submitLead.mutateAsync({
         name,
-        email: emailVal,
-        phone: phoneVal || undefined,
-        message,
+        phone: phoneVal,
+        message: msg,
         source: "contact_form",
         website,
       });
@@ -82,7 +69,7 @@ function Contact() {
       <PageIntro
         eyebrow="تواصل"
         title={<>لنبني <span className="text-gradient">شيئاً رائعاً.</span></>}
-        desc="أخبرنا عن مشروعك — نرد خلال 24 ساعة ونرسل عرضاً مخصصاً خلال 48 ساعة."
+        desc="تواصل عبر واتساب أو اترك رسالتك — نرد خلال 24 ساعة."
       />
 
       <section className="contact-page section">
@@ -163,22 +150,18 @@ function Contact() {
                   aria-hidden="true"
                 />
                 <div className="contact-form-head">
-                  <h2 className="contact-form-title">أرسل تفاصيل مشروعك</h2>
-                  <p className="contact-form-desc">الحقول بـ * مطلوبة</p>
+                  <h2 className="contact-form-title">اترك رسالتك</h2>
+                  <p className="contact-form-desc">الاسم ورقم الجوال والاستفسار — الحقول مطلوبة</p>
                 </div>
 
                 <div className="contact-fields-grid">
                   <Field label="اسمك" id="name" name="name" required />
-                  <Field label="البريد الإلكتروني" id="email" name="email" type="email" required />
-                  <Field label="رقم الجوال" id="phone" name="phone" type="tel" placeholder="05xxxxxxxx" dir="ltr" />
-                  <Field label="الشركة" id="company" name="company" />
-                  <Field label="الميزانية التقريبية" id="budget" name="budget" placeholder="مثال: 5,000 – 15,000 ر.س" />
-                  <Field label="نوع المشروع" id="type" name="type" placeholder="موقع، SEO، إعلانات…" />
+                  <Field label="رقم الجوال" id="phone" name="phone" type="tel" placeholder="05xxxxxxxx" dir="ltr" required />
                 </div>
 
                 <div className="contact-field-full">
                   <label htmlFor="msg" className="contact-label">
-                    أخبرنا عن مشروعك <span className="text-primary">*</span>
+                    استفسارك <span className="text-primary">*</span>
                   </label>
                   <textarea
                     id="msg"
@@ -186,7 +169,7 @@ function Contact() {
                     rows={5}
                     required
                     className="contact-textarea"
-                    placeholder="الأهداف، الجدول الزمني، أي تفاصيل مهمة…"
+                    placeholder="اكتب استفسارك أو تفاصيل مشروعك…"
                   />
                 </div>
 

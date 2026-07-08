@@ -32,7 +32,7 @@ export function SiteFooter() {
             </span>
             <h2 className="footer-cta-title">جاهز ترفع مبيعاتك أونلاين؟</h2>
             <p className="footer-cta-desc">
-              احصل على استشارة مجانية وعرض سعر خلال 48 ساعة — بدون التزام.
+              تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
             </p>
           </div>
           <Link to="/contact" className="btn-primary footer-cta-btn shrink-0">
@@ -126,7 +126,7 @@ export function SiteFooter() {
                 ))}
               </ul>
               <Link to="/contact" className="footer-mini-cta mt-4">
-                اطلب عرض سعر
+                تواصل معنا
                 <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
               </Link>
             </div>

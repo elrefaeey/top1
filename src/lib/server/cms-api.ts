@@ -4,6 +4,7 @@ import {
   getFaqs,
   getPageBySlug,
   getPortfolio,
+  getPortfolioItemBySlug,
   getPricingPlans,
   getServiceBySlug,
   getServices,
@@ -50,6 +51,11 @@ export async function handleCmsApiGet(
     }
     case "portfolio":
       return getPortfolio();
+    case "portfolio-item": {
+      const slug = searchParams.get("slug");
+      if (!slug) throw new Error("Missing slug");
+      return getPortfolioItemBySlug(slug);
+    }
     case "blog": {
       const maxRaw = searchParams.get("max");
       const max = maxRaw ? Number(maxRaw) : undefined;

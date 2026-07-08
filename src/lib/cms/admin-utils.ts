@@ -13,6 +13,11 @@ export function blogPostSlug(post: { slug?: string; id: string }): string {
   return post.slug?.trim() || post.id;
 }
 
+/** Slug used in public portfolio URLs — falls back to document id when slug is missing. */
+export function portfolioItemSlug(item: { slug?: string; id: string }): string {
+  return item.slug?.trim() || item.id;
+}
+
 export function nowIso(): string {
   return new Date().toISOString();
 }

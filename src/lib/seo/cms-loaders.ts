@@ -3,6 +3,7 @@ import {
   getBlogPostBySlug,
   getBlogPosts,
   getPortfolio,
+  getPortfolioItemBySlug,
   getServiceBySlug,
   getServices,
 } from "@/lib/cms/content-service";
@@ -23,6 +24,10 @@ export async function loadBlogPostForSeo(slug: string): Promise<WithId<BlogPost>
     (p) => blogPostSlug(p) === slug || p.id === slug || p.slug === slug,
   );
   return fallback ? { ...fallback } : null;
+}
+
+export async function loadPortfolioItemForSeo(slug: string): Promise<WithId<PortfolioItem> | null> {
+  return getPortfolioItemBySlug(slug);
 }
 
 export async function loadSitemapEntries(): Promise<{

@@ -1,4 +1,4 @@
-import { blogPostSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
 import { absoluteUrl } from "@/lib/seo";
 import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
@@ -53,7 +53,7 @@ export function buildSitemapEntries(input: {
   }));
 
   const portfolioPages: SitemapEntry[] = input.portfolio.map((item) => ({
-    path: "/portfolio",
+    path: `/portfolio/${portfolioItemSlug(item)}`,
     changefreq: "monthly" as const,
     priority: "0.6",
     lastmod: toLastmod(item.updatedAt),

@@ -1,13 +1,14 @@
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export type LeadInput = {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   message: string;
   source?: string;
   website?: string;
 };
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+\d\s()-]{7,30}$/;
 
 export function stripControlChars(value: string): string {
   return value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
@@ -23,11 +24,11 @@ export function validateLeadInput(raw: LeadInput): LeadInput {
   if (!name || name.length > 120) {
     throw new Error("الاسم غير صالح");
   }
-  if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
-    throw new Error("البريد الإلكتروني غير صالح");
+  if (!phone || !PHONE_RE.test(phone)) {
+    throw new Error("رقم الجوال غير صالح");
   }
-  if (phone.length > 30) {
-    throw new Error("رقم الجوال طويل جداً");
+  if (email && (email.length > 254 || !EMAIL_RE.test(email))) {
+    throw new Error("البريد الإلكتروني غير صالح");
   }
   if (!message || message.length > 5000) {
     throw new Error("الرسالة غير صالحة");
@@ -38,8 +39,8 @@ export function validateLeadInput(raw: LeadInput): LeadInput {
 
   return {
     name,
-    email,
-    phone: phone || undefined,
+    email: email || undefined,
+    phone,
     message,
     source,
   };

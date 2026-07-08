@@ -25,6 +25,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
 import { Route as ApiLeadsRouteImport } from './routes/api/leads'
@@ -130,6 +131,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => ServicesRoute,
+} as any)
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PortfolioRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -265,7 +271,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
@@ -307,7 +314,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
@@ -330,6 +337,7 @@ export interface FileRoutesByTo {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
@@ -351,7 +359,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
@@ -374,6 +382,7 @@ export interface FileRoutesById {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
@@ -419,6 +428,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
     | '/admin/blog/$id'
@@ -461,6 +471,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin'
     | '/admin/blog/$id'
@@ -504,6 +515,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
     | '/admin/blog/$id'
@@ -525,7 +537,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DigitalMarketingRoute: typeof DigitalMarketingRoute
   EcommerceDevelopmentRoute: typeof EcommerceDevelopmentRoute
-  PortfolioRoute: typeof PortfolioRoute
+  PortfolioRoute: typeof PortfolioRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SeoServicesRoute: typeof SeoServicesRoute
   ServicesRoute: typeof ServicesRouteWithChildren
@@ -651,6 +663,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
+    }
+    '/portfolio/$slug': {
+      id: '/portfolio/$slug'
+      path: '/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof PortfolioRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -969,6 +988,18 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface PortfolioRouteChildren {
+  PortfolioSlugRoute: typeof PortfolioSlugRoute
+}
+
+const PortfolioRouteChildren: PortfolioRouteChildren = {
+  PortfolioSlugRoute: PortfolioSlugRoute,
+}
+
+const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
+  PortfolioRouteChildren,
+)
+
 interface ServicesRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
 }
@@ -989,7 +1020,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DigitalMarketingRoute: DigitalMarketingRoute,
   EcommerceDevelopmentRoute: EcommerceDevelopmentRoute,
-  PortfolioRoute: PortfolioRoute,
+  PortfolioRoute: PortfolioRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SeoServicesRoute: SeoServicesRoute,
   ServicesRoute: ServicesRouteWithChildren,

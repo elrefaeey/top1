@@ -154,7 +154,7 @@ export interface SiteStat extends Timestamps {
 export interface Lead extends Timestamps {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   message: string;
   source: string;

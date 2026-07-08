@@ -154,6 +154,43 @@ export async function getPortfolio(): Promise<WithId<PortfolioItem>[]> {
   return safeList(() => getPublished<PortfolioItem>(COLLECTIONS.portfolio), "portfolio");
 }
 
+function normalizePortfolioItem(docId: string, item: PortfolioItem): WithId<PortfolioItem> {
+  const slug = item.slug?.trim() || docId;
+  return { ...item, id: docId, slug };
+}
+
+export async function getPortfolioItemBySlug(slug: string): Promise<WithId<PortfolioItem> | null> {
+  const normalized = normalizeBlogSlugParam(slug);
+  if (!normalized || !isFirebaseConfigured()) return null;
+
+  try {
+    const snap = await withFirestoreTimeout(
+      getDoc(doc(getDb(), COLLECTIONS.portfolio, normalized)),
+      READ_MS,
+    );
+    if (snap.exists()) {
+      const item = normalizePortfolioItem(snap.id, mapDoc<PortfolioItem>(snap));
+      if (isPublicCmsItem(item as Record<string, unknown>)) return item;
+    }
+  } catch {
+    // continue to list lookup
+  }
+
+  try {
+    const items = await getPortfolio();
+    return (
+      items.find(
+        (p) =>
+          p.slug === normalized ||
+          p.id === normalized ||
+          (p.slug && encodeURIComponent(p.slug) === slug),
+      ) ?? null
+    );
+  } catch {
+    return null;
+  }
+}
+
 function normalizeBlogPost(docId: string, post: BlogPost): WithId<BlogPost> {
   const slug = post.slug?.trim() || docId;
   return { ...post, id: docId, slug };
@@ -250,7 +287,7 @@ export async function getSiteStats(): Promise<WithId<SiteStat>[]> {
 
 export async function createLead(input: {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   message: string;
   source?: string;
@@ -259,7 +296,10 @@ export async function createLead(input: {
   const ts = nowIso();
   await withFirestoreTimeout(
     setDoc(ref, {
-      ...input,
+      name: input.name,
+      ...(input.email ? { email: input.email } : {}),
+      ...(input.phone ? { phone: input.phone } : {}),
+      message: input.message,
       source: input.source ?? "contact_form",
       status: "new" as const,
       createdAt: ts,

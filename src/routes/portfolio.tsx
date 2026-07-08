@@ -1,12 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { ArrowUpLeft } from "lucide-react";
-import { useMemo, useState } from "react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { PageIntro } from "@/components/site/SectionIntro";
-import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { SeoScreenReaderCopy } from "@/components/seo/SeoScreenReaderCopy";
 import { usePortfolio } from "@/hooks/use-cms";
-import { portfolioPageInternalLinks, serviceLinksForPortfolio } from "@/lib/seo/internal-links";
+import { portfolioItemSlug } from "@/lib/cms/admin-utils";
+import { portfolioPageInternalLinks } from "@/lib/seo/internal-links";
 
 import { SITE_NAME } from "@/lib/site-config";
 
@@ -20,13 +19,10 @@ export const Route = createFileRoute("/portfolio")({
 });
 
 function Portfolio() {
+  const isDetail = useMatch({ from: "/portfolio/$slug", shouldThrow: false });
   const { data: items = [] } = usePortfolio();
-  const categories = useMemo(() => {
-    const cats = [...new Set(items.map((p) => p.category).filter(Boolean))];
-    return ["الكل", ...cats] as const;
-  }, [items]);
-  const [active, setActive] = useState<string>("الكل");
-  const shown = active === "الكل" ? items : items.filter((p) => p.category === active);
+
+  if (isDetail) return <Outlet />;
 
   return (
     <>
@@ -47,6 +43,18 @@ function Portfolio() {
                 <p>{item.description}</p>
                 {item.client ? <p>{item.client}</p> : null}
                 {item.tags.length > 0 ? <p>{item.tags.join("، ")}</p> : null}
+                <p>
+                  <Link to="/portfolio/$slug" params={{ slug: portfolioItemSlug(item) }}>
+                    تفاصيل المشروع
+                  </Link>
+                </p>
+                {item.url ? (
+                  <p>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">
+                      الذهاب إلى الموقع
+                    </a>
+                  </p>
+                ) : null}
               </section>
             ))}
             <nav aria-label="روابط داخلية لأعمالنا">
@@ -74,30 +82,16 @@ function Portfolio() {
           )}
 
           {items.length > 0 && (
-            <>
-              {categories.length > 1 && (
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-                  {categories.map((f) => (
-                    <button
-                      key={f}
-                      type="button"
-                      onClick={() => setActive(f)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                        active === f
-                          ? "bg-[var(--gradient-primary)] text-white border-transparent shadow-[var(--shadow-elevated)]"
-                          : "border-border bg-surface text-muted-foreground hover:text-foreground hover:border-primary/30"
-                      }`}
-                    >
-                      {f}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {shown.map((p) => {
-                  const serviceLinks = serviceLinksForPortfolio(p);
-                  return (
-                  <article key={p.id} className="group card-interactive overflow-hidden block">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {items.map((p) => {
+                const slug = portfolioItemSlug(p);
+                return (
+                  <Link
+                    key={p.id}
+                    to="/portfolio/$slug"
+                    params={{ slug }}
+                    className="group card-interactive overflow-hidden block"
+                  >
                     {p.imageUrl ? (
                       <SiteImage
                         src={p.imageUrl}
@@ -112,38 +106,20 @@ function Portfolio() {
                       </div>
                     )}
                     <div className="p-5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h2 className="font-semibold text-base">{p.title}</h2>
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <h2 className="font-semibold text-base group-hover:text-primary transition-colors">
+                            {p.title}
+                          </h2>
                           <p className="text-xs text-muted-foreground mt-0.5">{p.category}</p>
                         </div>
-                        {p.url ? (
-                          <a
-                            href={p.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-primary"
-                            aria-label={`فتح ${p.title}`}
-                          >
-                            <ArrowUpLeft className="h-4 w-4 rtl-flip" />
-                          </a>
-                        ) : (
-                          <ArrowUpLeft className="h-4 w-4 rtl-flip text-muted-foreground/40" />
-                        )}
+                        <ArrowUpLeft className="h-4 w-4 rtl-flip text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                       </div>
-                      {serviceLinks.length > 0 && (
-                        <InternalLinksBlock
-                          title="خدمات مرتبطة"
-                          links={serviceLinks}
-                          className="mt-3"
-                        />
-                      )}
                     </div>
-                  </article>
-                  );
-                })}
-              </div>
-            </>
+                  </Link>
+                );
+              })}
+            </div>
           )}
         </div>
       </section>

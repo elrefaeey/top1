@@ -1,4 +1,4 @@
-import { blogPostSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import {
   absoluteImageUrl,
   absoluteUrl,
@@ -11,12 +11,13 @@ import { SITE_NAME } from "@/lib/site-config";
 import type { BlogPost, FaqItem, PortfolioItem, Service } from "@/types/cms";
 
 export function creativeWorkSchema(item: PortfolioItem) {
+  const path = `/portfolio/${portfolioItemSlug(item)}`;
   return {
     "@type": "CreativeWork",
     name: item.title,
     description: item.description || item.metaDescription || item.category,
     image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
-    url: item.url?.trim() || absoluteUrl("/portfolio"),
+    url: absoluteUrl(path),
     genre: item.category,
     keywords: item.tags?.length ? item.tags.join(", ") : undefined,
     ...(item.client

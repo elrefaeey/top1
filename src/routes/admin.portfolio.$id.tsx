@@ -16,7 +16,7 @@ export const Route = createFileRoute("/admin/portfolio/$id")({
 
 const empty = (): Omit<PortfolioItem, "id"> => ({
   slug: "", title: "", category: "تصميم مواقع", description: "", imageUrl: "",
-  tags: [], order: 1, status: "draft", metaTitle: "", metaDescription: "",
+  url: "", client: "", tags: [], order: 1, status: "draft", metaTitle: "", metaDescription: "",
   createdAt: nowIso(), updatedAt: nowIso(),
 });
 
@@ -52,6 +52,20 @@ function AdminPortfolioEdit() {
           <AdminField label="Slug" id="slug"><input id="slug" dir="ltr" required value={form.slug} onChange={(e) => patch({ slug: e.target.value })} className={adminInputClass("text-start")} /></AdminField>
           <AdminField label="التصنيف" id="category"><input id="category" value={form.category} onChange={(e) => patch({ category: e.target.value })} className={adminInputClass()} /></AdminField>
           <AdminField label="الوصف" id="description"><textarea id="description" rows={4} value={form.description} onChange={(e) => patch({ description: e.target.value })} className={adminInputClass()} /></AdminField>
+          <AdminField label="رابط المشروع" id="url" hint="رابط الموقع الحقيقي — يظهر زر «الذهاب إلى الموقع» في صفحة التفاصيل">
+            <input
+              id="url"
+              dir="ltr"
+              type="url"
+              placeholder="https://example.com"
+              value={form.url ?? ""}
+              onChange={(e) => patch({ url: e.target.value })}
+              className={adminInputClass("text-start")}
+            />
+          </AdminField>
+          <AdminField label="اسم العميل" id="client">
+            <input id="client" value={form.client ?? ""} onChange={(e) => patch({ client: e.target.value })} className={adminInputClass()} />
+          </AdminField>
           <ImageUploadField id="imageUrl" folder="portfolio" value={form.imageUrl} onChange={(imageUrl) => patch({ imageUrl })} required />
           <AdminField label="الوسوم" id="tags"><input id="tags" dir="ltr" value={tagsText} onChange={(e) => setTagsText(e.target.value)} className={adminInputClass("text-start")} /></AdminField>
           <AdminField label="الترتيب" id="order"><input id="order" type="number" value={form.order} onChange={(e) => patch({ order: Number(e.target.value) })} className={adminInputClass()} /></AdminField>

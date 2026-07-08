@@ -15,6 +15,7 @@ dist-ssr
 .vercel
 .tanstack/**
 .nitro
+.lovable
 *.local
 .env
 .env.*
