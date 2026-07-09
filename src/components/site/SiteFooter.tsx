@@ -79,8 +79,7 @@ export function SiteFooter() {
                       className="footer-call-btn"
                       aria-label="اتصل بنا"
                     >
-                      <span className="footer-call-btn-label">اتصل بنا</span>
-                      <span className="footer-call-btn-plus" dir="ltr">+966</span>
+                      اتصل بنا
                     </a>
                   </li>
                 )}
@@ -154,7 +153,7 @@ export function SiteFooter() {
               </Link>{" "}
               {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
             </p>
-            <p className="footer-made">صُنع بعناية · محسّن للأداء والتحويل</p>
+            <p className="footer-made">نصمّم حضوراً رقمياً يحوّل الزوار إلى عملاء.</p>
           </div>
         </div>
       </div>

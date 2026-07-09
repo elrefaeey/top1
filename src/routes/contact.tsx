@@ -104,7 +104,6 @@ function Contact() {
                   <a href={telHref(phone)} className="contact-call-btn">
                     <Phone className="h-4 w-4 shrink-0" />
                     <span>اتصل بنا</span>
-                    <span className="contact-call-plus" dir="ltr">+966</span>
                   </a>
                 </li>
                 <li>
