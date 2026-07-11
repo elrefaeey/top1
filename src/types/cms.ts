@@ -23,6 +23,8 @@ export interface SiteSettings {
   contactEmail: string;
   contactPhone: string;
   whatsappNumber: string;
+  /** الرسالة المسبقة عند فتح واتساب (من الإعدادات / Firebase) */
+  whatsappMessage?: string;
   address: string;
   socialLinks: {
     twitter?: string;

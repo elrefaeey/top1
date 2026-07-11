@@ -11,7 +11,7 @@ import {
 } from "@/components/admin/AdminUi";
 import { useAdminSiteSettings, useSaveSiteSettings } from "@/hooks/use-admin-cms";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
-import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_ADDRESS } from "@/lib/site-config";
+import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_WHATSAPP_MESSAGE, SITE_ADDRESS } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -27,6 +27,7 @@ const defaults: SiteSettings = {
   contactEmail: SITE_CONTACT_EMAIL,
   contactPhone: SITE_CONTACT_PHONE,
   whatsappNumber: SITE_WHATSAPP_NUMBER,
+  whatsappMessage: SITE_WHATSAPP_MESSAGE,
   address: SITE_ADDRESS,
   socialLinks: {},
   integrations: {},
@@ -148,6 +149,19 @@ function AdminSettingsPage() {
               onChange={(e) => patch({ whatsappNumber: e.target.value })}
               className={adminInputClass("text-start")}
             />
+          </AdminField>
+          <AdminField label="رسالة واتساب الافتراضية" id="whatsappMessage">
+            <textarea
+              id="whatsappMessage"
+              rows={3}
+              value={form.whatsappMessage ?? SITE_WHATSAPP_MESSAGE}
+              onChange={(e) => patch({ whatsappMessage: e.target.value })}
+              className={adminInputClass()}
+              placeholder={SITE_WHATSAPP_MESSAGE}
+            />
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              تظهر تلقائياً في محادثة واتساب عند الضغط على زر الواتساب في الموقع.
+            </p>
           </AdminField>
           <AdminField label="العنوان" id="address">
             <input

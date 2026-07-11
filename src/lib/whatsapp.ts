@@ -1,4 +1,4 @@
-import { SITE_WHATSAPP_NUMBER } from "@/lib/site-config";
+import { SITE_WHATSAPP_MESSAGE, SITE_WHATSAPP_NUMBER } from "@/lib/site-config";
 
 export function normalizeWhatsAppNumber(raw?: string | null): string {
   const digits = (raw || SITE_WHATSAPP_NUMBER).replace(/\D/g, "");
@@ -11,9 +11,13 @@ export function normalizeWhatsAppNumber(raw?: string | null): string {
   return digits;
 }
 
-export function whatsAppHref(number?: string | null, message?: string): string {
+export function resolveWhatsAppMessage(message?: string | null): string {
+  const trimmed = message?.trim();
+  return trimmed || SITE_WHATSAPP_MESSAGE;
+}
+
+export function whatsAppHref(number?: string | null, message?: string | null): string {
   const normalized = normalizeWhatsAppNumber(number);
-  const base = `https://wa.me/${normalized}`;
-  if (!message) return base;
-  return `${base}?text=${encodeURIComponent(message)}`;
+  const text = resolveWhatsAppMessage(message);
+  return `https://wa.me/${normalized}?text=${encodeURIComponent(text)}`;
 }

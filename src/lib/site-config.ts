@@ -10,6 +10,10 @@ export const SITE_LOGO_URL = "/logo.jpeg";
 /** رقم واتساب السعودي (966 + بدون صفر) */
 export const SITE_WHATSAPP_NUMBER = "966537309257";
 
+/** الرسالة الافتراضية عند فتح واتساب */
+export const SITE_WHATSAPP_MESSAGE =
+  "مرحباً Top1Markting، أحتاج معلومات عن خدماتكم.";
+
 /** رقم التواصل المحلي */
 export const SITE_CONTACT_PHONE = "0537309257";
 

@@ -3,6 +3,7 @@ import {
   SITE_ADDRESS,
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE,
+  SITE_WHATSAPP_MESSAGE,
   SITE_WHATSAPP_NUMBER,
 } from "@/lib/site-config";
 
@@ -31,6 +32,7 @@ export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined
     ...raw,
     contactPhone: phone,
     whatsappNumber: whatsapp.startsWith("966") ? whatsapp : SITE_WHATSAPP_NUMBER,
+    whatsappMessage: raw.whatsappMessage?.trim() || SITE_WHATSAPP_MESSAGE,
     contactEmail: raw.contactEmail?.trim() || SITE_CONTACT_EMAIL,
     address: raw.address?.trim() || SITE_ADDRESS,
     robotsTxt:
