@@ -41,7 +41,6 @@ function Portfolio() {
                 <h2>{item.title}</h2>
                 <p>{item.category}</p>
                 <p>{item.description}</p>
-                {item.client ? <p>{item.client}</p> : null}
                 {item.tags.length > 0 ? <p>{item.tags.join("، ")}</p> : null}
                 <p>
                   <Link to="/portfolio/$slug" params={{ slug: portfolioItemSlug(item) }}>

@@ -88,9 +88,6 @@ function PortfolioDetail() {
               >
                 {item.title}
               </h1>
-              {item.client ? (
-                <p className="mt-3 text-sm text-muted-foreground">العميل: {item.client}</p>
-              ) : null}
               <p className="mt-5 text-lg text-muted-foreground leading-relaxed" itemProp="description">
                 {item.description}
               </p>

@@ -1,6 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { cmsKeys } from "@/hooks/use-cms";
 import {
   getFirebaseApp,
   isFirebaseConfigured,
@@ -29,7 +27,6 @@ async function fetchServerFirebaseConfig(): Promise<FirebasePublicConfig | null>
 }
 
 export function FirebaseProvider({ children }: { children: ReactNode }) {
-  const queryClient = useQueryClient();
   const [ready, setReady] = useState(() => isFirebaseConfigured());
 
   useEffect(() => {
@@ -48,8 +45,6 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
         getFirebaseApp();
       }
 
-      await queryClient.invalidateQueries({ queryKey: cmsKeys.all });
-
       if (!cancelled) setReady(true);
     }
 
@@ -57,7 +52,7 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [queryClient]);
+  }, []);
 
   return (
     <FirebaseReadyContext.Provider value={ready}>

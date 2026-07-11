@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Target, Eye, Heart, Award, Users, Sparkles } from "lucide-react";
+import { ArrowRight, Target, Eye, Heart, Award, Sparkles } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { siteImages } from "@/lib/site-images";
 
@@ -23,22 +23,41 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   const values = [
-    { icon: Eye, t: "الرؤية", d: "عالم يكون فيه كل منتج رقمي مصنوعاً بإتقان، قابل للقياس، ويستحق الاستخدام." },
-    { icon: Target, t: "الرسالة", d: "مساعدة الفرق الطموحة على إطلاق منتجات جميلة تحقق نمواً قابلاً للقياس." },
-    { icon: Heart, t: "القيم", d: "الإتقان، الشفافية، الملكية، والميل الدائم للإطلاق." },
+    {
+      icon: Eye,
+      t: "الرؤية",
+      d: "أن نكون الشريك الرقمي الموثوق للشركات في السعودية والخليج لبناء حضور إلكتروني يحوّل الزوار إلى عملاء.",
+    },
+    {
+      icon: Target,
+      t: "الرسالة",
+      d: "نصمّم مواقع ومتاجر وحملات رقمية تركّز على السرعة، الوضوح، والنتائج القابلة للقياس.",
+    },
+    {
+      icon: Heart,
+      t: "القيم",
+      d: "الوضوح في التواصل، الجودة في التنفيذ، والالتزام بمواعيد التسليم والدعم بعد الإطلاق.",
+    },
   ];
-  const team = [
-    { n: "عمر حديد", r: "المؤسس وقائد التصميم", photo: siteImages.team.omar },
-    { n: "ليلى بناني", r: "قائدة الهندسة", photo: siteImages.team.layla },
-    { n: "يوسف كرم", r: "مصمم منتجات أول", photo: siteImages.team.youssef },
-    { n: "هناء صالح", r: "قائدة النمو وSEO", photo: siteImages.team.hana },
-  ];
+
   const timeline = [
-    { y: "2019", t: "التأسيس", d: `${SITE_NAME} تُطلق في دبي بثلاثة أعضاء مؤسسين.` },
-    { y: "2021", t: "توسّع لـ 12", d: "توسّع الفريق في التصميم والهندسة والنمو." },
-    { y: "2023", t: "أول جائزة دولية", d: "تكريم في CSS Design Awards كموقع اليوم." },
-    { y: "2026", t: "+120 مشروع", d: "نخدم فرقاً طموحة في 14 دولة." },
+    {
+      y: "البداية",
+      t: "تأسيس التوجه",
+      d: `انطلقت ${SITE_NAME} لتقديم خدمات تصميم مواقع وتسويق رقمي تناسب احتياجات السوق السعودي والخليجي.`,
+    },
+    {
+      y: "التوسع",
+      t: "خدمات متكاملة",
+      d: "أضفنا تطوير المتاجر الإلكترونية، SEO، وتجربة المستخدم ضمن فريق واحد مسؤول عن النتيجة.",
+    },
+    {
+      y: "اليوم",
+      t: "شراكة للنمو",
+      d: "نعمل مع علامات وشركات تريد حضوراً رقمياً واضحاً: مواقع أسرع، ظهور أفضل في Google، وتحويل أعلى.",
+    },
   ];
+
   return (
     <>
       <section className="hero-bg relative overflow-hidden page-intro">
@@ -51,13 +70,16 @@ function About() {
               wrapperClassName="order-first lg:order-2 aspect-[16/10] lg:aspect-[4/3] w-full rounded-2xl shadow-[var(--shadow-card-hover)]"
             />
             <div className="order-last lg:order-1 text-center lg:text-start">
-              <span className="page-intro-eyebrow"><Sparkles className="h-3 w-3" /> عن {SITE_NAME}</span>
+              <span className="page-intro-eyebrow">
+                <Sparkles className="h-3 w-3" /> عن {SITE_NAME}
+              </span>
               <h1 className="page-intro-title">
-                استوديو محترف ب<span className="text-gradient">عقلية الحرفي.</span>
+                وكالة رقمية ل<span className="text-gradient">السوق السعودي والخليج.</span>
               </h1>
               <p className="page-intro-desc lg:mx-0">
-                أسّسنا {SITE_NAME} في 2019 بإيمان بسيط: العمل الرقمي يجب أن يكون جميلاً،
-                سريعاً، ومبنياً ليتراكم. بعد 7 سنوات و120 مشروعاً، هذا الإيمان ما زال يوجّه كل قرار.
+                {SITE_NAME} متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين محركات البحث، والتسويق
+                الرقمي. نساعد الشركات على بناء حضور أونلاين احترافي يركز على تجربة المستخدم ونتائج
+                واضحة في الرياض وجدة والدمام ودول الخليج.
               </p>
             </div>
           </div>
@@ -79,37 +101,36 @@ function About() {
       </section>
 
       <section className="section bg-surface border-y border-border">
-        <div className="container-page">
-          <div className="flex items-end justify-between flex-wrap gap-4">
-            <div className="page-intro-block">
-              <span className="page-intro-eyebrow"><Users className="h-3 w-3" /> الفريق</span>
-              <h2 className="page-intro-title page-intro-title--section">محترفون من البداية للنهاية.</h2>
-            </div>
-          </div>
-          <div className="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((m) => (
-              <div key={m.n} className="surface-card p-6 text-center">
-                <SiteImage
-                  src={m.photo}
-                  alt={m.n}
-                  wrapperClassName="mx-auto h-24 w-24 rounded-full border-2 border-border"
-                />
-                <h3 className="mt-4 font-semibold">{m.n}</h3>
-                <p className="text-xs text-muted-foreground mt-1">{m.r}</p>
-              </div>
-            ))}
+        <div className="container-page max-w-3xl">
+          <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
+          <h2 className="page-intro-title page-intro-title--section">خدمات عملية لنمو أعمالك.</h2>
+          <p className="page-intro-desc !max-w-none mt-3">
+            من الهوية الرقمية وتصميم الواجهات إلى إطلاق الموقع وتحسين ظهوره في Google — نعمل بخطوات
+            واضحة وتحديثات مستمرة حتى الإطلاق وما بعده.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/services" className="btn-ghost">
+              خدماتنا
+            </Link>
+            <Link to="/portfolio" className="btn-ghost">
+              أعمالنا
+            </Link>
           </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container-page max-w-3xl page-intro-block">
-          <span className="page-intro-eyebrow"><Award className="h-3 w-3" /> رحلتنا</span>
-          <h2 className="page-intro-title page-intro-title--section">محطات مهمة.</h2>
+          <span className="page-intro-eyebrow">
+            <Award className="h-3 w-3" /> مسيرتنا
+          </span>
+          <h2 className="page-intro-title page-intro-title--section">محطات واضحة.</h2>
           <ol className="section-body relative border-s border-border ps-6 space-y-8">
             {timeline.map((t) => (
               <li key={t.y} className="relative">
-                <span className="absolute -start-[34px] grid h-6 w-6 place-items-center rounded-full bg-[var(--gradient-primary)] text-white text-[10px] font-bold">●</span>
+                <span className="absolute -start-[34px] grid h-6 w-6 place-items-center rounded-full bg-[var(--gradient-primary)] text-white text-[10px] font-bold">
+                  ●
+                </span>
                 <div className="text-xs text-primary font-semibold tracking-wider">{t.y}</div>
                 <h3 className="mt-1 font-semibold">{t.t}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{t.d}</p>
@@ -117,7 +138,9 @@ function About() {
             ))}
           </ol>
           <div className="mt-12">
-            <Link to="/contact" className="btn-primary">اعمل معنا <ArrowRight className="h-4 w-4 rtl-flip" /></Link>
+            <Link to="/contact" className="btn-primary">
+              ابدأ مشروعك معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+            </Link>
           </div>
         </div>
       </section>

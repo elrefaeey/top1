@@ -16,7 +16,7 @@ export const Route = createFileRoute("/admin/portfolio/$id")({
 
 const empty = (): Omit<PortfolioItem, "id"> => ({
   slug: "", title: "", category: "تصميم مواقع", description: "", imageUrl: "",
-  url: "", client: "", tags: [], order: 1, status: "draft", metaTitle: "", metaDescription: "",
+  url: "", tags: [], order: 1, status: "draft", metaTitle: "", metaDescription: "",
   createdAt: nowIso(), updatedAt: nowIso(),
 });
 
@@ -62,9 +62,6 @@ function AdminPortfolioEdit() {
               onChange={(e) => patch({ url: e.target.value })}
               className={adminInputClass("text-start")}
             />
-          </AdminField>
-          <AdminField label="اسم العميل" id="client">
-            <input id="client" value={form.client ?? ""} onChange={(e) => patch({ client: e.target.value })} className={adminInputClass()} />
           </AdminField>
           <ImageUploadField id="imageUrl" folder="portfolio" value={form.imageUrl} onChange={(imageUrl) => patch({ imageUrl })} required />
           <AdminField label="الوسوم" id="tags"><input id="tags" dir="ltr" value={tagsText} onChange={(e) => setTagsText(e.target.value)} className={adminInputClass("text-start")} /></AdminField>

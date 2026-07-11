@@ -34,7 +34,11 @@ export function buildSitemapEntries(input: {
     { path: "/services", changefreq: "weekly", priority: "0.9" },
     { path: "/portfolio", changefreq: "weekly", priority: "0.8" },
     { path: "/blog", changefreq: "weekly", priority: "0.8" },
+    { path: "/pricing", changefreq: "monthly", priority: "0.75" },
     { path: "/contact", changefreq: "monthly", priority: "0.7" },
+    { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+    { path: "/terms", changefreq: "yearly", priority: "0.3" },
+    { path: "/cookies", changefreq: "yearly", priority: "0.3" },
     ...landingPages,
   ];
 

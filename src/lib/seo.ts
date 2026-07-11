@@ -1,5 +1,5 @@
 import { SITE_URL } from "@/lib/firebase/config";
-import { SITE_CONTACT_PHONE, SITE_LOGO_URL, SITE_NAME, SITE_TWITTER } from "@/lib/site-config";
+import { SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_LOGO_URL, SITE_NAME, SITE_TWITTER, SITE_WHATSAPP_NUMBER } from "@/lib/site-config";
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { siteImages } from "@/lib/site-images";
@@ -97,8 +97,7 @@ export type BreadcrumbItem = { name: string; path: string };
 
 export function absoluteUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const base = (SITE_URL || "").replace(/\/$/, "");
-  if (!base) return normalizedPath;
+  const base = (SITE_URL || "https://top1markting.com").replace(/\/$/, "");
   return `${base}${normalizedPath}`;
 }
 
@@ -142,7 +141,7 @@ export function websiteSchema() {
   };
 }
 
-export function localBusinessSchema(contactEmail = "hello@top1markting.com") {
+export function localBusinessSchema(contactEmail = SITE_CONTACT_EMAIL) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -150,8 +149,13 @@ export function localBusinessSchema(contactEmail = "hello@top1markting.com") {
     name: SITE_NAME,
     url: absoluteUrl("/"),
     description: SITE_TAGLINE_EN,
-    telephone: SITE_CONTACT_PHONE,
+    telephone: `+${SITE_WHATSAPP_NUMBER}`,
     email: contactEmail,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Riyadh",
+      addressCountry: "SA",
+    },
     areaServed: [...SEO_AREAS_SERVED],
     knowsAbout: [...SEO_KNOWS_ABOUT],
     image: absoluteImageUrl(DEFAULT_OG_IMAGE),
@@ -269,7 +273,7 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:type", content: input.type ?? "website" },
     { property: "og:image", content: image },
     { property: "og:site_name", content: SITE_NAME },
-    { property: "og:locale", content: "ar_EG" },
+    { property: "og:locale", content: "ar_SA" },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: SITE_TWITTER },
     { name: "twitter:title", content: input.title },

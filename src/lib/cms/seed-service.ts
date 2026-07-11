@@ -10,7 +10,7 @@ import {
 } from "./fallback-data";
 import type { SiteSettings } from "@/types/cms";
 
-import { SITE_NAME, SITE_LOGO_URL } from "@/lib/site-config";
+import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_ADDRESS } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
 
 const SITE_SETTINGS: SiteSettings = {
@@ -20,10 +20,10 @@ const SITE_SETTINGS: SiteSettings = {
   faviconUrl: SITE_LOGO_URL,
   heroImageUrl: siteImages.hero.main,
   heroImageAlt: siteImages.hero.mainAlt,
-  contactEmail: "hello@top1markting.com",
-  contactPhone: "0549881368",
-  whatsappNumber: "966549881368",
-  address: "الرياض، المملكة العربية السعودية",
+  contactEmail: SITE_CONTACT_EMAIL,
+  contactPhone: SITE_CONTACT_PHONE,
+  whatsappNumber: SITE_WHATSAPP_NUMBER,
+  address: SITE_ADDRESS,
   socialLinks: {
     facebook: "https://www.facebook.com/Top1Markting",
     instagram: "https://www.instagram.com/top1markting/",
@@ -33,7 +33,7 @@ const SITE_SETTINGS: SiteSettings = {
   integrations: {
     googleAnalyticsId: "G-09WBWML921",
   },
-  robotsTxt: "User-agent: *\nAllow: /\n\nSitemap: https://top1markting.com/sitemap.xml",
+  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml",
   headerNav: [
     { label: "Services", href: "/services", order: 1 },
     { label: "Portfolio", href: "/portfolio", order: 2 },
@@ -42,8 +42,10 @@ const SITE_SETTINGS: SiteSettings = {
   ],
   footerNav: [
     { label: "Contact", href: "/contact", order: 1 },
-    { label: "Privacy", href: "/privacy", order: 2 },
-    { label: "Terms", href: "/terms", order: 3 },
+    { label: "Pricing", href: "/pricing", order: 2 },
+    { label: "Privacy", href: "/privacy", order: 3 },
+    { label: "Terms", href: "/terms", order: 4 },
+    { label: "Cookies", href: "/cookies", order: 5 },
   ],
 };
 

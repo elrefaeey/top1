@@ -12,8 +12,15 @@ const QUICK_LINKS = [
   { label: "أعمالنا", href: "/portfolio" },
   { label: "المدونة", href: "/blog" },
   { label: "من نحن", href: "/about" },
+  { label: "الأسعار", href: "/pricing" },
   { label: "تواصل", href: "/contact" },
 ];
+
+const LEGAL_LINKS = [
+  { label: "سياسة الخصوصية", href: "/privacy" },
+  { label: "الشروط والأحكام", href: "/terms" },
+  { label: "ملفات تعريف الارتباط", href: "/cookies" },
+] as const;
 
 export function SiteFooter() {
   const { data: settings } = useSiteSettings();
@@ -90,7 +97,7 @@ export function SiteFooter() {
             <div className="footer-links-grid">
             {/* روابط سريعة */}
             <div className="footer-links-col">
-              <h4 className="footer-col-title">روابط سريعة</h4>
+              <h3 className="footer-col-title">روابط سريعة</h3>
               <ul className="footer-link-list">
                 {QUICK_LINKS.map((l) => (
                   <li key={l.href}>
@@ -103,7 +110,7 @@ export function SiteFooter() {
             {/* الخدمات — ديسكتوب فقط */}
             {services.length > 0 && (
               <div className="footer-links-col footer-services-col">
-                <h4 className="footer-col-title">خدماتنا</h4>
+                <h3 className="footer-col-title">خدماتنا</h3>
                 <ul className="footer-link-list">
                   {services.slice(0, 6).map((s) => (
                     <li key={s.id}>
@@ -118,7 +125,7 @@ export function SiteFooter() {
 
             {/* لماذا نحن — ديسكتوب فقط */}
             <div className="footer-links-col footer-perks-col">
-              <h4 className="footer-col-title">لماذا نحن؟</h4>
+              <h3 className="footer-col-title">لماذا نحن؟</h3>
               <ul className="footer-perks">
                 {["فريق خبراء فقط", "تسليم سريع وشفاف", "SEO من اليوم الأول", "دعم بعد الإطلاق"].map((t) => (
                   <li key={t}>{t}</li>
@@ -148,11 +155,15 @@ export function SiteFooter() {
           {/* الشريط السفلي */}
           <div className="footer-bottom">
             <p className="footer-copy">
-              <Link to="/admin/login" className="footer-copy-mark" aria-label="©">
-                ©
-              </Link>{" "}
-              {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
+              © {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
             </p>
+            <nav className="footer-legal-nav" aria-label="روابط قانونية">
+              {LEGAL_LINKS.map((l) => (
+                <Link key={l.href} to={l.href} className="footer-legal-link">
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
             <p className="footer-made">نصمّم حضوراً رقمياً يحوّل الزوار إلى عملاء.</p>
           </div>
         </div>

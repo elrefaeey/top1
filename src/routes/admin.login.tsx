@@ -81,7 +81,6 @@ function AdminLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-start"
-              placeholder="admin@top1markting.com"
             />
           </div>
 
@@ -96,7 +95,6 @@ function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-start"
-              placeholder="••••••••"
             />
           </div>
 

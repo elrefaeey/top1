@@ -11,13 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
 import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoServicesRouteImport } from './routes/seo-services'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as EcommerceDevelopmentRouteImport } from './routes/ecommerce-development'
 import { Route as DigitalMarketingRouteImport } from './routes/digital-marketing'
+import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -62,6 +66,11 @@ const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
   path: '/web-design-egypt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -82,6 +91,16 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
@@ -95,6 +114,11 @@ const EcommerceDevelopmentRoute = EcommerceDevelopmentRouteImport.update({
 const DigitalMarketingRoute = DigitalMarketingRouteImport.update({
   id: '/digital-marketing',
   path: '/digital-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -269,13 +293,17 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -312,13 +340,17 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -357,13 +389,17 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
@@ -403,13 +439,17 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/robots.txt'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/terms'
     | '/web-design-egypt'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
@@ -446,13 +486,17 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/robots.txt'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/terms'
     | '/web-design-egypt'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
@@ -490,13 +534,17 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
+    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/robots.txt'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
+    | '/terms'
     | '/web-design-egypt'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
@@ -535,13 +583,17 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
   DigitalMarketingRoute: typeof DigitalMarketingRoute
   EcommerceDevelopmentRoute: typeof EcommerceDevelopmentRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SeoServicesRoute: typeof SeoServicesRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   WebDesignEgyptRoute: typeof WebDesignEgyptRoute
   WebDesignSaudiArabiaRoute: typeof WebDesignSaudiArabiaRoute
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
@@ -564,6 +616,13 @@ declare module '@tanstack/react-router' {
       path: '/web-design-egypt'
       fullPath: '/web-design-egypt'
       preLoaderRoute: typeof WebDesignEgyptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -594,6 +653,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio': {
       id: '/portfolio'
       path: '/portfolio'
@@ -613,6 +686,13 @@ declare module '@tanstack/react-router' {
       path: '/digital-marketing'
       fullPath: '/digital-marketing'
       preLoaderRoute: typeof DigitalMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1018,13 +1098,17 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
   DigitalMarketingRoute: DigitalMarketingRoute,
   EcommerceDevelopmentRoute: EcommerceDevelopmentRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SeoServicesRoute: SeoServicesRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   WebDesignEgyptRoute: WebDesignEgyptRoute,
   WebDesignSaudiArabiaRoute: WebDesignSaudiArabiaRoute,
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,

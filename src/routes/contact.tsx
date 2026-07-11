@@ -5,7 +5,7 @@ import { PageIntro } from "@/components/site/SectionIntro";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { useFaqs, useSiteSettings, useSubmitLead } from "@/hooks/use-cms";
-import { SITE_CONTACT_PHONE, SITE_NAME } from "@/lib/site-config";
+import { SITE_ADDRESS, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_NAME } from "@/lib/site-config";
 import { telHref } from "@/lib/phone";
 import { whatsAppHref } from "@/lib/whatsapp";
 
@@ -25,9 +25,9 @@ function Contact() {
   const { data: settings } = useSiteSettings();
   const submitLead = useSubmitLead();
 
-  const email = settings?.contactEmail || "hello@top1markting.com";
+  const email = settings?.contactEmail || SITE_CONTACT_EMAIL;
   const phone = settings?.contactPhone || SITE_CONTACT_PHONE;
-  const address = settings?.address || "الرياض · المملكة العربية السعودية";
+  const address = settings?.address || SITE_ADDRESS;
   const waHref = whatsAppHref(settings?.whatsappNumber, `مرحباً ${SITE_NAME}، أود مناقشة مشروع.`);
 
   const [sent, setSent] = useState(false);

@@ -11,7 +11,7 @@ import {
 } from "@/components/admin/AdminUi";
 import { useAdminSiteSettings, useSaveSiteSettings } from "@/hooks/use-admin-cms";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
-import { SITE_NAME, SITE_LOGO_URL } from "@/lib/site-config";
+import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_ADDRESS } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -24,13 +24,13 @@ const defaults: SiteSettings = {
   tagline: "",
   logoUrl: SITE_LOGO_URL,
   faviconUrl: SITE_LOGO_URL,
-  contactEmail: "",
-  contactPhone: "",
-  whatsappNumber: "",
-  address: "",
+  contactEmail: SITE_CONTACT_EMAIL,
+  contactPhone: SITE_CONTACT_PHONE,
+  whatsappNumber: SITE_WHATSAPP_NUMBER,
+  address: SITE_ADDRESS,
   socialLinks: {},
   integrations: {},
-  robotsTxt: "",
+  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml",
   headerNav: [],
   footerNav: [],
 };

@@ -23,6 +23,7 @@ import type {
   Testimonial,
   WithId,
 } from "@/types/cms";
+import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
 
 const READ_MS = getReadTimeoutMs();
 
@@ -94,7 +95,8 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       getDoc(doc(getDb(), COLLECTIONS.siteSettings, "global")),
       READ_MS,
     );
-    return snap.exists() ? (snap.data() as SiteSettings) : null;
+    if (!snap.exists()) return null;
+    return normalizePublicSiteSettings(snap.data() as SiteSettings);
   } catch {
     return null;
   }

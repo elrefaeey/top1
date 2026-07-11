@@ -154,16 +154,6 @@ function AdminDashboard() {
           </Link>
         ))}
       </div>
-
-      <div className="mt-8 surface-card p-5 border-dashed">
-        <h3 className="font-medium">الخطوات التالية</h3>
-        <ol className="mt-3 space-y-2 text-sm text-muted-foreground list-decimal list-inside">
-          <li>أنشئ مستخدم في Firebase Authentication</li>
-          <li>أضف مستند <code className="text-xs bg-accent px-1 rounded">users/&#123;uid&#125;</code> مع <code className="text-xs bg-accent px-1 rounded">role: admin</code></li>
-          <li>انشر قواعد الأمان من <code className="text-xs bg-accent px-1 rounded">firestore.rules</code></li>
-          <li>اضغط &quot;استيراد المحتوى&quot; أو أضف المحتوى يدوياً من لوحة التحكم</li>
-        </ol>
-      </div>
     </div>
   );
 }
