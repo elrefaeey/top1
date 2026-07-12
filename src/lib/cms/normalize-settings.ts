@@ -10,6 +10,13 @@ import {
 
 const STALE_PHONE_FRAGMENTS = ["549881368", "0549881368", "966549881368"];
 
+const DEFAULT_ROBOTS_TXT = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: https://www.top1markting.com/sitemap.xml`;
+
 function digitsOnly(value?: string | null): string {
   return (value || "").replace(/\D/g, "");
 }
@@ -18,6 +25,14 @@ function isStalePhone(value?: string | null): boolean {
   const d = digitsOnly(value);
   if (!d) return true;
   return STALE_PHONE_FRAGMENTS.some((frag) => d.includes(frag.replace(/\D/g, "")));
+}
+
+function ensureAdminBlockedInRobots(robotsTxt: string): string {
+  if (/Disallow:\s*\/admin/i.test(robotsTxt)) return robotsTxt;
+  if (/^Sitemap:/im.test(robotsTxt)) {
+    return robotsTxt.replace(/^Sitemap:/im, "Disallow: /admin\nDisallow: /admin/\n\nSitemap:");
+  }
+  return `${robotsTxt.trim()}\nDisallow: /admin\nDisallow: /admin/\n`;
 }
 
 /** يوحّد بيانات الاتصال للعرض العام (يتجاوز الأرقام القديمة في CMS). */
@@ -29,6 +44,15 @@ export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined
     ? SITE_WHATSAPP_NUMBER
     : (raw.whatsappNumber.trim() || SITE_WHATSAPP_NUMBER);
 
+  const robotsRaw = raw.robotsTxt?.trim() || "";
+  const robotsTxt =
+    robotsRaw.includes("vercel.app") ||
+    robotsRaw.includes("top1-ten") ||
+    !robotsRaw.includes("www.top1markting.com/sitemap.xml") ||
+    !robotsRaw
+      ? DEFAULT_ROBOTS_TXT
+      : ensureAdminBlockedInRobots(robotsRaw);
+
   return {
     ...raw,
     logoUrl: SITE_LOGO_URL,
@@ -38,12 +62,6 @@ export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined
     whatsappMessage: raw.whatsappMessage?.trim() || SITE_WHATSAPP_MESSAGE,
     contactEmail: raw.contactEmail?.trim() || SITE_CONTACT_EMAIL,
     address: raw.address?.trim() || SITE_ADDRESS,
-    robotsTxt:
-      raw.robotsTxt?.includes("vercel.app") ||
-      raw.robotsTxt?.includes("top1-ten") ||
-      !raw.robotsTxt?.includes("www.top1markting.com/sitemap.xml") ||
-      !raw.robotsTxt?.trim()
-        ? `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://www.top1markting.com/sitemap.xml`
-        : raw.robotsTxt,
+    robotsTxt,
   };
 }

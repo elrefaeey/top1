@@ -31,7 +31,7 @@ const defaults: SiteSettings = {
   address: SITE_ADDRESS,
   socialLinks: {},
   integrations: {},
-  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://www.top1markting.com/sitemap.xml",
+  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/\n\nSitemap: https://www.top1markting.com/sitemap.xml",
   headerNav: [],
   footerNav: [],
 };
