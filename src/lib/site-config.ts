@@ -4,8 +4,8 @@ export const SITE_NAME = "Top1Markting";
 /** حساب تويتر */
 export const SITE_TWITTER = "@Top1Markting";
 
-/** مسار اللوجو الافتراضي (public/) */
-export const SITE_LOGO_URL = "/logo.jpeg";
+/** مسار اللوجو الافتراضي (شفاف — public/logo.png) */
+export const SITE_LOGO_URL = "/logo.png";
 
 /** رقم واتساب السعودي (966 + بدون صفر) */
 export const SITE_WHATSAPP_NUMBER = "966537309257";

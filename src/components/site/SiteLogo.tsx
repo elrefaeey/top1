@@ -11,7 +11,8 @@ type SiteLogoProps = {
 export function SiteLogo({ className, imageClassName, showName = true }: SiteLogoProps) {
   const { data: settings } = useSiteSettings();
   const brandName = settings?.siteName || SITE_NAME;
-  const logoUrl = settings?.logoUrl || SITE_LOGO_URL;
+  // لوجو ثابت شفاف من الملفات العامة — لا يُستبدل من CMS
+  const logoUrl = SITE_LOGO_URL;
 
   return (
     <span className={cn("flex items-center gap-2.5 min-w-0", className)}>
@@ -20,11 +21,11 @@ export function SiteLogo({ className, imageClassName, showName = true }: SiteLog
         alt=""
         aria-hidden
         className={cn(
-          "h-9 w-auto max-w-[7.5rem] shrink-0 object-contain object-center",
+          "h-12 w-auto max-w-[10rem] shrink-0 object-contain object-center bg-transparent",
           imageClassName,
         )}
-        width={120}
-        height={36}
+        width={160}
+        height={48}
         decoding="async"
       />
       {showName && (

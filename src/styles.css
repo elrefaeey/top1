@@ -1409,15 +1409,15 @@
 }
 
 .footer-brand-logo-img {
-  height: 2rem;
+  height: 2.75rem;
   width: auto;
-  max-width: 7rem;
+  max-width: 9rem;
   filter: drop-shadow(0 0 10px rgb(255 255 255 / 0.18));
 }
 @media (min-width: 768px) {
   .footer-brand-logo-img {
-    height: 2rem;
-    max-width: 7rem;
+    height: 2.75rem;
+    max-width: 9rem;
   }
 }
 
@@ -1915,8 +1915,8 @@
   }
 
   .footer-brand-logo-img {
-    height: 2.5rem;
-    max-width: 8rem;
+    height: 3rem;
+    max-width: 10rem;
   }
 
   .footer-brand-logo .font-display {
