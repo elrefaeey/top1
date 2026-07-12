@@ -57,7 +57,11 @@ function AdminSettingsPage() {
     setSaveError("");
     setSaveOk(false);
     try {
-      await save.mutateAsync(form);
+      await save.mutateAsync({
+        ...form,
+        logoUrl: SITE_LOGO_URL,
+        faviconUrl: SITE_LOGO_URL,
+      });
       setSaveOk(true);
     } catch (err) {
       setSaveError(formatAdminFirestoreError(err));
@@ -99,13 +103,6 @@ function AdminSettingsPage() {
               className={adminInputClass()}
             />
           </AdminField>
-          <ImageUploadField
-            id="logoUrl"
-            label="لوجو الموقع"
-            folder="site"
-            value={form.logoUrl ?? SITE_LOGO_URL}
-            onChange={(logoUrl) => patch({ logoUrl, faviconUrl: logoUrl })}
-          />
           <ImageUploadField
             id="heroImageUrl"
             label="صورة الصفحة الرئيسية (Hero)"
