@@ -17,7 +17,11 @@ import { buildBlogListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/blog")({
   loader: () => loadBlogRouteSeo(),
-  head: ({ loaderData }) => buildBlogListingHead(loaderData),
+  head: ({ loaderData, matches }) => {
+    // تجنّب canonical مزدوج مع صفحة المقال (parent + child)
+    if (matches.some((m) => m.routeId === "/blog/$slug")) return {};
+    return buildBlogListingHead(loaderData);
+  },
   component: Blog,
 });
 

@@ -14,7 +14,10 @@ import { buildPortfolioListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/portfolio")({
   loader: () => loadPortfolioRouteSeo(),
-  head: ({ loaderData }) => buildPortfolioListingHead(loaderData),
+  head: ({ loaderData, matches }) => {
+    if (matches.some((m) => m.routeId === "/portfolio/$slug")) return {};
+    return buildPortfolioListingHead(loaderData);
+  },
   component: Portfolio,
 });
 
