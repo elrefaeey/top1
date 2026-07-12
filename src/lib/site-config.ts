@@ -23,5 +23,36 @@ export const SITE_CONTACT_EMAIL = "top11markting@gmail.com";
 /** العنوان الافتراضي */
 export const SITE_ADDRESS = "الرياض، المملكة العربية السعودية";
 
-/** الدومين الإنتاجي */
-export const SITE_PRODUCTION_URL = "https://top1markting.com";
+/** الدومين الإنتاجي المعتمد لـ SEO / Sitemap / Canonical */
+export const SITE_PRODUCTION_URL = "https://www.top1markting.com";
+
+/**
+ * يوحّد رابط الموقع العام ويرفض vercel/localhost في الإنتاج.
+ * محلياً: يسمح بـ localhost فقط.
+ */
+export function resolvePublicSiteUrl(raw?: string | null): string {
+  const fallback = SITE_PRODUCTION_URL;
+  const value = (raw || "").trim().replace(/\/$/, "");
+  if (!value) return fallback;
+
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+
+    if (host === "localhost" || host === "127.0.0.1") {
+      return value;
+    }
+
+    if (host.includes("vercel.app") || host.includes("vercel.com")) {
+      return fallback;
+    }
+
+    if (host === "top1markting.com" || host === "www.top1markting.com") {
+      return SITE_PRODUCTION_URL;
+    }
+
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}

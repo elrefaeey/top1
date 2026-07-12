@@ -34,7 +34,7 @@ const SITE_SETTINGS: SiteSettings = {
   integrations: {
     googleAnalyticsId: "G-09WBWML921",
   },
-  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml",
+  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://www.top1markting.com/sitemap.xml",
   headerNav: [
     { label: "Services", href: "/services", order: 1 },
     { label: "Portfolio", href: "/portfolio", order: 2 },

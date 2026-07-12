@@ -1,5 +1,14 @@
 import { SITE_URL } from "@/lib/firebase/config";
-import { SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_LOGO_URL, SITE_NAME, SITE_TWITTER, SITE_WHATSAPP_NUMBER } from "@/lib/site-config";
+import {
+  SITE_CONTACT_EMAIL,
+  SITE_CONTACT_PHONE,
+  SITE_LOGO_URL,
+  SITE_NAME,
+  SITE_PRODUCTION_URL,
+  SITE_TWITTER,
+  SITE_WHATSAPP_NUMBER,
+  resolvePublicSiteUrl,
+} from "@/lib/site-config";
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
@@ -96,7 +105,7 @@ export type BreadcrumbItem = { name: string; path: string };
 
 export function absoluteUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const base = (SITE_URL || "https://top1markting.com").replace(/\/$/, "");
+  const base = resolvePublicSiteUrl(SITE_URL || SITE_PRODUCTION_URL).replace(/\/$/, "");
   return `${base}${normalizedPath}`;
 }
 

@@ -4,6 +4,7 @@ import {
   isValidFirebaseConfig,
   type FirebasePublicConfig,
 } from "./env";
+import { resolvePublicSiteUrl } from "@/lib/site-config";
 
 let overrideConfig: FirebasePublicConfig | null = null;
 
@@ -27,7 +28,7 @@ export function getFirebaseApp(): FirebaseApp | null {
   return initializeApp(config);
 }
 
-function readSiteUrl(): string {
+function readSiteUrlRaw(): string {
   if (typeof process !== "undefined" && process.env?.VITE_SITE_URL) {
     return process.env.VITE_SITE_URL;
   }
@@ -35,4 +36,5 @@ function readSiteUrl(): string {
   return typeof value === "string" ? value : "";
 }
 
-export const SITE_URL = readSiteUrl();
+/** رابط عام للموقع — لا يسمح بروابط Vercel في Sitemap/Canonical */
+export const SITE_URL = resolvePublicSiteUrl(readSiteUrlRaw());

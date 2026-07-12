@@ -39,8 +39,11 @@ export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined
     contactEmail: raw.contactEmail?.trim() || SITE_CONTACT_EMAIL,
     address: raw.address?.trim() || SITE_ADDRESS,
     robotsTxt:
-      raw.robotsTxt?.includes("vercel.app") || !raw.robotsTxt?.trim()
-        ? `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://top1markting.com/sitemap.xml`
+      raw.robotsTxt?.includes("vercel.app") ||
+      raw.robotsTxt?.includes("top1-ten") ||
+      !raw.robotsTxt?.includes("www.top1markting.com/sitemap.xml") ||
+      !raw.robotsTxt?.trim()
+        ? `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: https://www.top1markting.com/sitemap.xml`
         : raw.robotsTxt,
   };
 }
