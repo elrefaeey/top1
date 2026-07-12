@@ -2,7 +2,6 @@ import { SITE_URL } from "@/lib/firebase/config";
 import { SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_LOGO_URL, SITE_NAME, SITE_TWITTER, SITE_WHATSAPP_NUMBER } from "@/lib/site-config";
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
-import { siteImages } from "@/lib/site-images";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 
@@ -23,15 +22,15 @@ export const SEO_KNOWS_ABOUT = [
   "Digital Marketing",
 ] as const;
 
-export const DEFAULT_OG_IMAGE = siteImages.hero.main;
+export const DEFAULT_OG_IMAGE = SITE_LOGO_URL;
 
 export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, string> = {
-  home: siteImages.hero.main,
-  about: siteImages.about.studio,
-  services: siteImages.services.default,
-  portfolio: siteImages.portfolio.nimbus,
-  blog: siteImages.blog.default,
-  contact: siteImages.contact.side,
+  home: SITE_LOGO_URL,
+  about: SITE_LOGO_URL,
+  services: SITE_LOGO_URL,
+  portfolio: SITE_LOGO_URL,
+  blog: SITE_LOGO_URL,
+  contact: SITE_LOGO_URL,
 };
 
 export type CmsPageHeadFields = Pick<

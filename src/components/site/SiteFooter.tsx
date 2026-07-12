@@ -155,7 +155,10 @@ export function SiteFooter() {
           {/* الشريط السفلي */}
           <div className="footer-bottom">
             <p className="footer-copy">
-              © {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
+              <Link to="/admin/login" className="footer-copy-mark" aria-label="لوحة التحكم">
+                ©
+              </Link>{" "}
+              {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
             </p>
             <nav className="footer-legal-nav" aria-label="روابط قانونية">
               {LEGAL_LINKS.map((l) => (
