@@ -9,10 +9,6 @@ export const Route = createFileRoute("/terms")({
       title: `الشروط والأحكام | ${SITE_NAME}`,
       description: `الشروط والأحكام المنظمة لاستخدام موقع وخدمات ${SITE_NAME}.`,
       path: "/terms",
-      breadcrumbs: [
-        { name: "الرئيسية", path: "/" },
-        { name: "الشروط والأحكام", path: "/terms" },
-      ],
       scripts: [
         jsonLdScript(
           breadcrumbSchema([

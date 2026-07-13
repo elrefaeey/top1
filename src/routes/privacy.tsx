@@ -9,10 +9,6 @@ export const Route = createFileRoute("/privacy")({
       title: `سياسة الخصوصية | ${SITE_NAME}`,
       description: `تعرّف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند استخدام موقع ${SITE_NAME}.`,
       path: "/privacy",
-      breadcrumbs: [
-        { name: "الرئيسية", path: "/" },
-        { name: "سياسة الخصوصية", path: "/privacy" },
-      ],
       scripts: [
         jsonLdScript(
           breadcrumbSchema([

@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
-import { AlignEndVertical, Loader2, TextCursorInput } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { AlignEndVertical, Link2, Loader2, TextCursorInput } from "lucide-react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
+import { listArticleAnchors } from "@/lib/seo/blog-utils";
 import { cn } from "@/lib/utils";
 
 type BlogContentEditorProps = {
@@ -31,6 +32,14 @@ function insertAtCursor(source: string, insertion: string, start: number, end: n
   return `${before}${chunk}${after}`;
 }
 
+function escapeHtmlText(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export function BlogContentEditor({ id = "content", value, onChange }: BlogContentEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -41,6 +50,20 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
   const [alt, setAlt] = useState("");
   const [caption, setCaption] = useState("");
   const [pendingMode, setPendingMode] = useState<"cursor" | "end">("cursor");
+  const [linkText, setLinkText] = useState("");
+  const [linkTargetId, setLinkTargetId] = useState("");
+
+  const anchors = useMemo(() => listArticleAnchors(value), [value]);
+
+  function focusAfterInsert(start: number, insertedLength: number, leadingNewline: boolean) {
+    const el = textareaRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      const pos = start + insertedLength + (leadingNewline ? 1 : 0);
+      el.focus();
+      el.setSelectionRange(pos, pos);
+    });
+  }
 
   function insertImage(url: string, mode: "cursor" | "end") {
     const html = buildImageHtml(url, alt.trim() || "صورة من المقال", caption);
@@ -51,13 +74,9 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     }
     const start = el.selectionStart ?? value.length;
     const end = el.selectionEnd ?? value.length;
-    const next = insertAtCursor(value, html, start, end);
-    onChange(next);
-    requestAnimationFrame(() => {
-      const pos = start + html.length + (start > 0 && !value.slice(0, start).endsWith("\n") ? 1 : 0);
-      el.focus();
-      el.setSelectionRange(pos, pos);
-    });
+    const leadingNewline = start > 0 && !value.slice(0, start).endsWith("\n");
+    onChange(insertAtCursor(value, html, start, end));
+    focusAfterInsert(start, html.length, leadingNewline);
   }
 
   async function handleFile(file: File | undefined, mode: "cursor" | "end") {
@@ -84,12 +103,50 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     fileRef.current?.click();
   }
 
+  function insertSectionLink() {
+    setError("");
+    setNotice("");
+    const el = textareaRef.current;
+    const selected = el
+      ? value.slice(el.selectionStart ?? 0, el.selectionEnd ?? 0)
+      : "";
+    const text = (linkText.trim() || selected.trim());
+    if (!text) {
+      setError("حدّد نصاً في المحرر أو اكتب نص الرابط أولاً.");
+      return;
+    }
+    if (!linkTargetId) {
+      setError("اختر القسم المستهدف داخل المقال.");
+      return;
+    }
+
+    const html = `<a href="#${linkTargetId}">${escapeHtmlText(text)}</a>`;
+    if (!el) {
+      onChange(`${value}${html}`);
+      setNotice("تم إدراج رابط القسم");
+      return;
+    }
+
+    const start = el.selectionStart ?? value.length;
+    const end = el.selectionEnd ?? value.length;
+    // Wrap selection when present; otherwise insert at cursor.
+    const next =
+      end > start
+        ? `${value.slice(0, start)}${html}${value.slice(end)}`
+        : insertAtCursor(value, html, start, end);
+    onChange(next);
+    const leadingNewline = end <= start && start > 0 && !value.slice(0, start).endsWith("\n");
+    focusAfterInsert(start, html.length, leadingNewline);
+    setNotice(`تم ربط النص بالقسم: ${anchors.find((a) => a.id === linkTargetId)?.title ?? linkTargetId}`);
+    setLinkText("");
+  }
+
   return (
     <div className="space-y-4">
       <AdminField
         label="المحتوى (HTML)"
         id={id}
-        hint="ضع المؤشر في المكان المطلوب داخل النص، ثم اضغط «إدراج عند المؤشر» لوضع الصورة هناك."
+        hint="استخدم عناوين h2/h3 لأقسام المقال، ثم اربط أي نص بقسم عبر أداة الروابط أدناه."
       >
         <textarea
           ref={textareaRef}
@@ -101,6 +158,58 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
           className={adminInputClass("font-mono text-xs text-start")}
         />
       </AdminField>
+
+      <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
+        <div>
+          <p className="text-sm font-semibold text-foreground">روابط داخل المقال</p>
+          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+            اربط جملة أو كلمة بقسم معيّن (عنوان h2 أو h3). يمكنك تحديد النص في المحرر ثم اختيار القسم، أو كتابة نص الرابط يدوياً.
+          </p>
+        </div>
+
+        {anchors.length === 0 ? (
+          <p className="text-xs text-amber-800 leading-relaxed rounded-lg bg-amber-500/10 px-3 py-2">
+            أضف عناوين مثل {"<h2>عنوان القسم</h2>"} داخل المحتوى حتى تظهر هنا كأهداف للروابط.
+          </p>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2">
+            <AdminField label="نص الرابط" id={`${id}-link-text`}>
+              <input
+                id={`${id}-link-text`}
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                placeholder="اتركه فارغاً لاستخدام النص المحدد"
+                className={adminInputClass()}
+              />
+            </AdminField>
+            <AdminField label="القسم المستهدف" id={`${id}-link-target`}>
+              <select
+                id={`${id}-link-target`}
+                value={linkTargetId}
+                onChange={(e) => setLinkTargetId(e.target.value)}
+                className={adminInputClass()}
+              >
+                <option value="">اختر قسماً…</option>
+                {anchors.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.title} (#{a.id})
+                  </option>
+                ))}
+              </select>
+            </AdminField>
+          </div>
+        )}
+
+        {anchors.length > 0 && (
+          <button
+            type="button"
+            onClick={insertSectionLink}
+            className="btn-ghost !py-2 !px-4 !text-sm"
+          >
+            <Link2 className="h-4 w-4" /> إدراج رابط إلى القسم
+          </button>
+        )}
+      </div>
 
       <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
         <div>
@@ -174,18 +283,18 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
             )}
           </button>
         </div>
-
-        {notice && !error && (
-          <p className="text-xs text-emerald-700 leading-relaxed rounded-lg bg-emerald-500/10 px-3 py-2">
-            {notice}
-          </p>
-        )}
-        {error && (
-          <p className="text-xs text-destructive leading-relaxed rounded-lg bg-destructive/10 px-3 py-2">
-            {error}
-          </p>
-        )}
       </div>
+
+      {notice && !error && (
+        <p className="text-xs text-emerald-700 leading-relaxed rounded-lg bg-emerald-500/10 px-3 py-2">
+          {notice}
+        </p>
+      )}
+      {error && (
+        <p className="text-xs text-destructive leading-relaxed rounded-lg bg-destructive/10 px-3 py-2">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

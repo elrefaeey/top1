@@ -15,7 +15,7 @@ import { loadContactRouteSeo } from "@/lib/seo/static-page-loaders";
 
 export const Route = createFileRoute("/contact")({
   loader: () => loadContactRouteSeo(),
-  head: ({ loaderData }) => buildContactPageHead(loaderData),
+  head: ({ loaderData }) => (loaderData ? buildContactPageHead(loaderData) : {}),
   component: Contact,
 });
 

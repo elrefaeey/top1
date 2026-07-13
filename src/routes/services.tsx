@@ -16,7 +16,9 @@ import { servicesPageInternalLinks } from "@/lib/seo/internal-links";
 export const Route = createFileRoute("/services")({
   loader: () => loadServicesRouteSeo(),
   head: ({ loaderData, matches }) => {
-    if (matches.some((m) => m.routeId === "/services/$slug")) return {};
+    // matches includes child routes at runtime; routeId is narrowed to this route in types
+    if (matches.some((m) => (m.routeId as string) === "/services/$slug")) return {};
+    if (!loaderData) return {};
     return buildServicesListingHead(loaderData);
   },
   component: Services,

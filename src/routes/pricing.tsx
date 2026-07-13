@@ -10,10 +10,6 @@ export const Route = createFileRoute("/pricing")({
       title: `الأسعار | عرض سعر مخصص | ${SITE_NAME}`,
       description: `تعرّف على طريقة تسعير ${SITE_NAME} لتصميم المواقع والمتاجر وSEO والتسويق الرقمي — اطلب عرض سعر يناسب مشروعك.`,
       path: "/pricing",
-      breadcrumbs: [
-        { name: "الرئيسية", path: "/" },
-        { name: "الأسعار", path: "/pricing" },
-      ],
       scripts: [
         jsonLdScript(
           breadcrumbSchema([

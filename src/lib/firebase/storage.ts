@@ -31,6 +31,9 @@ export async function uploadFile(path: string, file: File): Promise<string> {
   assertStorageConfigured();
 
   const app = getFirebaseApp();
+  if (!app) {
+    throw new Error("Firebase is not configured");
+  }
   const { getAuth } = await import("firebase/auth");
   const user = getAuth(app).currentUser;
   if (!user) {

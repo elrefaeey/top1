@@ -27,15 +27,15 @@ import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
 
 const READ_MS = getReadTimeoutMs();
 
-function mapDoc<T>(snap: { id: string; data: () => T | undefined }): WithId<T> {
-  return { id: snap.id, ...snap.data()! };
+function mapDoc<T>(snap: { id: string; data: () => unknown }): WithId<T> {
+  return { id: snap.id, ...(snap.data() as T) };
 }
 
 function sortByField<T>(items: WithId<T>[], field: string, direction: "asc" | "desc" = "asc") {
   const dir = direction === "asc" ? 1 : -1;
   return [...items].sort((a, b) => {
-    const av = (a as Record<string, unknown>)[field];
-    const bv = (b as Record<string, unknown>)[field];
+    const av = (a as unknown as Record<string, unknown>)[field];
+    const bv = (b as unknown as Record<string, unknown>)[field];
     if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
     if (typeof av === "string" && typeof bv === "string") return av.localeCompare(bv) * dir;
     return 0;
@@ -69,7 +69,7 @@ async function getPublished<T>(
   const snap = await withFirestoreTimeout(getDocs(collection(getDb(), collectionName)), READ_MS);
   let items = snap.docs
     .map((d) => mapDoc<T>(d))
-    .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
+    .filter((item) => isPublicCmsItem(item as unknown as Record<string, unknown>));
   items = sortByField(items, orderField, "asc");
   if (max) items = items.slice(0, max);
   return items;
@@ -125,7 +125,7 @@ export async function getPageById(id: string): Promise<WithId<CmsPage> | null> {
     const snap = await withFirestoreTimeout(getDoc(doc(getDb(), COLLECTIONS.pages, id)), READ_MS);
     if (!snap.exists()) return null;
     const page = mapDoc<CmsPage>(snap);
-    return isPublicCmsItem(page as Record<string, unknown>) ? page : null;
+    return isPublicCmsItem(page as unknown as Record<string, unknown>) ? page : null;
   } catch {
     return null;
   }
@@ -172,7 +172,7 @@ export async function getPortfolioItemBySlug(slug: string): Promise<WithId<Portf
     );
     if (snap.exists()) {
       const item = normalizePortfolioItem(snap.id, mapDoc<PortfolioItem>(snap));
-      if (isPublicCmsItem(item as Record<string, unknown>)) return item;
+      if (isPublicCmsItem(item as unknown as Record<string, unknown>)) return item;
     }
   } catch {
     // continue to list lookup
@@ -224,7 +224,7 @@ export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
     const snap = await withFirestoreTimeout(getDocs(collection(getDb(), COLLECTIONS.blogPosts)), READ_MS);
     let items = snap.docs
       .map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)))
-      .filter((item) => isPublicCmsItem(item as Record<string, unknown>));
+      .filter((item) => isPublicCmsItem(item as unknown as Record<string, unknown>));
     items = sortByField(items, "publishedAt", "desc");
     if (max) items = items.slice(0, max);
     return items;
@@ -242,7 +242,7 @@ export async function getBlogPostBySlug(slug: string): Promise<WithId<BlogPost> 
     );
     if (snap.exists()) {
       const post = normalizeBlogPost(snap.id, mapDoc<BlogPost>(snap));
-      if (isPublicCmsItem(post as Record<string, unknown>)) return post;
+      if (isPublicCmsItem(post as unknown as Record<string, unknown>)) return post;
     }
   } catch {
     // continue to list lookup

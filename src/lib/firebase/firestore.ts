@@ -1,4 +1,4 @@
-import { initializeFirestore, getFirestore, type Firestore } from "firebase/firestore";
+import { initializeFirestore, getFirestore, type Firestore, type FirestoreSettings } from "firebase/firestore";
 import { getFirebaseApp, isFirebaseConfigured } from "./config";
 
 let dbInstance: Firestore | null = null;
@@ -21,12 +21,10 @@ export function getDb(): Firestore {
   const app = getFirebaseApp();
   if (!app) throw new Error("Firebase is not configured");
   try {
-    dbInstance = initializeFirestore(
-      app,
-      isServerRuntime()
-        ? { preferRest: true }
-        : { experimentalAutoDetectLongPolling: true },
-    );
+    const settings: FirestoreSettings = isServerRuntime()
+      ? ({ preferRest: true } as FirestoreSettings)
+      : { experimentalAutoDetectLongPolling: true };
+    dbInstance = initializeFirestore(app, settings);
   } catch {
     dbInstance = getFirestore(app);
   }

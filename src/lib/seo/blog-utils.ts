@@ -34,19 +34,53 @@ export function slugifyHeading(text: string): string {
     .slice(0, 80);
 }
 
+function readIdAttr(attrs: string): string | null {
+  const match = attrs.match(/\bid\s*=\s*(?:["']([^"']+)["']|([^\s>]+))/i);
+  return (match?.[1] || match?.[2] || "").trim() || null;
+}
+
+/** Unique heading id — shared by TOC, injectHeadingIds, and in-article links. */
+export function uniqueHeadingId(title: string, used: Set<string>, fallbackIndex: number): string {
+  let id = slugifyHeading(title) || `section-${fallbackIndex}`;
+  let n = fallbackIndex;
+  while (used.has(id)) {
+    n += 1;
+    id = `${slugifyHeading(title) || "section"}-${n}`;
+  }
+  used.add(id);
+  return id;
+}
+
 export function extractTocFromHtml(html: string): TocEntry[] {
   const entries: TocEntry[] = [];
-  const re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+  const re = /<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi;
   let match: RegExpExecArray | null;
   const used = new Set<string>();
 
   while ((match = re.exec(html)) !== null) {
-    const title = stripHtml(match[1]);
+    const title = stripHtml(match[2]);
     if (!title) continue;
-    let id = slugifyHeading(title);
-    if (!id) id = `section-${entries.length + 1}`;
-    while (used.has(id)) id = `${id}-${entries.length + 1}`;
-    used.add(id);
+    const existing = readIdAttr(match[1]);
+    const id = existing || uniqueHeadingId(title, used, entries.length + 1);
+    if (existing) used.add(existing);
+    entries.push({ id, title });
+  }
+
+  return entries;
+}
+
+/** All h2/h3 anchors available for in-article linking (after id injection). */
+export function listArticleAnchors(html: string): TocEntry[] {
+  const withIds = injectHeadingIds(html);
+  const entries: TocEntry[] = [];
+  const re = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = re.exec(withIds)) !== null) {
+    const title = stripHtml(match[3]);
+    if (!title) continue;
+    const id = readIdAttr(match[2]);
+    if (!id) continue;
     entries.push({ id, title });
   }
 
@@ -54,12 +88,19 @@ export function extractTocFromHtml(html: string): TocEntry[] {
 }
 
 export function injectHeadingIds(html: string): string {
+  const used = new Set<string>();
+  for (const m of html.matchAll(/\bid\s*=\s*(?:["']([^"']+)["']|([^\s>]+))/gi)) {
+    const id = (m[1] || m[2] || "").trim();
+    if (id) used.add(id);
+  }
+
   let index = 0;
-  return html.replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi, (full, attrs, inner) => {
-    if (/\bid\s*=/.test(attrs)) return full;
+  return html.replace(/<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, tag, attrs, inner) => {
+    if (readIdAttr(attrs)) return full;
     const title = stripHtml(inner);
-    const id = slugifyHeading(title) || `section-${++index}`;
-    return `<h2${attrs} id="${id}">${inner}</h2>`;
+    index += 1;
+    const id = uniqueHeadingId(title, used, index);
+    return `<${tag}${attrs} id="${id}">${inner}</${tag}>`;
   });
 }
 

@@ -9,7 +9,11 @@ export type UploadStage = "compress" | "upload";
 /** رفع عبر السيرver — يتجاوز CORS من localhost */
 async function uploadViaServer(folder: string, file: File): Promise<string> {
   const { getAuth } = await import("firebase/auth");
-  const user = getAuth(getFirebaseApp()).currentUser;
+  const app = getFirebaseApp();
+  if (!app) {
+    throw new Error("Firebase is not configured");
+  }
+  const user = getAuth(app).currentUser;
   if (!user) {
     throw new Error("يجب تسجيل الدخول قبل رفع الصور");
   }

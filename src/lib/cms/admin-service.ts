@@ -116,8 +116,8 @@ function normalizeSiteSettingsForSave(settings: SiteSettings): SiteSettings {
   return payload;
 }
 
-function mapDoc<T>(snap: { id: string; data: () => T | undefined }): WithId<T> {
-  return { id: snap.id, ...snap.data()! };
+function mapDoc<T>(snap: { id: string; data: () => unknown }): WithId<T> {
+  return { id: snap.id, ...(snap.data() as T) };
 }
 
 async function listCollection<T>(
@@ -130,8 +130,8 @@ async function listCollection<T>(
     markFirestoreAvailable();
     const items = snap.docs.map((d) => mapDoc<T>(d));
     items.sort((a, b) => {
-      const av = (a as Record<string, unknown>)[orderField];
-      const bv = (b as Record<string, unknown>)[orderField];
+      const av = (a as unknown as Record<string, unknown>)[orderField];
+      const bv = (b as unknown as Record<string, unknown>)[orderField];
       if (av === bv) return 0;
       if (av == null) return 1;
       if (bv == null) return -1;

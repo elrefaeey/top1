@@ -9,10 +9,6 @@ export const Route = createFileRoute("/cookies")({
       title: `سياسة ملفات تعريف الارتباط | ${SITE_NAME}`,
       description: `كيف يستخدم موقع ${SITE_NAME} ملفات تعريف الارتباط وأدوات التحليل، وكيف يمكنك التحكم بها.`,
       path: "/cookies",
-      breadcrumbs: [
-        { name: "الرئيسية", path: "/" },
-        { name: "ملفات تعريف الارتباط", path: "/cookies" },
-      ],
       scripts: [
         jsonLdScript(
           breadcrumbSchema([

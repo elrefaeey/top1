@@ -54,8 +54,8 @@ function AdminServiceEdit() {
   useEffect(() => {
     if (data) {
       setForm({ ...data });
-      setFeaturesText(arrayToLines(data.features));
-      setDeliverablesText(arrayToLines(data.deliverables));
+      setFeaturesText(arrayToLines(data.features ?? []));
+      setDeliverablesText(arrayToLines(data.deliverables ?? []));
     }
   }, [data]);
 

@@ -19,7 +19,8 @@ export const Route = createFileRoute("/blog")({
   loader: () => loadBlogRouteSeo(),
   head: ({ loaderData, matches }) => {
     // تجنّب canonical مزدوج مع صفحة المقال (parent + child)
-    if (matches.some((m) => m.routeId === "/blog/$slug")) return {};
+    if (matches.some((m) => (m.routeId as string) === "/blog/$slug")) return {};
+    if (!loaderData) return {};
     return buildBlogListingHead(loaderData);
   },
   component: Blog,

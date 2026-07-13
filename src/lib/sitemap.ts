@@ -5,7 +5,7 @@ import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
 export type SitemapEntry = {
   path: string;
-  changefreq: "daily" | "weekly" | "monthly";
+  changefreq: "daily" | "weekly" | "monthly" | "yearly";
   priority: string;
   lastmod?: string;
 };
