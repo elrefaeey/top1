@@ -15,11 +15,11 @@ import { serviceIcon } from "@/lib/service-icons";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
-import { loadPublishedPageSeo } from "@/lib/seo/cms-page-seo";
+import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
 
 export const Route = createFileRoute("/")({
-  loader: () => loadPublishedPageSeo("home"),
+  loader: () => loadPublishedPageSeoFn({ data: { slug: "home" } }),
   head: ({ loaderData }) => {
     const image = resolveStaticPageOgImage("home", loaderData);
     return buildStaticPageHead("home", "/", {

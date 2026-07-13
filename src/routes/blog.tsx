@@ -12,11 +12,11 @@ import { SITE_NAME } from "@/lib/site-config";
 
 import { featuredBlogCategories } from "@/lib/seo/static-page-content";
 import { blogListingInternalLinks } from "@/lib/seo/internal-links";
-import { loadBlogRouteSeo } from "@/lib/seo/static-page-loaders";
+import { loadBlogRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { buildBlogListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/blog")({
-  loader: () => loadBlogRouteSeo(),
+  loader: () => loadBlogRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     // تجنّب canonical مزدوج مع صفحة المقال (parent + child)
     if (matches.some((m) => (m.routeId as string) === "/blog/$slug")) return {};

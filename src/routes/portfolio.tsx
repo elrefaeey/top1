@@ -9,11 +9,11 @@ import { portfolioPageInternalLinks } from "@/lib/seo/internal-links";
 
 import { SITE_NAME } from "@/lib/site-config";
 
-import { loadPortfolioRouteSeo } from "@/lib/seo/static-page-loaders";
+import { loadPortfolioRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { buildPortfolioListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/portfolio")({
-  loader: () => loadPortfolioRouteSeo(),
+  loader: () => loadPortfolioRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/portfolio/$slug")) return {};
     if (!loaderData) return {};

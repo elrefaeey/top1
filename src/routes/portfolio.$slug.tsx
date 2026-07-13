@@ -5,14 +5,14 @@ import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { usePortfolioItem } from "@/hooks/use-cms";
 import { portfolioItemSlug } from "@/lib/cms/admin-utils";
-import { loadPortfolioItemForSeo } from "@/lib/seo/cms-loaders";
+import { loadPortfolioItemForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { serviceLinksForPortfolio } from "@/lib/seo/internal-links";
 import { buildPageHead, buildPortfolioItemHead } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
 
 export const Route = createFileRoute("/portfolio/$slug")({
   loader: async ({ params }) => {
-    const item = await loadPortfolioItemForSeo(params.slug);
+    const item = await loadPortfolioItemForSeoFn({ data: { slug: params.slug } });
     return { item };
   },
   head: ({ loaderData, params }) => {

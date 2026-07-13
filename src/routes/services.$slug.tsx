@@ -5,7 +5,7 @@ import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
-import { loadServiceForSeo } from "@/lib/seo/cms-loaders";
+import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { footerInternalLinks } from "@/lib/seo/internal-links";
 import { getServiceSeoBlock } from "@/lib/seo/service-content";
 import { buildPageHead, buildServiceHead } from "@/lib/seo";
@@ -14,7 +14,7 @@ import { SITE_NAME } from "@/lib/site-config";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: async ({ params }) => {
-    const service = await loadServiceForSeo(params.slug);
+    const service = await loadServiceForSeoFn({ data: { slug: params.slug } });
     return { service };
   },
   head: ({ loaderData, params }) => {

@@ -6,10 +6,10 @@ import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 
 import { buildStaticPageHead } from "@/lib/seo";
-import { loadPublishedPageSeo } from "@/lib/seo/cms-page-seo";
+import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 
 export const Route = createFileRoute("/about")({
-  loader: () => loadPublishedPageSeo("about"),
+  loader: () => loadPublishedPageSeoFn({ data: { slug: "about" } }),
   head: ({ loaderData }) =>
     buildStaticPageHead("about", "/about", {
       cms: loaderData,

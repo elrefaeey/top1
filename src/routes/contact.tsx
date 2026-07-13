@@ -11,10 +11,10 @@ import { whatsAppHref } from "@/lib/whatsapp";
 
 import { sanitizeCmsHtml } from "@/lib/security/sanitize-html";
 import { buildContactPageHead } from "@/lib/seo/static-page-head";
-import { loadContactRouteSeo } from "@/lib/seo/static-page-loaders";
+import { loadContactRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 
 export const Route = createFileRoute("/contact")({
-  loader: () => loadContactRouteSeo(),
+  loader: () => loadContactRouteSeoFn(),
   head: ({ loaderData }) => (loaderData ? buildContactPageHead(loaderData) : {}),
   component: Contact,
 });

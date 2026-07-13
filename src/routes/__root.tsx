@@ -17,8 +17,6 @@ import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
 import { FirebaseAnalytics } from "../components/site/FirebaseAnalytics";
 import { GoogleTagManager } from "../components/site/GoogleTagManager";
-import { AuthProvider } from "../providers/AuthProvider";
-import { FirebaseProvider } from "../providers/FirebaseProvider";
 import { SITE_NAME, SITE_TWITTER } from "@/lib/site-config";
 import { rootJsonLdScripts } from "@/lib/seo";
 
@@ -126,24 +124,21 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <FirebaseProvider>
-      <AuthProvider>
-        <FirebaseAnalytics />
-        <GoogleTagManager />
-        {isAdminRoute ? (
-          <Outlet />
-        ) : (
-          <div className="site-shell flex min-h-screen flex-col overflow-x-clip">
-            <SiteHeader />
-            <main className="flex-1">
-              <Outlet />
-            </main>
-            <SiteFooter />
-            <WhatsAppButton />
-          </div>
-        )}
-      </AuthProvider>
-      </FirebaseProvider>
+      {/* Auth + Firestore stay out of the public shell — see AdminProviders under /admin */}
+      <FirebaseAnalytics />
+      <GoogleTagManager />
+      {isAdminRoute ? (
+        <Outlet />
+      ) : (
+        <div className="site-shell flex min-h-screen flex-col overflow-x-clip">
+          <SiteHeader />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <SiteFooter />
+          <WhatsAppButton />
+        </div>
+      )}
     </QueryClientProvider>
   );
 }

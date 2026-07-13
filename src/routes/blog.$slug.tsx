@@ -6,7 +6,7 @@ import { formatPostDate } from "@/lib/date-utils";
 import { SiteImage } from "@/components/site/SiteImage";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
-import { loadBlogPostForSeo } from "@/lib/seo/cms-loaders";
+import { loadBlogPostForSeoFn } from "@/lib/seo/cms-seo.functions";
 import {
   extractTocFromHtml,
   getRelatedPosts,
@@ -21,7 +21,7 @@ import { SITE_NAME } from "@/lib/site-config";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const post = await loadBlogPostForSeo(params.slug);
+    const post = await loadBlogPostForSeoFn({ data: { slug: params.slug } });
     return { post };
   },
   head: ({ loaderData, params }) => {

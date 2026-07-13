@@ -9,12 +9,12 @@ import { serviceImage } from "@/lib/site-images";
 
 import { SITE_NAME } from "@/lib/site-config";
 
-import { loadServicesRouteSeo } from "@/lib/seo/static-page-loaders";
+import { loadServicesRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { buildServicesListingHead } from "@/lib/seo/static-page-head";
 import { servicesPageInternalLinks } from "@/lib/seo/internal-links";
 
 export const Route = createFileRoute("/services")({
-  loader: () => loadServicesRouteSeo(),
+  loader: () => loadServicesRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     // matches includes child routes at runtime; routeId is narrowed to this route in types
     if (matches.some((m) => (m.routeId as string) === "/services/$slug")) return {};

@@ -1,5 +1,10 @@
 import type { Analytics } from "firebase/analytics";
-import { getFirebaseApp, isFirebaseConfigured } from "./config";
+import {
+  getFirebaseApp,
+  isFirebaseConfigured,
+  setFirebaseConfig,
+} from "./config";
+import { isValidFirebaseConfig, type FirebasePublicConfig } from "./env";
 
 type LogEventFn = (
   analytics: Analytics,
@@ -15,13 +20,28 @@ export function isAnalyticsInitialized() {
   return analytics !== null;
 }
 
+async function ensurePublicFirebaseConfig(): Promise<void> {
+  if (isFirebaseConfigured()) return;
+  try {
+    const res = await fetch("/api/firebase-config");
+    if (!res.ok) return;
+    const config = (await res.json()) as FirebasePublicConfig;
+    if (isValidFirebaseConfig(config)) {
+      setFirebaseConfig(config);
+    }
+  } catch {
+    // Analytics is optional — ignore config fetch failures.
+  }
+}
+
 export async function initAnalytics(): Promise<Analytics | null> {
   if (typeof window === "undefined") return null;
-  if (!isFirebaseConfigured()) return null;
   if (analytics) return analytics;
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
+    await ensurePublicFirebaseConfig();
+    if (!isFirebaseConfigured()) return null;
     const { getAnalytics, isSupported, logEvent } = await import("firebase/analytics");
     const supported = await isSupported();
     if (!supported) return null;
