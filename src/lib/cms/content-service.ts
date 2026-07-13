@@ -4,13 +4,11 @@ import {
   getDoc,
   getDocs,
   query,
-  setDoc,
   where,
   limit,
 } from "firebase/firestore";
 import { getDb, COLLECTIONS, getReadTimeoutMs, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
-import { nowIso } from "@/lib/cms/admin-utils";
 import type {
   BlogPost,
   CmsPage,
@@ -287,26 +285,3 @@ export async function getSiteStats(): Promise<WithId<SiteStat>[]> {
   return FALLBACK_SITE_STATS.map((s) => ({ ...s }));
 }
 
-export async function createLead(input: {
-  name: string;
-  email?: string;
-  phone?: string;
-  message: string;
-  source?: string;
-}): Promise<void> {
-  const ref = doc(collection(getDb(), COLLECTIONS.leads));
-  const ts = nowIso();
-  await withFirestoreTimeout(
-    setDoc(ref, {
-      name: input.name,
-      ...(input.email ? { email: input.email } : {}),
-      ...(input.phone ? { phone: input.phone } : {}),
-      message: input.message,
-      source: input.source ?? "contact_form",
-      status: "new" as const,
-      createdAt: ts,
-      updatedAt: ts,
-    }),
-    READ_MS,
-  );
-}

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createLead } from "@/lib/cms/content-service";
+import { createLeadSecure } from "@/lib/server/create-lead";
 import { applySecurityHeaders, jsonError } from "@/lib/security/headers";
 import { checkRateLimit, rateLimitKey } from "@/lib/security/rate-limit";
 import { isHoneypotTriggered, validateLeadInput } from "@/lib/security/validate";
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/api/leads")({
             source: body.source ? String(body.source) : "contact_form",
           });
 
-          await createLead(lead);
+          await createLeadSecure(lead);
           return applySecurityHeaders(Response.json({ ok: true }));
         } catch (err) {
           console.error("[api/leads]", err);

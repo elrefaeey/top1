@@ -102,27 +102,9 @@ service cloud.firestore {
       allow write: if isEditor();
     }
 
+    // Client create blocked — public form writes only via /api/leads (Admin SDK).
     match /leads/{docId} {
-      allow create: if
-        request.resource.data.keys().hasOnly([
-          'name', 'email', 'phone', 'message', 'source', 'status', 'createdAt', 'updatedAt'
-        ]) &&
-        request.resource.data.name is string &&
-        request.resource.data.name.size() > 0 &&
-        request.resource.data.name.size() <= 120 &&
-        request.resource.data.phone is string &&
-        request.resource.data.phone.size() > 0 &&
-        request.resource.data.phone.size() <= 30 &&
-        (!('email' in request.resource.data) ||
-          (request.resource.data.email is string &&
-            request.resource.data.email.size() > 0 &&
-            request.resource.data.email.size() <= 254)) &&
-        request.resource.data.message is string &&
-        request.resource.data.message.size() > 0 &&
-        request.resource.data.message.size() <= 5000 &&
-        request.resource.data.source is string &&
-        request.resource.data.source.size() <= 64 &&
-        request.resource.data.status == 'new';
+      allow create: if false;
       allow read, update, delete: if isEditor();
     }
   }

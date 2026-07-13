@@ -25,6 +25,7 @@
     "@tanstack/router-plugin": "^1.168.18",
     "clsx": "^2.1.1",
     "firebase": "^12.15.0",
+    "firebase-admin": "^13.10.0",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
