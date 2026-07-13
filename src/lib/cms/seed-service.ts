@@ -11,15 +11,14 @@ import {
 import type { SiteSettings } from "@/types/cms";
 
 import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_WHATSAPP_MESSAGE, SITE_ADDRESS } from "@/lib/site-config";
-import { siteImages } from "@/lib/site-images";
 
 const SITE_SETTINGS: SiteSettings = {
   siteName: SITE_NAME,
   tagline: "تصميم مواقع وتطبيقات وSEO احترافي",
   logoUrl: SITE_LOGO_URL,
   faviconUrl: SITE_LOGO_URL,
-  heroImageUrl: siteImages.hero.main,
-  heroImageAlt: siteImages.hero.mainAlt,
+  heroImageUrl: "",
+  heroImageAlt: "",
   contactEmail: SITE_CONTACT_EMAIL,
   contactPhone: SITE_CONTACT_PHONE,
   whatsappNumber: SITE_WHATSAPP_NUMBER,

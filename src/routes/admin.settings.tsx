@@ -12,7 +12,6 @@ import {
 import { useAdminSiteSettings, useSaveSiteSettings } from "@/hooks/use-admin-cms";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
 import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_WHATSAPP_MESSAGE, SITE_ADDRESS } from "@/lib/site-config";
-import { siteImages } from "@/lib/site-images";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export const Route = createFileRoute("/admin/settings")({
@@ -105,9 +104,9 @@ function AdminSettingsPage() {
           </AdminField>
           <ImageUploadField
             id="heroImageUrl"
-            label="صورة الصفحة الرئيسية (Hero)"
+            label="صورة الصفحة الرئيسية (Hero) — غير مستخدمة حالياً في الواجهة"
             folder="hero"
-            value={form.heroImageUrl ?? siteImages.hero.main}
+            value={form.heroImageUrl ?? ""}
             onChange={(heroImageUrl) => patch({ heroImageUrl })}
           />
           <AdminField label="وصف الصورة (Alt)" id="heroImageAlt">
@@ -115,7 +114,7 @@ function AdminSettingsPage() {
               id="heroImageAlt"
               value={form.heroImageAlt ?? ""}
               onChange={(e) => patch({ heroImageAlt: e.target.value })}
-              placeholder={siteImages.hero.mainAlt}
+              placeholder="وصف بديل للصورة"
               className={adminInputClass()}
             />
           </AdminField>

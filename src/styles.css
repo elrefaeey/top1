@@ -374,6 +374,14 @@
   align-items: center;
 }
 
+.hero-studio-grid--text {
+  grid-template-columns: 1fr;
+}
+
+.hero-studio-grid--text .hero-studio-copy {
+  max-width: 40rem;
+}
+
 /* موبايل: الصورة فوق */
 .hero-studio-visual {
   order: -1;
@@ -384,7 +392,7 @@
 }
 
 @media (min-width: 960px) {
-  .hero-studio-grid {
+  .hero-studio-grid:not(.hero-studio-grid--text) {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: clamp(2rem, 4vw, 3.5rem);
   }

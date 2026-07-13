@@ -8,7 +8,6 @@ function unsplash(photoId: string, width = 1200) {
 
 export const siteImages = {
   hero: {
-    main: unsplash("photo-1522071820081-009f0129c71c", 1400),
     mainAlt: `فريق ${SITE_NAME} يتعاون على بناء منتج رقمي`,
     accent: unsplash("photo-1460925895917-afe12b2b6d0e", 700),
     accentAlt: "لوحة تحليلات أداء على شاشة",
