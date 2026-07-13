@@ -1,8 +1,8 @@
 import { COLLECTIONS } from "@/lib/firebase/firestore";
 import { nowIso } from "@/lib/cms/admin-utils";
-import { getAdminDb } from "@/lib/server/firebase-admin";
+import { createFirestoreDocument } from "@/lib/server/firebase-admin";
 
-/** Server-only lead write — bypasses client Firestore rules via Admin SDK. */
+/** Server-only lead write — bypasses client Firestore rules via Admin REST. */
 export async function createLeadSecure(input: {
   name: string;
   email?: string;
@@ -10,16 +10,14 @@ export async function createLeadSecure(input: {
   message: string;
   source?: string;
 }): Promise<void> {
-  const db = getAdminDb();
-  const ref = db.collection(COLLECTIONS.leads).doc();
   const ts = nowIso();
-  await ref.set({
+  await createFirestoreDocument(COLLECTIONS.leads, {
     name: input.name,
-    ...(input.email ? { email: input.email } : {}),
-    ...(input.phone ? { phone: input.phone } : {}),
+    email: input.email,
+    phone: input.phone,
     message: input.message,
     source: input.source ?? "contact_form",
-    status: "new" as const,
+    status: "new",
     createdAt: ts,
     updatedAt: ts,
   });
