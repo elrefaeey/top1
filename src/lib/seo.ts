@@ -196,6 +196,89 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
   };
 }
 
+/** تسميات عربية لشرائح المسار — لاستخدام Breadcrumb تلقائي من الرابط */
+const PATH_SEGMENT_LABELS: Record<string, string> = {
+  about: "من نحن",
+  services: "الخدمات",
+  portfolio: "أعمالنا",
+  blog: "المدونة",
+  contact: "تواصل معنا",
+  pricing: "الأسعار",
+  privacy: "سياسة الخصوصية",
+  terms: "الشروط والأحكام",
+  cookies: "ملفات تعريف الارتباط",
+  "web-design-saudi-arabia": "تصميم مواقع في السعودية",
+  "seo-services": "خدمات SEO",
+  "ecommerce-development": "تطوير متاجر إلكترونية",
+  "digital-marketing": "التسويق الرقمي",
+};
+
+function pageTitleForSchema(title: string): string {
+  return title
+    .replace(new RegExp(`\\s*[|–-]\\s*${SITE_NAME}\\s*$`, "i"), "")
+    .replace(new RegExp(`^${SITE_NAME}\\s*[|–-]\\s*`, "i"), "")
+    .trim() || title;
+}
+
+/** يبني مسار التنقل (Breadcrumb) تلقائيًا من رابط الصفحة + العنوان */
+export function breadcrumbsFromPath(path: string, pageTitle?: string): BreadcrumbItem[] {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const clean = normalized.replace(/\/+$/, "") || "/";
+  if (clean === "/") return [{ name: "الرئيسية", path: "/" }];
+
+  const parts = clean.split("/").filter(Boolean);
+  const items: BreadcrumbItem[] = [{ name: "الرئيسية", path: "/" }];
+  let acc = "";
+  parts.forEach((part, index) => {
+    acc += `/${part}`;
+    const isLast = index === parts.length - 1;
+    const label = isLast && pageTitle
+      ? pageTitleForSchema(pageTitle)
+      : PATH_SEGMENT_LABELS[part] || decodeURIComponent(part).replace(/-/g, " ");
+    items.push({ name: label, path: acc });
+  });
+  return items;
+}
+
+/** WebPage Schema من عنوان الصفحة والرابط الكانوني */
+export function webPageSchema(input: {
+  title: string;
+  description: string;
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: input.title,
+    description: input.description,
+    url: input.url,
+    inLanguage: "ar-SA",
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: absoluteUrl("/"),
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: absoluteImageUrl(SITE_LOGO_URL),
+    },
+  };
+}
+
+function scriptsHaveSchemaType(
+  scripts: Array<{ type: string; children: string }>,
+  typeName: string,
+): boolean {
+  return scripts.some((s) => {
+    if (typeof s.children !== "string") return false;
+    return (
+      s.children.includes(`"@type":"${typeName}"`) ||
+      s.children.includes(`"@type": "${typeName}"`)
+    );
+  });
+}
+
 export function articleSchema(post: BlogPost, slug: string) {
   const path = `/blog/${slug}`;
   return {
@@ -303,10 +386,32 @@ export function buildPageHead(input: PageHeadInput) {
     ...(input.extraLinks ?? []),
   ];
 
+  const scripts = [...(input.scripts ?? [])];
+
+  // Schema تلقائي من العنوان + الرابط الكانوني (لكل الصفحات العامة)
+  if (!input.noIndex) {
+    if (!scriptsHaveSchemaType(scripts, "WebPage")) {
+      scripts.unshift(
+        jsonLdScript(
+          webPageSchema({
+            title: input.title,
+            description: input.description,
+            url,
+          }),
+        ),
+      );
+    }
+    if (!scriptsHaveSchemaType(scripts, "BreadcrumbList")) {
+      scripts.push(
+        jsonLdScript(breadcrumbSchema(breadcrumbsFromPath(input.path, input.title))),
+      );
+    }
+  }
+
   return {
     meta,
     links,
-    scripts: input.scripts ?? [],
+    scripts,
   };
 }
 
