@@ -104,7 +104,7 @@ function AdminSettingsPage() {
           </AdminField>
           <ImageUploadField
             id="heroImageUrl"
-            label="صورة الصفحة الرئيسية (Hero) — غير مستخدمة حالياً في الواجهة"
+            label="صورة الصفحة الرئيسية (Hero)"
             folder="hero"
             value={form.heroImageUrl ?? ""}
             onChange={(heroImageUrl) => patch({ heroImageUrl })}
@@ -114,7 +114,7 @@ function AdminSettingsPage() {
               id="heroImageAlt"
               value={form.heroImageAlt ?? ""}
               onChange={(e) => patch({ heroImageAlt: e.target.value })}
-              placeholder="وصف بديل للصورة"
+              placeholder="وصف بديل لصورة الهيرو"
               className={adminInputClass()}
             />
           </AdminField>

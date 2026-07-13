@@ -7,13 +7,13 @@ import {
 import { useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
-import { useBlogPosts, useFaqs, usePortfolio, useServices, useSiteStats, useTestimonials } from "@/hooks/use-cms";
+import { useBlogPosts, useFaqs, usePortfolio, useServices, useSiteSettings, useSiteStats, useTestimonials } from "@/hooks/use-cms";
 import { statIcon } from "@/lib/stat-icons";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { SITE_NAME } from "@/lib/site-config";
-import { buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
+import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
 import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
 
@@ -24,6 +24,14 @@ export const Route = createFileRoute("/")({
     return buildStaticPageHead("home", "/", {
       cms: loaderData,
       image,
+      extraLinks: [
+        {
+          rel: "preload",
+          as: "image",
+          href: absoluteImageUrl(image),
+          fetchPriority: "high",
+        },
+      ],
     });
   },
   component: Home,
@@ -53,9 +61,20 @@ function Home() {
 }
 
 function Hero() {
+  const { data: settings } = useSiteSettings();
+  const heroSrc = settings?.heroImageUrl?.trim() || "";
+  const heroAlt = settings?.heroImageAlt?.trim() || `${SITE_NAME} — الصفحة الرئيسية`;
+  const hasHeroImage = Boolean(heroSrc);
+
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
-      <div className="container-page hero-studio-grid hero-studio-grid--text">
+      <div
+        className={
+          hasHeroImage
+            ? "container-page hero-studio-grid"
+            : "container-page hero-studio-grid hero-studio-grid--text"
+        }
+      >
         <div className="hero-studio-copy">
           <p className="hero-studio-brand animate-hero animate-hero-delay-1">
             {SITE_NAME}
@@ -80,6 +99,21 @@ function Hero() {
             </Link>
           </div>
         </div>
+
+        {hasHeroImage ? (
+          <div className="hero-studio-visual animate-hero animate-hero-delay-3">
+            <SiteImage
+              src={heroSrc}
+              alt={heroAlt}
+              loading="eager"
+              fetchPriority="high"
+              width={960}
+              height={720}
+              wrapperClassName="hero-studio-photo"
+              className="hero-studio-photo-img"
+            />
+          </div>
+        ) : null}
       </div>
     </section>
   );
