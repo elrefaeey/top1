@@ -9,6 +9,7 @@ import { arrayToComma, commaToArray, nowIso, slugify } from "@/lib/cms/admin-uti
 import { useAdminBlogPost, useSaveBlogPost, useDeleteBlogPost } from "@/hooks/use-admin-cms";
 import { SITE_NAME } from "@/lib/site-config";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { BlogContentEditor } from "@/components/admin/BlogContentEditor";
 
 export const Route = createFileRoute("/admin/blog/$id")({
   component: AdminBlogEdit,
@@ -71,9 +72,10 @@ function AdminBlogEdit() {
           <AdminField label="المقتطف" id="excerpt">
             <textarea id="excerpt" rows={2} value={form.excerpt} onChange={(e) => patch({ excerpt: e.target.value })} className={adminInputClass()} />
           </AdminField>
-          <AdminField label="المحتوى (HTML)" id="content">
-            <textarea id="content" rows={12} dir="ltr" value={form.content} onChange={(e) => patch({ content: e.target.value })} className={adminInputClass("font-mono text-xs text-start")} />
-          </AdminField>
+          <BlogContentEditor
+            value={form.content}
+            onChange={(content) => patch({ content })}
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="التصنيف" id="category">
               <input id="category" value={form.category} onChange={(e) => patch({ category: e.target.value })} className={adminInputClass()} />
@@ -85,7 +87,16 @@ function AdminBlogEdit() {
           <AdminField label="الوسوم (مفصولة بفاصلة)" id="tags">
             <input id="tags" dir="ltr" value={tagsText} onChange={(e) => setTagsText(e.target.value)} className={adminInputClass("text-start")} />
           </AdminField>
-          <ImageUploadField id="featuredImage" label="صورة المقال" folder="blog" value={form.featuredImage ?? ""} onChange={(featuredImage) => patch({ featuredImage })} />
+          <ImageUploadField id="featuredImage" label="صورة الغلاف (أعلى المقال)" folder="blog" value={form.featuredImage ?? ""} onChange={(featuredImage) => patch({ featuredImage })} />
+          <AdminField label="وصف صورة الغلاف (Alt)" id="featuredImageAlt">
+            <input
+              id="featuredImageAlt"
+              value={form.featuredImageAlt ?? ""}
+              onChange={(e) => patch({ featuredImageAlt: e.target.value })}
+              className={adminInputClass()}
+              placeholder="وصف صورة الغلاف"
+            />
+          </AdminField>
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" checked={form.trending} onChange={(e) => patch({ trending: e.target.checked })} />
             مقال رائج

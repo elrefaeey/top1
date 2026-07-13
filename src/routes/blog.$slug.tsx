@@ -152,7 +152,7 @@ function Post() {
         )}
 
         <div
-          className="prose-section space-y-4 text-[17px] leading-[1.85] text-foreground/85 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-bold [&_h2]:tracking-tight [&_ul]:list-disc [&_ul]:pe-6 [&_ul]:space-y-2"
+          className="prose-section space-y-4 text-[17px] leading-[1.85] text-foreground/85 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-bold [&_h2]:tracking-tight [&_ul]:list-disc [&_ul]:pe-6 [&_ul]:space-y-2 [&_figure.blog-inline-image]:my-8 [&_figure.blog-inline-image]:overflow-hidden [&_figure.blog-inline-image]:rounded-2xl [&_figure.blog-inline-image]:border [&_figure.blog-inline-image]:border-border [&_figure.blog-inline-image_img]:block [&_figure.blog-inline-image_img]:w-full [&_figure.blog-inline-image_img]:h-auto [&_figure.blog-inline-image_figcaption]:px-4 [&_figure.blog-inline-image_figcaption]:py-3 [&_figure.blog-inline-image_figcaption]:text-sm [&_figure.blog-inline-image_figcaption]:text-muted-foreground [&_figure.blog-inline-image_figcaption]:bg-muted/40"
           itemProp="articleBody"
           dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />
