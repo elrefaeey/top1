@@ -13,6 +13,22 @@ export const loadPublishedPageSeoFn = createServerFn({ method: "GET", strict: fa
     return loadPublishedPageSeo(data.slug);
   });
 
+/** Home hero image from site settings — SSR so the slot does not pop in after client fetch (CLS). */
+export const loadHomeHeroSettingsFn = createServerFn({ method: "GET", strict: false }).handler(
+  async (): Promise<{ heroImageUrl: string; heroImageAlt: string }> => {
+    try {
+      const { getSiteSettings } = await import("@/lib/cms/content-service");
+      const settings = await getSiteSettings();
+      return {
+        heroImageUrl: settings?.heroImageUrl?.trim() || "",
+        heroImageAlt: settings?.heroImageAlt?.trim() || "",
+      };
+    } catch {
+      return { heroImageUrl: "", heroImageAlt: "" };
+    }
+  },
+);
+
 export const loadServicesRouteSeoFn = createServerFn({ method: "GET", strict: false }).handler(
   async (): Promise<{
     cms: WithId<CmsPage> | null;

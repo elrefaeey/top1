@@ -14,24 +14,40 @@ import { formatPostDate } from "@/lib/date-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { SITE_NAME } from "@/lib/site-config";
 import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
-import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
 
 export const Route = createFileRoute("/")({
-  loader: () => loadPublishedPageSeoFn({ data: { slug: "home" } }),
+  loader: async () => {
+    const [cms, hero] = await Promise.all([
+      loadPublishedPageSeoFn({ data: { slug: "home" } }),
+      loadHomeHeroSettingsFn(),
+    ]);
+    return { cms, hero };
+  },
   head: ({ loaderData }) => {
-    const image = resolveStaticPageOgImage("home", loaderData);
+    const cms = loaderData?.cms;
+    const heroUrl = loaderData?.hero?.heroImageUrl?.trim() || "";
+    const image = resolveStaticPageOgImage("home", cms);
+    const preloadHref =
+      heroUrl && !heroUrl.startsWith("data:")
+        ? absoluteImageUrl(heroUrl)
+        : absoluteImageUrl(image);
+    const extraLinks =
+      preloadHref && !preloadHref.startsWith("data:")
+        ? [
+            {
+              rel: "preload",
+              as: "image",
+              href: preloadHref,
+              fetchPriority: "high",
+            },
+          ]
+        : undefined;
     return buildStaticPageHead("home", "/", {
-      cms: loaderData,
-      image,
-      extraLinks: [
-        {
-          rel: "preload",
-          as: "image",
-          href: absoluteImageUrl(image),
-          fetchPriority: "high",
-        },
-      ],
+      cms,
+      image: heroUrl && !heroUrl.startsWith("data:") ? heroUrl : image,
+      extraLinks,
     });
   },
   component: Home,
@@ -61,9 +77,13 @@ function Home() {
 }
 
 function Hero() {
+  const { hero } = Route.useLoaderData();
   const { data: settings } = useSiteSettings();
-  const heroSrc = settings?.heroImageUrl?.trim() || "";
-  const heroAlt = settings?.heroImageAlt?.trim() || `${SITE_NAME} — الصفحة الرئيسية`;
+  const heroSrc = settings?.heroImageUrl?.trim() || hero.heroImageUrl || "";
+  const heroAlt =
+    settings?.heroImageAlt?.trim() ||
+    hero.heroImageAlt ||
+    `${SITE_NAME} — الصفحة الرئيسية`;
   const hasHeroImage = Boolean(heroSrc);
 
   return (
@@ -157,6 +177,8 @@ function Services() {
                     <SiteImage
                       src={s.imageUrl}
                       alt={s.title}
+                      width={640}
+                      height={360}
                       wrapperClassName="aspect-[16/9] w-full"
                       className="transition-transform duration-500 group-hover:scale-105"
                     />
@@ -254,6 +276,8 @@ function Portfolio() {
                     src={p.imageUrl}
                     alt={p.title}
                     overlay
+                    width={640}
+                    height={480}
                     wrapperClassName="portfolio-home-media aspect-[4/3] w-full max-w-full"
                     className="transition-transform duration-500 group-hover:scale-105"
                   />
@@ -382,6 +406,8 @@ function BlogPreview() {
                 <SiteImage
                   src={p.featuredImage}
                   alt={p.featuredImageAlt ?? p.title}
+                  width={640}
+                  height={400}
                   wrapperClassName="aspect-[16/10] w-full"
                   className="transition-transform duration-500 group-hover:scale-105"
                 />
