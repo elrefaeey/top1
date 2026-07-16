@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AdminEmpty, AdminFetchingBar, AdminPageHeader, AdminStatusBadge } from "@/components/admin/AdminUi";
+import {
+  AdminEmpty,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminStatusBadge,
+} from "@/components/admin/AdminUi";
 import { useAdminLeads } from "@/hooks/use-admin-cms";
 import {
   Table,

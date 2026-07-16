@@ -21,7 +21,10 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
               {page.h1}
             </h1>
             {page.intro.map((p) => (
-              <p key={p.slice(0, 40)} className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              <p
+                key={p.slice(0, 40)}
+                className="mt-4 text-lg text-muted-foreground leading-relaxed"
+              >
                 {p}
               </p>
             ))}
@@ -80,7 +83,12 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
                 <details key={faq.question} className="surface-card p-5 group">
                   <summary className="font-semibold cursor-pointer list-none flex items-center justify-between gap-2">
                     {faq.question}
-                    <span className="text-primary text-lg group-open:rotate-45 transition-transform" aria-hidden>+</span>
+                    <span
+                      className="text-primary text-lg group-open:rotate-45 transition-transform"
+                      aria-hidden
+                    >
+                      +
+                    </span>
                   </summary>
                   <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
                 </details>
@@ -97,8 +105,12 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
             تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="btn-primary">تواصل معنا</Link>
-            <Link to="/portfolio" className="btn-ghost">شاهد أعمالنا</Link>
+            <Link to="/contact" className="btn-primary">
+              تواصل معنا
+            </Link>
+            <Link to="/portfolio" className="btn-ghost">
+              شاهد أعمالنا
+            </Link>
           </div>
         </div>
       </section>

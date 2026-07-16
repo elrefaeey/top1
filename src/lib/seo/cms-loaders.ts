@@ -8,11 +8,24 @@ import {
   getServices,
 } from "@/lib/cms/content-service";
 import { FALLBACK_BLOG_POSTS, FALLBACK_SERVICES } from "@/lib/cms/fallback-data";
+import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
 import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
+
+function sanitizeFallbackPost(post: WithId<BlogPost>): WithId<BlogPost> {
+  return {
+    ...post,
+    content: post.content ? sanitizeCmsHtml(post.content) : post.content,
+  };
+}
 
 export async function loadServiceForSeo(slug: string): Promise<WithId<Service> | null> {
   const fromDb = await getServiceBySlug(slug);
   if (fromDb) return fromDb;
+
+  const published = await getServices();
+  const byIdOrSlug = published.find((s) => s.slug === slug || s.id === slug);
+  if (byIdOrSlug) return byIdOrSlug;
+
   const fallback = FALLBACK_SERVICES.find((s) => s.slug === slug || s.id === slug);
   return fallback ? { ...fallback } : null;
 }
@@ -23,7 +36,7 @@ export async function loadBlogPostForSeo(slug: string): Promise<WithId<BlogPost>
   const fallback = FALLBACK_BLOG_POSTS.find(
     (p) => blogPostSlug(p) === slug || p.id === slug || p.slug === slug,
   );
-  return fallback ? { ...fallback } : null;
+  return fallback ? sanitizeFallbackPost({ ...fallback }) : null;
 }
 
 export async function loadPortfolioItemForSeo(slug: string): Promise<WithId<PortfolioItem> | null> {

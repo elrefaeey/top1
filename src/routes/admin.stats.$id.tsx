@@ -2,13 +2,23 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react";
 import type { PublishStatus, SiteStat } from "@/types/cms";
 import {
-  AdminCard, AdminField, AdminFormActions, AdminFetchingBar, AdminPageHeader,
-  AdminPublishSelect, adminInputClass,
+  AdminCard,
+  AdminField,
+  AdminFormActions,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminPublishSelect,
+  adminInputClass,
 } from "@/components/admin/AdminUi";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { STAT_ICON_OPTIONS } from "@/lib/stat-icons";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
-import { useAdminSiteStat, useSaveSiteStat, useDeleteSiteStat, useAdminSiteStats } from "@/hooks/use-admin-cms";
+import {
+  useAdminSiteStat,
+  useSaveSiteStat,
+  useDeleteSiteStat,
+  useAdminSiteStats,
+} from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
 
 export const Route = createFileRoute("/admin/stats/$id")({
@@ -37,7 +47,9 @@ function AdminStatEdit() {
   const [saveError, setSaveError] = useState("");
   useApplyNextOrder(isNew, allItems, setForm);
 
-  useEffect(() => { if (data) setForm({ ...data }); }, [data]);
+  useEffect(() => {
+    if (data) setForm({ ...data });
+  }, [data]);
   const patch = (p: Partial<Omit<SiteStat, "id">>) => setForm((f) => ({ ...f, ...p }));
 
   async function handleSubmit(e: React.FormEvent) {
@@ -92,7 +104,9 @@ function AdminStatEdit() {
               className={adminInputClass()}
             >
               {STAT_ICON_OPTIONS.map((name) => (
-                <option key={name} value={name}>{name}</option>
+                <option key={name} value={name}>
+                  {name}
+                </option>
               ))}
             </select>
           </AdminField>
@@ -105,16 +119,23 @@ function AdminStatEdit() {
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminPublishSelect value={form.status as PublishStatus} onChange={(status) => patch({ status })} />
+          <AdminPublishSelect
+            value={form.status as PublishStatus}
+            onChange={(status) => patch({ status })}
+          />
         </AdminCard>
         <AdminFormActions
           saving={save.isPending}
-          onDelete={isNew ? undefined : async () => {
-            if (confirm("حذف؟")) {
-              await remove.mutateAsync(id);
-              navigate({ to: "/admin/stats" });
-            }
-          }}
+          onDelete={
+            isNew
+              ? undefined
+              : async () => {
+                  if (confirm("حذف؟")) {
+                    await remove.mutateAsync(id);
+                    navigate({ to: "/admin/stats" });
+                  }
+                }
+          }
         />
       </form>
     </div>

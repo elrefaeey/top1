@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
 import { ArrowLeft, Check, Sparkles } from "lucide-react";
 import { useService } from "@/hooks/use-cms";
 import { getServiceIcon } from "@/lib/cms/icons";
@@ -8,25 +8,32 @@ import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { footerInternalLinks } from "@/lib/seo/internal-links";
 import { getServiceSeoBlock } from "@/lib/seo/service-content";
-import { buildPageHead, buildServiceHead } from "@/lib/seo";
+import { buildServiceHead, notFoundHead } from "@/lib/seo";
 
 import { SITE_NAME } from "@/lib/site-config";
+
+const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/services/$slug")({
   loader: async ({ params }) => {
     const service = await loadServiceForSeoFn({ data: { slug: params.slug } });
+    if (!service) {
+      throw notFound({ headers: NOINDEX_HEADERS });
+    }
+    if (service.slug && service.slug !== params.slug) {
+      throw redirect({
+        to: "/services/$slug",
+        params: { slug: service.slug },
+        statusCode: 301,
+        replace: true,
+      });
+    }
     return { service };
   },
   head: ({ loaderData, params }) => {
+    if (!loaderData?.service) return notFoundHead();
     const seoBlock = getServiceSeoBlock(params.slug);
-    if (loaderData?.service) {
-      return buildServiceHead(loaderData.service, params.slug, seoBlock?.faqs);
-    }
-    return buildPageHead({
-      title: `خدمة — ${SITE_NAME}`,
-      description: `خدمات ${SITE_NAME}.`,
-      path: `/services/${params.slug}`,
-    });
+    return buildServiceHead(loaderData.service, params.slug, seoBlock?.faqs);
   },
   component: ServiceDetail,
 });
@@ -46,14 +53,7 @@ function ServiceDetail() {
     );
   }
 
-  if (!s) {
-    return (
-      <main className="container-page py-24 text-center">
-        <h1 className="text-3xl font-bold">الخدمة غير موجودة</h1>
-        <Link to="/services" className="mt-6 inline-flex btn-primary">كل الخدمات</Link>
-      </main>
-    );
-  }
+  if (!s) return null;
 
   const Icon = getServiceIcon(s.icon);
   const deliverables = s.deliverables ?? s.features;
@@ -87,7 +87,10 @@ function ServiceDetail() {
                   <Sparkles className="h-3.5 w-3.5" aria-hidden /> {s.tagline}
                 </span>
               )}
-              <h1 className="mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-[1.2]" itemProp="name">
+              <h1
+                className="mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-[1.2]"
+                itemProp="name"
+              >
                 {s.title}
               </h1>
               <p className="mt-5 text-lg text-muted-foreground" itemProp="description">
@@ -97,7 +100,9 @@ function ServiceDetail() {
                 <Link to="/contact" className="btn-primary">
                   ابدأ مشروعك <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
                 </Link>
-                <Link to="/portfolio" className="btn-ghost">أعمالنا</Link>
+                <Link to="/portfolio" className="btn-ghost">
+                  أعمالنا
+                </Link>
               </div>
             </div>
           </div>
@@ -138,7 +143,9 @@ function ServiceDetail() {
       {seoBlock && (
         <section className="section bg-surface border-y border-border">
           <div className="container-page">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">لماذا تختار Top1Markting؟</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+              لماذا تختار Top1Markting؟
+            </h2>
             <ul className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl">
               {seoBlock.whyChooseUs.map((item) => (
                 <li key={item} className="flex items-start gap-2 surface-card px-4 py-3 text-sm">
@@ -200,8 +207,12 @@ function ServiceDetail() {
             تواصل معنا عبر واتساب أو النموذج — نرد خلال 24 ساعة.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="btn-primary">تواصل معنا</Link>
-            <Link to="/portfolio" className="btn-ghost">شاهد أعمالنا</Link>
+            <Link to="/contact" className="btn-primary">
+              تواصل معنا
+            </Link>
+            <Link to="/portfolio" className="btn-ghost">
+              شاهد أعمالنا
+            </Link>
           </div>
           <InternalLinksBlock
             title="روابط ذات صلة"

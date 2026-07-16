@@ -7,7 +7,12 @@ const COMPRESS_TIMEOUT_MS = 25_000;
 function isHeic(file: File) {
   const type = file.type.toLowerCase();
   const name = file.name.toLowerCase();
-  return type.includes("heic") || type.includes("heif") || name.endsWith(".heic") || name.endsWith(".heif");
+  return (
+    type.includes("heic") ||
+    type.includes("heif") ||
+    name.endsWith(".heic") ||
+    name.endsWith(".heif")
+  );
 }
 
 async function compressWithBitmap(file: File, maxWidth: number, quality: number): Promise<File> {
@@ -39,7 +44,11 @@ async function compressWithBitmap(file: File, maxWidth: number, quality: number)
   return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
 }
 
-async function compressWithImageElement(file: File, maxWidth: number, quality: number): Promise<File> {
+async function compressWithImageElement(
+  file: File,
+  maxWidth: number,
+  quality: number,
+): Promise<File> {
   const objectUrl = URL.createObjectURL(file);
   try {
     const img = new Image();

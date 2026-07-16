@@ -15,7 +15,14 @@ import {
 import { STATIC_PAGE_SEO } from "@/lib/seo";
 import { useAdminPages } from "@/hooks/use-admin-cms";
 import type { StaticPageSeoId } from "@/lib/seo/admin-seo-score";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const STATIC_PAGES: Array<{
   id: StaticPageSeoId;
@@ -43,9 +50,7 @@ function AdminPagesList() {
 
   if (isChild) return <Outlet />;
 
-  const extraPages = cmsPages.filter(
-    (p) => !STATIC_SLUGS.has(p.slug) && !STATIC_SLUGS.has(p.id),
-  );
+  const extraPages = cmsPages.filter((p) => !STATIC_SLUGS.has(p.slug) && !STATIC_SLUGS.has(p.id));
 
   return (
     <div className="p-6 md:p-8">
@@ -75,7 +80,10 @@ function AdminPagesList() {
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h3 className="font-semibold">{p.title}</h3>
-                    <code className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground" dir="ltr">
+                    <code
+                      className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground"
+                      dir="ltr"
+                    >
                       {p.path}
                     </code>
                     <AdminStatusBadge status={cms?.status ?? "published"} />

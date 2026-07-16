@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpLeft, ExternalLink } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
@@ -7,23 +7,31 @@ import { usePortfolioItem } from "@/hooks/use-cms";
 import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { loadPortfolioItemForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { serviceLinksForPortfolio } from "@/lib/seo/internal-links";
-import { buildPageHead, buildPortfolioItemHead } from "@/lib/seo";
+import { buildPortfolioItemHead, notFoundHead } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
+
+const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/portfolio/$slug")({
   loader: async ({ params }) => {
     const item = await loadPortfolioItemForSeoFn({ data: { slug: params.slug } });
+    if (!item) {
+      throw notFound({ headers: NOINDEX_HEADERS });
+    }
+    const canonical = portfolioItemSlug(item);
+    if (canonical && canonical !== params.slug) {
+      throw redirect({
+        to: "/portfolio/$slug",
+        params: { slug: canonical },
+        statusCode: 301,
+        replace: true,
+      });
+    }
     return { item };
   },
   head: ({ loaderData, params }) => {
-    if (loaderData?.item) {
-      return buildPortfolioItemHead(loaderData.item, params.slug);
-    }
-    return buildPageHead({
-      title: `مشروع — ${SITE_NAME}`,
-      description: `معرض أعمال ${SITE_NAME}.`,
-      path: `/portfolio/${params.slug}`,
-    });
+    if (!loaderData?.item) return notFoundHead();
+    return buildPortfolioItemHead(loaderData.item, params.slug);
   },
   component: PortfolioDetail,
 });
@@ -42,16 +50,7 @@ function PortfolioDetail() {
     );
   }
 
-  if (!item) {
-    return (
-      <main className="container-page py-24 text-center">
-        <h1 className="text-3xl font-bold">المشروع غير موجود</h1>
-        <Link to="/portfolio" className="mt-6 inline-flex btn-primary">
-          كل الأعمال
-        </Link>
-      </main>
-    );
-  }
+  if (!item) return null;
 
   const projectSlug = portfolioItemSlug(item);
   const projectUrl = item.url?.trim();
@@ -88,7 +87,10 @@ function PortfolioDetail() {
               >
                 {item.title}
               </h1>
-              <p className="mt-5 text-lg text-muted-foreground leading-relaxed" itemProp="description">
+              <p
+                className="mt-5 text-lg text-muted-foreground leading-relaxed"
+                itemProp="description"
+              >
                 {item.description}
               </p>
 
@@ -138,17 +140,15 @@ function PortfolioDetail() {
 
       <section className="section section-compact-top pb-16">
         <div className="container-page flex flex-wrap items-center justify-between gap-4">
-          <Link to="/portfolio" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+          >
             <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
             العودة إلى الأعمال
           </Link>
           {projectUrl ? (
-            <a
-              href={projectUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
+            <a href={projectUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost">
               زيارة الموقع
               <ExternalLink className="h-4 w-4" aria-hidden />
             </a>

@@ -50,7 +50,10 @@ function AdminDashboard() {
   const { data: faqs = [] } = useAdminFaqs();
   const { data: leads = [] } = useAdminLeads();
   const [seeding, setSeeding] = useState(false);
-  const [seedMessage, setSeedMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [seedMessage, setSeedMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   async function handleSeed() {
     setSeeding(true);
@@ -66,7 +69,8 @@ function AdminDashboard() {
     } catch (err) {
       setSeedMessage({
         type: "error",
-        text: err instanceof Error ? err.message : "فشل الاستيراد. تحقق من قواعد Firestore والصلاحيات.",
+        text:
+          err instanceof Error ? err.message : "فشل الاستيراد. تحقق من قواعد Firestore والصلاحيات.",
       });
     } finally {
       setSeeding(false);
@@ -99,7 +103,9 @@ function AdminDashboard() {
         {stats.map(({ label, value, icon: Icon }) => (
           <div key={label} className="surface-card p-5">
             <div className="flex items-center justify-between">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground">{label}</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                {label}
+              </span>
               <Icon className="h-4 w-4 text-primary" />
             </div>
             <div className="mt-2 text-2xl font-bold">{value}</div>
@@ -127,9 +133,13 @@ function AdminDashboard() {
           </button>
         </div>
         {seedMessage && (
-          <div className={`mt-4 flex items-start gap-2 rounded-lg px-3 py-2 text-sm ${
-            seedMessage.type === "success" ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
-          }`}>
+          <div
+            className={`mt-4 flex items-start gap-2 rounded-lg px-3 py-2 text-sm ${
+              seedMessage.type === "success"
+                ? "bg-primary/10 text-primary"
+                : "bg-destructive/10 text-destructive"
+            }`}
+          >
             {seedMessage.type === "success" ? (
               <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
             ) : (

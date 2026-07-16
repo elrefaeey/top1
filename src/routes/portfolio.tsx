@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router"
 import { ArrowUpLeft } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { PageIntro } from "@/components/site/SectionIntro";
-import { SeoScreenReaderCopy } from "@/components/seo/SeoScreenReaderCopy";
+import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { usePortfolio } from "@/hooks/use-cms";
 import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { portfolioPageInternalLinks } from "@/lib/seo/internal-links";
@@ -32,49 +32,13 @@ function Portfolio() {
     <>
       <PageIntro
         eyebrow="أعمالنا"
-        title={<>أعمال <span className="text-gradient">نفتخر بها.</span></>}
-        desc="مشاريع حديثة مع علامات وفرق نحب العمل معهم."
+        title={
+          <>
+            مشاريع تصميم مواقع <span className="text-gradient">نفتخر بها.</span>
+          </>
+        }
+        desc="مشاريع حديثة مع علامات وفرق نحب العمل معهم — مواقع، متاجر، وتجربة مستخدم."
       />
-
-      {items.length > 0 && (
-        <SeoScreenReaderCopy>
-          <article>
-            <h2>معرض أعمال {SITE_NAME}</h2>
-            {items.map((item) => (
-              <section key={item.id}>
-                <h2>{item.title}</h2>
-                <p>{item.category}</p>
-                <p>{item.description}</p>
-                {item.tags.length > 0 ? <p>{item.tags.join("، ")}</p> : null}
-                <p>
-                  <Link to="/portfolio/$slug" params={{ slug: portfolioItemSlug(item) }}>
-                    تفاصيل المشروع
-                  </Link>
-                </p>
-                {item.url ? (
-                  <p>
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      الذهاب إلى الموقع
-                    </a>
-                  </p>
-                ) : null}
-              </section>
-            ))}
-            <nav aria-label="روابط داخلية لأعمالنا">
-              <ul>
-                {portfolioPageInternalLinks().map((link) => (
-                  <li key={link.href}>
-                    <Link to={link.href}>{link.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <p>
-              <Link to="/contact">تواصل معنا</Link>
-            </p>
-          </article>
-        </SeoScreenReaderCopy>
-      )}
 
       <section className="section">
         <div className="container-page">
@@ -100,6 +64,7 @@ function Portfolio() {
                         src={p.imageUrl}
                         alt={`${p.title} — مشروع ${p.category} | ${SITE_NAME}`}
                         overlay
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         wrapperClassName="aspect-[4/3] w-full"
                         className="transition-transform duration-500 group-hover:scale-105"
                       />
@@ -124,6 +89,14 @@ function Portfolio() {
               })}
             </div>
           )}
+
+          {items.length > 0 ? (
+            <InternalLinksBlock
+              className="mt-12"
+              title="روابط مفيدة"
+              links={portfolioPageInternalLinks()}
+            />
+          ) : null}
         </div>
       </section>
     </>

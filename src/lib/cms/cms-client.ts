@@ -16,6 +16,16 @@ async function fetchCmsApi<T>(resource: string, params?: Record<string, string>)
 
 export const cmsClient = {
   getSiteSettings: () => fetchCmsApi("settings"),
+  getHomeBundle: () =>
+    fetchCmsApi<{
+      settings: unknown;
+      services: unknown[];
+      portfolio: unknown[];
+      stats: unknown[];
+      testimonials: unknown[];
+      faqs: unknown[];
+      blog: unknown[];
+    }>("home", { blogMax: "3" }),
   getServices: () => fetchCmsApi("services"),
   getServiceBySlug: (slug: string) => fetchCmsApi("service", { slug }),
   getPortfolio: () => fetchCmsApi("portfolio"),

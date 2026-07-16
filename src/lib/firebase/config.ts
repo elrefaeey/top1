@@ -1,10 +1,7 @@
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
-import {
-  readFirebaseConfigFromEnv,
-  isValidFirebaseConfig,
-  type FirebasePublicConfig,
-} from "./env";
-import { resolvePublicSiteUrl } from "@/lib/site-config";
+import { readFirebaseConfigFromEnv, isValidFirebaseConfig, type FirebasePublicConfig } from "./env";
+
+export { SITE_URL } from "@/lib/site-config";
 
 let overrideConfig: FirebasePublicConfig | null = null;
 
@@ -27,14 +24,3 @@ export function getFirebaseApp(): FirebaseApp | null {
   if (!isValidFirebaseConfig(config)) return null;
   return initializeApp(config);
 }
-
-function readSiteUrlRaw(): string {
-  if (typeof process !== "undefined" && process.env?.VITE_SITE_URL) {
-    return process.env.VITE_SITE_URL;
-  }
-  const value = import.meta.env.VITE_SITE_URL;
-  return typeof value === "string" ? value : "";
-}
-
-/** رابط عام للموقع — لا يسمح بروابط Vercel في Sitemap/Canonical */
-export const SITE_URL = resolvePublicSiteUrl(readSiteUrlRaw());

@@ -45,16 +45,16 @@ function CookiesPage() {
                 <strong className="text-foreground">ضرورية:</strong> لتشغيل الصفحات والأمان الأساسي
               </li>
               <li>
-                <strong className="text-foreground">تحليلية (عند التفعيل):</strong> مثل Google Analytics /
-                Firebase Analytics لفهم الصفحات الأكثر زيارة وتحسين التجربة
+                <strong className="text-foreground">تحليلية (عند التفعيل):</strong> مثل Google
+                Analytics / Firebase Analytics لفهم الصفحات الأكثر زيارة وتحسين التجربة
               </li>
             </ul>
           </section>
           <section className="space-y-3">
             <h2 className="text-xl font-bold">3. التحكم</h2>
             <p>
-              يمكنك حذف أو حظر ملفات تعريف الارتباط من إعدادات المتصفح. قد يؤثر تعطيل بعض الملفات على
-              عمل أجزاء من الموقع. راجع أيضاً إعدادات التتبع في متصفحك وخيارات Google إن وُجدت.
+              يمكنك حذف أو حظر ملفات تعريف الارتباط من إعدادات المتصفح. قد يؤثر تعطيل بعض الملفات
+              على عمل أجزاء من الموقع. راجع أيضاً إعدادات التتبع في متصفحك وخيارات Google إن وُجدت.
             </p>
           </section>
           <section className="space-y-3">

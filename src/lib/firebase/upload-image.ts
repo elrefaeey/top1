@@ -1,4 +1,5 @@
 import { compressImage } from "./upload-image-compress";
+import { uploadFile, mapStorageError } from "./storage";
 import { withTimeout } from "@/lib/with-timeout";
 import { getFirebaseApp } from "./config";
 
@@ -6,13 +7,27 @@ const MAX_INPUT_MB = 12;
 
 export type UploadStage = "compress" | "upload";
 
-/** رفع عبر السيرver — يتجاوز CORS من localhost */
+function safePathName(name: string) {
+  return name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80) || "image.jpg";
+}
+
+/** رفع مباشر من المتصفح → Firebase Storage (مجاني ضمن الحصة). */
+async function uploadViaClientStorage(folder: string, file: File): Promise<string> {
+  const path = `media/${folder}/${Date.now()}-${safePathName(file.name)}`;
+  try {
+    return await uploadFile(path, file);
+  } catch (err) {
+    throw mapStorageError(err);
+  }
+}
+
+/** رفع عبر السيرفر — Storage ثم بديل Firestore media. */
 async function uploadViaServer(folder: string, file: File): Promise<string> {
-  const { getAuth } = await import("firebase/auth");
   const app = getFirebaseApp();
   if (!app) {
     throw new Error("Firebase is not configured");
   }
+  const { getAuth } = await import("firebase/auth");
   const user = getAuth(app).currentUser;
   if (!user) {
     throw new Error("يجب تسجيل الدخول قبل رفع الصور");
@@ -30,7 +45,7 @@ async function uploadViaServer(folder: string, file: File): Promise<string> {
       body: form,
     }),
     90_000,
-    "انتهت مهلة الرفع — تحقق من تفعيل Firebase Storage",
+    "انتهت مهلة الرفع — أعد المحاولة",
   );
 
   const json = (await res.json()) as { url?: string; error?: string; note?: string };
@@ -43,7 +58,7 @@ async function uploadViaServer(folder: string, file: File): Promise<string> {
   return json.url;
 }
 
-/** رفع صورة من الجهاز — ضغط ثم رفع عبر API السيرver */
+/** رفع صورة من الجهاز — ضغط ثم Firebase Storage، مع بديل مجاني عند الحاجة. */
 export async function uploadMediaImage(
   folder: string,
   file: File,
@@ -62,8 +77,23 @@ export async function uploadMediaImage(
     prepared = file;
   }
 
+  // ضغط أقوى إذا كانت ما زالت كبيرة (بديل Firestore حدّه ~600KB)
+  if (prepared.size > 550 * 1024) {
+    try {
+      prepared = await compressImage(prepared, 1200, 0.68);
+    } catch {
+      /* keep previous */
+    }
+  }
+
   onStage?.("upload");
-  return uploadViaServer(folder, prepared);
+
+  try {
+    return await uploadViaClientStorage(folder, prepared);
+  } catch {
+    // Storage غير جاهز / CORS / صلاحيات → مسار السيرفر (Storage أو Firestore)
+    return uploadViaServer(folder, prepared);
+  }
 }
 
 export { compressImage };

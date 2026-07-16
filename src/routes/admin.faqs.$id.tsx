@@ -2,8 +2,13 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useState } from "react";
 import type { FaqItem, PublishStatus } from "@/types/cms";
 import {
-  AdminCard, AdminField, AdminFormActions, AdminFetchingBar, AdminPageHeader,
-  AdminPublishSelect, adminInputClass,
+  AdminCard,
+  AdminField,
+  AdminFormActions,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminPublishSelect,
+  adminInputClass,
 } from "@/components/admin/AdminUi";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { useAdminFaq, useSaveFaq, useDeleteFaq, useAdminFaqs } from "@/hooks/use-admin-cms";
@@ -14,7 +19,12 @@ export const Route = createFileRoute("/admin/faqs/$id")({
 });
 
 const empty = (): Omit<FaqItem, "id"> => ({
-  question: "", answer: "", order: 1, status: "draft", createdAt: nowIso(), updatedAt: nowIso(),
+  question: "",
+  answer: "",
+  order: 1,
+  status: "draft",
+  createdAt: nowIso(),
+  updatedAt: nowIso(),
 });
 
 function AdminFaqEdit() {
@@ -27,7 +37,9 @@ function AdminFaqEdit() {
   const remove = useDeleteFaq();
   const [form, setForm] = useState(empty());
   useApplyNextOrder(isNew, allItems, setForm);
-  useEffect(() => { if (data) setForm({ ...data }); }, [data]);
+  useEffect(() => {
+    if (data) setForm({ ...data });
+  }, [data]);
   const patch = (p: Partial<Omit<FaqItem, "id">>) => setForm((f) => ({ ...f, ...p }));
 
   async function handleSubmit(e: React.FormEvent) {
@@ -43,12 +55,52 @@ function AdminFaqEdit() {
       <AdminPageHeader title={isNew ? "سؤال جديد" : "تعديل سؤال"} backTo="/admin/faqs" />
       <form onSubmit={handleSubmit} className="space-y-6">
         <AdminCard className="space-y-4">
-          <AdminField label="السؤال" id="question"><input id="question" required value={form.question} onChange={(e) => patch({ question: e.target.value })} className={adminInputClass()} /></AdminField>
-          <AdminField label="الإجابة" id="answer"><textarea id="answer" rows={5} required value={form.answer} onChange={(e) => patch({ answer: e.target.value })} className={adminInputClass()} /></AdminField>
-          <AdminField label="الترتيب" id="order"><input id="order" type="number" value={form.order} onChange={(e) => patch({ order: Number(e.target.value) })} className={adminInputClass()} /></AdminField>
-          <AdminPublishSelect value={form.status as PublishStatus} onChange={(status) => patch({ status })} />
+          <AdminField label="السؤال" id="question">
+            <input
+              id="question"
+              required
+              value={form.question}
+              onChange={(e) => patch({ question: e.target.value })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminField label="الإجابة" id="answer">
+            <textarea
+              id="answer"
+              rows={5}
+              required
+              value={form.answer}
+              onChange={(e) => patch({ answer: e.target.value })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminField label="الترتيب" id="order">
+            <input
+              id="order"
+              type="number"
+              value={form.order}
+              onChange={(e) => patch({ order: Number(e.target.value) })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminPublishSelect
+            value={form.status as PublishStatus}
+            onChange={(status) => patch({ status })}
+          />
         </AdminCard>
-        <AdminFormActions saving={save.isPending} onDelete={isNew ? undefined : async () => { if (confirm("حذف؟")) { await remove.mutateAsync(id); navigate({ to: "/admin/faqs" }); } }} />
+        <AdminFormActions
+          saving={save.isPending}
+          onDelete={
+            isNew
+              ? undefined
+              : async () => {
+                  if (confirm("حذف؟")) {
+                    await remove.mutateAsync(id);
+                    navigate({ to: "/admin/faqs" });
+                  }
+                }
+          }
+        />
       </form>
     </div>
   );

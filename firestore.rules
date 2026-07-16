@@ -99,13 +99,25 @@ service cloud.firestore {
 
     match /media/{docId} {
       allow read: if true;
-      allow write: if isEditor();
+      allow create: if isEditor()
+        && request.resource.data.keys().hasAll(['contentType', 'dataBase64', 'folder', 'size', 'createdAt'])
+        && request.resource.data.contentType in ['image/jpeg', 'image/png', 'image/webp']
+        && request.resource.data.dataBase64 is string
+        && request.resource.data.dataBase64.size() < 900000
+        && request.resource.data.size is int
+        && request.resource.data.size > 0
+        && request.resource.data.size < 620000;
+      allow update, delete: if isEditor();
     }
 
-    // Client create blocked — public form writes only via /api/leads (Admin SDK).
     match /leads/{docId} {
       allow create: if false;
       allow read, update, delete: if isEditor();
+    }
+
+    // Deny anything not explicitly matched above.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

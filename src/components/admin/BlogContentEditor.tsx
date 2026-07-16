@@ -18,9 +18,7 @@ const STAGE_LABEL: Record<UploadStage, string> = {
 
 function buildImageHtml(url: string, alt: string, caption: string): string {
   const safeAlt = alt.replace(/"/g, "&quot;");
-  const captionHtml = caption.trim()
-    ? `\n  <figcaption>${caption.trim()}</figcaption>`
-    : "";
+  const captionHtml = caption.trim() ? `\n  <figcaption>${caption.trim()}</figcaption>` : "";
   return `\n<figure class="blog-inline-image">\n  <img src="${url}" alt="${safeAlt}" loading="lazy" />${captionHtml}\n</figure>\n`;
 }
 
@@ -88,7 +86,9 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     try {
       const url = await uploadMediaImage("blog", file, setStage);
       insertImage(url, mode);
-      setNotice(mode === "cursor" ? "تم إدراج الصورة عند موضع المؤشر" : "تم إدراج الصورة في نهاية المقال");
+      setNotice(
+        mode === "cursor" ? "تم إدراج الصورة عند موضع المؤشر" : "تم إدراج الصورة في نهاية المقال",
+      );
       setCaption("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "فشل رفع الصورة");
@@ -107,10 +107,8 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     setError("");
     setNotice("");
     const el = textareaRef.current;
-    const selected = el
-      ? value.slice(el.selectionStart ?? 0, el.selectionEnd ?? 0)
-      : "";
-    const text = (linkText.trim() || selected.trim());
+    const selected = el ? value.slice(el.selectionStart ?? 0, el.selectionEnd ?? 0) : "";
+    const text = linkText.trim() || selected.trim();
     if (!text) {
       setError("حدّد نصاً في المحرر أو اكتب نص الرابط أولاً.");
       return;
@@ -137,7 +135,9 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     onChange(next);
     const leadingNewline = end <= start && start > 0 && !value.slice(0, start).endsWith("\n");
     focusAfterInsert(start, html.length, leadingNewline);
-    setNotice(`تم ربط النص بالقسم: ${anchors.find((a) => a.id === linkTargetId)?.title ?? linkTargetId}`);
+    setNotice(
+      `تم ربط النص بالقسم: ${anchors.find((a) => a.id === linkTargetId)?.title ?? linkTargetId}`,
+    );
     setLinkText("");
   }
 
@@ -163,7 +163,8 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
         <div>
           <p className="text-sm font-semibold text-foreground">روابط داخل المقال</p>
           <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-            اربط جملة أو كلمة بقسم معيّن (عنوان h2 أو h3). يمكنك تحديد النص في المحرر ثم اختيار القسم، أو كتابة نص الرابط يدوياً.
+            اربط جملة أو كلمة بقسم معيّن (عنوان h2 أو h3). يمكنك تحديد النص في المحرر ثم اختيار
+            القسم، أو كتابة نص الرابط يدوياً.
           </p>
         </div>
 

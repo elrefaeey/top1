@@ -10,7 +10,15 @@ import {
 } from "./fallback-data";
 import type { SiteSettings } from "@/types/cms";
 
-import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_WHATSAPP_MESSAGE, SITE_ADDRESS } from "@/lib/site-config";
+import {
+  SITE_NAME,
+  SITE_LOGO_URL,
+  SITE_CONTACT_EMAIL,
+  SITE_CONTACT_PHONE,
+  SITE_WHATSAPP_NUMBER,
+  SITE_WHATSAPP_MESSAGE,
+  SITE_ADDRESS,
+} from "@/lib/site-config";
 
 const SITE_SETTINGS: SiteSettings = {
   siteName: SITE_NAME,
@@ -33,7 +41,8 @@ const SITE_SETTINGS: SiteSettings = {
   integrations: {
     googleAnalyticsId: "G-09WBWML921",
   },
-  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/\n\nSitemap: https://www.top1markting.com/sitemap.xml",
+  robotsTxt:
+    "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/\nDisallow: /api/\nDisallow: /api\n\nSitemap: https://www.top1markting.com/sitemap.xml",
   headerNav: [
     { label: "Services", href: "/services", order: 1 },
     { label: "Portfolio", href: "/portfolio", order: 2 },

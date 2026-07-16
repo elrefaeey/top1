@@ -1,13 +1,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import {
-  getFirebaseApp,
-  isFirebaseConfigured,
-  setFirebaseConfig,
-} from "@/lib/firebase/config";
-import {
-  isValidFirebaseConfig,
-  type FirebasePublicConfig,
-} from "@/lib/firebase/env";
+import { getFirebaseApp, isFirebaseConfigured, setFirebaseConfig } from "@/lib/firebase/config";
+import { isValidFirebaseConfig, type FirebasePublicConfig } from "@/lib/firebase/env";
+
+/* eslint-disable react-refresh/only-export-components -- provider + hook pattern */
 
 const FirebaseReadyContext = createContext(false);
 
@@ -54,9 +49,5 @@ export function FirebaseProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  return (
-    <FirebaseReadyContext.Provider value={ready}>
-      {children}
-    </FirebaseReadyContext.Provider>
-  );
+  return <FirebaseReadyContext.Provider value={ready}>{children}</FirebaseReadyContext.Provider>;
 }

@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import {
-  initAnalytics,
-  isAnalyticsInitialized,
-  trackPageView,
-} from "@/lib/firebase/analytics";
+import { initAnalytics, isAnalyticsInitialized, trackPageView } from "@/lib/firebase/analytics";
 
 function scheduleIdle(callback: () => void): () => void {
   if (typeof globalThis === "undefined") return () => {};

@@ -36,7 +36,9 @@ export function AdminFirestoreBanner() {
           {kind === "permission" ? (
             <>
               حسابك مسجّل لكن Firestore يرفض الطلب. أنشئ مستند{" "}
-              <code className="text-[0.7rem] bg-amber-500/10 px-1 rounded" dir="ltr">users/UID</code>{" "}
+              <code className="text-[0.7rem] bg-amber-500/10 px-1 rounded" dir="ltr">
+                users/UID
+              </code>{" "}
               مع <code className="text-[0.7rem] bg-amber-500/10 px-1 rounded">role: admin</code>، ثم{" "}
               <a
                 href="https://console.firebase.google.com"

@@ -1,16 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createLeadSecure } from "@/lib/server/create-lead";
 import { applySecurityHeaders, jsonError } from "@/lib/security/headers";
-import { checkRateLimit, rateLimitKey } from "@/lib/security/rate-limit";
+import { checkRateLimitAsync, rateLimitHeaders, rateLimitKey } from "@/lib/security/rate-limit";
 import { isHoneypotTriggered, validateLeadInput } from "@/lib/security/validate";
+
+const LEADS_RATE_MAX = 8;
 
 export const Route = createFileRoute("/api/leads")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         try {
-          if (!checkRateLimit(rateLimitKey(request, "leads"))) {
-            return jsonError("طلبات كثيرة — حاول بعد دقيقة", 429);
+          const rl = await checkRateLimitAsync(rateLimitKey(request, "leads"), LEADS_RATE_MAX);
+          if (!rl.ok) {
+            return applySecurityHeaders(
+              Response.json(
+                { error: "طلبات كثيرة — حاول بعد دقيقة" },
+                { status: 429, headers: rateLimitHeaders(rl, LEADS_RATE_MAX) },
+              ),
+            );
           }
 
           const contentType = request.headers.get("content-type") ?? "";
@@ -40,14 +48,23 @@ export const Route = createFileRoute("/api/leads")({
           });
 
           await createLeadSecure(lead);
-          return applySecurityHeaders(Response.json({ ok: true }));
+          return applySecurityHeaders(
+            Response.json({ ok: true }, { headers: rateLimitHeaders(rl, LEADS_RATE_MAX) }),
+          );
         } catch (err) {
           console.error("[api/leads]", err);
-          const message =
-            err instanceof Error && err.message && !err.message.includes("Firebase")
-              ? err.message
-              : "تعذّر إرسال الرسالة";
-          return jsonError(message, 400);
+          const message = err instanceof Error ? err.message : "";
+          const isValidation =
+            Boolean(message) &&
+            !message.includes("Firebase") &&
+            !message.includes("Service account") &&
+            !message.includes("FIREBASE_") &&
+            !message.toLowerCase().includes("unavailable");
+
+          if (isValidation && message && !message.includes("fetch")) {
+            return jsonError(message, 400);
+          }
+          return jsonError("تعذّر إرسال الرسالة", 503);
         }
       },
     },

@@ -1,4 +1,4 @@
-import { COLLECTIONS } from "@/lib/firebase/firestore";
+import { COLLECTIONS } from "@/lib/firebase/collections";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { createFirestoreDocument } from "@/lib/server/firebase-admin";
 

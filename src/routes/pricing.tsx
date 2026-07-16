@@ -52,7 +52,7 @@ const PACKAGES = [
   },
   {
     name: "متجر إلكتروني",
-    blurb: "للبيع أونلاين مع تجربة شراء سلسة في السوق السعودي والخليج.",
+    blurb: "للبيع أونلاين مع تجربة شراء سلسة في السوق السعودي.",
     points: ["كتالوج منتجات", "تكامل دفع/شحن حسب الاتفاق", "تحسين سرعة وتحويل", "لوحة إدارة"],
   },
   {
@@ -67,7 +67,11 @@ function PricingPage() {
     <>
       <PageIntro
         eyebrow="الأسعار"
-        title={<>أسعار شفافة — <span className="text-gradient">عرض يناسب مشروعك.</span></>}
+        title={
+          <>
+            أسعار شفافة — <span className="text-gradient">عرض يناسب مشروعك.</span>
+          </>
+        }
         desc="لا نضع أسعاراً ثابتة مبالغاً فيها أو غير دقيقة. بعد فهم نطاق العمل نرسل عرض سعر مخصص بالريال السعودي."
       />
 
@@ -77,8 +81,12 @@ function PricingPage() {
             {PACKAGES.map((p) => (
               <article key={p.name} className="surface-card p-6 flex flex-col">
                 <h2 className="text-lg font-bold">{p.name}</h2>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{p.blurb}</p>
-                <p className="mt-4 text-sm font-semibold text-primary">تبدأ الأسعار حسب النطاق — اطلب عرضاً</p>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">
+                  {p.blurb}
+                </p>
+                <p className="mt-4 text-sm font-semibold text-primary">
+                  تبدأ الأسعار حسب النطاق — اطلب عرضاً
+                </p>
                 <ul className="mt-4 space-y-2">
                   {p.points.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 /**
  * Content-Security-Policy for Top1Markting.
- * style-src 'unsafe-inline' is required for Tailwind/React inline styles and chart.tsx.
- * script-src 'unsafe-inline' may be required for Vite/TanStack hydration chunks in production.
+ * style-src 'unsafe-inline' remains required for React/Tailwind runtime styles.
+ * script-src keeps 'unsafe-inline' for TanStack Start hydration until nonces land.
  */
 export function buildContentSecurityPolicy(isDev: boolean): string {
   const directives: string[] = [
@@ -12,23 +12,22 @@ export function buildContentSecurityPolicy(isDev: boolean): string {
       "https://www.google-analytics.com",
       "https://apis.google.com",
       "https://*.firebaseapp.com",
-      isDev ? "'unsafe-inline'" : "'unsafe-inline'",
+      "'unsafe-inline'",
       isDev ? "'unsafe-eval'" : "",
     ]
       .filter(Boolean)
       .join(" "),
-    [
-      "style-src 'self'",
-      "'unsafe-inline'",
-      "https://fonts.googleapis.com",
-    ].join(" "),
+    "script-src-attr 'none'",
+    ["style-src 'self'", "'unsafe-inline'", "https://fonts.googleapis.com"].join(" "),
     "font-src 'self' https://fonts.gstatic.com data:",
     [
       "img-src 'self'",
+      // data: kept temporarily for legacy CMS heroes; new uploads reject Base64.
       "data:",
       "blob:",
       "https://images.unsplash.com",
       "https://firebasestorage.googleapis.com",
+      "https://*.googleapis.com",
       "https://*.googleusercontent.com",
       "https://i.ibb.co",
       "https://*.ibb.co",
@@ -52,7 +51,8 @@ export function buildContentSecurityPolicy(isDev: boolean): string {
     ]
       .filter(Boolean)
       .join(" "),
-    "frame-src 'self' https://*.firebaseapp.com",
+    "frame-src 'self' https://*.firebaseapp.com https://www.googletagmanager.com",
+    "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

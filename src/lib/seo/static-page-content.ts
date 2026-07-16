@@ -47,7 +47,5 @@ export function featuredBlogCategories(posts: BlogPost[]): string[] {
     if (!post.category) continue;
     counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
   }
-  return [...counts.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .map(([category]) => category);
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([category]) => category);
 }

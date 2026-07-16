@@ -79,13 +79,7 @@ export const SEO_PAGE_RULES: Record<StaticPageSeoId, SeoPageRule> = {
     keywords: [
       {
         id: "web-design",
-        terms: [
-          "تصميم مواقع",
-          "تصميم موقع",
-          "شركة تصميم مواقع",
-          "web design",
-          "website design",
-        ],
+        terms: ["تصميم مواقع", "تصميم موقع", "شركة تصميم مواقع", "web design", "website design"],
       },
       { id: "ecommerce", terms: ["متاجر إلكترونية", "متجر إلكتروني", "ecommerce", "e-commerce"] },
       { id: "seo", terms: ["seo", "تحسين محركات البحث"] },

@@ -102,7 +102,8 @@ export function useAdminService(id: string, enabled = true) {
 export function useSaveService() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<Service, "id"> }) => saveAdminService(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<Service, "id"> }) =>
+      saveAdminService(id, data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.services() });
       await invalidatePublic(qc);
@@ -140,7 +141,8 @@ export function useAdminBlogPost(id: string, enabled = true) {
 export function useSaveBlogPost() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<BlogPost, "id"> }) => saveAdminBlogPost(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<BlogPost, "id"> }) =>
+      saveAdminBlogPost(id, data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.blog() });
       await invalidatePublic(qc);
@@ -217,7 +219,8 @@ export function useAdminPricingPlan(id: string, enabled = true) {
 export function useSavePricingPlan() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<PricingPlan, "id"> }) => saveAdminPricingPlan(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<PricingPlan, "id"> }) =>
+      saveAdminPricingPlan(id, data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.pricing() });
       await invalidatePublic(qc);
@@ -255,7 +258,8 @@ export function useAdminTestimonial(id: string, enabled = true) {
 export function useSaveTestimonial() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<Testimonial, "id"> }) => saveAdminTestimonial(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<Testimonial, "id"> }) =>
+      saveAdminTestimonial(id, data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.testimonials() });
       await invalidatePublic(qc);
@@ -331,7 +335,8 @@ export function useAdminSiteStat(id: string, enabled = true) {
 export function useSaveSiteStat() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<SiteStat, "id"> }) => saveAdminSiteStat(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<SiteStat, "id"> }) =>
+      saveAdminSiteStat(id, data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.stats() });
       await invalidatePublic(qc);
@@ -369,7 +374,8 @@ export function useAdminPage(id: string, enabled = true) {
 export function useSavePage() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<CmsPage, "id"> }) => saveAdminPage(id, data),
+    mutationFn: ({ id, data }: { id: string; data: Omit<CmsPage, "id"> }) =>
+      saveAdminPage(id, data),
     onSuccess: async (_result, { id }) => {
       await qc.invalidateQueries({ queryKey: adminKeys.pages() });
       await qc.invalidateQueries({ queryKey: adminKeys.page(id) });

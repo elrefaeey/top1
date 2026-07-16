@@ -21,7 +21,12 @@ export function PageIntro({
 }: Omit<SectionIntroProps, "action">) {
   return (
     <section className={cn("page-intro hero-bg", className)}>
-      <div className={cn("container-page page-intro-inner", centered && "page-intro-center page-intro-block")}>
+      <div
+        className={cn(
+          "container-page page-intro-inner",
+          centered && "page-intro-center page-intro-block",
+        )}
+      >
         <span className="page-intro-eyebrow">{eyebrow}</span>
         <Tag className="page-intro-title">{title}</Tag>
         {desc && <p className="page-intro-desc">{desc}</p>}
@@ -31,13 +36,7 @@ export function PageIntro({
 }
 
 /** عنوان قسم في الصفحة الرئيسية — نفس المقاسات */
-export function SectionIntro({
-  eyebrow,
-  title,
-  desc,
-  centered,
-  action,
-}: SectionIntroProps) {
+export function SectionIntro({ eyebrow, title, desc, centered, action }: SectionIntroProps) {
   return (
     <div className={cn("section-intro-row", action && "section-intro-row--action")}>
       <div className={cn("page-intro-block", centered && "page-intro-center")}>

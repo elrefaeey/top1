@@ -16,7 +16,11 @@ export function BreadcrumbNav({ items, className = "" }: BreadcrumbNavProps) {
           const isLast = i === items.length - 1;
           return (
             <li key={item.path} className="flex items-center gap-1.5">
-              {i > 0 && <span aria-hidden className="opacity-50">/</span>}
+              {i > 0 && (
+                <span aria-hidden className="opacity-50">
+                  /
+                </span>
+              )}
               {isLast ? (
                 <span className="text-foreground font-medium" aria-current="page">
                   {item.name}

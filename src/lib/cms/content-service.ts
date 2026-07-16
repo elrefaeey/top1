@@ -1,13 +1,10 @@
+import { collection, doc, getDoc, getDocs, query, where, limit } from "firebase/firestore";
 import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  limit,
-} from "firebase/firestore";
-import { getDb, COLLECTIONS, getReadTimeoutMs, withFirestoreTimeout } from "@/lib/firebase/firestore";
+  getDb,
+  COLLECTIONS,
+  getReadTimeoutMs,
+  withFirestoreTimeout,
+} from "@/lib/firebase/firestore";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import type {
   BlogPost,
@@ -22,6 +19,7 @@ import type {
   WithId,
 } from "@/types/cms";
 import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
+import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
 
 const READ_MS = getReadTimeoutMs();
 
@@ -193,7 +191,15 @@ export async function getPortfolioItemBySlug(slug: string): Promise<WithId<Portf
 
 function normalizeBlogPost(docId: string, post: BlogPost): WithId<BlogPost> {
   const slug = post.slug?.trim() || docId;
-  return { ...post, id: docId, slug };
+  const content = post.content ? sanitizeCmsHtml(post.content) : post.content;
+  return { ...post, id: docId, slug, content };
+}
+
+function sanitizeFaqItem(item: WithId<FaqItem>): WithId<FaqItem> {
+  return {
+    ...item,
+    answer: item.answer ? sanitizeCmsHtml(item.answer) : item.answer,
+  };
 }
 
 function normalizeBlogSlugParam(slug: string): string {
@@ -207,7 +213,10 @@ function normalizeBlogSlugParam(slug: string): string {
 export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
   return safeList(async () => {
     try {
-      const q = query(collection(getDb(), COLLECTIONS.blogPosts), where("status", "==", "published"));
+      const q = query(
+        collection(getDb(), COLLECTIONS.blogPosts),
+        where("status", "==", "published"),
+      );
       const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
       if (snap.docs.length > 0) {
         let items = snap.docs.map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)));
@@ -219,7 +228,10 @@ export async function getBlogPosts(max?: number): Promise<WithId<BlogPost>[]> {
       console.error("[cms] blog published query failed:", err);
     }
 
-    const snap = await withFirestoreTimeout(getDocs(collection(getDb(), COLLECTIONS.blogPosts)), READ_MS);
+    const snap = await withFirestoreTimeout(
+      getDocs(collection(getDb(), COLLECTIONS.blogPosts)),
+      READ_MS,
+    );
     let items = snap.docs
       .map((d) => normalizeBlogPost(d.id, mapDoc<BlogPost>(d)))
       .filter((item) => isPublicCmsItem(item as unknown as Record<string, unknown>));
@@ -275,7 +287,8 @@ export async function getPricingPlans(): Promise<WithId<PricingPlan>[]> {
 }
 
 export async function getFaqs(): Promise<WithId<FaqItem>[]> {
-  return safeList(() => getPublished<FaqItem>(COLLECTIONS.faqs));
+  const items = await safeList(() => getPublished<FaqItem>(COLLECTIONS.faqs));
+  return items.map(sanitizeFaqItem);
 }
 
 export async function getSiteStats(): Promise<WithId<SiteStat>[]> {
@@ -284,4 +297,3 @@ export async function getSiteStats(): Promise<WithId<SiteStat>[]> {
   if (items.length > 0) return items;
   return FALLBACK_SITE_STATS.map((s) => ({ ...s }));
 }
-

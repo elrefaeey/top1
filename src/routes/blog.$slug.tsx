@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
 import { Twitter, Linkedin, Facebook, Link2, ArrowRight } from "lucide-react";
 import { useBlogPost, useBlogPosts } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
@@ -14,26 +14,31 @@ import {
   resolveReadTime,
 } from "@/lib/seo/blog-utils";
 import { serviceLinksForBlogPost } from "@/lib/seo/internal-links";
-import { buildBlogPostHead, buildPageHead } from "@/lib/seo";
-import { sanitizeCmsHtml } from "@/lib/security/sanitize-html";
-
+import { buildBlogPostHead, notFoundHead } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
+
+const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const post = await loadBlogPostForSeoFn({ data: { slug: params.slug } });
+    if (!post) {
+      throw notFound({ headers: NOINDEX_HEADERS });
+    }
+    const canonical = blogPostSlug(post);
+    if (canonical && canonical !== params.slug) {
+      throw redirect({
+        to: "/blog/$slug",
+        params: { slug: canonical },
+        statusCode: 301,
+        replace: true,
+      });
+    }
     return { post };
   },
   head: ({ loaderData, params }) => {
-    if (loaderData?.post) {
-      return buildBlogPostHead(loaderData.post, params.slug);
-    }
-    return buildPageHead({
-      title: `مقال — ${SITE_NAME}`,
-      description: `مقال من مدونة ${SITE_NAME}.`,
-      path: `/blog/${params.slug}`,
-      type: "article",
-    });
+    if (!loaderData?.post) return notFoundHead();
+    return buildBlogPostHead(loaderData.post, params.slug);
   },
   component: Post,
 });
@@ -53,18 +58,10 @@ function Post() {
     );
   }
 
-  if (!post) {
-    return (
-      <main className="container-page py-24 text-center">
-        <h1 className="text-3xl font-bold">المقال غير موجود</h1>
-        <Link to="/blog" className="mt-6 inline-flex btn-primary">كل المقالات</Link>
-      </main>
-    );
-  }
+  if (!post) return null;
 
   const readTime = resolveReadTime(post);
-  const sanitized = sanitizeCmsHtml(post.content);
-  const contentWithIds = injectHeadingIds(sanitized);
+  const contentWithIds = injectHeadingIds(post.content);
   const toc = extractTocFromHtml(contentWithIds);
   const showToc = toc.length >= 3;
   const related = getRelatedPosts(post, allPosts, 3);
@@ -83,16 +80,13 @@ function Post() {
         <div className="container-page pt-16 pb-12 max-w-3xl">
           <BreadcrumbNav items={breadcrumbs} className="mb-6" />
           <div className="text-xs text-muted-foreground flex flex-wrap gap-2">
-            <span className="text-primary font-medium">{post.category}</span>
-            ·
+            <span className="text-primary font-medium">{post.category}</span>·
             {dateLabel && (
               <time dateTime={post.publishedAt} itemProp="datePublished">
                 {dateLabel}
               </time>
             )}
-            ·
-            <span itemProp="author">{post.author}</span>
-            ·
+            ·<span itemProp="author">{post.author}</span>·
             <span>
               {readTime} دقائق قراءة
               <meta itemProp="timeRequired" content={`PT${readTime}M`} />
@@ -134,10 +128,7 @@ function Post() {
 
       <div className="container-page pb-24 max-w-3xl">
         {showToc && (
-          <nav
-            className="surface-card p-5 mb-10"
-            aria-label="جدول المحتويات"
-          >
+          <nav className="surface-card p-5 mb-10" aria-label="جدول المحتويات">
             <h2 className="text-sm font-bold text-foreground">جدول المحتويات</h2>
             <ol className="mt-3 space-y-2 text-sm text-muted-foreground">
               {toc.map((entry, i) => (
@@ -169,15 +160,16 @@ function Post() {
               className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 grid place-items-center font-semibold text-primary"
               aria-hidden
             >
-              {post.author.split(" ").map((x) => x[0]).join("")}
+              {post.author
+                .split(" ")
+                .map((x) => x[0])
+                .join("")}
             </span>
             <div>
               <div className="text-sm font-semibold" itemProp="author">
                 {post.author}
               </div>
-              <div className="text-xs text-muted-foreground">
-                فريق الاستوديو · {SITE_NAME}
-              </div>
+              <div className="text-xs text-muted-foreground">فريق الاستوديو · {SITE_NAME}</div>
             </div>
           </div>
           <div className="flex items-center gap-2" aria-label="مشاركة المقال">

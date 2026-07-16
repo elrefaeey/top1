@@ -33,8 +33,5 @@ export function applySecurityHeaders(response: Response): Response {
 }
 
 export function jsonError(message: string, status: number): Response {
-  return Response.json(
-    { error: message },
-    { status, headers: getSecurityHeaders() },
-  );
+  return Response.json({ error: message }, { status, headers: getSecurityHeaders() });
 }

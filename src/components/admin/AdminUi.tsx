@@ -10,6 +10,9 @@ import {
   type AdminSeoScoreInput,
 } from "@/lib/seo/admin-seo-score";
 
+/* Shared admin UI co-exports hooks/helpers for DX — refresh boundary lives at route level. */
+/* eslint-disable react-refresh/only-export-components */
+
 export function AdminPageHeader({
   title,
   description,
@@ -31,7 +34,10 @@ export function AdminPageHeader({
     <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
       <div>
         {backTo && (
-          <Link to={backTo} className="mb-2 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+          <Link
+            to={backTo}
+            className="mb-2 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
+          >
             <ArrowRight className="h-3.5 w-3.5 rtl-flip" /> {backLabel}
           </Link>
         )}
@@ -70,7 +76,12 @@ export function AdminStatusBadge({ status }: { status: PublishStatus | string })
     closed: "مغلق",
   };
   return (
-    <span className={cn("inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium", map[status] ?? map.draft)}>
+    <span
+      className={cn(
+        "inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        map[status] ?? map.draft,
+      )}
+    >
       {labels[status] ?? status}
     </span>
   );
@@ -89,7 +100,9 @@ export function AdminField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-medium">{label}</label>
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
+      </label>
       <div className="mt-1.5">{children}</div>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
@@ -121,7 +134,17 @@ export function AdminFetchingBar({ show }: { show?: boolean }) {
   );
 }
 
-export function AdminEmpty({ message, actionTo, actionParams, actionLabel }: { message: string; actionTo?: string; actionParams?: Record<string, string>; actionLabel?: string }) {
+export function AdminEmpty({
+  message,
+  actionTo,
+  actionParams,
+  actionLabel,
+}: {
+  message: string;
+  actionTo?: string;
+  actionParams?: Record<string, string>;
+  actionLabel?: string;
+}) {
   return (
     <div className="surface-card p-10 text-center">
       <p className="text-muted-foreground text-sm">{message}</p>
@@ -149,7 +172,11 @@ export function AdminFormActions({
         {saving ? "جاري الحفظ…" : "حفظ"}
       </button>
       {onDelete && (
-        <button type="button" onClick={onDelete} className="btn-ghost !text-destructive hover:!border-destructive/30">
+        <button
+          type="button"
+          onClick={onDelete}
+          className="btn-ghost !text-destructive hover:!border-destructive/30"
+        >
           {deleteLabel}
         </button>
       )}
@@ -199,14 +226,33 @@ export function AdminSeoSection({
       </div>
       {showSlug && (
         <AdminField label="Slug" id="slug" hint="معرّف الصفحة في الرابط — بالإنجليزية.">
-          <input id="slug" dir="ltr" value={slug} onChange={(e) => onSlug(e.target.value)} className={adminInputClass("text-start")} />
+          <input
+            id="slug"
+            dir="ltr"
+            value={slug}
+            onChange={(e) => onSlug(e.target.value)}
+            className={adminInputClass("text-start")}
+          />
         </AdminField>
       )}
       <AdminField label="Meta Title" id="metaTitle" hint={titleHint}>
-        <input id="metaTitle" value={metaTitle} onChange={(e) => onMetaTitle(e.target.value)} className={adminInputClass()} placeholder="عنوان يظهر في نتائج البحث" />
+        <input
+          id="metaTitle"
+          value={metaTitle}
+          onChange={(e) => onMetaTitle(e.target.value)}
+          className={adminInputClass()}
+          placeholder="عنوان يظهر في نتائج البحث"
+        />
       </AdminField>
       <AdminField label="Meta Description" id="metaDescription" hint={descHint}>
-        <textarea id="metaDescription" rows={4} value={metaDescription} onChange={(e) => onMetaDescription(e.target.value)} className={adminInputClass()} placeholder="وصف مختصر يشجّع على النقر" />
+        <textarea
+          id="metaDescription"
+          rows={4}
+          value={metaDescription}
+          onChange={(e) => onMetaDescription(e.target.value)}
+          className={adminInputClass()}
+          placeholder="وصف مختصر يشجّع على النقر"
+        />
       </AdminField>
     </AdminCard>
   );
@@ -221,7 +267,12 @@ export function AdminPublishSelect({
 }) {
   return (
     <AdminField label="الحالة" id="status">
-      <select id="status" value={value} onChange={(e) => onChange(e.target.value as PublishStatus)} className={adminInputClass()}>
+      <select
+        id="status"
+        value={value}
+        onChange={(e) => onChange(e.target.value as PublishStatus)}
+        className={adminInputClass()}
+      >
         <option value="published">منشور</option>
         <option value="draft">مسودة</option>
         <option value="scheduled">مجدول</option>
@@ -254,7 +305,13 @@ export function AdminSection({
 }
 
 /** جدول داخل بطاقة مع تنسيق موحّد */
-export function AdminTableCard({ children, className }: { children: ReactNode; className?: string }) {
+export function AdminTableCard({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return <div className={cn("surface-card overflow-hidden", className)}>{children}</div>;
 }
 
@@ -369,7 +426,9 @@ export function AdminSeoScorePanel({
           <div className="text-[10px] text-muted-foreground" dir="ltr">
             / 100
           </div>
-          <div className={cn("mt-1 text-xs font-medium", result.labelClassName)}>{result.label}</div>
+          <div className={cn("mt-1 text-xs font-medium", result.labelClassName)}>
+            {result.label}
+          </div>
         </div>
       </div>
 

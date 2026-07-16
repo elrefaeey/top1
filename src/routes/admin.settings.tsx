@@ -11,7 +11,15 @@ import {
 } from "@/components/admin/AdminUi";
 import { useAdminSiteSettings, useSaveSiteSettings } from "@/hooks/use-admin-cms";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
-import { SITE_NAME, SITE_LOGO_URL, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER, SITE_WHATSAPP_MESSAGE, SITE_ADDRESS } from "@/lib/site-config";
+import {
+  SITE_NAME,
+  SITE_LOGO_URL,
+  SITE_CONTACT_EMAIL,
+  SITE_CONTACT_PHONE,
+  SITE_WHATSAPP_NUMBER,
+  SITE_WHATSAPP_MESSAGE,
+  SITE_ADDRESS,
+} from "@/lib/site-config";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export const Route = createFileRoute("/admin/settings")({
@@ -30,7 +38,8 @@ const defaults: SiteSettings = {
   address: SITE_ADDRESS,
   socialLinks: {},
   integrations: {},
-  robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/\n\nSitemap: https://www.top1markting.com/sitemap.xml",
+  robotsTxt:
+    "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /admin/\nDisallow: /api/\nDisallow: /api\n\nSitemap: https://www.top1markting.com/sitemap.xml",
   headerNav: [],
   footerNav: [],
 };

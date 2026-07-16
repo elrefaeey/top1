@@ -74,7 +74,11 @@ export function SiteFooter() {
                 {settings?.contactEmail && (
                   <li>
                     <Mail className="h-4 w-4 shrink-0 text-primary" />
-                    <a href={`mailto:${settings.contactEmail}`} dir="ltr" className="hover:text-white transition-colors">
+                    <a
+                      href={`mailto:${settings.contactEmail}`}
+                      dir="ltr"
+                      className="hover:text-white transition-colors"
+                    >
                       {settings.contactEmail}
                     </a>
                   </li>
@@ -95,47 +99,58 @@ export function SiteFooter() {
             </div>
 
             <div className="footer-links-grid">
-            {/* روابط سريعة */}
-            <div className="footer-links-col">
-              <h3 className="footer-col-title">روابط سريعة</h3>
-              <ul className="footer-link-list">
-                {QUICK_LINKS.map((l) => (
-                  <li key={l.href}>
-                    <Link to={l.href} className="footer-link">{l.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* الخدمات — ديسكتوب فقط */}
-            {services.length > 0 && (
-              <div className="footer-links-col footer-services-col">
-                <h3 className="footer-col-title">خدماتنا</h3>
+              {/* روابط سريعة */}
+              <div className="footer-links-col">
+                <h3 className="footer-col-title">روابط سريعة</h3>
                 <ul className="footer-link-list">
-                  {services.slice(0, 6).map((s) => (
-                    <li key={s.id}>
-                      <Link to="/services/$slug" params={{ slug: s.slug }} className="footer-link">
-                        {s.title}
+                  {QUICK_LINKS.map((l) => (
+                    <li key={l.href}>
+                      <Link to={l.href} className="footer-link">
+                        {l.label}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
-            )}
 
-            {/* لماذا نحن — ديسكتوب فقط */}
-            <div className="footer-links-col footer-perks-col">
-              <h3 className="footer-col-title">لماذا نحن؟</h3>
-              <ul className="footer-perks">
-                {["فريق خبراء فقط", "تسليم سريع وشفاف", "SEO من اليوم الأول", "دعم بعد الإطلاق"].map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-              <Link to="/contact" className="footer-mini-cta mt-4">
-                تواصل معنا
-                <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
-              </Link>
-            </div>
+              {/* الخدمات — ديسكتوب فقط */}
+              {services.length > 0 && (
+                <div className="footer-links-col footer-services-col">
+                  <h3 className="footer-col-title">خدماتنا</h3>
+                  <ul className="footer-link-list">
+                    {services.slice(0, 6).map((s) => (
+                      <li key={s.id}>
+                        <Link
+                          to="/services/$slug"
+                          params={{ slug: s.slug }}
+                          className="footer-link"
+                        >
+                          {s.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* لماذا نحن — ديسكتوب فقط */}
+              <div className="footer-links-col footer-perks-col">
+                <h3 className="footer-col-title">لماذا نحن؟</h3>
+                <ul className="footer-perks">
+                  {[
+                    "فريق خبراء فقط",
+                    "تسليم سريع وشفاف",
+                    "SEO من اليوم الأول",
+                    "دعم بعد الإطلاق",
+                  ].map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+                <Link to="/contact" className="footer-mini-cta mt-4">
+                  تواصل معنا
+                  <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
+                </Link>
+              </div>
             </div>
 
             {/* موبايل — روابط مضغوطة + CTA واحد */}

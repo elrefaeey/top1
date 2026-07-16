@@ -7,8 +7,7 @@ const STORAGE_ERROR_AR: Record<string, string> = {
   "storage/unauthenticated": "سجّل الدخول كأدمن أولاً.",
   "storage/retry-limit-exceeded": "فشل الاتصال بـ Firebase Storage — تحقق من الإنترنت.",
   "storage/canceled": "تم إلغاء الرفع.",
-  "storage/unknown":
-    "Firebase Storage غير مفعّل. من Console: Build → Storage → Get started.",
+  "storage/unknown": "Firebase Storage غير مفعّل. من Console: Build → Storage → Get started.",
   "storage/bucket-not-found":
     "bucket التخزين غير موجود — تحقق من VITE_FIREBASE_STORAGE_BUCKET في .env",
 };

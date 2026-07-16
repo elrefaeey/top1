@@ -1,9 +1,5 @@
 import type { Analytics } from "firebase/analytics";
-import {
-  getFirebaseApp,
-  isFirebaseConfigured,
-  setFirebaseConfig,
-} from "./config";
+import { getFirebaseApp, isFirebaseConfigured, setFirebaseConfig } from "./config";
 import { isValidFirebaseConfig, type FirebasePublicConfig } from "./env";
 
 type LogEventFn = (

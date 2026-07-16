@@ -11,8 +11,7 @@ export const SITE_LOGO_URL = "/logo.png";
 export const SITE_WHATSAPP_NUMBER = "966537309257";
 
 /** الرسالة الافتراضية عند فتح واتساب */
-export const SITE_WHATSAPP_MESSAGE =
-  "مرحباً Top1Markting، أحتاج معلومات عن خدماتكم.";
+export const SITE_WHATSAPP_MESSAGE = "مرحباً Top1Markting، أحتاج معلومات عن خدماتكم.";
 
 /** رقم التواصل المحلي */
 export const SITE_CONTACT_PHONE = "0537309257";
@@ -56,3 +55,18 @@ export function resolvePublicSiteUrl(raw?: string | null): string {
     return fallback;
   }
 }
+
+function readSiteUrlRaw(): string {
+  if (typeof process !== "undefined" && process.env?.VITE_SITE_URL) {
+    return process.env.VITE_SITE_URL;
+  }
+  try {
+    const value = import.meta.env.VITE_SITE_URL;
+    return typeof value === "string" ? value : "";
+  } catch {
+    return "";
+  }
+}
+
+/** رابط عام للموقع — مصدر واحد بدون سحب firebase/app إلى مسارات SEO. */
+export const SITE_URL = resolvePublicSiteUrl(readSiteUrlRaw());

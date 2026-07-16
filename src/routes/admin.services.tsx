@@ -10,7 +10,14 @@ import {
   useAdminChildRoute,
 } from "@/components/admin/AdminUi";
 import { useAdminServices, useDeleteService } from "@/hooks/use-admin-cms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/services")({
   component: AdminServicesList,
@@ -60,19 +67,21 @@ function AdminServicesList() {
               {data.map((s) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium align-top">{s.title}</TableCell>
-                  <TableCell dir="ltr" className="align-top text-xs font-mono text-muted-foreground">
+                  <TableCell
+                    dir="ltr"
+                    className="align-top text-xs font-mono text-muted-foreground"
+                  >
                     {s.slug}
                   </TableCell>
                   <TableCell className="align-top max-w-[14rem]">
-                    <AdminMetaPreview
-                      text={s.metaTitle}
-                      fallback={s.title}
-                    />
+                    <AdminMetaPreview text={s.metaTitle} fallback={s.title} />
                   </TableCell>
                   <TableCell className="align-top">
                     <AdminStatusBadge status={s.status} />
                   </TableCell>
-                  <TableCell className="align-top text-muted-foreground tabular-nums">{s.order}</TableCell>
+                  <TableCell className="align-top text-muted-foreground tabular-nums">
+                    {s.order}
+                  </TableCell>
                   <TableCell className="align-top">
                     <AdminRowActions
                       editTo="/admin/services/$id"

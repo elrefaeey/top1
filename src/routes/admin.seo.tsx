@@ -23,7 +23,14 @@ import {
 } from "@/hooks/use-admin-cms";
 import { SITE_NAME, SITE_LOGO_URL } from "@/lib/site-config";
 import type { StaticPageSeoId } from "@/lib/seo/admin-seo-score";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/seo")({
   component: AdminSeoPage,

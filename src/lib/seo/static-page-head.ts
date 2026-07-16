@@ -72,8 +72,7 @@ export function buildContactPageHead(data: {
   cms: WithId<CmsPage> | null;
   faqs: WithId<FaqItem>[];
 }) {
-  const scripts =
-    data.faqs.length > 0 ? [jsonLdScript(faqPageSchema(data.faqs))] : [];
+  const scripts = data.faqs.length > 0 ? [jsonLdScript(faqPageSchema(data.faqs))] : [];
 
   return buildStaticPageHead("contact", "/contact", {
     cms: data.cms,

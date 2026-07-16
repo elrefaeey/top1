@@ -1,8 +1,21 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { Pencil, Trash2 } from "lucide-react";
-import { AdminEmpty, AdminFetchingBar, AdminPageHeader, AdminStatusBadge, useAdminChildRoute } from "@/components/admin/AdminUi";
+import {
+  AdminEmpty,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminStatusBadge,
+  useAdminChildRoute,
+} from "@/components/admin/AdminUi";
 import { useAdminSiteStats, useDeleteSiteStat } from "@/hooks/use-admin-cms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/stats")({
   component: AdminStatsList,
@@ -51,10 +64,16 @@ function AdminStatsList() {
                   <TableCell className="font-bold text-primary">{s.value}</TableCell>
                   <TableCell className="font-medium">{s.label}</TableCell>
                   <TableCell>{s.order}</TableCell>
-                  <TableCell><AdminStatusBadge status={s.status} /></TableCell>
+                  <TableCell>
+                    <AdminStatusBadge status={s.status} />
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-1">
-                      <Link to="/admin/stats/$id" params={{ id: s.id }} className="grid h-8 w-8 place-items-center rounded-md hover:bg-accent">
+                      <Link
+                        to="/admin/stats/$id"
+                        params={{ id: s.id }}
+                        className="grid h-8 w-8 place-items-center rounded-md hover:bg-accent"
+                      >
                         <Pencil className="h-3.5 w-3.5" />
                       </Link>
                       <button

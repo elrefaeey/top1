@@ -3,11 +3,10 @@ import type { BlogPost, PortfolioItem } from "@/types/cms";
 export type InternalLink = { label: string; href: string };
 
 export const SERVICE_LINKS: InternalLink[] = [
-  { label: "تصميم المواقع", href: "/services/web-design" },
-  { label: "تطبيقات الويب", href: "/services/web-apps" },
-  { label: "تحسين SEO", href: "/services/seo" },
-  { label: "تصميم UI/UX", href: "/services/ui-ux" },
-  { label: "حلول رقمية", href: "/services/digital-solutions" },
+  { label: "تصميم المواقع", href: "/services/web-design-development" },
+  { label: "المتاجر الإلكترونية", href: "/services/ecommerce-development" },
+  { label: "تحسين SEO", href: "/services/seo-optimization" },
+  { label: "تصميم UI/UX", href: "/services/ui-ux-design" },
 ];
 
 export const LANDING_LINKS: InternalLink[] = [
@@ -18,23 +17,23 @@ export const LANDING_LINKS: InternalLink[] = [
 ];
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
-  "تصميم مواقع": "/services/web-design",
-  "مواقع": "/services/web-design",
-  "متجر": "/services/web-apps",
-  "تجارة إلكترونية": "/services/web-apps",
-  "SEO": "/services/seo",
-  "UI": "/services/ui-ux",
-  "UX": "/services/ui-ux",
-  "تسويق": "/services/digital-solutions",
-  "هوية": "/services/ui-ux",
+  "تصميم مواقع": "/services/web-design-development",
+  مواقع: "/services/web-design-development",
+  متجر: "/services/ecommerce-development",
+  "تجارة إلكترونية": "/services/ecommerce-development",
+  SEO: "/services/seo-optimization",
+  UI: "/services/ui-ux-design",
+  UX: "/services/ui-ux-design",
+  تسويق: "/services/seo-optimization",
+  هوية: "/services/ui-ux-design",
 };
 
 const TAG_SERVICE_MAP: Record<string, string> = {
-  seo: "/services/seo",
-  "web-design": "/services/web-design",
-  "ui-ux": "/services/ui-ux",
-  ecommerce: "/services/web-apps",
-  marketing: "/services/digital-solutions",
+  seo: "/services/seo-optimization",
+  "web-design": "/services/web-design-development",
+  "ui-ux": "/services/ui-ux-design",
+  ecommerce: "/services/ecommerce-development",
+  marketing: "/services/seo-optimization",
 };
 
 export function serviceLinksForPortfolio(item: PortfolioItem): InternalLink[] {

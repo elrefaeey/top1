@@ -1,3 +1,79 @@
+# Production Launch (Vercel + Firebase)
+
+Primary hosting for Top1Markting is **Vercel** (`npm run build` → Nitro vercel preset).  
+Hostinger VPS notes remain further below for alternate deploys.
+
+---
+
+## Launch checklist (≤ 10 steps)
+
+1. Replace `YOUR_FIREBASE_PROJECT_ID` in `.firebaserc` with the real Project ID (Firebase Console → Project settings).
+2. Run: `firebase login` then `firebase deploy --only firestore:rules,storage`
+3. In **Vercel → Project → Settings → Environment Variables**, set every **Required** and **Recommended** var from `.env.example` (Production + Preview as needed).
+4. Commit and push `main` (or merge PR) so Vercel rebuilds with redirects / robots / CSP.
+5. After deploy, open `/robots.txt` — must include `Disallow: /api` and `Disallow: /admin`.
+6. Check redirects: `/egypt` and `/web-design` must return **301** (not 404).
+7. Submit `https://www.top1markting.com/sitemap.xml` in Google Search Console.
+8. Smoke: home, contact form, admin login, image upload.
+9. Optional: set `UPSTASH_*` if not already (distributed rate limits).
+10. Optional: set `VITE_GSC_VERIFICATION` / `VITE_GTM_ID` then redeploy.
+
+---
+
+## Firebase rules deploy
+
+```bash
+# 1) Edit .firebaserc → projects.default = your real Project ID
+# 2) Then:
+firebase login
+firebase deploy --only firestore:rules,storage
+```
+
+Config files:
+
+| File | Role |
+|------|------|
+| `.firebaserc` | Default project (placeholder until you set real ID) |
+| `firebase.json` | Maps `firestore.rules` + `storage.rules` |
+
+---
+
+## Redirect logic (after deploy)
+
+Source of truth: `src/lib/seo/permanent-redirects.ts`  
+Also listed in `vercel.json` and enforced in `src/server.ts` (Nitro entry) so they work even if Vercel redirects are dropped during Nitro output generation.
+
+| From | To | Status |
+|------|-----|--------|
+| `/egypt` | `/web-design-saudi-arabia` | 301 |
+| `/web-design-egypt` | `/web-design-saudi-arabia` | 301 |
+| `/web-design` | `/services/web-design-development` | 301 |
+| `/services/web-design` | `/services/web-design-development` | 301 |
+
+Verify before push:
+
+```bash
+node scripts/check-release.mjs
+npm run build
+```
+
+---
+
+## robots.txt / sitemap.xml
+
+- Dynamic route: `src/routes/robots[.]txt.ts` — `Allow: /`, `Disallow: /admin`, `Disallow: /api`
+- Do **not** restore `public/robots.txt`
+- Sitemap: `src/routes/sitemap[.]xml.ts` → published CMS URLs
+
+---
+
+## Hostinger VPS (alternate)
+
+See sections below for `build:hostinger`, PM2, and reverse proxy.  
+Default `npm run build` targets **Vercel**.
+
+---
+
 # Production Deployment — Top1Markting (Hostinger)
 
 ## Important architecture note
@@ -27,31 +103,12 @@ Uploading only `dist/` to `public_html` **without Node.js** will break CMS, form
 
 ## 1. Environment variables
 
-Copy `.env.example` → `.env` locally. On the server, set the same variables **before build and at runtime**.
+Copy `.env.example` → `.env` locally. On the server / Vercel, set the same variables **before build and at runtime**.
 
-### Required (client + server)
-
-```env
-VITE_FIREBASE_API_KEY=
-VITE_FIREBASE_AUTH_DOMAIN=
-VITE_FIREBASE_PROJECT_ID=
-VITE_FIREBASE_STORAGE_BUCKET=
-VITE_FIREBASE_MESSAGING_SENDER_ID=
-VITE_FIREBASE_APP_ID=
-VITE_FIREBASE_MEASUREMENT_ID=
-VITE_SITE_URL=https://www.top1markting.com
-```
-
-### Optional
-
-```env
-VITE_GTM_ID=
-VITE_GSC_VERIFICATION=
-IMGBB_API_KEY=
-```
+See `.env.example` for Required / Recommended / Optional split.
 
 > Firebase web config (`VITE_FIREBASE_*`) is **public by design** — safe in client bundle.  
-> Never commit `.env`. Use Hostinger environment panel or server `.env` file.
+> Never commit `.env`. Use Vercel / Hostinger environment panel.
 
 ---
 
@@ -123,7 +180,6 @@ Add in [Firebase Console](https://console.firebase.google.com) → Authenticatio
 - `top1markting.com`
 - `www.top1markting.com`
 - `localhost` (development)
-- Your Hostinger temporary domain (during setup), e.g. `*.hostingersite.com`
 
 ---
 
@@ -140,31 +196,11 @@ Enable SSL (Let's Encrypt) in Hostinger panel.
 
 ## 6. Post-deploy checklist
 
-- [ ] `https://top1markting.com` loads home page
+- [ ] Home page loads
 - [ ] Direct URLs work: `/about`, `/services`, `/portfolio`, `/blog`, `/contact`, `/admin`
-- [ ] CMS content loads (Firestore via `/api/cms`)
+- [ ] CMS content loads
 - [ ] Contact form submits
 - [ ] Admin login works
-- [ ] `https://top1markting.com/sitemap.xml` returns XML
-- [ ] `https://top1markting.com/robots.txt` returns text
-
----
-
-## 7. Git deployment vs manual
-
-| Method | Recommendation |
-|--------|----------------|
-| **Manual SFTP** | Upload `.output/` + `.env` after local `build:hostinger` |
-| **Git on VPS** | `git pull` → `npm ci` → `npm run build:hostinger` → `pm2 restart` |
-| **Git → public_html only** | ❌ Not sufficient (needs Node) |
-
----
-
-## 8. Troubleshooting
-
-| Issue | Fix |
-|-------|-----|
-| Blank page / 404 on refresh | Node not running or proxy misconfigured |
-| CMS empty | Check `VITE_FIREBASE_*` on server + Firebase rules |
-| Admin login fails | Add domain to Firebase Authorized Domains |
-| Upload fails | Set `IMGBB_API_KEY` or Firebase Storage rules |
+- [ ] `/sitemap.xml` returns XML
+- [ ] `/robots.txt` includes Disallow `/api`
+- [ ] `/egypt` and `/web-design` return 301

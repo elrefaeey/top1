@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useSiteSettings } from "@/hooks/use-cms";
-import { trackWhatsAppClick } from "@/lib/firebase/analytics";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
@@ -23,10 +22,14 @@ export function WhatsAppButton() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="تواصل عبر واتساب"
-        onClick={() => trackWhatsAppClick("floating_button")}
+        onClick={() => {
+          void import("@/lib/firebase/analytics").then((m) =>
+            m.trackWhatsAppClick("floating_button"),
+          );
+        }}
         className="whatsapp-float-btn"
       >
-        <WhatsAppIcon className="whatsapp-float-icon" />
+        <WhatsAppIcon className="whatsapp-float-icon" aria-hidden />
       </a>
     </div>,
     document.body,

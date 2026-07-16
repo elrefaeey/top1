@@ -3,11 +3,12 @@ import { SITE_NAME } from "@/lib/site-config";
 /** Curated stock imagery — replace with CMS uploads in production. */
 
 function unsplash(photoId: string, width = 1200) {
-  return `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=${width}&q=80`;
+  return `https://images.unsplash.com/${photoId}?auto=format&fm=webp&fit=crop&w=${width}&q=75`;
 }
 
 export const siteImages = {
   hero: {
+    main: unsplash("photo-1460925895917-afe12b2b6d0e", 1200),
     mainAlt: `فريق ${SITE_NAME} يتعاون على بناء منتج رقمي`,
     accent: unsplash("photo-1460925895917-afe12b2b6d0e", 700),
     accentAlt: "لوحة تحليلات أداء على شاشة",
@@ -73,11 +74,15 @@ export const siteImages = {
 } as const;
 
 export function serviceImage(slug: string) {
-  return siteImages.services[slug as keyof typeof siteImages.services] ?? siteImages.services.default;
+  return (
+    siteImages.services[slug as keyof typeof siteImages.services] ?? siteImages.services.default
+  );
 }
 
 export function portfolioImage(key: string) {
-  return siteImages.portfolio[key as keyof typeof siteImages.portfolio] ?? siteImages.portfolio.nimbus;
+  return (
+    siteImages.portfolio[key as keyof typeof siteImages.portfolio] ?? siteImages.portfolio.nimbus
+  );
 }
 
 export function blogImage(slug: string) {
@@ -89,10 +94,30 @@ export function testimonialAvatar(id: string) {
 }
 
 export const PORTFOLIO_PROJECTS = [
-  { key: "nimbus", title: "Nimbus — إعادة هوية SaaS", tag: "تصميم مواقع · هوية", cat: "تصميم مواقع" },
-  { key: "helix", title: "Helix — لوحة تحكم فنتك", tag: "تطبيق ويب · واجهة/تجربة", cat: "تطبيق ويب" },
+  {
+    key: "nimbus",
+    title: "Nimbus — إعادة هوية SaaS",
+    tag: "تصميم مواقع · هوية",
+    cat: "تصميم مواقع",
+  },
+  {
+    key: "helix",
+    title: "Helix — لوحة تحكم فنتك",
+    tag: "تطبيق ويب · واجهة/تجربة",
+    cat: "تطبيق ويب",
+  },
   { key: "aperture", title: "Aperture — تجارة إلكترونية", tag: "Shopify · SEO", cat: "SEO" },
   { key: "quanta", title: "Quanta — سوق إلكتروني", tag: "Marketplace · UI/UX", cat: "UI/UX" },
-  { key: "lumen", title: "Lumen — منصة wellness", tag: "Wellness · تصميم مواقع", cat: "تصميم مواقع" },
-  { key: "northwind", title: "Northwind — لوجستيات", tag: "Logistics · تطبيق ويب", cat: "تطبيق ويب" },
+  {
+    key: "lumen",
+    title: "Lumen — منصة wellness",
+    tag: "Wellness · تصميم مواقع",
+    cat: "تصميم مواقع",
+  },
+  {
+    key: "northwind",
+    title: "Northwind — لوجستيات",
+    tag: "Logistics · تطبيق ويب",
+    cat: "تطبيق ويب",
+  },
 ] as const;

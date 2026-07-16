@@ -108,7 +108,10 @@ function isValidCanonical(path: string, cmsCanonical?: string): boolean {
   return auto.startsWith("https://") && auto.length > 12;
 }
 
-function scorePageSchema(pageRequired: string[], implemented: string[]): {
+function scorePageSchema(
+  pageRequired: string[],
+  implemented: string[],
+): {
   points: number;
   missing: string[];
   status: SeoCheckStatus;
@@ -120,8 +123,7 @@ function scorePageSchema(pageRequired: string[], implemented: string[]): {
   const missing = pageRequired.filter((type) => !set.has(type));
   const ratio = (pageRequired.length - missing.length) / pageRequired.length;
   const points = Math.round(ratio * SEO_SCORE_WEIGHTS.schema);
-  const status: SeoCheckStatus =
-    missing.length === 0 ? "pass" : ratio >= 0.5 ? "warn" : "fail";
+  const status: SeoCheckStatus = missing.length === 0 ? "pass" : ratio >= 0.5 ? "warn" : "fail";
   return { points, missing, status };
 }
 
@@ -137,7 +139,9 @@ function makeCheck(
   return { id, label, category, points, maxPoints, status, summary };
 }
 
-function partitionChecks(checks: SeoCheckItem[]): Pick<AdminSeoScoreResult, "passed" | "warnings" | "errors"> {
+function partitionChecks(
+  checks: SeoCheckItem[],
+): Pick<AdminSeoScoreResult, "passed" | "warnings" | "errors"> {
   return {
     passed: checks.filter((c) => c.status === "pass"),
     warnings: checks.filter((c) => c.status === "warn"),
@@ -145,7 +149,9 @@ function partitionChecks(checks: SeoCheckItem[]): Pick<AdminSeoScoreResult, "pas
   };
 }
 
-export function scoreLabelFromPoints(score: number): Pick<AdminSeoScoreResult, "label" | "labelClassName"> {
+export function scoreLabelFromPoints(
+  score: number,
+): Pick<AdminSeoScoreResult, "label" | "labelClassName"> {
   if (score >= 90) return { label: "ممتاز", labelClassName: "text-emerald-700" };
   if (score >= 70) return { label: "جيد", labelClassName: "text-emerald-600" };
   if (score >= 50) return { label: "يحتاج تحسين", labelClassName: "text-amber-600" };
@@ -240,16 +246,7 @@ export function evaluateStaticPageSeo(input: AdminSeoScoreInput): AdminSeoScoreR
 
   // ── تحذير المحتوى الافتراضي ───────────────────────────────────────
   if (meta.usesDefaultMeta) {
-    checks.push(
-      makeCheck(
-        "custom-meta",
-        CUSTOM_META_WARNING,
-        "customization",
-        0,
-        0,
-        "warn",
-      ),
-    );
+    checks.push(makeCheck("custom-meta", CUSTOM_META_WARNING, "customization", 0, 0, "warn"));
   }
 
   // ── Keywords (10) — يجب تغطية مجموعات متعددة في العنوان والوصف ───
@@ -257,10 +254,8 @@ export function evaluateStaticPageSeo(input: AdminSeoScoreInput): AdminSeoScoreR
   const groupsInBoth = rule.keywords.filter(
     (g) => groupMatchesText(meta.title, g) && groupMatchesText(meta.description, g),
   ).length;
-  const totalMatched = matchKeywordGroups(
-    `${meta.title} ${meta.description}`,
-    rule.keywords,
-  ).matched.length;
+  const totalMatched = matchKeywordGroups(`${meta.title} ${meta.description}`, rule.keywords)
+    .matched.length;
 
   let kwPts = 0;
   if (totalMatched >= 3 && kw.titleMatches > 0 && kw.descMatches > 0) kwPts = W.keywords;
@@ -335,7 +330,7 @@ export function evaluateStaticPageSeo(input: AdminSeoScoreInput): AdminSeoScoreR
   const heroAlt =
     pageId === "home"
       ? settings?.heroImageAlt?.trim() || STATIC_PAGE_HERO_ALT.home || ""
-      : STATIC_PAGE_HERO_ALT[pageId] ?? "";
+      : (STATIC_PAGE_HERO_ALT[pageId] ?? "");
   const customAlt = pageId === "home" && Boolean(settings?.heroImageAlt?.trim());
 
   let imgPts = 0;
@@ -344,8 +339,7 @@ export function evaluateStaticPageSeo(input: AdminSeoScoreInput): AdminSeoScoreR
   if (rule.images.usesLazyLoading) imgPts += 1.5;
   imgPts = Math.min(W.images, Math.round(imgPts));
 
-  const imgStatus: SeoCheckStatus =
-    imgPts >= 4 ? "pass" : imgPts >= 2 ? "warn" : "fail";
+  const imgStatus: SeoCheckStatus = imgPts >= 4 ? "pass" : imgPts >= 2 ? "warn" : "fail";
 
   checks.push(
     makeCheck(
@@ -414,7 +408,19 @@ export function evaluateStaticPageSeo(input: AdminSeoScoreInput): AdminSeoScoreR
 
 /** تقرير SEO لكل الصفحات الثابتة */
 export function auditAllStaticPagesSeo(
-  cmsPages: Array<Pick<CmsPage, "id" | "slug" | "metaTitle" | "metaDescription" | "ogImage" | "canonicalUrl" | "noIndex" | "status">> = [],
+  cmsPages: Array<
+    Pick<
+      CmsPage,
+      | "id"
+      | "slug"
+      | "metaTitle"
+      | "metaDescription"
+      | "ogImage"
+      | "canonicalUrl"
+      | "noIndex"
+      | "status"
+    >
+  > = [],
   settings?: AdminSeoScoreInput["settings"],
 ): Record<StaticPageSeoId, AdminSeoScoreResult> {
   const report = {} as Record<StaticPageSeoId, AdminSeoScoreResult>;

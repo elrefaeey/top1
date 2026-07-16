@@ -2,8 +2,14 @@ import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react";
 import type { CmsPage, PublishStatus } from "@/types/cms";
 import {
-  AdminCard, AdminField, AdminFormActions, AdminFetchingBar, AdminPageHeader,
-  AdminPublishSelect, AdminSeoSection, adminInputClass,
+  AdminCard,
+  AdminField,
+  AdminFormActions,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminPublishSelect,
+  AdminSeoSection,
+  adminInputClass,
 } from "@/components/admin/AdminUi";
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
 import { nowIso } from "@/lib/cms/admin-utils";
@@ -14,8 +20,12 @@ export const Route = createFileRoute("/admin/pages/$id")({
 });
 
 const PAGE_TITLES: Record<string, string> = {
-  home: "الرئيسية", about: "من نحن", contact: "تواصل",
-  services: "الخدمات", portfolio: "أعمالنا", blog: "المدونة",
+  home: "الرئيسية",
+  about: "من نحن",
+  contact: "تواصل",
+  services: "الخدمات",
+  portfolio: "أعمالنا",
+  blog: "المدونة",
 };
 
 const empty = (slug: string): Omit<CmsPage, "id"> => ({
@@ -84,8 +94,25 @@ function AdminPageEdit() {
         <AdminCard className="space-y-4">
           {isNew && (
             <>
-              <AdminField label="العنوان" id="title"><input id="title" required value={form.title} onChange={(e) => patch({ title: e.target.value })} className={adminInputClass()} /></AdminField>
-              <AdminField label="Slug" id="slug"><input id="slug" dir="ltr" required value={form.slug} onChange={(e) => patch({ slug: e.target.value })} className={adminInputClass("text-start")} /></AdminField>
+              <AdminField label="العنوان" id="title">
+                <input
+                  id="title"
+                  required
+                  value={form.title}
+                  onChange={(e) => patch({ title: e.target.value })}
+                  className={adminInputClass()}
+                />
+              </AdminField>
+              <AdminField label="Slug" id="slug">
+                <input
+                  id="slug"
+                  dir="ltr"
+                  required
+                  value={form.slug}
+                  onChange={(e) => patch({ slug: e.target.value })}
+                  className={adminInputClass("text-start")}
+                />
+              </AdminField>
             </>
           )}
           {!isNew && PAGE_TITLES[id] && (
@@ -93,7 +120,10 @@ function AdminPageEdit() {
               تحرير بيانات SEO لهذه الصفحة. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع.
             </p>
           )}
-          <AdminPublishSelect value={form.status as PublishStatus} onChange={(status) => patch({ status })} />
+          <AdminPublishSelect
+            value={form.status as PublishStatus}
+            onChange={(status) => patch({ status })}
+          />
         </AdminCard>
         <AdminSeoSection
           slug={form.slug || id}

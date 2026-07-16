@@ -1,12 +1,6 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getDb, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
+import { isDataImageUrl } from "@/lib/security/image-url";
 import { nowIso } from "./admin-utils";
 import type {
   BlogPost,
@@ -44,7 +38,8 @@ export function clearAdminFirestoreUnavailable() {
 
 function classifyFirestoreError(err: unknown): "timeout" | "permission" | "unknown" {
   const msg = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
-  const code = typeof err === "object" && err && "code" in err ? String((err as { code: string }).code) : "";
+  const code =
+    typeof err === "object" && err && "code" in err ? String((err as { code: string }).code) : "";
   if (code.includes("permission") || msg.includes("permission") || msg.includes("insufficient")) {
     return "permission";
   }
@@ -79,6 +74,25 @@ function markFirestoreUnavailable(err?: unknown) {
 
 function markFirestoreAvailable() {
   clearAdminFirestoreUnavailable();
+}
+
+/** Prevent embedding Base64 images in any CMS field (including HTML bodies). */
+function rejectBase64Deep(value: unknown, path = "field"): void {
+  if (typeof value === "string") {
+    if (isDataImageUrl(value) || /data:image\//i.test(value)) {
+      throw new Error(`${path}: لا يُسمح بصور Base64 — ارفع الصورة واستخدم رابط https://`);
+    }
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, i) => rejectBase64Deep(item, `${path}[${i}]`));
+    return;
+  }
+  if (value && typeof value === "object") {
+    for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+      rejectBase64Deep(nested, path ? `${path}.${key}` : key);
+    }
+  }
 }
 
 /** Firestore يرفض القيم undefined — نزيلها قبل أي حفظ */
@@ -126,7 +140,10 @@ async function listCollection<T>(
   direction: "asc" | "desc" = "asc",
 ): Promise<WithId<T>[]> {
   try {
-    const snap = await withFirestoreTimeout(getDocs(collection(getDb(), collectionName)), ADMIN_READ_MS);
+    const snap = await withFirestoreTimeout(
+      getDocs(collection(getDb(), collectionName)),
+      ADMIN_READ_MS,
+    );
     markFirestoreAvailable();
     const items = snap.docs.map((d) => mapDoc<T>(d));
     items.sort((a, b) => {
@@ -145,9 +162,15 @@ async function listCollection<T>(
   }
 }
 
-export async function getAdminDoc<T>(collectionName: string, id: string): Promise<WithId<T> | null> {
+export async function getAdminDoc<T>(
+  collectionName: string,
+  id: string,
+): Promise<WithId<T> | null> {
   try {
-    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), collectionName, id)), ADMIN_READ_MS);
+    const snap = await withFirestoreTimeout(
+      getDoc(doc(getDb(), collectionName, id)),
+      ADMIN_READ_MS,
+    );
     if (!snap.exists()) return null;
     markFirestoreAvailable();
     return mapDoc<T>(snap);
@@ -162,6 +185,7 @@ export async function saveAdminDoc<T extends Record<string, unknown>>(
   id: string,
   data: T,
 ): Promise<void> {
+  rejectBase64Deep(data, collectionName);
   try {
     const ref = doc(getDb(), collectionName, id);
     const existing = await withFirestoreTimeout(getDoc(ref), ADMIN_READ_MS).catch(() => null);
@@ -211,22 +235,28 @@ export const saveAdminBlogPost = (id: string, data: Omit<BlogPost, "id">) =>
 export const deleteAdminBlogPost = (id: string) => deleteAdminDoc(COLLECTIONS.blogPosts, id);
 
 // ── Portfolio ──
-export const listAdminPortfolio = () => listCollection<PortfolioItem>(COLLECTIONS.portfolio, "order");
-export const getAdminPortfolioItem = (id: string) => getAdminDoc<PortfolioItem>(COLLECTIONS.portfolio, id);
+export const listAdminPortfolio = () =>
+  listCollection<PortfolioItem>(COLLECTIONS.portfolio, "order");
+export const getAdminPortfolioItem = (id: string) =>
+  getAdminDoc<PortfolioItem>(COLLECTIONS.portfolio, id);
 export const saveAdminPortfolioItem = (id: string, data: Omit<PortfolioItem, "id">) =>
   saveAdminDoc(COLLECTIONS.portfolio, id, data);
 export const deleteAdminPortfolioItem = (id: string) => deleteAdminDoc(COLLECTIONS.portfolio, id);
 
 // ── Pricing ──
-export const listAdminPricing = () => listCollection<PricingPlan>(COLLECTIONS.pricingPlans, "order");
-export const getAdminPricingPlan = (id: string) => getAdminDoc<PricingPlan>(COLLECTIONS.pricingPlans, id);
+export const listAdminPricing = () =>
+  listCollection<PricingPlan>(COLLECTIONS.pricingPlans, "order");
+export const getAdminPricingPlan = (id: string) =>
+  getAdminDoc<PricingPlan>(COLLECTIONS.pricingPlans, id);
 export const saveAdminPricingPlan = (id: string, data: Omit<PricingPlan, "id">) =>
   saveAdminDoc(COLLECTIONS.pricingPlans, id, data);
 export const deleteAdminPricingPlan = (id: string) => deleteAdminDoc(COLLECTIONS.pricingPlans, id);
 
 // ── Testimonials ──
-export const listAdminTestimonials = () => listCollection<Testimonial>(COLLECTIONS.testimonials, "order");
-export const getAdminTestimonial = (id: string) => getAdminDoc<Testimonial>(COLLECTIONS.testimonials, id);
+export const listAdminTestimonials = () =>
+  listCollection<Testimonial>(COLLECTIONS.testimonials, "order");
+export const getAdminTestimonial = (id: string) =>
+  getAdminDoc<Testimonial>(COLLECTIONS.testimonials, id);
 export const saveAdminTestimonial = (id: string, data: Omit<Testimonial, "id">) =>
   saveAdminDoc(COLLECTIONS.testimonials, id, data);
 export const deleteAdminTestimonial = (id: string) => deleteAdminDoc(COLLECTIONS.testimonials, id);
@@ -272,6 +302,7 @@ export async function getAdminSiteSettings(): Promise<SiteSettings | null> {
 
 export async function saveAdminSiteSettings(settings: SiteSettings): Promise<void> {
   const payload = normalizeSiteSettingsForSave(settings);
+  rejectBase64Deep(payload, "siteSettings");
   try {
     await withFirestoreTimeout(
       setDoc(doc(getDb(), COLLECTIONS.siteSettings, "global"), payload, { merge: true }),

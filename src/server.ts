@@ -3,12 +3,25 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { applySecurityHeaders } from "./lib/security/headers";
+import { PERMANENT_REDIRECTS } from "./lib/seo/permanent-redirects";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
+
+function permanentRedirect(to: string): Response {
+  return applySecurityHeaders(
+    new Response(null, {
+      status: 301,
+      headers: {
+        Location: to,
+        "Cache-Control": "public, max-age=86400",
+      },
+    }),
+  );
+}
 
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
@@ -43,6 +56,13 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      const path = url.pathname.replace(/\/+$/, "") || "/";
+      const redirectTo = PERMANENT_REDIRECTS[path] ?? PERMANENT_REDIRECTS[url.pathname];
+      if (redirectTo) {
+        return permanentRedirect(redirectTo);
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return applySecurityHeaders(await normalizeCatastrophicSsrResponse(response));

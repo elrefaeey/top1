@@ -9,7 +9,14 @@ import {
   useAdminChildRoute,
 } from "@/components/admin/AdminUi";
 import { useAdminPortfolio, useDeletePortfolioItem } from "@/hooks/use-admin-cms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/portfolio")({
   component: AdminPortfolioList,

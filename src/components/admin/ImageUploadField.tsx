@@ -56,7 +56,11 @@ export function ImageUploadField({
 
   function handleUrlChange(next: string) {
     const value = next.trim();
-    if (value && !value.startsWith("data:image/") && !isSafeExternalUrl(value)) {
+    if (value.startsWith("data:image/")) {
+      setError("لا يُسمح بروابط Base64 — ارفع الملف أو الصق رابط https://");
+      return;
+    }
+    if (value && !isSafeExternalUrl(value) && !value.startsWith("/")) {
       setError("رابط غير صالح — استخدم https://");
       return;
     }
@@ -68,10 +72,7 @@ export function ImageUploadField({
     <AdminField
       id={id}
       label={label}
-      hint={
-        hint ??
-        "ارفع JPG/PNG — يعمل حتى بدون Firebase Storage (يُضغط تلقائياً). للصور الكبيرة فعّل Storage من Console."
-      }
+      hint={hint ?? "ارفع JPG/PNG/WebP من جهازك — تُحفظ في Firebase تلقائياً."}
     >
       <div className="space-y-3">
         {value && (

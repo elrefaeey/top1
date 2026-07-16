@@ -14,6 +14,8 @@ const DEFAULT_ROBOTS_TXT = `User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /api/
+Disallow: /api
 
 Sitemap: https://www.top1markting.com/sitemap.xml`;
 
@@ -27,22 +29,37 @@ function isStalePhone(value?: string | null): boolean {
   return STALE_PHONE_FRAGMENTS.some((frag) => d.includes(frag.replace(/\D/g, "")));
 }
 
-function ensureAdminBlockedInRobots(robotsTxt: string): string {
-  if (/Disallow:\s*\/admin/i.test(robotsTxt)) return robotsTxt;
-  if (/^Sitemap:/im.test(robotsTxt)) {
-    return robotsTxt.replace(/^Sitemap:/im, "Disallow: /admin\nDisallow: /admin/\n\nSitemap:");
+function ensureCrawlBlocksInRobots(robotsTxt: string): string {
+  let next = robotsTxt.trim();
+  if (!/Disallow:\s*\/admin/i.test(next)) {
+    if (/^Sitemap:/im.test(next)) {
+      next = next.replace(/^Sitemap:/im, "Disallow: /admin\nDisallow: /admin/\n\nSitemap:");
+    } else {
+      next = `${next}\nDisallow: /admin\nDisallow: /admin/\n`;
+    }
   }
-  return `${robotsTxt.trim()}\nDisallow: /admin\nDisallow: /admin/\n`;
+  if (!/Disallow:\s*\/api/i.test(next)) {
+    if (/^Sitemap:/im.test(next)) {
+      next = next.replace(/^Sitemap:/im, "Disallow: /api/\nDisallow: /api\n\nSitemap:");
+    } else {
+      next = `${next}\nDisallow: /api/\nDisallow: /api\n`;
+    }
+  }
+  return next;
 }
 
 /** يوحّد بيانات الاتصال للعرض العام (يتجاوز الأرقام القديمة في CMS). */
-export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined): SiteSettings | null {
+export function normalizePublicSiteSettings(
+  raw: SiteSettings | null | undefined,
+): SiteSettings | null {
   if (!raw) return null;
 
-  const phone = isStalePhone(raw.contactPhone) ? SITE_CONTACT_PHONE : (raw.contactPhone.trim() || SITE_CONTACT_PHONE);
+  const phone = isStalePhone(raw.contactPhone)
+    ? SITE_CONTACT_PHONE
+    : raw.contactPhone.trim() || SITE_CONTACT_PHONE;
   const whatsapp = isStalePhone(raw.whatsappNumber)
     ? SITE_WHATSAPP_NUMBER
-    : (raw.whatsappNumber.trim() || SITE_WHATSAPP_NUMBER);
+    : raw.whatsappNumber.trim() || SITE_WHATSAPP_NUMBER;
 
   const robotsRaw = raw.robotsTxt?.trim() || "";
   const robotsTxt =
@@ -51,7 +68,7 @@ export function normalizePublicSiteSettings(raw: SiteSettings | null | undefined
     !robotsRaw.includes("www.top1markting.com/sitemap.xml") ||
     !robotsRaw
       ? DEFAULT_ROBOTS_TXT
-      : ensureAdminBlockedInRobots(robotsRaw);
+      : ensureCrawlBlocksInRobots(robotsRaw);
 
   return {
     ...raw,

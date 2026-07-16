@@ -11,9 +11,7 @@ type ServiceAccount = {
   private_key: string;
 };
 
-type FirestoreValue =
-  | { stringValue: string }
-  | { nullValue: null };
+type FirestoreValue = { stringValue: string } | { nullValue: null };
 
 let cachedToken: { accessToken: string; expiresAt: number } | null = null;
 
@@ -93,7 +91,9 @@ async function getAccessToken(sa: ServiceAccount): Promise<string> {
   return data.access_token;
 }
 
-function toFirestoreFields(data: Record<string, string | undefined | null>): Record<string, FirestoreValue> {
+function toFirestoreFields(
+  data: Record<string, string | undefined | null>,
+): Record<string, FirestoreValue> {
   const fields: Record<string, FirestoreValue> = {};
   for (const [key, value] of Object.entries(data)) {
     if (value === undefined) continue;

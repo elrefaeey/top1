@@ -1,5 +1,12 @@
-import { initializeFirestore, getFirestore, type Firestore, type FirestoreSettings } from "firebase/firestore";
+import {
+  initializeFirestore,
+  getFirestore,
+  type Firestore,
+  type FirestoreSettings,
+} from "firebase/firestore";
 import { getFirebaseApp, isFirebaseConfigured } from "./config";
+
+export { COLLECTIONS } from "./collections";
 
 let dbInstance: Firestore | null = null;
 
@@ -46,23 +53,6 @@ function createLazyDb(): Firestore {
 
 /** Lazy Firestore — avoids init during SSR module load */
 export const db = createLazyDb();
-
-export const COLLECTIONS = {
-  users: "users",
-  siteSettings: "site_settings",
-  pages: "pages",
-  services: "services",
-  portfolio: "portfolio",
-  blogPosts: "blog_posts",
-  blogCategories: "blog_categories",
-  blogTags: "blog_tags",
-  testimonials: "testimonials",
-  pricingPlans: "pricing_plans",
-  faqs: "faqs",
-  siteStats: "site_stats",
-  leads: "leads",
-  media: "media",
-} as const;
 
 export function withFirestoreTimeout<T>(promise: Promise<T>, ms = 8000): Promise<T> {
   return Promise.race([

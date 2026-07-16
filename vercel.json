@@ -8,9 +8,41 @@
       "source": "/web-design-egypt",
       "destination": "/web-design-saudi-arabia",
       "permanent": true
+    },
+    {
+      "source": "/egypt",
+      "destination": "/web-design-saudi-arabia",
+      "permanent": true
+    },
+    {
+      "source": "/web-design",
+      "destination": "/services/web-design-development",
+      "permanent": true
+    },
+    {
+      "source": "/services/web-design",
+      "destination": "/services/web-design-development",
+      "permanent": true
     }
   ],
   "headers": [
+    {
+      "source": "/api/cms/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, s-maxage=60, stale-while-revalidate=300"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=300"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=300"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -41,6 +73,18 @@
         {
           "key": "Cross-Origin-Opener-Policy",
           "value": "same-origin"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
+        },
+        {
+          "key": "X-Permitted-Cross-Domain-Policies",
+          "value": "none"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com https://*.firebaseapp.com 'unsafe-inline'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://images.unsplash.com https://firebasestorage.googleapis.com https://*.googleapis.com https://*.googleusercontent.com https://i.ibb.co https://*.ibb.co; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebasestorage.googleapis.com https://www.google-analytics.com https://region1.google-analytics.com https://*.google-analytics.com https://www.google.com https://analytics.google.com https://api.imgbb.com; frame-src 'self' https://*.firebaseapp.com https://www.googletagmanager.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         }
       ]
     }

@@ -79,6 +79,28 @@ export async function handleCmsApiGet(
       return getFaqs();
     case "stats":
       return getSiteStats();
+    case "home": {
+      const blogMaxRaw = searchParams.get("blogMax");
+      const blogMax = blogMaxRaw ? Number(blogMaxRaw) : 3;
+      const [settings, services, portfolio, stats, testimonials, faqs, blog] = await Promise.all([
+        getSiteSettings(),
+        getServices(),
+        getPortfolio(),
+        getSiteStats(),
+        getTestimonials(),
+        getFaqs(),
+        getBlogPosts(Number.isFinite(blogMax) ? blogMax : 3),
+      ]);
+      return {
+        settings,
+        services,
+        portfolio,
+        stats,
+        testimonials,
+        faqs,
+        blog,
+      };
+    }
     case "page": {
       const slug = searchParams.get("slug");
       if (!slug) throw new Error("Missing slug");

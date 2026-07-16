@@ -9,7 +9,14 @@ import {
   useAdminChildRoute,
 } from "@/components/admin/AdminUi";
 import { useAdminBlogPosts, useDeleteBlogPost } from "@/hooks/use-admin-cms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/blog")({
   component: AdminBlogList,

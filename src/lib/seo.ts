@@ -1,4 +1,3 @@
-import { SITE_URL } from "@/lib/firebase/config";
 import {
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE,
@@ -6,6 +5,7 @@ import {
   SITE_NAME,
   SITE_PRODUCTION_URL,
   SITE_TWITTER,
+  SITE_URL,
   SITE_WHATSAPP_NUMBER,
   resolvePublicSiteUrl,
 } from "@/lib/site-config";
@@ -13,15 +13,12 @@ import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
+import { stripHtml } from "@/lib/seo/blog-utils";
 
-export const SITE_TAGLINE_EN =
-  "Digital Agency serving Saudi Arabia and the United Arab Emirates";
+export const SITE_TAGLINE_EN = "Digital Agency serving Saudi Arabia";
 
-/** مناطق الخدمة — بدون عنوان وهمي */
-export const SEO_AREAS_SERVED = [
-  { "@type": "Country", name: "Saudi Arabia" },
-  { "@type": "Country", name: "United Arab Emirates" },
-] as const;
+/** مناطق الخدمة — السعودية فقط */
+export const SEO_AREAS_SERVED = [{ "@type": "Country", name: "Saudi Arabia" }] as const;
 
 export const SEO_KNOWS_ABOUT = [
   "Web Design",
@@ -71,9 +68,9 @@ function resolveCanonicalUrl(path: string, cms?: CmsPageHeadFields | null): stri
 
 export const STATIC_PAGE_SEO = {
   home: {
-    title: "Top1Markting | وكالة رقمية — تصميم مواقع وSEO للسعودية والإمارات",
+    title: "Top1Markting | وكالة رقمية — تصميم مواقع وSEO للسعودية",
     description:
-      "Top1Markting وكالة رقمية تخدم السعودية والإمارات — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك.",
+      "Top1Markting وكالة رقمية تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك في الرياض وجدة والدمام.",
   },
   about: {
     title: "من نحن | Top1Markting",
@@ -214,10 +211,12 @@ const PATH_SEGMENT_LABELS: Record<string, string> = {
 };
 
 function pageTitleForSchema(title: string): string {
-  return title
-    .replace(new RegExp(`\\s*[|–-]\\s*${SITE_NAME}\\s*$`, "i"), "")
-    .replace(new RegExp(`^${SITE_NAME}\\s*[|–-]\\s*`, "i"), "")
-    .trim() || title;
+  return (
+    title
+      .replace(new RegExp(`\\s*[|–-]\\s*${SITE_NAME}\\s*$`, "i"), "")
+      .replace(new RegExp(`^${SITE_NAME}\\s*[|–-]\\s*`, "i"), "")
+      .trim() || title
+  );
 }
 
 /** يبني مسار التنقل (Breadcrumb) تلقائيًا من رابط الصفحة + العنوان */
@@ -232,20 +231,17 @@ export function breadcrumbsFromPath(path: string, pageTitle?: string): Breadcrum
   parts.forEach((part, index) => {
     acc += `/${part}`;
     const isLast = index === parts.length - 1;
-    const label = isLast && pageTitle
-      ? pageTitleForSchema(pageTitle)
-      : PATH_SEGMENT_LABELS[part] || decodeURIComponent(part).replace(/-/g, " ");
+    const label =
+      isLast && pageTitle
+        ? pageTitleForSchema(pageTitle)
+        : PATH_SEGMENT_LABELS[part] || decodeURIComponent(part).replace(/-/g, " ");
     items.push({ name: label, path: acc });
   });
   return items;
 }
 
 /** WebPage Schema من عنوان الصفحة والرابط الكانوني */
-export function webPageSchema(input: {
-  title: string;
-  description: string;
-  url: string;
-}) {
+export function webPageSchema(input: { title: string; description: string; url: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -273,8 +269,7 @@ function scriptsHaveSchemaType(
   return scripts.some((s) => {
     if (typeof s.children !== "string") return false;
     return (
-      s.children.includes(`"@type":"${typeName}"`) ||
-      s.children.includes(`"@type": "${typeName}"`)
+      s.children.includes(`"@type":"${typeName}"`) || s.children.includes(`"@type": "${typeName}"`)
     );
   });
 }
@@ -286,7 +281,9 @@ export function articleSchema(post: BlogPost, slug: string) {
     "@type": "Article",
     headline: post.title,
     description: post.metaDescription || post.excerpt,
-    image: post.featuredImage ? absoluteImageUrl(post.featuredImage) : absoluteImageUrl(DEFAULT_OG_IMAGE),
+    image: post.featuredImage
+      ? absoluteImageUrl(post.featuredImage)
+      : absoluteImageUrl(DEFAULT_OG_IMAGE),
     author: {
       "@type": "Person",
       name: post.author,
@@ -321,7 +318,9 @@ export function serviceSchema(service: Service, slug: string) {
     },
     areaServed: [...SEO_AREAS_SERVED],
     serviceType: service.title,
-    image: service.imageUrl ? absoluteImageUrl(service.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
+    image: service.imageUrl
+      ? absoluteImageUrl(service.imageUrl)
+      : absoluteImageUrl(DEFAULT_OG_IMAGE),
   };
 }
 
@@ -402,9 +401,7 @@ export function buildPageHead(input: PageHeadInput) {
       );
     }
     if (!scriptsHaveSchemaType(scripts, "BreadcrumbList")) {
-      scripts.push(
-        jsonLdScript(breadcrumbSchema(breadcrumbsFromPath(input.path, input.title))),
-      );
+      scripts.push(jsonLdScript(breadcrumbSchema(breadcrumbsFromPath(input.path, input.title))));
     }
   }
 
@@ -479,8 +476,9 @@ export function buildServiceHead(
 ) {
   const path = `/services/${slug}`;
   const title = service.metaTitle?.trim() || `${service.title} | ${SITE_NAME}`;
-  const description =
-    service.metaDescription?.trim() || service.shortDescription || service.description;
+  const rawDescription =
+    service.metaDescription?.trim() || service.shortDescription || service.description || "";
+  const description = stripHtml(rawDescription).slice(0, 320);
   const scripts: Array<{ type: string; children: string }> = [
     jsonLdScript(serviceSchema(service, slug)),
     jsonLdScript(

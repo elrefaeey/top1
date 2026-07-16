@@ -71,7 +71,9 @@ function AdminLogin() {
           )}
 
           <div>
-            <label htmlFor="email" className="text-sm font-medium">البريد الإلكتروني</label>
+            <label htmlFor="email" className="text-sm font-medium">
+              البريد الإلكتروني
+            </label>
             <input
               id="email"
               type="email"
@@ -85,7 +87,9 @@ function AdminLogin() {
           </div>
 
           <div>
-            <label htmlFor="password" className="text-sm font-medium">كلمة المرور</label>
+            <label htmlFor="password" className="text-sm font-medium">
+              كلمة المرور
+            </label>
             <input
               id="password"
               type="password"
@@ -107,7 +111,9 @@ function AdminLogin() {
           </button>
 
           <p className="text-center text-xs text-muted-foreground pt-2">
-            <Link to="/" className="hover:text-primary">← العودة للموقع</Link>
+            <Link to="/" className="hover:text-primary">
+              ← العودة للموقع
+            </Link>
           </p>
         </form>
       </div>

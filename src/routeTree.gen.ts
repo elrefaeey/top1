@@ -26,10 +26,12 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as MediaIdRouteImport } from './routes/media.$id'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
 import { Route as ApiLeadsRouteImport } from './routes/api/leads'
@@ -141,6 +143,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SplatRoute = SplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -160,6 +167,11 @@ const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => PortfolioRoute,
+} as any)
+const MediaIdRoute = MediaIdRouteImport.update({
+  id: '/media/$id',
+  path: '/media/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -289,6 +301,7 @@ const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
@@ -322,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -337,6 +351,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
@@ -369,6 +384,7 @@ export interface FileRoutesByTo {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
@@ -385,6 +401,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
@@ -418,6 +435,7 @@ export interface FileRoutesById {
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -435,6 +453,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$'
     | '/about'
     | '/admin'
     | '/blog'
@@ -468,6 +487,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
@@ -483,6 +503,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/about'
     | '/blog'
     | '/contact'
@@ -515,6 +536,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin'
@@ -530,6 +552,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$'
     | '/about'
     | '/admin'
     | '/blog'
@@ -563,6 +586,7 @@ export interface FileRouteTypes {
     | '/api/leads'
     | '/api/upload-image'
     | '/blog/$slug'
+    | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
@@ -579,6 +603,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
@@ -599,6 +624,7 @@ export interface RootRouteChildren {
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
+  MediaIdRoute: typeof MediaIdRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
 }
 
@@ -723,6 +749,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -750,6 +783,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/portfolio/$slug'
       preLoaderRoute: typeof PortfolioSlugRouteImport
       parentRoute: typeof PortfolioRoute
+    }
+    '/media/$id': {
+      id: '/media/$id'
+      path: '/media/$id'
+      fullPath: '/media/$id'
+      preLoaderRoute: typeof MediaIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -1094,6 +1134,7 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
@@ -1114,6 +1155,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiLeadsRoute: ApiLeadsRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
+  MediaIdRoute: MediaIdRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
 }
 export const routeTree = rootRouteImport

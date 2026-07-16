@@ -1,18 +1,9 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-import {
-  auth,
-  subscribeToAuth,
-  toAppUser,
-  type AppUser,
-} from "@/lib/firebase/auth";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { auth, subscribeToAuth, toAppUser, type AppUser } from "@/lib/firebase/auth";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { useFirebaseReady } from "@/providers/FirebaseProvider";
+
+/* eslint-disable react-refresh/only-export-components -- provider + hook pattern */
 
 interface AuthContextValue {
   user: AppUser | null;

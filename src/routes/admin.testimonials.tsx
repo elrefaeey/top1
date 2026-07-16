@@ -9,7 +9,14 @@ import {
   useAdminChildRoute,
 } from "@/components/admin/AdminUi";
 import { useAdminTestimonials, useDeleteTestimonial } from "@/hooks/use-admin-cms";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/admin/testimonials")({
   component: AdminTestimonialsList,
@@ -57,7 +64,9 @@ function AdminTestimonialsList() {
                 <TableRow key={t.id}>
                   <TableCell className="font-medium">{t.name}</TableCell>
                   <TableCell className="text-sm text-muted-foreground truncate">{t.role}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground truncate">{t.company}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground truncate">
+                    {t.company}
+                  </TableCell>
                   <TableCell>
                     <AdminStatusBadge status={t.status} />
                   </TableCell>

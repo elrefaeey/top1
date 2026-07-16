@@ -12,7 +12,12 @@ import {
   adminInputClass,
 } from "@/components/admin/AdminUi";
 import { arrayToLines, linesToArray, nowIso, slugify } from "@/lib/cms/admin-utils";
-import { useAdminService, useSaveService, useDeleteService, useAdminServices } from "@/hooks/use-admin-cms";
+import {
+  useAdminService,
+  useSaveService,
+  useDeleteService,
+  useAdminServices,
+} from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -73,7 +78,7 @@ function AdminServiceEdit() {
       features: linesToArray(featuresText),
       deliverables: linesToArray(deliverablesText),
       updatedAt: nowIso(),
-      publishedAt: form.status === "published" ? form.publishedAt ?? nowIso() : form.publishedAt,
+      publishedAt: form.status === "published" ? (form.publishedAt ?? nowIso()) : form.publishedAt,
     };
     await save.mutateAsync({ id: docId, data: payload });
     navigate({ to: "/admin/services" });
@@ -88,44 +93,104 @@ function AdminServiceEdit() {
   return (
     <div className="p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader
-        title={isNew ? "خدمة جديدة" : "تعديل خدمة"}
-        backTo="/admin/services"
-      />
+      <AdminPageHeader title={isNew ? "خدمة جديدة" : "تعديل خدمة"} backTo="/admin/services" />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <AdminCard className="space-y-4">
           <AdminField label="العنوان" id="title">
-            <input id="title" required value={form.title} onChange={(e) => {
-              const title = e.target.value;
-              patch({ title, slug: isNew ? slugify(title) : form.slug });
-            }} className={adminInputClass()} />
+            <input
+              id="title"
+              required
+              value={form.title}
+              onChange={(e) => {
+                const title = e.target.value;
+                patch({ title, slug: isNew ? slugify(title) : form.slug });
+              }}
+              className={adminInputClass()}
+            />
           </AdminField>
           <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط">
-            <input id="slug" dir="ltr" required value={form.slug} onChange={(e) => patch({ slug: e.target.value })} className={adminInputClass("text-start")} />
+            <input
+              id="slug"
+              dir="ltr"
+              required
+              value={form.slug}
+              onChange={(e) => patch({ slug: e.target.value })}
+              className={adminInputClass("text-start")}
+            />
           </AdminField>
           <AdminField label="الوصف المختصر" id="shortDescription">
-            <textarea id="shortDescription" rows={2} value={form.shortDescription} onChange={(e) => patch({ shortDescription: e.target.value })} className={adminInputClass()} />
+            <textarea
+              id="shortDescription"
+              rows={2}
+              value={form.shortDescription}
+              onChange={(e) => patch({ shortDescription: e.target.value })}
+              className={adminInputClass()}
+            />
           </AdminField>
           <AdminField label="الوصف الكامل" id="description">
-            <textarea id="description" rows={5} value={form.description} onChange={(e) => patch({ description: e.target.value })} className={adminInputClass()} />
+            <textarea
+              id="description"
+              rows={5}
+              value={form.description}
+              onChange={(e) => patch({ description: e.target.value })}
+              className={adminInputClass()}
+            />
           </AdminField>
           <AdminField label="الميزات (سطر لكل ميزة)" id="features">
-            <textarea id="features" rows={4} value={featuresText} onChange={(e) => setFeaturesText(e.target.value)} className={adminInputClass()} />
+            <textarea
+              id="features"
+              rows={4}
+              value={featuresText}
+              onChange={(e) => setFeaturesText(e.target.value)}
+              className={adminInputClass()}
+            />
           </AdminField>
-          <AdminField label="ماذا ستحصل عليه (سطر لكل بند)" id="deliverables" hint="يظهر في صفحة تفاصيل الخدمة تحت عنوان «ما ستحصل عليه»">
-            <textarea id="deliverables" rows={5} value={deliverablesText} onChange={(e) => setDeliverablesText(e.target.value)} className={adminInputClass()} />
+          <AdminField
+            label="ماذا ستحصل عليه (سطر لكل بند)"
+            id="deliverables"
+            hint="يظهر في صفحة تفاصيل الخدمة تحت عنوان «ما ستحصل عليه»"
+          >
+            <textarea
+              id="deliverables"
+              rows={5}
+              value={deliverablesText}
+              onChange={(e) => setDeliverablesText(e.target.value)}
+              className={adminInputClass()}
+            />
           </AdminField>
-          <ImageUploadField id="imageUrl" label="صورة الخدمة" folder="services" value={form.imageUrl ?? ""} onChange={(imageUrl) => patch({ imageUrl })} />
+          <ImageUploadField
+            id="imageUrl"
+            label="صورة الخدمة"
+            folder="services"
+            value={form.imageUrl ?? ""}
+            onChange={(imageUrl) => patch({ imageUrl })}
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="الأيقونة" id="icon">
-              <input id="icon" dir="ltr" value={form.icon} onChange={(e) => patch({ icon: e.target.value })} className={adminInputClass("text-start")} placeholder="MonitorSmartphone, Search, Palette…" />
+              <input
+                id="icon"
+                dir="ltr"
+                value={form.icon}
+                onChange={(e) => patch({ icon: e.target.value })}
+                className={adminInputClass("text-start")}
+                placeholder="MonitorSmartphone, Search, Palette…"
+              />
             </AdminField>
             <AdminField label="الترتيب" id="order">
-              <input id="order" type="number" value={form.order} onChange={(e) => patch({ order: Number(e.target.value) })} className={adminInputClass()} />
+              <input
+                id="order"
+                type="number"
+                value={form.order}
+                onChange={(e) => patch({ order: Number(e.target.value) })}
+                className={adminInputClass()}
+              />
             </AdminField>
           </div>
-          <AdminPublishSelect value={form.status as PublishStatus} onChange={(status) => patch({ status })} />
+          <AdminPublishSelect
+            value={form.status as PublishStatus}
+            onChange={(status) => patch({ status })}
+          />
         </AdminCard>
 
         <AdminSeoSection

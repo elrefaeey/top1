@@ -11,12 +11,16 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+\d\s()-]{7,30}$/;
 
 export function stripControlChars(value: string): string {
+  // Intentionally strips C0 controls (excluding TAB/LF/CR) from user input.
+  // eslint-disable-next-line no-control-regex -- security: neutralize control chars in leads
   return value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
 }
 
 export function validateLeadInput(raw: LeadInput): LeadInput {
   const name = stripControlChars(raw.name ?? "").trim();
-  const email = stripControlChars(raw.email ?? "").trim().toLowerCase();
+  const email = stripControlChars(raw.email ?? "")
+    .trim()
+    .toLowerCase();
   const phone = stripControlChars(raw.phone ?? "").trim();
   const message = stripControlChars(raw.message ?? "").trim();
   const source = stripControlChars(raw.source ?? "contact_form").trim() || "contact_form";

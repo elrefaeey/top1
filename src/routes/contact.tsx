@@ -4,12 +4,13 @@ import { useState, type FormEvent } from "react";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
+import { ContentError, ContentLoading } from "@/components/site/ContentState";
+import { useToast } from "@/components/site/Toast";
 import { useFaqs, useSiteSettings, useSubmitLead } from "@/hooks/use-cms";
 import { SITE_ADDRESS, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE } from "@/lib/site-config";
 import { telHref } from "@/lib/phone";
 import { whatsAppHref } from "@/lib/whatsapp";
 
-import { sanitizeCmsHtml } from "@/lib/security/sanitize-html";
 import { buildContactPageHead } from "@/lib/seo/static-page-head";
 import { loadContactRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 
@@ -24,6 +25,7 @@ const PERKS = ["رد خلال 24 ساعة", "استشارة مجانية", "لا
 function Contact() {
   const { data: settings } = useSiteSettings();
   const submitLead = useSubmitLead();
+  const toast = useToast();
 
   const email = settings?.contactEmail || SITE_CONTACT_EMAIL;
   const phone = settings?.contactPhone || SITE_CONTACT_PHONE;
@@ -41,11 +43,11 @@ function Contact() {
     const website = String(fd.get("website") ?? "").trim();
 
     if (!name || !phoneVal || !msg) {
-      alert("يرجى تعبئة الاسم ورقم الجوال والاستفسار.");
+      toast.push("يرجى تعبئة الاسم ورقم الجوال والاستفسار.", "error");
       return;
     }
     if (name.length > 120 || phoneVal.length > 30 || msg.length > 5000) {
-      alert("تحقق من طول الحقول وحاول مرة أخرى.");
+      toast.push("تحقق من طول الحقول وحاول مرة أخرى.", "error");
       return;
     }
 
@@ -59,8 +61,9 @@ function Contact() {
       });
       setSent(true);
       e.currentTarget.reset();
+      toast.push("تم إرسال رسالتك بنجاح.", "success");
     } catch {
-      alert("تعذّر إرسال الرسالة. جرّب واتساب أو حاول مرة أخرى.");
+      toast.push("تعذّر إرسال الرسالة. جرّب واتساب أو حاول مرة أخرى.", "error");
     }
   }
 
@@ -68,19 +71,18 @@ function Contact() {
     <>
       <PageIntro
         eyebrow="تواصل"
-        title={<>لنبني <span className="text-gradient">شيئاً رائعاً.</span></>}
-        desc="تواصل عبر واتساب أو اترك رسالتك — نرد خلال 24 ساعة."
+        title={
+          <>
+            تواصل معنا لنبني <span className="text-gradient">شيئاً رائعاً.</span>
+          </>
+        }
+        desc="استشارة مجانية عبر واتساب أو النموذج — نرد خلال 24 ساعة."
       />
 
       <section className="contact-page section">
         <div className="container-page contact-layout">
           <aside className="contact-aside">
-            <a
-              href={waHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-wa-card"
-            >
+            <a href={waHref} target="_blank" rel="noopener noreferrer" className="contact-wa-card">
               <span className="contact-wa-icon">
                 <WhatsAppIcon className="h-6 w-6" />
               </span>
@@ -96,7 +98,11 @@ function Contact() {
               <ul className="contact-info-list">
                 <li>
                   <Mail className="h-4 w-4 shrink-0 text-primary" />
-                  <a href={`mailto:${email}`} dir="ltr" className="hover:text-primary transition-colors">
+                  <a
+                    href={`mailto:${email}`}
+                    dir="ltr"
+                    className="hover:text-primary transition-colors"
+                  >
                     {email}
                   </a>
                 </li>
@@ -155,7 +161,15 @@ function Contact() {
 
                 <div className="contact-fields-grid">
                   <Field label="اسمك" id="name" name="name" required />
-                  <Field label="رقم الجوال" id="phone" name="phone" type="tel" placeholder="05xxxxxxxx" dir="ltr" required />
+                  <Field
+                    label="رقم الجوال"
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="05xxxxxxxx"
+                    dir="ltr"
+                    required
+                  />
                 </div>
 
                 <div className="contact-field-full">
@@ -222,48 +236,61 @@ function Field({ label, id, name, type = "text", required, placeholder, dir }: F
 }
 
 function ContactFaq() {
-  const { data: faqs = [] } = useFaqs();
+  const { data: faqs = [], isLoading, isError, refetch } = useFaqs();
   const [open, setOpen] = useState<number | null>(0);
   const items = faqs.slice(0, 4);
-  if (items.length === 0) return null;
 
   return (
     <section className="contact-faq section">
       <div className="container-page contact-faq-inner">
         <div className="contact-faq-head">
           <span className="page-intro-eyebrow">
-            <Clock className="h-3 w-3" /> أسئلة شائعة
+            <Clock className="h-3 w-3" aria-hidden /> أسئلة شائعة
           </span>
           <h2 className="page-intro-title page-intro-title--section contact-faq-title">
             إجابات سريعة قبل التواصل
           </h2>
         </div>
-        <div className="contact-faq-list">
-          {items.map((f, i) => {
-            const isOpen = open === i;
-            return (
-              <div key={f.id} className="faq-item-new" data-open={isOpen}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-start hover:bg-accent/30 transition-colors"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-medium text-[0.9375rem]">{f.question}</span>
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-accent text-primary shrink-0">
-                    {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-                  </span>
-                </button>
-                {isOpen && (
-                  <div
-                    className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(f.answer) }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {isLoading ? <ContentLoading label="جاري تحميل الأسئلة…" /> : null}
+        {isError ? (
+          <ContentError message="تعذّر تحميل الأسئلة الشائعة." onRetry={() => void refetch()} />
+        ) : null}
+        {!isLoading && !isError && items.length === 0 ? null : null}
+        {!isLoading && !isError && items.length > 0 ? (
+          <div className="contact-faq-list">
+            {items.map((f, i) => {
+              const isOpen = open === i;
+              const panelId = `contact-faq-panel-${f.id}`;
+              return (
+                <div key={f.id} className="faq-item-new" data-open={isOpen}>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="faq-trigger"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                  >
+                    <span className="font-medium text-[0.9375rem] min-w-0">{f.question}</span>
+                    <span className="faq-trigger-icon" aria-hidden>
+                      {isOpen ? (
+                        <Minus className="h-3.5 w-3.5" />
+                      ) : (
+                        <Plus className="h-3.5 w-3.5" />
+                      )}
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div
+                      id={panelId}
+                      className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed prose prose-sm max-w-none break-words"
+                      dangerouslySetInnerHTML={{ __html: f.answer }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </section>
   );

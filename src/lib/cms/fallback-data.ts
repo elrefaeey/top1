@@ -10,10 +10,17 @@ export const FALLBACK_SERVICES: Service[] = [
     title: "تصميم المواقع",
     tagline: "مواقع جميلة تحوّل الزوار لعملاء.",
     shortDescription: "مواقع تركّز على التحويل بتصميم راقٍ وحركة مدروسة.",
-    description: "نصمّم مواقع تبدو احترافية، سريعة، وتحوّل الزوار إلى عملاء. كل تفصيلة مدروسة — من الشبكة إلى أصغر تفاعل.",
+    description:
+      "نصمّم مواقع تبدو احترافية، سريعة، وتحوّل الزوار إلى عملاء. كل تفصيلة مدروسة — من الشبكة إلى أصغر تفاعل.",
     icon: "Globe",
     features: ["تصميم متوافق مع الهوية", "تخطيطات متجاوبة", "حركة وتفاعلات", "تكامل CMS"],
-    deliverables: ["تصميم بصري متوافق مع العلامة", "تخطيطات متجاوبة", "حركة وتفاعلات دقيقة", "تسليم نظام تصميم", "بنية جاهزة لـ CMS"],
+    deliverables: [
+      "تصميم بصري متوافق مع العلامة",
+      "تخطيطات متجاوبة",
+      "حركة وتفاعلات دقيقة",
+      "تسليم نظام تصميم",
+      "بنية جاهزة لـ CMS",
+    ],
     imageUrl: serviceImage("web-design"),
     process: [
       { title: "اكتشاف", description: "ورش عمل، تحليل الجمهور والمنافسين." },
@@ -35,10 +42,17 @@ export const FALLBACK_SERVICES: Service[] = [
     title: "تطبيقات الويب",
     tagline: "تطبيقات قابلة للتوسع. بنية نظيفة.",
     shortDescription: "تطبيقات ويب قابلة للتوسع بأحدث التقنيات وبنية نظيفة.",
-    description: "من الأدوات الداخلية إلى المنصات الموجهة للعملاء — نبني تطبيقات تتوسع مع عملك وتبقى سهلة الصيانة.",
+    description:
+      "من الأدوات الداخلية إلى المنصات الموجهة للعملاء — نبني تطبيقات تتوسع مع عملك وتبقى سهلة الصيانة.",
     icon: "Code2",
     features: ["React / Next.js", "واجهات برمجية آمنة", "صلاحيات ومستخدمين", "بنية Edge-ready"],
-    deliverables: ["React / Next.js / TypeScript", "واجهات برمجية آمنة", "مصادقة وصلاحيات", "بنية Edge-ready", "اختبارات وCI/CD"],
+    deliverables: [
+      "React / Next.js / TypeScript",
+      "واجهات برمجية آمنة",
+      "مصادقة وصلاحيات",
+      "بنية Edge-ready",
+      "اختبارات وCI/CD",
+    ],
     imageUrl: serviceImage("web-apps"),
     process: [
       { title: "تخطيط", description: "البنية، نمذجة البيانات، تحديد النطاق." },
@@ -63,7 +77,13 @@ export const FALLBACK_SERVICES: Service[] = [
     description: "SEO تقني واستراتيجية محتوى ونمو قابل للقياس. نحوّل البحث إلى قناة اكتساب موثوقة.",
     icon: "Search",
     features: ["تدقيق تقني", "استراتيجية محتوى", "Schema markup", "تقارير شهرية"],
-    deliverables: ["تدقيق تقني", "استراتيجية كلمات مفتاحية", "Schema markup", "استراتيجية روابط", "تقارير شهرية"],
+    deliverables: [
+      "تدقيق تقني",
+      "استراتيجية كلمات مفتاحية",
+      "Schema markup",
+      "استراتيجية روابط",
+      "تقارير شهرية",
+    ],
     imageUrl: serviceImage("seo"),
     process: [
       { title: "تدقيق", description: "فحص الموقع، تحديد العوائق والفرص السريعة." },
@@ -85,10 +105,17 @@ export const FALLBACK_SERVICES: Service[] = [
     title: "تصميم UI / UX",
     tagline: "واجهات يحبها المستخدمون.",
     shortDescription: "واجهات جميلة وبديهية مبنية على بحث المستخدم الحقيقي.",
-    description: "تصميم مبني على البحث يجعل المنتجات المعقدة بسيطة. جميل، قابل للوصول، قابل للقياس.",
+    description:
+      "تصميم مبني على البحث يجعل المنتجات المعقدة بسيطة. جميل، قابل للوصول، قابل للقياس.",
     icon: "Palette",
     features: ["بحث المستخدم", "أنظمة تصميم", "نماذج أولية", "إمكانية الوصول WCAG"],
-    deliverables: ["بحث المستخدم", "هندسة المعلومات", "تصميم عالي الدقة", "نظام تصميم", "اختبار قابلية الاستخدام"],
+    deliverables: [
+      "بحث المستخدم",
+      "هندسة المعلومات",
+      "تصميم عالي الدقة",
+      "نظام تصميم",
+      "اختبار قابلية الاستخدام",
+    ],
     imageUrl: serviceImage("ui-ux"),
     process: [
       { title: "بحث", description: "مقابلات، Jobs-to-be-done، تحليل المنافسين." },
@@ -113,7 +140,13 @@ export const FALLBACK_SERVICES: Service[] = [
     description: "نبني منصات مخصصة وأتمتة وتكاملات تربط عملك وتزيل الاحتكاك.",
     icon: "Layers",
     features: ["أدوات داخلية", "تكاملات API", "أتمتة", "ربط CRM وERP"],
-    deliverables: ["أدوات داخلية", "تكاملات API", "أتمتة سير العمل", "ربط CRM وERP", "لوحات تحكم مخصصة"],
+    deliverables: [
+      "أدوات داخلية",
+      "تكاملات API",
+      "أتمتة سير العمل",
+      "ربط CRM وERP",
+      "لوحات تحكم مخصصة",
+    ],
     imageUrl: serviceImage("digital-solutions"),
     process: [
       { title: "اكتشاف", description: "رسم سير العمل ونقاط الألم." },
@@ -368,7 +401,8 @@ export const FALLBACK_FAQS: FaqItem[] = [
   {
     id: "faq-1",
     question: "كم يستغرق المشروع عادةً؟",
-    answer: "المواقع التسويقية: 2-4 أسابيع. تطبيقات الويب: 6-12 أسبوعاً حسب النطاق. نعمل بـ sprints أسبوعين مع عروض أسبوعية.",
+    answer:
+      "المواقع التسويقية: 2-4 أسابيع. تطبيقات الويب: 6-12 أسبوعاً حسب النطاق. نعمل بـ sprints أسبوعين مع عروض أسبوعية.",
     order: 1,
     status: "published",
     createdAt: ts,
@@ -377,7 +411,8 @@ export const FALLBACK_FAQS: FaqItem[] = [
   {
     id: "faq-2",
     question: "هل تعملون مع startups أو منظمات غير ربحية؟",
-    answer: "نعم — نخصص مقاعد كل ربع سنة لمشاريع ذات أثر اجتماعي بأسعار مخفّضة. تواصل معنا وشاركنا قصتك.",
+    answer:
+      "نعم — نخصص مقاعد كل ربع سنة لمشاريع ذات أثر اجتماعي بأسعار مخفّضة. تواصل معنا وشاركنا قصتك.",
     order: 2,
     status: "published",
     createdAt: ts,
@@ -386,7 +421,8 @@ export const FALLBACK_FAQS: FaqItem[] = [
   {
     id: "faq-3",
     question: "ما التقنيات التي تستخدمونها؟",
-    answer: "React، Next.js، TypeScript، Tailwind وFirebase. نختار stack مجرّب يبقى مدعوماً لسنوات.",
+    answer:
+      "React، Next.js، TypeScript، Tailwind وFirebase. نختار stack مجرّب يبقى مدعوماً لسنوات.",
     order: 3,
     status: "published",
     createdAt: ts,
@@ -395,7 +431,8 @@ export const FALLBACK_FAQS: FaqItem[] = [
   {
     id: "faq-4",
     question: "هل تقدمون SEO ونمو مستمر؟",
-    answer: "بالتأكيد — retainers شهرية للـ SEO وCRO والمحتوى. كثير من العملاء يبدأون ببناء ثم يتحولون لشراكة طويلة.",
+    answer:
+      "بالتأكيد — retainers شهرية للـ SEO وCRO والمحتوى. كثير من العملاء يبدأون ببناء ثم يتحولون لشراكة طويلة.",
     order: 4,
     status: "published",
     createdAt: ts,
@@ -404,7 +441,8 @@ export const FALLBACK_FAQS: FaqItem[] = [
   {
     id: "faq-5",
     question: "هل نستطيع إدارة المحتوى بأنفسنا؟",
-    answer: "نعم. كل موقع نسلّمه جاهز لـ CMS مع لوحة تحكم نظيفة — فريقك يعدّل النصوص والصور بدون لمس الكود.",
+    answer:
+      "نعم. كل موقع نسلّمه جاهز لـ CMS مع لوحة تحكم نظيفة — فريقك يعدّل النصوص والصور بدون لمس الكود.",
     order: 5,
     status: "published",
     createdAt: ts,
@@ -455,15 +493,7 @@ export const FALLBACK_SITE_STATS: SiteStat[] = [
   },
 ];
 
-export const BLOG_CATEGORIES = [
-  "الكل",
-  "الأداء",
-  "SEO",
-  "UI/UX",
-  "تصميم",
-  "هندسة",
-  "عمليات",
-];
+export const BLOG_CATEGORIES = ["الكل", "الأداء", "SEO", "UI/UX", "تصميم", "هندسة", "عمليات"];
 
 export function formatPostDate(iso: string): string {
   return new Date(iso).toLocaleDateString("ar-EG", {
