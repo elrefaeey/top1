@@ -26,35 +26,35 @@ function About() {
     {
       icon: Eye,
       t: "الرؤية",
-      d: "أن نكون الشريك الرقمي الموثوق للشركات في السعودية لبناء حضور إلكتروني يحوّل الزوار إلى عملاء.",
+      d: "نبني حضوراً رقمياً واضحاً للشركات في السعودية — مواقع ومتاجر تساعد على تحويل الزوار إلى عملاء.",
     },
     {
       icon: Target,
       t: "الرسالة",
-      d: "نصمّم مواقع ومتاجر وحملات رقمية تركّز على السرعة، الوضوح، والنتائج القابلة للقياس.",
+      d: "نقدّم تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي بخطوات بسيطة، تواصل واضح، وتنفيذ يركز على النتيجة.",
     },
     {
       icon: Heart,
       t: "القيم",
-      d: "الوضوح في التواصل، الجودة في التنفيذ، والالتزام بمواعيد التسليم والدعم بعد الإطلاق.",
+      d: "صدق في الوعود، جودة في التنفيذ، ومتابعة بعد الإطلاق — بدون مبالغة وبدون تعقيد.",
     },
   ];
 
   const timeline = [
     {
-      y: "البداية",
-      t: "تأسيس التوجه",
-      d: `انطلقت ${SITE_NAME} لتقديم خدمات تصميم مواقع وتسويق رقمي تناسب احتياجات السوق السعودي.`,
+      y: "الآن",
+      t: "انطلاقة جديدة",
+      d: `${SITE_NAME} وكالة رقمية ناشئة تخدم السوق السعودي، ونبدأ مع كل عميل من احتياجه الحقيقي لا من قوالب جاهزة.`,
     },
     {
-      y: "التوسع",
-      t: "خدمات متكاملة",
-      d: "أضفنا تطوير المتاجر الإلكترونية، SEO، وتجربة المستخدم ضمن فريق واحد مسؤول عن النتيجة.",
+      y: "ماذا نبني",
+      t: "خدمات عملية",
+      d: "نصمّم ونطوّر مواقع ومتاجر، نحسّن الظهور في Google، ونساعد على تواصل أوضح مع العملاء المحتملين.",
     },
     {
-      y: "اليوم",
-      t: "شراكة للنمو",
-      d: "نعمل مع علامات وشركات تريد حضوراً رقمياً واضحاً: مواقع أسرع، ظهور أفضل في Google، وتحويل أعلى.",
+      y: "كيف نعمل",
+      t: "شراكة خطوة بخطوة",
+      d: "استشارة، تصميم، إطلاق، ثم تحسين مستمر — مع تحديثات واضحة طوال المشروع.",
     },
   ];
 
@@ -74,12 +74,12 @@ function About() {
                 <Sparkles className="h-3 w-3" /> عن {SITE_NAME}
               </span>
               <h1 className="page-intro-title">
-                وكالة رقمية ل<span className="text-gradient">السوق السعودي.</span>
+                وكالة رقمية <span className="text-gradient">للسوق السعودي.</span>
               </h1>
               <p className="page-intro-desc lg:mx-0">
-                {SITE_NAME} متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين محركات البحث،
-                والتسويق الرقمي. نساعد الشركات على بناء حضور أونلاين احترافي يركز على تجربة المستخدم
-                ونتائج واضحة في الرياض وجدة والدمام.
+                {SITE_NAME} وكالة رقمية ناشئة متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين
+                محركات البحث، والتسويق الرقمي. نساعد الشركات في السعودية على بناء حضور أونلاين
+                احترافي — من الفكرة إلى الإطلاق — بتركيز على تجربة المستخدم ونتائج قابلة للقياس.
               </p>
             </div>
           </div>
@@ -103,17 +103,17 @@ function About() {
       <section className="section bg-surface border-y border-border">
         <div className="container-page max-w-3xl">
           <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
-          <h2 className="page-intro-title page-intro-title--section">خدمات عملية لنمو أعمالك.</h2>
+          <h2 className="page-intro-title page-intro-title--section">خدمات واضحة لنمو عملك.</h2>
           <p className="page-intro-desc !max-w-none mt-3">
-            من الهوية الرقمية وتصميم الواجهات إلى إطلاق الموقع وتحسين ظهوره في Google — نعمل بخطوات
-            واضحة وتحديثات مستمرة حتى الإطلاق وما بعده.
+            سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك الحالي: نصمّم، نبني، ونحسّن — بخطوات
+            مرتبة وتحديثات مستمرة حتى الإطلاق وما بعده.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/services" className="btn-ghost">
               خدماتنا
             </Link>
-            <Link to="/portfolio" className="btn-ghost">
-              أعمالنا
+            <Link to="/contact" className="btn-ghost">
+              تواصل معنا
             </Link>
           </div>
         </div>
@@ -122,9 +122,9 @@ function About() {
       <section className="section">
         <div className="container-page max-w-3xl page-intro-block">
           <span className="page-intro-eyebrow">
-            <Award className="h-3 w-3" /> مسيرتنا
+            <Award className="h-3 w-3" /> كيف نبدأ معك
           </span>
-          <h2 className="page-intro-title page-intro-title--section">محطات واضحة.</h2>
+          <h2 className="page-intro-title page-intro-title--section">من الفكرة إلى الإطلاق.</h2>
           <ol className="section-body relative border-s border-border ps-6 space-y-8">
             {timeline.map((t) => (
               <li key={t.y} className="relative">
