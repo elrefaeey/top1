@@ -42,19 +42,19 @@ function About() {
 
   const timeline = [
     {
-      y: "الآن",
-      t: "انطلاقة جديدة",
-      d: `${SITE_NAME} وكالة رقمية ناشئة تخدم السوق السعودي، ونبدأ مع كل عميل من احتياجه الحقيقي لا من قوالب جاهزة.`,
+      y: "اليوم",
+      t: "بدأنا للتو",
+      d: `${SITE_NAME} وكالة رقمية جديدة تخدم السعودية. بدأنا مؤخراً ونبني مع كل عميل من الصفر حسب احتياجه.`,
     },
     {
-      y: "ماذا نبني",
-      t: "خدمات عملية",
-      d: "نصمّم ونطوّر مواقع ومتاجر، نحسّن الظهور في Google، ونساعد على تواصل أوضح مع العملاء المحتملين.",
+      y: "نركز على",
+      t: "خدمات واضحة",
+      d: "تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي — بدون وعود مبالغ فيها وبدون تعقيد.",
     },
     {
-      y: "كيف نعمل",
-      t: "شراكة خطوة بخطوة",
-      d: "استشارة، تصميم، إطلاق، ثم تحسين مستمر — مع تحديثات واضحة طوال المشروع.",
+      y: "معك",
+      t: "خطوة بخطوة",
+      d: "نستمع لاحتياجك، نصمّم وننفّذ، ثم نطلق ونحسّن معاً بعد الإطلاق.",
     },
   ];
 
@@ -101,46 +101,52 @@ function About() {
       </section>
 
       <section className="section bg-surface border-y border-border">
-        <div className="container-page max-w-3xl">
-          <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
-          <h2 className="page-intro-title page-intro-title--section">خدمات واضحة لنمو عملك.</h2>
-          <p className="page-intro-desc !max-w-none mt-3">
-            سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك الحالي: نصمّم، نبني، ونحسّن — بخطوات
-            مرتبة وتحديثات مستمرة حتى الإطلاق وما بعده.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/services" className="btn-ghost">
-              خدماتنا
-            </Link>
-            <Link to="/contact" className="btn-ghost">
-              تواصل معنا
-            </Link>
+        <div className="container-page">
+          <div className="page-intro-block me-auto w-full text-start">
+            <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
+            <h2 className="page-intro-title page-intro-title--section">خدمات واضحة لنمو عملك.</h2>
+            <p className="page-intro-desc !max-w-none mt-3">
+              سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك الحالي: نصمّم، نبني، ونحسّن — بخطوات
+              مرتبة وتحديثات مستمرة حتى الإطلاق وما بعده.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link to="/services" className="btn-ghost">
+                خدماتنا
+              </Link>
+              <Link to="/contact" className="btn-ghost">
+                تواصل معنا
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="section">
-        <div className="container-page max-w-3xl page-intro-block">
-          <span className="page-intro-eyebrow">
-            <Award className="h-3 w-3" /> كيف نبدأ معك
-          </span>
-          <h2 className="page-intro-title page-intro-title--section">من الفكرة إلى الإطلاق.</h2>
-          <ol className="section-body relative border-s border-border ps-6 space-y-8">
-            {timeline.map((t) => (
-              <li key={t.y} className="relative">
-                <span className="absolute -start-[34px] grid h-6 w-6 place-items-center rounded-full bg-[var(--gradient-primary)] text-white text-[10px] font-bold">
-                  ●
-                </span>
-                <div className="text-xs text-primary font-semibold tracking-wider">{t.y}</div>
-                <h3 className="mt-1 font-semibold">{t.t}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{t.d}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-12">
-            <Link to="/contact" className="btn-primary">
-              ابدأ مشروعك معنا <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
+        <div className="container-page">
+          <div className="page-intro-block me-auto w-full text-start">
+            <span className="page-intro-eyebrow">
+              <Award className="h-3 w-3" /> بدايتنا
+            </span>
+            <h2 className="page-intro-title page-intro-title--section">
+              بدأنا مؤخراً — ونبني معك من اليوم.
+            </h2>
+            <ol className="section-body relative border-s border-border ps-6 space-y-8">
+              {timeline.map((t) => (
+                <li key={t.y} className="relative">
+                  <span className="absolute -start-[34px] grid h-6 w-6 place-items-center rounded-full bg-[var(--gradient-primary)] text-white text-[10px] font-bold">
+                    ●
+                  </span>
+                  <div className="text-xs font-semibold tracking-wider text-primary">{t.y}</div>
+                  <h3 className="mt-1 font-semibold">{t.t}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{t.d}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-12">
+              <Link to="/contact" className="btn-primary">
+                ابدأ مشروعك معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
