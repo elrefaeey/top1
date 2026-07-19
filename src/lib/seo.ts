@@ -70,7 +70,7 @@ export const STATIC_PAGE_SEO = {
   home: {
     title: "Top1Markting | وكالة رقمية — تصميم مواقع وSEO للسعودية",
     description:
-      "Top1Markting وكالة رقمية تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك في الرياض وجدة والدمام.",
+      "Top1Markting وكالة رقمية تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك من القصيم وبريدة وفي أنحاء المملكة.",
   },
   about: {
     title: "من نحن | Top1Markting",
@@ -158,7 +158,9 @@ export function localBusinessSchema(contactEmail = SITE_CONTACT_EMAIL) {
     email: contactEmail,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Riyadh",
+      streetAddress: "حي السادة",
+      addressLocality: "Buraidah",
+      addressRegion: "Al-Qassim",
       addressCountry: "SA",
     },
     areaServed: [...SEO_AREAS_SERVED],

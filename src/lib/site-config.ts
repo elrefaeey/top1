@@ -20,7 +20,7 @@ export const SITE_CONTACT_PHONE = "0537309257";
 export const SITE_CONTACT_EMAIL = "top11markting@gmail.com";
 
 /** العنوان الافتراضي */
-export const SITE_ADDRESS = "الرياض، المملكة العربية السعودية";
+export const SITE_ADDRESS = "حي السادة، بريدة، القصيم، المملكة العربية السعودية";
 
 /** الدومين الإنتاجي المعتمد لـ SEO / Sitemap / Canonical */
 export const SITE_PRODUCTION_URL = "https://www.top1markting.com";

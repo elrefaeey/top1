@@ -51,7 +51,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
 
   useEffect(() => {
     onClose?.();
-    // Close drawer on route change (mobile)
+    // Close drawer on route change (mobile only)
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only pathname
   }, [pathname]);
 
@@ -66,12 +66,12 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
 
   return (
     <>
-      {/* Mobile backdrop */}
+      {/* Mobile/tablet backdrop — hidden from md up */}
       <button
         type="button"
         aria-label="إغلاق القائمة"
         className={cn(
-          "fixed inset-0 z-40 bg-black/40 transition-opacity lg:hidden",
+          "fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -79,14 +79,24 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
 
       <aside
         className={cn(
-          "flex h-full w-64 max-w-[85vw] flex-col border-e border-border bg-surface",
-          "fixed inset-y-0 start-0 z-50 transition-transform duration-200 ease-out lg:static lg:z-auto lg:max-w-none lg:translate-x-0",
-          open ? "translate-x-0" : "ltr:-translate-x-full rtl:translate-x-full lg:translate-x-0",
+          "flex w-64 shrink-0 flex-col border-e border-border bg-surface",
+          // Desktop/laptop: sticky full-height column so footer stays visible
+          "md:sticky md:top-0 md:z-auto md:h-dvh md:max-w-none md:translate-x-0",
+          // Mobile: off-canvas drawer (transforms ONLY below md — avoids RTL conflict)
+          "fixed inset-y-0 start-0 z-50 h-dvh max-w-[85vw] transition-transform duration-200 ease-out",
+          open
+            ? "translate-x-0"
+            : "max-md:ltr:-translate-x-full max-md:rtl:translate-x-full",
         )}
       >
-        <div className="flex items-start justify-between gap-2 border-b border-border px-5 py-5">
+        <div className="flex shrink-0 items-start justify-between gap-2 border-b border-border px-5 py-5">
           <div className="min-w-0">
-            <Link to="/admin" className="text-lg font-semibold tracking-tight" dir="ltr" onClick={onClose}>
+            <Link
+              to="/admin"
+              className="text-lg font-semibold tracking-tight"
+              dir="ltr"
+              onClick={onClose}
+            >
               {SITE_NAME} <span className="text-primary">Admin</span>
             </Link>
             <p className="mt-1 truncate text-xs text-muted-foreground" dir="ltr">
@@ -95,7 +105,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           </div>
           <button
             type="button"
-            className="rounded-lg p-2 text-muted-foreground hover:bg-accent/60 hover:text-foreground lg:hidden"
+            className="rounded-lg p-2 text-muted-foreground hover:bg-accent/60 hover:text-foreground md:hidden"
             aria-label="إغلاق القائمة"
             onClick={onClose}
           >
@@ -103,7 +113,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           </button>
         </div>
 
-        <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
+        <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto p-3">
           {navItems.map(({ to, label, icon: Icon, exact }) => {
             const active = isNavActive(pathname, to, exact);
             return (
@@ -125,7 +135,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           })}
         </nav>
 
-        <div className="space-y-1 border-t border-border p-3">
+        <div className="shrink-0 space-y-1 border-t border-border bg-surface p-3">
           <Link
             to="/"
             onClick={onClose}

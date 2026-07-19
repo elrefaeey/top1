@@ -106,7 +106,7 @@ function AdminGate() {
     <div className="flex min-h-screen bg-background">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-muted/30">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur lg:hidden">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur md:hidden">
           <button
             type="button"
             className="rounded-lg border border-border p-2 text-foreground hover:bg-accent/60"

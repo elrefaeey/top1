@@ -77,7 +77,7 @@ function AdminSettingsPage() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl">
+    <div className="w-full max-w-5xl p-6 md:p-8 lg:max-w-6xl">
       <AdminFetchingBar show={isFetching && !data} />
       <AdminPageHeader
         title="إعدادات الموقع"
@@ -94,67 +94,76 @@ function AdminSettingsPage() {
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
-          <AdminField label="اسم الموقع" id="siteName">
-            <input
-              id="siteName"
-              value={form.siteName}
-              onChange={(e) => patch({ siteName: e.target.value })}
-              className={adminInputClass()}
+        <AdminCard className="space-y-5">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <AdminField label="اسم الموقع" id="siteName">
+              <input
+                id="siteName"
+                value={form.siteName}
+                onChange={(e) => patch({ siteName: e.target.value })}
+                className={adminInputClass()}
+              />
+            </AdminField>
+            <AdminField label="الشعار (Tagline)" id="tagline">
+              <input
+                id="tagline"
+                value={form.tagline}
+                onChange={(e) => patch({ tagline: e.target.value })}
+                className={adminInputClass()}
+              />
+            </AdminField>
+          </div>
+
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start">
+            <ImageUploadField
+              id="heroImageUrl"
+              label="صورة الصفحة الرئيسية (Hero)"
+              folder="hero"
+              value={form.heroImageUrl ?? ""}
+              onChange={(heroImageUrl) => patch({ heroImageUrl })}
             />
-          </AdminField>
-          <AdminField label="الشعار (Tagline)" id="tagline">
-            <input
-              id="tagline"
-              value={form.tagline}
-              onChange={(e) => patch({ tagline: e.target.value })}
-              className={adminInputClass()}
-            />
-          </AdminField>
-          <ImageUploadField
-            id="heroImageUrl"
-            label="صورة الصفحة الرئيسية (Hero)"
-            folder="hero"
-            value={form.heroImageUrl ?? ""}
-            onChange={(heroImageUrl) => patch({ heroImageUrl })}
-          />
-          <AdminField label="وصف الصورة (Alt)" id="heroImageAlt">
-            <input
-              id="heroImageAlt"
-              value={form.heroImageAlt ?? ""}
-              onChange={(e) => patch({ heroImageAlt: e.target.value })}
-              placeholder="وصف بديل لصورة الهيرو"
-              className={adminInputClass()}
-            />
-          </AdminField>
-          <AdminField label="البريد" id="contactEmail">
-            <input
-              id="contactEmail"
-              dir="ltr"
-              type="email"
-              value={form.contactEmail}
-              onChange={(e) => patch({ contactEmail: e.target.value })}
-              className={adminInputClass("text-start")}
-            />
-          </AdminField>
-          <AdminField label="الهاتف" id="contactPhone">
-            <input
-              id="contactPhone"
-              dir="ltr"
-              value={form.contactPhone}
-              onChange={(e) => patch({ contactPhone: e.target.value })}
-              className={adminInputClass("text-start")}
-            />
-          </AdminField>
-          <AdminField label="WhatsApp (بدون +)" id="whatsapp">
-            <input
-              id="whatsapp"
-              dir="ltr"
-              value={form.whatsappNumber}
-              onChange={(e) => patch({ whatsappNumber: e.target.value })}
-              className={adminInputClass("text-start")}
-            />
-          </AdminField>
+            <AdminField label="وصف الصورة (Alt)" id="heroImageAlt">
+              <input
+                id="heroImageAlt"
+                value={form.heroImageAlt ?? ""}
+                onChange={(e) => patch({ heroImageAlt: e.target.value })}
+                placeholder="وصف بديل لصورة الهيرو"
+                className={adminInputClass()}
+              />
+            </AdminField>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <AdminField label="البريد" id="contactEmail">
+              <input
+                id="contactEmail"
+                dir="ltr"
+                type="email"
+                value={form.contactEmail}
+                onChange={(e) => patch({ contactEmail: e.target.value })}
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+            <AdminField label="الهاتف" id="contactPhone">
+              <input
+                id="contactPhone"
+                dir="ltr"
+                value={form.contactPhone}
+                onChange={(e) => patch({ contactPhone: e.target.value })}
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+            <AdminField label="WhatsApp (بدون +)" id="whatsapp">
+              <input
+                id="whatsapp"
+                dir="ltr"
+                value={form.whatsappNumber}
+                onChange={(e) => patch({ whatsappNumber: e.target.value })}
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+          </div>
+
           <AdminField label="رسالة واتساب الافتراضية" id="whatsappMessage">
             <textarea
               id="whatsappMessage"
@@ -168,26 +177,32 @@ function AdminSettingsPage() {
               تظهر تلقائياً في محادثة واتساب عند الضغط على زر الواتساب في الموقع.
             </p>
           </AdminField>
-          <AdminField label="العنوان" id="address">
-            <input
-              id="address"
-              value={form.address}
-              onChange={(e) => patch({ address: e.target.value })}
-              className={adminInputClass()}
-            />
-          </AdminField>
-          <AdminField label="Google Analytics ID" id="ga">
-            <input
-              id="ga"
-              dir="ltr"
-              value={form.integrations.googleAnalyticsId ?? ""}
-              onChange={(e) =>
-                patch({ integrations: { ...form.integrations, googleAnalyticsId: e.target.value } })
-              }
-              className={adminInputClass("text-start")}
-            />
-          </AdminField>
-          <div className="grid gap-4 sm:grid-cols-2">
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <AdminField label="العنوان" id="address">
+              <input
+                id="address"
+                value={form.address}
+                onChange={(e) => patch({ address: e.target.value })}
+                className={adminInputClass()}
+              />
+            </AdminField>
+            <AdminField label="Google Analytics ID" id="ga">
+              <input
+                id="ga"
+                dir="ltr"
+                value={form.integrations.googleAnalyticsId ?? ""}
+                onChange={(e) =>
+                  patch({
+                    integrations: { ...form.integrations, googleAnalyticsId: e.target.value },
+                  })
+                }
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <AdminField label="Facebook" id="facebook">
               <input
                 id="facebook"

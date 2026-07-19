@@ -677,6 +677,145 @@
   max-width: 34rem;
 }
 
+.about-value-card {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.about-value-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-value-card {
+    transition: none;
+  }
+  .about-value-card:hover {
+    transform: none;
+  }
+}
+
+/* About — beliefs / values (editorial, not generic cards) */
+.about-beliefs {
+  background:
+    radial-gradient(ellipse 70% 50% at 100% 0%, color-mix(in srgb, var(--primary) 8%, transparent), transparent 55%),
+    var(--background);
+}
+.about-beliefs-inner {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+@media (min-width: 1024px) {
+  .about-beliefs-inner {
+    grid-template-columns: minmax(14rem, 0.9fr) minmax(0, 1.4fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+.about-beliefs-head {
+  text-align: start;
+  max-width: 22rem;
+}
+.about-beliefs-lead {
+  margin-top: 0.85rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.about-beliefs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-block: 1px solid var(--border);
+}
+.about-belief-item {
+  display: block;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.about-belief-item:last-child {
+  border-bottom: none;
+}
+.about-belief-reveal {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.25rem;
+  align-items: start;
+}
+@media (min-width: 640px) {
+  .about-belief-item {
+    padding-block: 1.75rem;
+  }
+  .about-belief-reveal {
+    grid-template-columns: 5.5rem 1fr;
+    gap: 1.5rem 1.75rem;
+  }
+}
+.about-belief-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 3.5rem;
+}
+.about-belief-num {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.about-belief-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 14%, transparent);
+}
+.about-belief-copy {
+  min-width: 0;
+  padding-top: 0.1rem;
+}
+.about-belief-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+.about-belief-desc {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--muted-foreground);
+  max-width: 36rem;
+}
+@media (min-width: 1024px) {
+  .about-beliefs-head {
+    position: sticky;
+    top: 6rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-beliefs-head {
+    position: static;
+  }
+}
+
+.about-offer-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .section-intro-row {
   display: flex;
   flex-direction: column;
