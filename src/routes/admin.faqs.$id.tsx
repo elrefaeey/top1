@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { FaqItem, PublishStatus } from "@/types/cms";
 import {
   AdminCard,
@@ -10,6 +10,7 @@ import {
   AdminPublishSelect,
   adminInputClass,
 } from "@/components/admin/AdminUi";
+import { CmsExternalLinkTool } from "@/components/admin/CmsExternalLinkTool";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { useAdminFaq, useSaveFaq, useDeleteFaq, useAdminFaqs } from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
@@ -36,6 +37,9 @@ function AdminFaqEdit() {
   const save = useSaveFaq();
   const remove = useDeleteFaq();
   const [form, setForm] = useState(empty());
+  const answerRef = useRef<HTMLTextAreaElement>(null);
+  const [linkNotice, setLinkNotice] = useState("");
+  const [linkError, setLinkError] = useState("");
   useApplyNextOrder(isNew, allItems, setForm);
   useEffect(() => {
     if (data) setForm({ ...data });
@@ -64,8 +68,9 @@ function AdminFaqEdit() {
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminField label="الإجابة" id="answer">
+          <AdminField label="الإجابة" id="answer" hint="يدعم HTML — يمكنك ربط كلمات بروابط خارجية.">
             <textarea
+              ref={answerRef}
               id="answer"
               rows={5}
               required
@@ -74,6 +79,30 @@ function AdminFaqEdit() {
               className={adminInputClass()}
             />
           </AdminField>
+          <CmsExternalLinkTool
+            idPrefix="faq-answer"
+            value={form.answer}
+            onChange={(answer) => patch({ answer })}
+            textareaRef={answerRef}
+            onNotice={(message) => {
+              setLinkError("");
+              setLinkNotice(message);
+            }}
+            onError={(message) => {
+              setLinkNotice("");
+              setLinkError(message);
+            }}
+          />
+          {linkNotice && (
+            <p className="text-xs text-emerald-700 leading-relaxed rounded-lg bg-emerald-500/10 px-3 py-2">
+              {linkNotice}
+            </p>
+          )}
+          {linkError && (
+            <p className="text-xs text-destructive leading-relaxed rounded-lg bg-destructive/10 px-3 py-2">
+              {linkError}
+            </p>
+          )}
           <AdminField label="الترتيب" id="order">
             <input
               id="order"

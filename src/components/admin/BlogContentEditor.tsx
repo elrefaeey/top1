@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { AlignEndVertical, Link2, Loader2, TextCursorInput } from "lucide-react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
+import { CmsExternalLinkTool } from "@/components/admin/CmsExternalLinkTool";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
 import { listArticleAnchors } from "@/lib/seo/blog-utils";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,28 @@ function escapeHtmlText(text: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function insertHtmlSnippet(
+  source: string,
+  html: string,
+  textarea: HTMLTextAreaElement | null,
+  onChange: (next: string) => void,
+): { leadingNewline: boolean; start: number } {
+  if (!textarea) {
+    onChange(`${source}${html}`);
+    return { leadingNewline: false, start: source.length };
+  }
+
+  const start = textarea.selectionStart ?? source.length;
+  const end = textarea.selectionEnd ?? source.length;
+  const next =
+    end > start
+      ? `${source.slice(0, start)}${html}${source.slice(end)}`
+      : insertAtCursor(source, html, start, end);
+  onChange(next);
+  const leadingNewline = end <= start && start > 0 && !source.slice(0, start).endsWith("\n");
+  return { leadingNewline, start };
 }
 
 export function BlogContentEditor({ id = "content", value, onChange }: BlogContentEditorProps) {
@@ -119,21 +142,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     }
 
     const html = `<a href="#${linkTargetId}">${escapeHtmlText(text)}</a>`;
-    if (!el) {
-      onChange(`${value}${html}`);
-      setNotice("تم إدراج رابط القسم");
-      return;
-    }
-
-    const start = el.selectionStart ?? value.length;
-    const end = el.selectionEnd ?? value.length;
-    // Wrap selection when present; otherwise insert at cursor.
-    const next =
-      end > start
-        ? `${value.slice(0, start)}${html}${value.slice(end)}`
-        : insertAtCursor(value, html, start, end);
-    onChange(next);
-    const leadingNewline = end <= start && start > 0 && !value.slice(0, start).endsWith("\n");
+    const { start, leadingNewline } = insertHtmlSnippet(value, html, el, onChange);
     focusAfterInsert(start, html.length, leadingNewline);
     setNotice(
       `تم ربط النص بالقسم: ${anchors.find((a) => a.id === linkTargetId)?.title ?? linkTargetId}`,
@@ -146,7 +155,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
       <AdminField
         label="المحتوى (HTML)"
         id={id}
-        hint="استخدم عناوين h2/h3 لأقسام المقال، ثم اربط أي نص بقسم عبر أداة الروابط أدناه."
+        hint="استخدم عناوين h2/h3 لأقسام المقال. لربط كلمة برابط: حدّدها في المحرر ثم استخدم أداة الروابط أدناه."
       >
         <textarea
           ref={textareaRef}
@@ -158,6 +167,21 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
           className={adminInputClass("font-mono text-xs text-start")}
         />
       </AdminField>
+
+      <CmsExternalLinkTool
+        idPrefix={`${id}-external`}
+        value={value}
+        onChange={onChange}
+        textareaRef={textareaRef}
+        onNotice={(message) => {
+          setError("");
+          setNotice(message);
+        }}
+        onError={(message) => {
+          setNotice("");
+          setError(message);
+        }}
+      />
 
       <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
         <div>
