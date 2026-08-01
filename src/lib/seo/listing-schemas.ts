@@ -4,7 +4,6 @@ import {
   absoluteUrl,
   DEFAULT_OG_IMAGE,
   faqPageSchema,
-  serviceSchema,
   STATIC_PAGE_SEO,
 } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
@@ -54,6 +53,7 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
   const schemas: unknown[] = [];
 
   if (services.length > 0) {
+    // ItemList only on the listing URL — full Service (+ FAQ) schemas live on detail pages.
     schemas.push({
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -63,13 +63,15 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
       itemListElement: services.map((service, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        item: serviceSchema(service, service.slug),
+        name: service.title,
+        url: absoluteUrl(`/services/${service.slug}`),
+        item: {
+          "@type": "Service",
+          name: service.title,
+          url: absoluteUrl(`/services/${service.slug}`),
+        },
       })),
     });
-
-    for (const service of services) {
-      schemas.push(serviceSchema(service, service.slug));
-    }
   }
 
   if (faqs.length > 0) {
@@ -88,7 +90,7 @@ export function blogListingSchemas(posts: BlogPost[]) {
     name: `مدونة ${SITE_NAME}`,
     description: STATIC_PAGE_SEO.blog.description,
     url: absoluteUrl("/blog"),
-    inLanguage: "ar",
+    inLanguage: "ar-SA",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,

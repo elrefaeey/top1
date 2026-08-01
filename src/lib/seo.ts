@@ -3,6 +3,7 @@ import {
   SITE_CONTACT_PHONE,
   SITE_LOGO_URL,
   SITE_NAME,
+  SITE_OG_IMAGE_URL,
   SITE_PRODUCTION_URL,
   SITE_TWITTER,
   SITE_URL,
@@ -28,15 +29,15 @@ export const SEO_KNOWS_ABOUT = [
   "Digital Marketing",
 ] as const;
 
-export const DEFAULT_OG_IMAGE = SITE_LOGO_URL;
+export const DEFAULT_OG_IMAGE = SITE_OG_IMAGE_URL;
 
 export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, string> = {
-  home: SITE_LOGO_URL,
-  about: SITE_LOGO_URL,
-  services: SITE_LOGO_URL,
-  portfolio: SITE_LOGO_URL,
-  blog: SITE_LOGO_URL,
-  contact: SITE_LOGO_URL,
+  home: SITE_OG_IMAGE_URL,
+  about: SITE_OG_IMAGE_URL,
+  services: SITE_OG_IMAGE_URL,
+  portfolio: SITE_OG_IMAGE_URL,
+  blog: SITE_OG_IMAGE_URL,
+  contact: SITE_OG_IMAGE_URL,
 };
 
 export type CmsPageHeadFields = Pick<

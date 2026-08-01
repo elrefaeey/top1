@@ -36,7 +36,7 @@ function Services() {
             خدمات تصميم مواقع وSEO <span className="text-gradient">للإطلاق والنمو.</span>
           </>
         }
-        desc="فريق محترف واحد. مسؤولية كاملة. من أول sketch لآخر dashboard تحليلات."
+        desc="فريق محترف واحد. مسؤولية كاملة — من أول مسودة تصميم حتى لوحة التحليلات."
       />
 
       <section className="section">
