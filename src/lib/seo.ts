@@ -226,7 +226,13 @@ const PATH_SEGMENT_LABELS: Record<string, string> = {
   terms: "الشروط والأحكام",
   cookies: "ملفات تعريف الارتباط",
   "web-design-saudi-arabia": "تصميم مواقع في السعودية",
+  "web-design-riyadh": "تصميم مواقع الرياض",
+  "web-design-qassim": "تصميم مواقع القصيم",
+  "web-design-buraidah": "تصميم مواقع بريدة",
   "seo-services": "خدمات SEO",
+  "seo-riyadh": "خدمات SEO الرياض",
+  "seo-qassim": "خدمات SEO القصيم",
+  "seo-buraidah": "خدمات SEO بريدة",
   "ecommerce-development": "تطوير متاجر إلكترونية",
   "digital-marketing": "التسويق الرقمي",
 };

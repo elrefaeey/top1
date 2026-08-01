@@ -18,6 +18,9 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoServicesRouteImport } from './routes/seo-services'
+import { Route as SeoRiyadhRouteImport } from './routes/seo-riyadh'
+import { Route as SeoQassimRouteImport } from './routes/seo-qassim'
+import { Route as SeoBuraidahRouteImport } from './routes/seo-buraidah'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -104,6 +107,21 @@ const ServicesRoute = ServicesRouteImport.update({
 const SeoServicesRoute = SeoServicesRouteImport.update({
   id: '/seo-services',
   path: '/seo-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoRiyadhRoute = SeoRiyadhRouteImport.update({
+  id: '/seo-riyadh',
+  path: '/seo-riyadh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoQassimRoute = SeoQassimRouteImport.update({
+  id: '/seo-qassim',
+  path: '/seo-qassim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoBuraidahRoute = SeoBuraidahRouteImport.update({
+  id: '/seo-buraidah',
+  path: '/seo-buraidah',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -331,6 +349,9 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-qassim': typeof SeoQassimRoute
+  '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -383,6 +404,9 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-qassim': typeof SeoQassimRoute
+  '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -437,6 +461,9 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-qassim': typeof SeoQassimRoute
+  '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -492,6 +519,9 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-buraidah'
+    | '/seo-qassim'
+    | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
@@ -544,6 +574,9 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-buraidah'
+    | '/seo-qassim'
+    | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
@@ -597,6 +630,9 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-buraidah'
+    | '/seo-qassim'
+    | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
@@ -651,6 +687,9 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SeoBuraidahRoute: typeof SeoBuraidahRoute
+  SeoQassimRoute: typeof SeoQassimRoute
+  SeoRiyadhRoute: typeof SeoRiyadhRoute
   SeoServicesRoute: typeof SeoServicesRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -730,6 +769,27 @@ declare module '@tanstack/react-router' {
       path: '/seo-services'
       fullPath: '/seo-services'
       preLoaderRoute: typeof SeoServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-riyadh': {
+      id: '/seo-riyadh'
+      path: '/seo-riyadh'
+      fullPath: '/seo-riyadh'
+      preLoaderRoute: typeof SeoRiyadhRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-qassim': {
+      id: '/seo-qassim'
+      path: '/seo-qassim'
+      fullPath: '/seo-qassim'
+      preLoaderRoute: typeof SeoQassimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-buraidah': {
+      id: '/seo-buraidah'
+      path: '/seo-buraidah'
+      fullPath: '/seo-buraidah'
+      preLoaderRoute: typeof SeoBuraidahRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -1206,6 +1266,9 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SeoBuraidahRoute: SeoBuraidahRoute,
+  SeoQassimRoute: SeoQassimRoute,
+  SeoRiyadhRoute: SeoRiyadhRoute,
   SeoServicesRoute: SeoServicesRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
