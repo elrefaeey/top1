@@ -7,6 +7,7 @@ import { ContentError, Skeleton } from "@/components/site/ContentState";
 import { useHomeBundle } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
+import type { FaqItem, WithId } from "@/types/cms";
 
 /**
  * false on SSR and on the first client render — flips true only after hydration.
@@ -21,13 +22,13 @@ function useHasMounted() {
 }
 
 /** Below-the-fold home sections — code-split to shrink the initial home JS parse. */
-export function HomeBelowFold() {
+export function HomeBelowFold({ initialFaqs = [] }: { initialFaqs?: WithId<FaqItem>[] }) {
   return (
     <>
       <Process />
       <Testimonials />
       <BlogPreview />
-      <FAQ />
+      <FAQ initialFaqs={initialFaqs} />
       <CTA />
     </>
   );
@@ -178,20 +179,21 @@ function BlogPreview() {
   );
 }
 
-function FAQ() {
+function FAQ({ initialFaqs = [] }: { initialFaqs?: WithId<FaqItem>[] }) {
   const mounted = useHasMounted();
   const { data: home, isLoading, isError, refetch } = useHomeBundle();
-  const faqs = home?.faqs ?? [];
+  // Prefer live CMS after mount; SSR + first paint use loader FAQs for crawlable HTML.
+  const faqs = home?.faqs?.length ? home.faqs : initialFaqs;
   const [open, setOpen] = useState<number | null>(0);
-  const showFaqs = mounted && !isError && faqs.length > 0;
-  const showSkeleton = !showFaqs && (!mounted || isLoading);
+  const showFaqs = faqs.length > 0 && !(mounted && isError);
+  const showSkeleton = faqs.length === 0 && (!mounted || isLoading);
 
   return (
     <section className="section">
       <div className="container-page max-w-3xl">
         <SectionIntro eyebrow="أسئلة شائعة" title="إجابات سريعة." centered />
         {showSkeleton ? <ContentLoadingFallback /> : null}
-        {mounted && isError ? (
+        {mounted && isError && initialFaqs.length === 0 ? (
           <ContentError message="تعذّر تحميل الأسئلة الشائعة." onRetry={() => void refetch()} />
         ) : null}
         {showFaqs ? (
