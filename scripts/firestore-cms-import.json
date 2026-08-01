@@ -1231,7 +1231,7 @@
       "metaTitle": "Top1Markting | وكالة رقمية — تصميم مواقع وSEO للسعودية",
       "metaDescription": "Top1Markting وكالة رقمية تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك من القصيم وبريدة وفي أنحاء المملكة.",
       "ogImage": "/og-default.jpg",
-      "canonicalUrl": "/",
+      "canonicalUrl": "https://www.top1markting.com/",
       "sections": [
         {
           "id": "hero",
@@ -1358,7 +1358,7 @@
       "status": "published",
       "metaTitle": "من نحن | Top1Markting",
       "metaDescription": "Top1Markting وكالة رقمية ناشئة تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي من الفكرة إلى الإطلاق.",
-      "canonicalUrl": "/about",
+      "canonicalUrl": "https://www.top1markting.com/about",
       "sections": [
         {
           "id": "story",
@@ -1438,7 +1438,7 @@
       "status": "published",
       "metaTitle": "أسعار تصميم المواقع — top1markting | SAR",
       "metaDescription": "Pricing SAR — Starter، Studio، Enterprise plans.",
-      "canonicalUrl": "/pricing",
+      "canonicalUrl": "https://www.top1markting.com/pricing",
       "sections": [
         {
           "id": "intro",
@@ -1471,7 +1471,7 @@
       "status": "published",
       "metaTitle": "تواصل مع Top1Markting | بريدة والقصيم — السعودية",
       "metaDescription": "تواصل مع Top1Markting في بريدة والقصيم — استشارة مجانية لتصميم المواقع والمتاجر الإلكترونية وSEO والتسويق الرقمي في السعودية.",
-      "canonicalUrl": "/contact",
+      "canonicalUrl": "https://www.top1markting.com/contact",
       "sections": [],
       "createdAt": "2026-06-01T00:00:00.000Z",
       "updatedAt": "2026-06-01T00:00:00.000Z",
@@ -1485,7 +1485,7 @@
       "status": "published",
       "metaTitle": "خدماتنا | تصميم مواقع ومتاجر إلكترونية وSEO | Top1Markting",
       "metaDescription": "استكشف خدمات Top1Markting في تصميم المواقع، تطوير المتاجر الإلكترونية، تحسين محركات البحث، تصميم واجهات المستخدم، والحلول الرقمية.",
-      "canonicalUrl": "/services",
+      "canonicalUrl": "https://www.top1markting.com/services",
       "sections": [
         {
           "id": "hero",
@@ -1547,7 +1547,7 @@
       "status": "published",
       "metaTitle": "أعمالنا | مشاريع تصميم المواقع والمتاجر الإلكترونية | Top1Markting",
       "metaDescription": "شاهد أحدث مشاريع Top1Markting في تصميم المواقع والمتاجر الإلكترونية وتجربة المستخدم والهوية الرقمية.",
-      "canonicalUrl": "/portfolio",
+      "canonicalUrl": "https://www.top1markting.com/portfolio",
       "sections": [],
       "createdAt": "2026-06-01T00:00:00.000Z",
       "updatedAt": "2026-06-01T00:00:00.000Z",
@@ -1561,7 +1561,7 @@
       "status": "published",
       "metaTitle": "مدونة Top1Markting | تصميم المواقع والتسويق الرقمي وSEO",
       "metaDescription": "اقرأ أحدث المقالات والنصائح حول تصميم المواقع، تحسين محركات البحث، التجارة الإلكترونية، وتجربة المستخدم.",
-      "canonicalUrl": "/blog",
+      "canonicalUrl": "https://www.top1markting.com/blog",
       "sections": [
         {
           "id": "hero",

@@ -295,7 +295,9 @@ export async function getPricingPlans(): Promise<WithId<PricingPlan>[]> {
 
 export async function getFaqs(): Promise<WithId<FaqItem>[]> {
   const items = await safeList(() => getPublished<FaqItem>(COLLECTIONS.faqs));
-  return items.map(sanitizeFaqItem);
+  if (items.length > 0) return items.map(sanitizeFaqItem);
+  const { FALLBACK_FAQS } = await import("@/lib/cms/fallback-data");
+  return FALLBACK_FAQS.map((faq) => sanitizeFaqItem({ ...faq }));
 }
 
 export async function getSiteStats(): Promise<WithId<SiteStat>[]> {

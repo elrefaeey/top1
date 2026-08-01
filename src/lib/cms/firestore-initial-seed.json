@@ -85,7 +85,7 @@
         "استوديو رقمي",
         "تطوير مواقع"
       ],
-      "canonicalUrl": "/",
+      "canonicalUrl": "https://www.top1markting.com/",
       "ogImage": "/og-default.jpg",
       "sections": [
         {
@@ -147,7 +147,7 @@
         "SEO السعودية",
         "تطوير مواقع"
       ],
-      "canonicalUrl": "/services",
+      "canonicalUrl": "https://www.top1markting.com/services",
       "sections": [
         {
           "id": "hero",
@@ -215,7 +215,7 @@
         "تصميم مواقع",
         "case study"
       ],
-      "canonicalUrl": "/portfolio",
+      "canonicalUrl": "https://www.top1markting.com/portfolio",
       "sections": [
         {
           "id": "hero",
@@ -276,7 +276,7 @@
         "استوديو رقمي",
         "شركة تصميم مواقع"
       ],
-      "canonicalUrl": "/about",
+      "canonicalUrl": "https://www.top1markting.com/about",
       "sections": [
         {
           "id": "hero",
@@ -364,7 +364,7 @@
         "مدونة",
         "تصميم مواقع"
       ],
-      "canonicalUrl": "/blog",
+      "canonicalUrl": "https://www.top1markting.com/blog",
       "sections": [
         {
           "id": "hero",
@@ -431,7 +431,7 @@
         "عرض سعر",
         "تصميم مواقع"
       ],
-      "canonicalUrl": "/contact",
+      "canonicalUrl": "https://www.top1markting.com/contact",
       "sections": [
         {
           "id": "hero",
