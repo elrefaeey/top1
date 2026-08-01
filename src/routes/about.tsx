@@ -22,7 +22,8 @@ const ABOUT_FAQS = [
   {
     id: "about-faq-1",
     question: "أين يقع مقر Top1Markting؟",
-    answer: "مقرنا في حي السادة ببريدة، القصيم — ونخدم عملاء في أنحاء السعودية عن بُعد وبالحضور عند الحاجة.",
+    answer:
+      "مقرنا في حي السادة ببريدة، القصيم — ونخدم عملاء في أنحاء السعودية عن بُعد وبالحضور عند الحاجة.",
   },
   {
     id: "about-faq-2",
@@ -33,12 +34,14 @@ const ABOUT_FAQS = [
   {
     id: "about-faq-3",
     question: "هل تعملون مع مشاريع ناشئة فقط أم شركات قائمة؟",
-    answer: "نعمل مع الاثنين. نبدأ من احتياجك الحقيقي وميزانيتك، ثم نحدد نطاقاً واضحاً وقابل للتنفيذ.",
+    answer:
+      "نعمل مع الاثنين. نبدأ من احتياجك الحقيقي وميزانيتك، ثم نحدد نطاقاً واضحاً وقابل للتنفيذ.",
   },
   {
     id: "about-faq-4",
     question: "كيف أبدأ مشروع معكم؟",
-    answer: "تواصل عبر واتساب أو نموذج التواصل — نرد خلال 24 ساعة ونحدد الخطوة التالية بدون التزام.",
+    answer:
+      "تواصل عبر واتساب أو نموذج التواصل — نرد خلال 24 ساعة ونحدد الخطوة التالية بدون التزام.",
   },
 ] as const;
 
@@ -221,7 +224,10 @@ function About() {
       </section>
 
       {/* Offers */}
-      <section className="section border-y border-border bg-surface" aria-labelledby="about-offers-heading">
+      <section
+        className="section border-y border-border bg-surface"
+        aria-labelledby="about-offers-heading"
+      >
         <div className="container-page">
           <div className="page-intro-block me-auto w-full text-start">
             <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
@@ -280,7 +286,8 @@ function About() {
               بدأنا مؤخراً — ونبني معك من اليوم.
             </h2>
             <p className="page-intro-desc mt-3 !max-w-none">
-              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
+              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة
+              بخطوة.
             </p>
           </div>
           <ol className="section-body grid list-none gap-5 p-0 md:grid-cols-3">
@@ -314,7 +321,9 @@ function About() {
                 <summary className="faq-trigger cursor-pointer list-none">
                   <span className="min-w-0 font-medium text-[0.9375rem]">{faq.question}</span>
                 </summary>
-                <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+                <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                  {faq.answer}
+                </p>
               </details>
             ))}
           </div>

@@ -111,10 +111,7 @@ function Hero() {
   const usableCmsSrc = cmsSrc && !cmsSrc.startsWith("data:") ? cmsSrc : "";
   const [cmsFailed, setCmsFailed] = useState(false);
   const heroSrc = !cmsFailed && usableCmsSrc ? usableCmsSrc : siteImages.hero.main;
-  const heroAlt =
-    settings?.heroImageAlt?.trim() ||
-    hero.heroImageAlt ||
-    siteImages.hero.mainAlt;
+  const heroAlt = settings?.heroImageAlt?.trim() || hero.heroImageAlt || siteImages.hero.mainAlt;
 
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
@@ -124,9 +121,7 @@ function Hero() {
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
             تصميم مواقع وSEO
-            <span className="hero-studio-title-line">
-              يحوّلان الزوار إلى عملاء في السعودية.
-            </span>
+            <span className="hero-studio-title-line">يحوّلان الزوار إلى عملاء في السعودية.</span>
           </h1>
 
           <p className="hero-studio-desc animate-hero animate-hero-delay-3">
