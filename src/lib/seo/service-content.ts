@@ -1,3 +1,5 @@
+import { serviceSeoContentKey } from "@/lib/seo/service-slug-aliases";
+
 export type ServiceSeoBlock = {
   intro: string[];
   whyChooseUs: string[];
@@ -160,5 +162,5 @@ export const SERVICE_SEO_CONTENT: Record<string, ServiceSeoBlock> = {
 };
 
 export function getServiceSeoBlock(slug: string): ServiceSeoBlock | null {
-  return SERVICE_SEO_CONTENT[slug] ?? null;
+  return SERVICE_SEO_CONTENT[serviceSeoContentKey(slug)] ?? null;
 }

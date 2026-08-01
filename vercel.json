@@ -16,12 +16,42 @@
     },
     {
       "source": "/web-design",
-      "destination": "/services/web-design-development",
+      "destination": "/web-design-saudi-arabia",
       "permanent": true
     },
     {
-      "source": "/services/web-design",
-      "destination": "/services/web-design-development",
+      "source": "/services/web-design-development",
+      "destination": "/services/web-design",
+      "permanent": true
+    },
+    {
+      "source": "/services/seo-optimization",
+      "destination": "/services/seo",
+      "permanent": true
+    },
+    {
+      "source": "/services/ecommerce-development",
+      "destination": "/ecommerce-development",
+      "permanent": true
+    },
+    {
+      "source": "/services/ui-ux-design",
+      "destination": "/services/ui-ux",
+      "permanent": true
+    },
+    {
+      "source": "/saudi-web-design",
+      "destination": "/web-design-saudi-arabia",
+      "permanent": true
+    },
+    {
+      "source": "/saudi-seo-services",
+      "destination": "/seo-services",
+      "permanent": true
+    },
+    {
+      "source": "/riyadh-web-development",
+      "destination": "/web-design-saudi-arabia",
       "permanent": true
     }
   ],
