@@ -25,13 +25,22 @@ export const LOCATION_LINKS: InternalLink[] = [
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
 ];
 
-/** Footer mix: national + Riyadh + SEO + ecommerce */
+export const SEO_LOCATION_LINKS: InternalLink[] = [
+  { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
+  { label: "خدمات SEO القصيم", href: "/seo-qassim" },
+  { label: "خدمات SEO بريدة", href: "/seo-buraidah" },
+  { label: "خدمات SEO السعودية", href: "/seo-services" },
+];
+
+/** Footer mix: national + Riyadh + SEO cities + ecommerce */
 export const FOOTER_SEO_LINKS: InternalLink[] = [
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
   { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
   { label: "خدمات SEO", href: "/seo-services" },
+  { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
   { label: "متاجر إلكترونية", href: "/ecommerce-development" },
   { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
+  { label: "خدمات SEO القصيم", href: "/seo-qassim" },
   { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
 ];
 
