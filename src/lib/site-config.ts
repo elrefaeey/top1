@@ -7,6 +7,9 @@ export const SITE_TWITTER = "@Top1Markting";
 /** مسار اللوجو الافتراضي (شفاف — public/logo.png) */
 export const SITE_LOGO_URL = "/logo.png";
 
+/** صورة Open Graph الافتراضية (1200×630) */
+export const SITE_OG_IMAGE_URL = "/og-default.jpg";
+
 /** رقم واتساب السعودي (966 + بدون صفر) */
 export const SITE_WHATSAPP_NUMBER = "966537309257";
 
