@@ -9,8 +9,13 @@ import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { footerInternalLinks } from "@/lib/seo/internal-links";
 import { getServiceSeoBlock } from "@/lib/seo/service-content";
 import { buildServiceHead, notFoundHead } from "@/lib/seo";
+import { stripHtml } from "@/lib/seo/blog-utils";
 
 import { SITE_NAME } from "@/lib/site-config";
+
+function looksLikeHtml(value: string): boolean {
+  return /<[a-z][\s\S]*>/i.test(value);
+}
 
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
@@ -94,7 +99,7 @@ function ServiceDetail() {
                 {s.title}
               </h1>
               <p className="mt-5 text-lg text-muted-foreground" itemProp="description">
-                {s.description}
+                {s.shortDescription || stripHtml(s.description)}
               </p>
               <div className="mt-8 flex gap-3">
                 <Link to="/contact" className="btn-primary">
@@ -109,7 +114,14 @@ function ServiceDetail() {
         </div>
       </section>
 
-      {seoBlock && (
+      {looksLikeHtml(s.description) ? (
+        <section className="section">
+          <div
+            className="container-page max-w-3xl prose-section space-y-4 text-[17px] leading-[1.85] text-foreground/85 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_ul]:list-disc [&_ul]:pe-6 [&_ul]:space-y-2"
+            dangerouslySetInnerHTML={{ __html: s.description }}
+          />
+        </section>
+      ) : seoBlock ? (
         <section className="section">
           <div className="container-page max-w-3xl">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">نظرة عامة</h2>
@@ -120,7 +132,7 @@ function ServiceDetail() {
             </div>
           </div>
         </section>
-      )}
+      ) : null}
 
       <section className="section">
         <div className="container-page grid gap-10 md:grid-cols-[1fr_1.4fr]">

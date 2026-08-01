@@ -6,6 +6,14 @@
 export const PERMANENT_REDIRECTS: Readonly<Record<string, string>> = {
   "/web-design-egypt": "/web-design-saudi-arabia",
   "/egypt": "/web-design-saudi-arabia",
-  "/web-design": "/services/web-design-development",
-  "/services/web-design": "/services/web-design-development",
+  /** Short URL → Saudi web-design landing */
+  "/web-design": "/web-design-saudi-arabia",
+  /** Legacy / invented slugs that previously 404'd */
+  "/services/web-design-development": "/services/web-design",
+  "/services/seo-optimization": "/services/seo",
+  "/services/ecommerce-development": "/ecommerce-development",
+  "/services/ui-ux-design": "/services/ui-ux",
+  "/saudi-web-design": "/web-design-saudi-arabia",
+  "/saudi-seo-services": "/seo-services",
+  "/riyadh-web-development": "/web-design-saudi-arabia",
 };

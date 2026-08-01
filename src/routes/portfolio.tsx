@@ -16,8 +16,7 @@ export const Route = createFileRoute("/portfolio")({
   loader: () => loadPortfolioRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/portfolio/$slug")) return {};
-    if (!loaderData) return {};
-    return buildPortfolioListingHead(loaderData);
+    return buildPortfolioListingHead(loaderData ?? { cms: null, portfolio: [] });
   },
   component: Portfolio,
 });
@@ -64,6 +63,8 @@ function Portfolio() {
                         src={p.imageUrl}
                         alt={`${p.title} — مشروع ${p.category} | ${SITE_NAME}`}
                         overlay
+                        width={800}
+                        height={600}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         wrapperClassName="aspect-[4/3] w-full"
                         className="transition-transform duration-500 group-hover:scale-105"

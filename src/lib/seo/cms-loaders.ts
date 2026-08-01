@@ -9,6 +9,7 @@ import {
 } from "@/lib/cms/content-service";
 import { FALLBACK_BLOG_POSTS, FALLBACK_SERVICES } from "@/lib/cms/fallback-data";
 import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
+import { serviceSlugCandidates } from "@/lib/seo/service-slug-aliases";
 import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
 function sanitizeFallbackPost(post: WithId<BlogPost>): WithId<BlogPost> {
@@ -18,16 +19,36 @@ function sanitizeFallbackPost(post: WithId<BlogPost>): WithId<BlogPost> {
   };
 }
 
+function sanitizeService(service: WithId<Service>): WithId<Service> {
+  if (!service.description || !/<[a-z][\s\S]*>/i.test(service.description)) {
+    return service;
+  }
+  return {
+    ...service,
+    description: sanitizeCmsHtml(service.description),
+  };
+}
+
 export async function loadServiceForSeo(slug: string): Promise<WithId<Service> | null> {
-  const fromDb = await getServiceBySlug(slug);
-  if (fromDb) return fromDb;
+  const candidates = serviceSlugCandidates(slug);
+
+  for (const candidate of candidates) {
+    const fromDb = await getServiceBySlug(candidate);
+    if (fromDb) return sanitizeService(fromDb);
+  }
 
   const published = await getServices();
-  const byIdOrSlug = published.find((s) => s.slug === slug || s.id === slug);
-  if (byIdOrSlug) return byIdOrSlug;
+  const byIdOrSlug = published.find(
+    (s) =>
+      candidates.includes(s.slug) || candidates.includes(s.id) || s.slug === slug || s.id === slug,
+  );
+  if (byIdOrSlug) return sanitizeService(byIdOrSlug);
 
-  const fallback = FALLBACK_SERVICES.find((s) => s.slug === slug || s.id === slug);
-  return fallback ? { ...fallback } : null;
+  const fallback = FALLBACK_SERVICES.find(
+    (s) =>
+      candidates.includes(s.slug) || candidates.includes(s.id) || s.slug === slug || s.id === slug,
+  );
+  return fallback ? sanitizeService({ ...fallback }) : null;
 }
 
 export async function loadBlogPostForSeo(slug: string): Promise<WithId<BlogPost> | null> {

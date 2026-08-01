@@ -496,7 +496,7 @@ export const FALLBACK_SITE_STATS: SiteStat[] = [
 export const BLOG_CATEGORIES = ["الكل", "الأداء", "SEO", "UI/UX", "تصميم", "هندسة", "عمليات"];
 
 export function formatPostDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("ar-EG", {
+  return new Date(iso).toLocaleDateString("ar-SA", {
     month: "long",
     day: "numeric",
     year: "numeric",

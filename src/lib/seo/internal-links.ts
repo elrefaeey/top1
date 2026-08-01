@@ -2,11 +2,12 @@ import type { BlogPost, PortfolioItem } from "@/types/cms";
 
 export type InternalLink = { label: string; href: string };
 
+/** Real service/landing paths — must match fallback or resolve via slug aliases */
 export const SERVICE_LINKS: InternalLink[] = [
-  { label: "تصميم المواقع", href: "/services/web-design-development" },
-  { label: "المتاجر الإلكترونية", href: "/services/ecommerce-development" },
-  { label: "تحسين SEO", href: "/services/seo-optimization" },
-  { label: "تصميم UI/UX", href: "/services/ui-ux-design" },
+  { label: "تصميم المواقع", href: "/services/web-design" },
+  { label: "المتاجر الإلكترونية", href: "/ecommerce-development" },
+  { label: "تحسين SEO", href: "/services/seo" },
+  { label: "تصميم UI/UX", href: "/services/ui-ux" },
 ];
 
 export const LANDING_LINKS: InternalLink[] = [
@@ -17,23 +18,23 @@ export const LANDING_LINKS: InternalLink[] = [
 ];
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
-  "تصميم مواقع": "/services/web-design-development",
-  مواقع: "/services/web-design-development",
-  متجر: "/services/ecommerce-development",
-  "تجارة إلكترونية": "/services/ecommerce-development",
-  SEO: "/services/seo-optimization",
-  UI: "/services/ui-ux-design",
-  UX: "/services/ui-ux-design",
-  تسويق: "/services/seo-optimization",
-  هوية: "/services/ui-ux-design",
+  "تصميم مواقع": "/services/web-design",
+  مواقع: "/services/web-design",
+  متجر: "/ecommerce-development",
+  "تجارة إلكترونية": "/ecommerce-development",
+  SEO: "/services/seo",
+  UI: "/services/ui-ux",
+  UX: "/services/ui-ux",
+  تسويق: "/digital-marketing",
+  هوية: "/services/ui-ux",
 };
 
 const TAG_SERVICE_MAP: Record<string, string> = {
-  seo: "/services/seo-optimization",
-  "web-design": "/services/web-design-development",
-  "ui-ux": "/services/ui-ux-design",
-  ecommerce: "/services/ecommerce-development",
-  marketing: "/services/seo-optimization",
+  seo: "/services/seo",
+  "web-design": "/services/web-design",
+  "ui-ux": "/services/ui-ux",
+  ecommerce: "/ecommerce-development",
+  marketing: "/digital-marketing",
 };
 
 export function serviceLinksForPortfolio(item: PortfolioItem): InternalLink[] {
@@ -76,6 +77,7 @@ export function footerInternalLinks(): InternalLink[] {
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
     ...SERVICE_LINKS.slice(0, 3),
+    ...LANDING_LINKS.slice(0, 2),
   ];
 }
 
@@ -88,6 +90,7 @@ export function servicesPageInternalLinks(
   }));
 
   for (const link of [
+    ...LANDING_LINKS,
     { label: "المدونة", href: "/blog" },
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
@@ -103,6 +106,7 @@ export function servicesPageInternalLinks(
 export function portfolioPageInternalLinks(): InternalLink[] {
   return [
     ...SERVICE_LINKS.slice(0, 3),
+    ...LANDING_LINKS.slice(0, 2),
     { label: "المدونة", href: "/blog" },
     { label: "تواصل معنا", href: "/contact" },
   ];
@@ -111,6 +115,7 @@ export function portfolioPageInternalLinks(): InternalLink[] {
 export function blogListingInternalLinks(_posts: BlogPost[]): InternalLink[] {
   return [
     ...SERVICE_LINKS,
+    ...LANDING_LINKS.slice(0, 2),
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
   ];

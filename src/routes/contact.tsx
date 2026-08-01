@@ -16,7 +16,7 @@ import { loadContactRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 
 export const Route = createFileRoute("/contact")({
   loader: () => loadContactRouteSeoFn(),
-  head: ({ loaderData }) => (loaderData ? buildContactPageHead(loaderData) : {}),
+  head: ({ loaderData }) => buildContactPageHead(loaderData ?? { cms: null, faqs: [] }),
   component: Contact,
 });
 
