@@ -5,7 +5,8 @@ import { SocialLinks } from "@/components/site/SocialLinks";
 import { useServices, useSiteSettings } from "@/hooks/use-cms";
 import { SITE_NAME, SITE_CONTACT_PHONE } from "@/lib/site-config";
 import { telHref } from "@/lib/phone";
-import { LANDING_LINKS } from "@/lib/seo/internal-links";
+import { FOOTER_SEO_LINKS } from "@/lib/seo/internal-links";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
 const QUICK_LINKS = [
   { label: "الرئيسية", href: "/" },
@@ -17,7 +18,7 @@ const QUICK_LINKS = [
   { label: "تواصل", href: "/contact" },
 ];
 
-const FOOTER_LANDING_LINKS = LANDING_LINKS.slice(0, 4);
+const FOOTER_LANDING_LINKS = FOOTER_SEO_LINKS.slice(0, 6);
 
 const LEGAL_LINKS = [
   { label: "سياسة الخصوصية", href: "/privacy" },
@@ -125,7 +126,7 @@ export function SiteFooter() {
                       <li key={s.id}>
                         <Link
                           to="/services/$slug"
-                          params={{ slug: s.slug }}
+                          params={{ slug: preferredServiceSlug(s.slug) }}
                           className="footer-link"
                         >
                           {s.title}

@@ -7,6 +7,7 @@ import {
   serviceSchema,
   STATIC_PAGE_SEO,
 } from "@/lib/seo";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { SITE_NAME } from "@/lib/site-config";
 import type { BlogPost, FaqItem, PortfolioItem, Service } from "@/types/cms";
 
@@ -63,12 +64,12 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
       itemListElement: services.map((service, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        item: serviceSchema(service, service.slug),
+        item: serviceSchema(service, preferredServiceSlug(service.slug)),
       })),
     });
 
     for (const service of services) {
-      schemas.push(serviceSchema(service, service.slug));
+      schemas.push(serviceSchema(service, preferredServiceSlug(service.slug)));
     }
   }
 

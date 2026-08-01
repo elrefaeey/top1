@@ -1,4 +1,11 @@
 import type { BreadcrumbItem } from "@/lib/seo";
+import type { InternalLink } from "@/lib/seo/internal-links";
+import { LOCATION_LINKS } from "@/lib/seo/internal-links";
+
+export type LandingAreaServed = {
+  "@type": "Country" | "City" | "AdministrativeArea";
+  name: string;
+};
 
 export type LandingPageContent = {
   slug: string;
@@ -14,7 +21,17 @@ export type LandingPageContent = {
   faqs: Array<{ question: string; answer: string }>;
   relatedServiceSlug: string;
   breadcrumbs: BreadcrumbItem[];
+  /** Optional city/region targeting for Service JSON-LD */
+  areaServed?: LandingAreaServed[];
+  relatedLinks?: InternalLink[];
 };
+
+const WEB_DESIGN_LOCATION_LINKS: InternalLink[] = [
+  ...LOCATION_LINKS,
+  { label: "خدمات SEO", href: "/seo-services" },
+  { label: "متاجر إلكترونية", href: "/ecommerce-development" },
+  { label: "تواصل معنا", href: "/contact" },
+];
 
 export const SEO_LANDING_PAGES: LandingPageContent[] = [
   {
@@ -29,6 +46,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
     intro: [
       "هل تبحث عن شركة تصميم مواقع موثوقة في السعودية؟ Top1Markting وكالة رقمية من بريدة والقصيم تخدم الشركات في أنحاء المملكة — نبني مواقع إلكترونية تعكس احترافية شركتك وتظهر في نتائج Google السعودية.",
       "نصمم مواقع تعريفية للشركات، صفحات هبوط للحملات، ومواقع مؤسسية متكاملة. كل موقع متجاوب مع الجوال، سريع التحميل، ومحسّن لمحركات البحث من اليوم الأول.",
+      "سواء كنت في الرياض أو القصيم أو بريدة أو أي مدينة سعودية — نقدم نفس مستوى الجودة مع فهم محلي لاحتياجات السوق واللغة العربية واتجاهات RTL.",
     ],
     features: [
       "تصميم مخصص يعكس هوية علامتك",
@@ -51,11 +69,208 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل تخدمون القصيم وباقي مناطق السعودية؟",
         answer: "نعم — مقرنا في بريدة (القصيم)، ونعمل عن بُعد مع عملاء في كل أنحاء السعودية، مع اجتماعات عند الحاجة.",
       },
+      {
+        question: "هل لديكم صفحات مخصصة للرياض والقصيم؟",
+        answer:
+          "نعم — لدينا صفحات مخصصة لتصميم المواقع في الرياض والقصيم وبريدة، بالإضافة لهذه الصفحة الوطنية.",
+      },
     ],
     relatedServiceSlug: "web-design",
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS,
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
       { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+    ],
+  },
+  {
+    slug: "web-design-riyadh",
+    path: "/web-design-riyadh",
+    title: "تصميم مواقع في الرياض",
+    metaTitle: "تصميم مواقع في الرياض | شركة تصميم مواقع إلكترونية | Top1Markting",
+    metaDescription:
+      "شركة تصميم مواقع في الرياض — مواقع سريعة، عربية، ومحسّنة لـ Google. Top1Markting تخدم شركات الرياض بتصميم احترافي وSEO محلي.",
+    h1: "تصميم مواقع إلكترونية في الرياض",
+    tagline: "حضور رقمي قوي لشركات العاصمة",
+    intro: [
+      "الرياض أكبر سوق رقمي في السعودية — والمنافسون يستثمرون في مواقع تحوّل الزوار إلى عملاء. Top1Markting تقدّم تصميم مواقع في الرياض للشركات الناشئة والمؤسسات التي تريد موقعاً سريعاً، عربياً بالكامل، وجاهزاً للظهور في نتائج البحث المحلية.",
+      "نبني مواقع تعريفية، صفحات هبوط للحملات الإعلانية، ومتاجر إلكترونية موجّهة لعملاء الرياض والمملكة. كل مشروع يتضمن هيكل SEO واضح، سرعة عالية على الجوال، وتجربة استخدام تناسب سلوك المستخدم السعودي.",
+      "نعمل عن بُعد مع فرق الرياض باجتماعات مرنة عبر الإنترنت، مع نفس جودة التسليم والدعم الذي نقدّمه لعملائنا في القصيم وبريدة.",
+    ],
+    features: [
+      "تصميم عربي RTL مناسب لسوق الرياض",
+      "تحسين محلي لكلمات مثل تصميم مواقع الرياض",
+      "صفحات هبوط جاهزة لحملات Google وMeta",
+      "أداء عالٍ على الجوال (أهم قناة في السعودية)",
+      "ربط الموقع بخدمات SEO والتسويق الرقمي",
+    ],
+    process: [
+      {
+        title: "اكتشاف وأهداف",
+        description: "نحدد جمهورك في الرياض، المنافسين، والكلمات المفتاحية ذات القيمة التجارية.",
+      },
+      {
+        title: "تصميم وتطوير",
+        description: "واجهة احترافية، محتوى موجّه للتحويل، وبنية تقنية جاهزة للفهرسة.",
+      },
+      {
+        title: "إطلاق ونمو",
+        description: "إطلاق الموقع مع قياس التحويلات وخطة تحسين مستمرة.",
+      },
+    ],
+    faqs: [
+      {
+        question: "هل تعملون مع شركات في الرياض عن بُعد؟",
+        answer:
+          "نعم. معظم مشاريع الرياض تُدار عن بُعد باجتماعات أونلاين، مع تسليم واضح ومراجعات منظمة دون الحاجة لمكتب محلي.",
+      },
+      {
+        question: "ما الفرق بين صفحة الرياض والصفحة الوطنية؟",
+        answer:
+          "صفحة الرياض تركّز على نية البحث المحلية (تصميم مواقع الرياض) واحتياجات شركات العاصمة، بينما الصفحة الوطنية تغطي السعودية ككل.",
+      },
+      {
+        question: "هل يشمل التصميم تحسين SEO؟",
+        answer:
+          "نعم — نجهّز العناوين، البنية، السرعة، والبيانات المنظمة من البداية حتى يبدأ الموقع جاهزاً للنمو العضوي.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "City", name: "Riyadh" },
+      { "@type": "Country", name: "Saudi Arabia" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-riyadh"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع الرياض", path: "/web-design-riyadh" },
+    ],
+  },
+  {
+    slug: "web-design-qassim",
+    path: "/web-design-qassim",
+    title: "تصميم مواقع في القصيم",
+    metaTitle: "تصميم مواقع في القصيم | شركة تصميم مواقع إلكترونية | Top1Markting",
+    metaDescription:
+      "شركة تصميم مواقع في القصيم — مواقع احترافية للشركات والمتاجر مع SEO محلي. Top1Markting من بريدة تخدم منطقة القصيم بالكامل.",
+    h1: "تصميم مواقع إلكترونية في القصيم",
+    tagline: "شريك رقمي قريب من أعمالك في القصيم",
+    intro: [
+      "إذا كنت تبحث عن شركة تصميم مواقع في القصيم، فأنت بحاجة لشريك يفهم السوق المحلي وليس فقط قوالب جاهزة. Top1Markting وكالة رقمية مقرها بريدة، وتخدم شركات القصيم بمواقع سريعة، عربية، ومصممة لجذب عملاء من Google ومنطقة القصيم.",
+      "نساعد العيادات، المتاجر، شركات الخدمات، والمؤسسات على بناء حضور رقمي واضح: موقع يعرّف بخدماتك، يسهّل التواصل، ويظهر في نتائج البحث لكلمات مثل تصميم مواقع القصيم وشركة تصميم مواقع بريدة.",
+      "القرب الجغرافي يسهّل الاجتماعات عند الحاجة، مع إمكانية العمل بالكامل عن بُعد إذا فضّلت ذلك.",
+    ],
+    features: [
+      "فهم محلي لسوق القصيم وسلوك العملاء",
+      "مواقع عربية متجاوبة مع الجوال",
+      "SEO محلي لمنطقة القصيم وبريدة",
+      "تكامل واتساب ونماذج تواصل للتحويل",
+      "دعم مستمر بعد الإطلاق من فريق محلي",
+    ],
+    process: [
+      {
+        title: "استشارة محلية",
+        description: "نراجع نشاطك في القصيم، منافسيك، وأفضل صفحات التحويل لقطاعك.",
+      },
+      {
+        title: "بناء الموقع",
+        description: "تصميم وتطوير مع محتوى عربي واضح وهيكل SEO نظيف.",
+      },
+      {
+        title: "إطلاق ومتابعة",
+        description: "إطلاق الموقع مع تحسينات بناءً على الاستفسارات والزيارات.",
+      },
+    ],
+    faqs: [
+      {
+        question: "هل تخدمون كل مدن القصيم؟",
+        answer:
+          "نعم — نخدم بريدة وعنيزة والرس وباقي مدن القصيم، بالإضافة لعملاء في أنحاء السعودية.",
+      },
+      {
+        question: "هل يمكن الاجتماع حضورياً في القصيم؟",
+        answer: "نعم عند الحاجة. مقرنا في بريدة، ويمكن تنسيق اجتماع حسب طبيعة المشروع.",
+      },
+      {
+        question: "هل تقدّمون SEO مع تصميم الموقع؟",
+        answer:
+          "نعم. نجهّز الموقع تقنياً للبحث المحلي، ويمكن متابعة النمو عبر خدمة SEO منفصلة بعد الإطلاق.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Al-Qassim" },
+      { "@type": "City", name: "Buraidah" },
+      { "@type": "Country", name: "Saudi Arabia" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-qassim"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع القصيم", path: "/web-design-qassim" },
+    ],
+  },
+  {
+    slug: "web-design-buraidah",
+    path: "/web-design-buraidah",
+    title: "تصميم مواقع في بريدة",
+    metaTitle: "تصميم مواقع في بريدة | شركة تصميم مواقع بالقصيم | Top1Markting",
+    metaDescription:
+      "شركة تصميم مواقع في بريدة — مواقع سريعة ومحسّنة للبحث المحلي. Top1Markting وكالة رقمية من بريدة تخدم الشركات والمتاجر في المدينة والقصيم.",
+    h1: "تصميم مواقع إلكترونية في بريدة",
+    tagline: "وكالة رقمية من بريدة — لمشاريع تنمو محلياً",
+    intro: [
+      "Top1Markting وكالة رقمية مقرها بريدة، نقدّم تصميم مواقع للشركات والمتاجر ومقدّمي الخدمات الذين يريدون جذب عملاء من المدينة والقصيم عبر Google. موقعك يجب أن يكون أكثر من بطاقة تعريف — أداة مبيعات تعمل 24/7.",
+      "نصمم مواقع سريعة، واضحة، ومتوافقة مع الجوال، مع تركيز على كلمات البحث المحلية مثل تصميم مواقع بريدة وشركة تصميم مواقع بالقصيم. نربط الموقع بواتساب ونماذج تواصل لتقليل احتكاك التحويل.",
+      "كوننا في بريدة يعني فهماً أعمق لاحتياجات السوق المحلي، مع القدرة على خدمة عملاء الرياض وباقي مناطق السعودية بنفس المعايير.",
+    ],
+    features: [
+      "مقر محلي في بريدة مع دعم قريب",
+      "تحسين لكلمات البحث المحلية في بريدة والقصيم",
+      "تصميم يحفّز الاتصال والواتساب",
+      "سرعة وأداء مناسبان لشبكات الجوال",
+      "إمكانية التوسع لاحقاً إلى متجر أو حملات إعلانية",
+    ],
+    process: [
+      {
+        title: "فهم النشاط المحلي",
+        description: "نحلل خدماتك وجمهورك في بريدة والمنافسين الظاهرين في Google.",
+      },
+      {
+        title: "تصميم وتحويل",
+        description: "نبني صفحات واضحة تشرح عرضك وتسهّل طلب الخدمة.",
+      },
+      {
+        title: "إطلاق وقياس",
+        description: "نطلق الموقع ونتابع الاستفسارات لتحسين الصفحة الرئيسية والعروض.",
+      },
+    ],
+    faqs: [
+      {
+        question: "أين مقر Top1Markting؟",
+        answer: "مقرنا في بريدة، القصيم — حي السادة. ونخدم عملاء محلياً وعن بُعد في أنحاء السعودية.",
+      },
+      {
+        question: "هل تصميم موقع بريدة مناسب للمحلات الصغيرة؟",
+        answer:
+          "نعم. نبدأ بنطاق واضح يناسب الميزانية: موقع تعريفي قوي مع قنوات تواصل، ثم نوسّع عند الحاجة.",
+      },
+      {
+        question: "هل تساعدون بعد الإطلاق؟",
+        answer: "نعم — نوفر دعم تحديثات وتحسينات، ويمكن ربط المشروع بخدمات SEO أو الإعلانات.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "City", name: "Buraidah" },
+      { "@type": "AdministrativeArea", name: "Al-Qassim" },
+      { "@type": "Country", name: "Saudi Arabia" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-buraidah"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع بريدة", path: "/web-design-buraidah" },
     ],
   },
   {
@@ -90,6 +305,11 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
     ],
     relatedServiceSlug: "seo",
+    relatedLinks: [
+      ...LOCATION_LINKS,
+      { label: "تسويق رقمي", href: "/digital-marketing" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
       { name: "خدمات SEO", path: "/seo-services" },
@@ -127,6 +347,13 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
     ],
     relatedServiceSlug: "web-apps",
+    relatedLinks: [
+      { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+      { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+      { label: "خدمات SEO", href: "/seo-services" },
+      { label: "تسويق رقمي", href: "/digital-marketing" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
       { name: "متاجر إلكترونية", path: "/ecommerce-development" },
@@ -164,6 +391,12 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
     ],
     relatedServiceSlug: "digital-solutions",
+    relatedLinks: [
+      { label: "خدمات SEO", href: "/seo-services" },
+      { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+      { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
       { name: "تسويق رقمي", path: "/digital-marketing" },

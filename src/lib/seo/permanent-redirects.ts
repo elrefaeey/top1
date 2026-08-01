@@ -15,5 +15,6 @@ export const PERMANENT_REDIRECTS: Readonly<Record<string, string>> = {
   "/services/ui-ux-design": "/services/ui-ux",
   "/saudi-web-design": "/web-design-saudi-arabia",
   "/saudi-seo-services": "/seo-services",
-  "/riyadh-web-development": "/web-design-saudi-arabia",
+  /** Legacy Riyadh URL → dedicated Riyadh landing (not national) */
+  "/riyadh-web-development": "/web-design-riyadh",
 };
