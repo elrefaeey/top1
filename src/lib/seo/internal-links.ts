@@ -1,4 +1,5 @@
 import type { BlogPost, PortfolioItem } from "@/types/cms";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
 export type InternalLink = { label: string; href: string };
 
@@ -15,6 +16,23 @@ export const LANDING_LINKS: InternalLink[] = [
   { label: "خدمات SEO", href: "/seo-services" },
   { label: "تطوير متاجر إلكترونية", href: "/ecommerce-development" },
   { label: "تسويق رقمي", href: "/digital-marketing" },
+];
+
+export const LOCATION_LINKS: InternalLink[] = [
+  { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+  { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
+  { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
+  { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+];
+
+/** Footer mix: national + Riyadh + SEO + ecommerce */
+export const FOOTER_SEO_LINKS: InternalLink[] = [
+  { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+  { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+  { label: "خدمات SEO", href: "/seo-services" },
+  { label: "متاجر إلكترونية", href: "/ecommerce-development" },
+  { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
+  { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
 ];
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
@@ -77,6 +95,7 @@ export function footerInternalLinks(): InternalLink[] {
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
     ...SERVICE_LINKS.slice(0, 3),
+    ...LOCATION_LINKS.slice(0, 2),
     ...LANDING_LINKS.slice(0, 2),
   ];
 }
@@ -86,11 +105,12 @@ export function servicesPageInternalLinks(
 ): InternalLink[] {
   const links: InternalLink[] = services.map((service) => ({
     label: service.title,
-    href: `/services/${service.slug}`,
+    href: `/services/${preferredServiceSlug(service.slug)}`,
   }));
 
   for (const link of [
     ...LANDING_LINKS,
+    ...LOCATION_LINKS,
     { label: "المدونة", href: "/blog" },
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },

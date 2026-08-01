@@ -11,6 +11,7 @@ import { serviceImage } from "@/lib/site-images";
 import { loadServicesRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { buildServicesListingHead } from "@/lib/seo/static-page-head";
 import { servicesPageInternalLinks } from "@/lib/seo/internal-links";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
 export const Route = createFileRoute("/services")({
   loader: () => loadServicesRouteSeoFn(),
@@ -61,7 +62,7 @@ function Services() {
               <Link
                 key={s.slug}
                 to="/services/$slug"
-                params={{ slug: s.slug }}
+                params={{ slug: preferredServiceSlug(s.slug) }}
                 className="service-card surface-card overflow-hidden grid gap-0 lg:grid-cols-2 lg:items-stretch transition-shadow duration-300 hover:shadow-[var(--shadow-card-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <div className={`service-card-body ${flip ? "lg:order-2" : "lg:order-1"}`}>

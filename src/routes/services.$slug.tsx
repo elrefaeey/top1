@@ -8,6 +8,7 @@ import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { footerInternalLinks } from "@/lib/seo/internal-links";
 import { getServiceSeoBlock } from "@/lib/seo/service-content";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { buildServiceHead, notFoundHead } from "@/lib/seo";
 import { stripHtml } from "@/lib/seo/blog-utils";
 
@@ -25,10 +26,13 @@ export const Route = createFileRoute("/services/$slug")({
     if (!service) {
       throw notFound({ headers: NOINDEX_HEADERS });
     }
-    if (service.slug && service.slug !== params.slug) {
+    // Always canonicalize to the preferred public slug — never to the CMS/legacy slug.
+    // Redirecting to CMS slugs conflicts with vercel/permanent-redirects and creates loops.
+    const preferred = preferredServiceSlug(service.slug || params.slug);
+    if (params.slug !== preferred) {
       throw redirect({
         to: "/services/$slug",
-        params: { slug: service.slug },
+        params: { slug: preferred },
         statusCode: 301,
         replace: true,
       });
@@ -37,8 +41,9 @@ export const Route = createFileRoute("/services/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData?.service) return notFoundHead();
-    const seoBlock = getServiceSeoBlock(params.slug);
-    return buildServiceHead(loaderData.service, params.slug, seoBlock?.faqs);
+    const preferred = preferredServiceSlug(params.slug);
+    const seoBlock = getServiceSeoBlock(preferred);
+    return buildServiceHead(loaderData.service, preferred, seoBlock?.faqs);
   },
   component: ServiceDetail,
 });

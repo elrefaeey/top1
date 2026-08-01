@@ -17,8 +17,13 @@ import { stripHtml } from "@/lib/seo/blog-utils";
 
 export const SITE_TAGLINE_EN = "Digital Agency serving Saudi Arabia";
 
-/** مناطق الخدمة — السعودية فقط */
-export const SEO_AREAS_SERVED = [{ "@type": "Country", name: "Saudi Arabia" }] as const;
+/** مناطق الخدمة — السعودية + المدن المستهدفة */
+export const SEO_AREAS_SERVED = [
+  { "@type": "Country", name: "Saudi Arabia" },
+  { "@type": "City", name: "Riyadh" },
+  { "@type": "AdministrativeArea", name: "Al-Qassim" },
+  { "@type": "City", name: "Buraidah" },
+] as const;
 
 export const SEO_KNOWS_ABOUT = [
   "Web Design",
@@ -576,6 +581,7 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
 }
 
 export function buildLandingPageHead(page: LandingPageContent) {
+  const areaServed = page.areaServed?.length ? page.areaServed : [...SEO_AREAS_SERVED];
   const scripts: Array<{ type: string; children: string }> = [
     jsonLdScript(breadcrumbSchema(page.breadcrumbs)),
     jsonLdScript({
@@ -589,7 +595,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
         name: SITE_NAME,
         url: absoluteUrl("/"),
       },
-      areaServed: [...SEO_AREAS_SERVED],
+      areaServed,
     }),
   ];
   if (page.faqs.length) {

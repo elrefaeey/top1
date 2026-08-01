@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
+import { Route as WebDesignRiyadhRouteImport } from './routes/web-design-riyadh'
+import { Route as WebDesignQassimRouteImport } from './routes/web-design-qassim'
 import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
+import { Route as WebDesignBuraidahRouteImport } from './routes/web-design-buraidah'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -63,9 +66,24 @@ const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
   path: '/web-design-saudi-arabia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebDesignRiyadhRoute = WebDesignRiyadhRouteImport.update({
+  id: '/web-design-riyadh',
+  path: '/web-design-riyadh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignQassimRoute = WebDesignQassimRouteImport.update({
+  id: '/web-design-qassim',
+  path: '/web-design-qassim',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
   id: '/web-design-egypt',
   path: '/web-design-egypt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignBuraidahRoute = WebDesignBuraidahRouteImport.update({
+  id: '/web-design-buraidah',
+  path: '/web-design-buraidah',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -317,7 +335,10 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-buraidah': typeof WebDesignBuraidahRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-qassim': typeof WebDesignQassimRoute
+  '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
@@ -366,7 +387,10 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-buraidah': typeof WebDesignBuraidahRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-qassim': typeof WebDesignQassimRoute
+  '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
@@ -417,7 +441,10 @@ export interface FileRoutesById {
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-buraidah': typeof WebDesignBuraidahRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-qassim': typeof WebDesignQassimRoute
+  '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
@@ -469,7 +496,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-buraidah'
     | '/web-design-egypt'
+    | '/web-design-qassim'
+    | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
@@ -518,7 +548,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-buraidah'
     | '/web-design-egypt'
+    | '/web-design-qassim'
+    | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
@@ -568,7 +601,10 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-buraidah'
     | '/web-design-egypt'
+    | '/web-design-qassim'
+    | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
     | '/admin/blog'
     | '/admin/faqs'
@@ -619,7 +655,10 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  WebDesignBuraidahRoute: typeof WebDesignBuraidahRoute
   WebDesignEgyptRoute: typeof WebDesignEgyptRoute
+  WebDesignQassimRoute: typeof WebDesignQassimRoute
+  WebDesignRiyadhRoute: typeof WebDesignRiyadhRoute
   WebDesignSaudiArabiaRoute: typeof WebDesignSaudiArabiaRoute
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
@@ -637,11 +676,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebDesignSaudiArabiaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/web-design-riyadh': {
+      id: '/web-design-riyadh'
+      path: '/web-design-riyadh'
+      fullPath: '/web-design-riyadh'
+      preLoaderRoute: typeof WebDesignRiyadhRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-qassim': {
+      id: '/web-design-qassim'
+      path: '/web-design-qassim'
+      fullPath: '/web-design-qassim'
+      preLoaderRoute: typeof WebDesignQassimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/web-design-egypt': {
       id: '/web-design-egypt'
       path: '/web-design-egypt'
       fullPath: '/web-design-egypt'
       preLoaderRoute: typeof WebDesignEgyptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-buraidah': {
+      id: '/web-design-buraidah'
+      path: '/web-design-buraidah'
+      fullPath: '/web-design-buraidah'
+      preLoaderRoute: typeof WebDesignBuraidahRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -1150,7 +1210,10 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  WebDesignBuraidahRoute: WebDesignBuraidahRoute,
   WebDesignEgyptRoute: WebDesignEgyptRoute,
+  WebDesignQassimRoute: WebDesignQassimRoute,
+  WebDesignRiyadhRoute: WebDesignRiyadhRoute,
   WebDesignSaudiArabiaRoute: WebDesignSaudiArabiaRoute,
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiLeadsRoute: ApiLeadsRoute,

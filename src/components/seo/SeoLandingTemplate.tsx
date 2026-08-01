@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, Sparkles } from "lucide-react";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
+import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 
 type SeoLandingTemplateProps = {
   page: LandingPageContent;
@@ -94,6 +95,14 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
                 </details>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {page.relatedLinks && page.relatedLinks.length > 0 && (
+        <section className="section bg-surface border-t border-border">
+          <div className="container-page">
+            <InternalLinksBlock title="صفحات ذات صلة" links={page.relatedLinks} />
           </div>
         </section>
       )}

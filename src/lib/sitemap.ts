@@ -1,5 +1,7 @@
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
+import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
+import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { absoluteUrl } from "@/lib/seo";
 import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
@@ -25,7 +27,10 @@ export function buildSitemapEntries(input: {
   const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => ({
     path: p.path,
     changefreq: "monthly" as const,
-    priority: "0.85",
+    priority:
+      p.path.includes("riyadh") || p.path.includes("qassim") || p.path.includes("buraidah")
+        ? "0.9"
+        : "0.85",
   }));
 
   const staticPages: SitemapEntry[] = [
@@ -43,7 +48,7 @@ export function buildSitemapEntries(input: {
   ];
 
   const servicePages: SitemapEntry[] = input.services.map((service) => ({
-    path: `/services/${service.slug || service.id}`,
+    path: `/services/${preferredServiceSlug(service.slug || service.id)}`,
     changefreq: "monthly" as const,
     priority: "0.7",
     lastmod: toLastmod(service.updatedAt),
@@ -66,6 +71,8 @@ export function buildSitemapEntries(input: {
   const seen = new Set<string>();
   return [...staticPages, ...servicePages, ...blogPages, ...portfolioPages].filter((entry) => {
     if (seen.has(entry.path)) return false;
+    // Never list URLs that permanently redirect elsewhere
+    if (PERMANENT_REDIRECTS[entry.path]) return false;
     seen.add(entry.path);
     return true;
   });
