@@ -609,7 +609,7 @@
       "status": "published",
       "metaTitle": "خدمات تصميم المواقع وSEO في السaudi — top1markting",
       "metaDescription": "تصميم مواقع في السaudi — شركة تصميم مواقع، تطوير مواقع احترافية، SEO، UI/UX. استوديو رقمي.",
-      "canonicalUrl": "/services",
+      "canonicalUrl": "https://www.top1markting.com/services",
       "sections": [
         {
           "id": "hero",
@@ -670,7 +670,7 @@
       "status": "published",
       "metaTitle": "مدونة تصميم مواقع وSEO في السaudi — top1markting",
       "metaDescription": "مدونة SEO Saudi Arabia — web design، Google ranking، Core Web Vitals، UI/UX.",
-      "canonicalUrl": "/blog",
+      "canonicalUrl": "https://www.top1markting.com/blog",
       "sections": [
         {
           "id": "hero",
