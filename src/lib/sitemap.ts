@@ -27,9 +27,10 @@ export function buildSitemapEntries(input: {
   const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => ({
     path: p.path,
     changefreq: "monthly" as const,
-    priority: p.path.includes("riyadh") || p.path.includes("qassim") || p.path.includes("buraidah")
-      ? "0.9"
-      : "0.85",
+    priority:
+      p.path.includes("riyadh") || p.path.includes("qassim") || p.path.includes("buraidah")
+        ? "0.9"
+        : "0.85",
   }));
 
   const staticPages: SitemapEntry[] = [
