@@ -3,6 +3,7 @@ import {
   SITE_CONTACT_PHONE,
   SITE_LOGO_URL,
   SITE_NAME,
+  SITE_OG_IMAGE_URL,
   SITE_PRODUCTION_URL,
   SITE_TWITTER,
   SITE_URL,
@@ -33,15 +34,15 @@ export const SEO_KNOWS_ABOUT = [
   "Digital Marketing",
 ] as const;
 
-export const DEFAULT_OG_IMAGE = SITE_LOGO_URL;
+export const DEFAULT_OG_IMAGE = SITE_OG_IMAGE_URL;
 
 export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, string> = {
-  home: SITE_LOGO_URL,
-  about: SITE_LOGO_URL,
-  services: SITE_LOGO_URL,
-  portfolio: SITE_LOGO_URL,
-  blog: SITE_LOGO_URL,
-  contact: SITE_LOGO_URL,
+  home: SITE_OG_IMAGE_URL,
+  about: SITE_OG_IMAGE_URL,
+  services: SITE_OG_IMAGE_URL,
+  portfolio: SITE_OG_IMAGE_URL,
+  blog: SITE_OG_IMAGE_URL,
+  contact: SITE_OG_IMAGE_URL,
 };
 
 export type CmsPageHeadFields = Pick<
@@ -226,6 +227,9 @@ const PATH_SEGMENT_LABELS: Record<string, string> = {
   terms: "الشروط والأحكام",
   cookies: "ملفات تعريف الارتباط",
   "web-design-saudi-arabia": "تصميم مواقع في السعودية",
+  "web-design-riyadh": "تصميم مواقع في الرياض",
+  "web-design-qassim": "تصميم مواقع في القصيم",
+  "web-design-buraidah": "تصميم مواقع في بريدة",
   "seo-services": "خدمات SEO",
   "ecommerce-development": "تطوير متاجر إلكترونية",
   "digital-marketing": "التسويق الرقمي",
@@ -383,6 +387,7 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:url", content: url },
     { property: "og:type", content: input.type ?? "website" },
     { property: "og:image", content: image },
+    { property: "og:image:alt", content: input.title },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:locale", content: "ar_SA" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -390,6 +395,7 @@ export function buildPageHead(input: PageHeadInput) {
     { name: "twitter:title", content: input.title },
     { name: "twitter:description", content: input.description },
     { name: "twitter:image", content: image },
+    { name: "twitter:image:alt", content: input.title },
   ];
 
   if (input.noIndex) {
@@ -569,9 +575,13 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
     url: absoluteUrl(path),
     genre: item.category,
     keywords: item.tags?.length ? item.tags.join(", ") : undefined,
+    creator: {
+      "@type": "Organization",
+      name: SITE_NAME,
+    },
     ...(item.client
       ? {
-          creator: {
+          about: {
             "@type": "Organization",
             name: item.client,
           },
@@ -615,6 +625,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
     title: page.metaTitle,
     description: page.metaDescription,
     path: page.path,
+    image: DEFAULT_OG_IMAGE,
     scripts,
   });
 }

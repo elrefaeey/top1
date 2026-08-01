@@ -15,8 +15,35 @@ import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
-import { buildStaticPageHead } from "@/lib/seo";
+import { buildStaticPageHead, faqPageSchema, jsonLdScript } from "@/lib/seo";
 import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+
+const ABOUT_FAQS = [
+  {
+    id: "about-faq-1",
+    question: "أين يقع مقر Top1Markting؟",
+    answer:
+      "مقرنا في حي السادة ببريدة، القصيم — ونخدم عملاء في أنحاء السعودية عن بُعد وبالحضور عند الحاجة.",
+  },
+  {
+    id: "about-faq-2",
+    question: "ما الخدمات التي تقدّمونها؟",
+    answer:
+      "تصميم مواقع، متاجر إلكترونية، تحسين محركات البحث (SEO)، وتسويق رقمي — بفريق واحد من الفكرة إلى الإطلاق.",
+  },
+  {
+    id: "about-faq-3",
+    question: "هل تعملون مع مشاريع ناشئة فقط أم شركات قائمة؟",
+    answer:
+      "نعمل مع الاثنين. نبدأ من احتياجك الحقيقي وميزانيتك، ثم نحدد نطاقاً واضحاً وقابل للتنفيذ.",
+  },
+  {
+    id: "about-faq-4",
+    question: "كيف أبدأ مشروع معكم؟",
+    answer:
+      "تواصل عبر واتساب أو نموذج التواصل — نرد خلال 24 ساعة ونحدد الخطوة التالية بدون التزام.",
+  },
+] as const;
 
 export const Route = createFileRoute("/about")({
   loader: () => loadPublishedPageSeoFn({ data: { slug: "about" } }),
@@ -26,6 +53,21 @@ export const Route = createFileRoute("/about")({
       breadcrumbs: [
         { name: "الرئيسية", path: "/" },
         { name: "من نحن", path: "/about" },
+      ],
+      scripts: [
+        jsonLdScript(
+          faqPageSchema(
+            ABOUT_FAQS.map((faq) => ({
+              id: faq.id,
+              question: faq.question,
+              answer: faq.answer,
+              order: 0,
+              status: "published" as const,
+              createdAt: "",
+              updatedAt: "",
+            })),
+          ),
+        ),
       ],
     }),
   component: About,
@@ -182,7 +224,10 @@ function About() {
       </section>
 
       {/* Offers */}
-      <section className="section border-y border-border bg-surface" aria-labelledby="about-offers-heading">
+      <section
+        className="section border-y border-border bg-surface"
+        aria-labelledby="about-offers-heading"
+      >
         <div className="container-page">
           <div className="page-intro-block me-auto w-full text-start">
             <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
@@ -241,7 +286,8 @@ function About() {
               بدأنا مؤخراً — ونبني معك من اليوم.
             </h2>
             <p className="page-intro-desc mt-3 !max-w-none">
-              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
+              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة
+              بخطوة.
             </p>
           </div>
           <ol className="section-body grid list-none gap-5 p-0 md:grid-cols-3">
@@ -257,6 +303,30 @@ function About() {
               </Reveal>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section bg-surface/50" aria-labelledby="about-faq-heading">
+        <div className="container-page max-w-3xl">
+          <div className="page-intro-block mx-auto text-center">
+            <span className="page-intro-eyebrow">أسئلة شائعة</span>
+            <h2 id="about-faq-heading" className="page-intro-title page-intro-title--section">
+              إجابات سريعة عن {SITE_NAME}.
+            </h2>
+          </div>
+          <div className="section-body flex flex-col gap-3">
+            {ABOUT_FAQS.map((faq) => (
+              <details key={faq.id} className="faq-item-new group">
+                <summary className="faq-trigger cursor-pointer list-none">
+                  <span className="min-w-0 font-medium text-[0.9375rem]">{faq.question}</span>
+                </summary>
+                <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
