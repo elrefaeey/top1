@@ -5,6 +5,7 @@ import { SocialLinks } from "@/components/site/SocialLinks";
 import { useServices, useSiteSettings } from "@/hooks/use-cms";
 import { SITE_NAME, SITE_CONTACT_PHONE } from "@/lib/site-config";
 import { telHref } from "@/lib/phone";
+import { LANDING_LINKS } from "@/lib/seo/internal-links";
 
 const QUICK_LINKS = [
   { label: "الرئيسية", href: "/" },
@@ -15,6 +16,8 @@ const QUICK_LINKS = [
   { label: "الأسعار", href: "/pricing" },
   { label: "تواصل", href: "/contact" },
 ];
+
+const FOOTER_LANDING_LINKS = LANDING_LINKS.slice(0, 4);
 
 const LEGAL_LINKS = [
   { label: "سياسة الخصوصية", href: "/privacy" },
@@ -133,17 +136,16 @@ export function SiteFooter() {
                 </div>
               )}
 
-              {/* لماذا نحن — ديسكتوب فقط */}
+              {/* أدلة SEO — ديسكتوب فقط */}
               <div className="footer-links-col footer-perks-col">
-                <h3 className="footer-col-title">لماذا نحن؟</h3>
-                <ul className="footer-perks">
-                  {[
-                    "فريق خبراء فقط",
-                    "تسليم سريع وشفاف",
-                    "SEO من اليوم الأول",
-                    "دعم بعد الإطلاق",
-                  ].map((t) => (
-                    <li key={t}>{t}</li>
+                <h3 className="footer-col-title">أدلة وخدمات</h3>
+                <ul className="footer-link-list">
+                  {FOOTER_LANDING_LINKS.map((l) => (
+                    <li key={l.href}>
+                      <Link to={l.href} className="footer-link">
+                        {l.label}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
                 <Link to="/contact" className="footer-mini-cta mt-4">

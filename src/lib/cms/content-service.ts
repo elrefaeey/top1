@@ -131,6 +131,13 @@ export async function getServices(): Promise<WithId<Service>[]> {
   return safeList(() => getPublished<Service>(COLLECTIONS.services), "services");
 }
 
+function sanitizeServiceDescription(service: WithId<Service>): WithId<Service> {
+  if (!service.description || !/<[a-z][\s\S]*>/i.test(service.description)) {
+    return service;
+  }
+  return { ...service, description: sanitizeCmsHtml(service.description) };
+}
+
 export async function getServiceBySlug(slug: string): Promise<WithId<Service> | null> {
   if (!isFirebaseConfigured()) return null;
   try {
@@ -141,7 +148,7 @@ export async function getServiceBySlug(slug: string): Promise<WithId<Service> | 
       limit(1),
     );
     const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
-    if (!snap.empty) return mapDoc<Service>(snap.docs[0]!);
+    if (!snap.empty) return sanitizeServiceDescription(mapDoc<Service>(snap.docs[0]!));
   } catch {
     // empty
   }

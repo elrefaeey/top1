@@ -17,8 +17,7 @@ export const Route = createFileRoute("/blog")({
   loader: () => loadBlogRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/blog/$slug")) return {};
-    if (!loaderData) return {};
-    return buildBlogListingHead(loaderData);
+    return buildBlogListingHead(loaderData ?? { cms: null, posts: [] });
   },
   component: Blog,
 });
@@ -55,6 +54,8 @@ function Blog() {
             <SiteImage
               src={siteImages.blog.default}
               alt="مقالات تصميم مواقع وSEO"
+              width={1280}
+              height={800}
               sizes="(max-width: 1024px) 100vw, 50vw"
               wrapperClassName="order-first lg:order-2 aspect-[16/10] w-full rounded-2xl shadow-[var(--shadow-card)]"
             />
@@ -135,6 +136,8 @@ function Blog() {
                       <SiteImage
                         src={p.featuredImage}
                         alt={p.featuredImageAlt ?? p.title}
+                        width={960}
+                        height={540}
                         sizes="(max-width: 768px) 100vw, 50vw"
                         wrapperClassName="aspect-[16/9] w-full"
                         className="transition-transform duration-500 group-hover:scale-105"
@@ -168,6 +171,8 @@ function Blog() {
                   <SiteImage
                     src={p.featuredImage}
                     alt={p.featuredImageAlt ?? p.title}
+                    width={800}
+                    height={500}
                     sizes="(max-width: 768px) 100vw, 33vw"
                     wrapperClassName="aspect-[16/10] w-full"
                     className="transition-transform duration-500 group-hover:scale-105"

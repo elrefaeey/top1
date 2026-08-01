@@ -16,8 +16,7 @@ export const Route = createFileRoute("/services")({
   loader: () => loadServicesRouteSeoFn(),
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/services/$slug")) return {};
-    if (!loaderData) return {};
-    return buildServicesListingHead(loaderData);
+    return buildServicesListingHead(loaderData ?? { cms: null, services: [], faqs: [] });
   },
   component: Services,
 });
@@ -94,6 +93,8 @@ function Services() {
                   <SiteImage
                     src={s.imageUrl || serviceImage(s.slug)}
                     alt={`${s.title} — خدمة تصميم وتطوير | Top1Markting`}
+                    width={960}
+                    height={720}
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     wrapperClassName="service-card-media h-full w-full"
                     className="object-cover object-center"

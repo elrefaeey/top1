@@ -18,7 +18,7 @@ import { WhatsAppButton } from "../components/site/WhatsAppButton";
 import { DeferredFirebaseAnalytics } from "../components/site/DeferredFirebaseAnalytics";
 import { GoogleTagManager } from "../components/site/GoogleTagManager";
 import { ToastProvider } from "../components/site/Toast";
-import { SITE_NAME, SITE_TWITTER } from "@/lib/site-config";
+import { SITE_NAME } from "@/lib/site-config";
 import { rootJsonLdScripts } from "@/lib/seo";
 
 function NotFoundComponent() {
@@ -88,8 +88,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: SITE_NAME },
       { name: "theme-color", content: "#4F46E5" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: SITE_TWITTER },
+      { name: "geo.region", content: "SA-05" },
+      { name: "geo.placename", content: "Buraidah, Al-Qassim, Saudi Arabia" },
     ];
     const gsc = import.meta.env.VITE_GSC_VERIFICATION?.trim();
     if (gsc) {
@@ -127,7 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar-SA" dir="rtl">
       <head>
         <HeadContent />
       </head>

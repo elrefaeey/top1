@@ -93,8 +93,9 @@ export const STATIC_PAGE_SEO = {
       "اقرأ أحدث المقالات والنصائح حول تصميم المواقع، تحسين محركات البحث، التجارة الإلكترونية، وتجربة المستخدم.",
   },
   contact: {
-    title: "تواصل مع Top1Markting",
-    description: "تواصل مع فريق Top1Markting للحصول على استشارة مجانية أو بدء مشروعك الإلكتروني.",
+    title: "تواصل مع Top1Markting | بريدة والقصيم — السعودية",
+    description:
+      "تواصل مع Top1Markting في بريدة والقصيم — استشارة مجانية لتصميم المواقع والمتاجر الإلكترونية وSEO والتسويق الرقمي في السعودية.",
   },
 } as const;
 
@@ -137,7 +138,7 @@ export function websiteSchema() {
     name: SITE_NAME,
     url: absoluteUrl("/"),
     description: SITE_TAGLINE_EN,
-    inLanguage: "ar",
+    inLanguage: "ar-SA",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -156,12 +157,25 @@ export function localBusinessSchema(contactEmail = SITE_CONTACT_EMAIL) {
     description: SITE_TAGLINE_EN,
     telephone: `+${SITE_WHATSAPP_NUMBER}`,
     email: contactEmail,
+    priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       streetAddress: "حي السادة",
       addressLocality: "Buraidah",
       addressRegion: "Al-Qassim",
       addressCountry: "SA",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 26.326,
+      longitude: 43.975,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: `+${SITE_WHATSAPP_NUMBER}`,
+      contactType: "customer service",
+      areaServed: "SA",
+      availableLanguage: ["Arabic", "ar"],
     },
     areaServed: [...SEO_AREAS_SERVED],
     knowsAbout: [...SEO_KNOWS_ABOUT],
@@ -302,7 +316,7 @@ export function articleSchema(post: BlogPost, slug: string) {
     dateModified: post.updatedAt,
     mainEntityOfPage: absoluteUrl(path),
     timeRequired: `PT${post.readTime}M`,
-    inLanguage: "ar",
+    inLanguage: "ar-SA",
   };
 }
 
@@ -335,7 +349,7 @@ export function faqPageSchema(faqs: FaqItem[]) {
       name: faq.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: faq.answer,
+        text: stripHtml(faq.answer),
       },
     })),
   };
@@ -499,7 +513,7 @@ export function buildServiceHead(
         mainEntity: faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          acceptedAnswer: { "@type": "Answer", text: stripHtml(faq.answer) },
         })),
       }),
     );
@@ -586,7 +600,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
         mainEntity: page.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          acceptedAnswer: { "@type": "Answer", text: stripHtml(faq.answer) },
         })),
       }),
     );
