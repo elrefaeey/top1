@@ -88,12 +88,17 @@ export function buildEnglishSeoSlug(keyword: string, hint?: string): string {
   if (!slug) {
     slug = source
       .normalize("NFKD")
+      // Keep ASCII only for English SEO slugs.
+      // eslint-disable-next-line no-control-regex -- intentional ASCII strip
       .replace(/[^\x00-\x7F]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
   }
   if (!slug) slug = "saudi-seo-guide";
-  slug = slug.replace(/-+/g, "-").replace(/^-+|-+$/g, "").slice(0, 72);
+  slug = slug
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 72);
   return slug || "saudi-seo-guide";
 }
 
@@ -375,9 +380,7 @@ export async function generateBlogDraftFromInsight(
 ): Promise<{ input: AiBlogDraftInput; provider: string }> {
   const keyword = insight.keyword.trim() || "خدمات SEO";
   const fallbackTitle =
-    insight.suggested_title?.trim() ||
-    insight.title?.trim() ||
-    `${keyword} للشركات في السعودية`;
+    insight.suggested_title?.trim() || insight.title?.trim() || `${keyword} للشركات في السعودية`;
 
   if (!hasLlmConfigured()) {
     const faqs = buildFaqItems(keyword);
