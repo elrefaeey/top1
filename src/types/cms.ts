@@ -108,6 +108,14 @@ export interface BlogPost extends SeoFields, Timestamps {
   views: number;
   trending: boolean;
   status: PublishStatus;
+  /** Optional AI SEO title (mirrors metaTitle when set by draft generator). */
+  seoTitle?: string;
+  /** Optional keyword list from AI SEO drafts. */
+  keywords?: string[];
+  /** Optional photorealistic image brief for AI/human image production. */
+  imagePrompt?: string;
+  /** Optional FAQPage JSON-LD string (draft-time schema payload). */
+  faqSchema?: string;
 }
 
 export interface Testimonial extends Timestamps {

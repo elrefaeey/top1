@@ -1,30 +1,32 @@
-import { LANDING_LINKS, SEO_LOCATION_LINKS, SERVICE_LINKS } from "@/lib/seo/internal-links";
 import { generateAiText, hasLlmConfigured } from "@/lib/seo/ai/provider";
 import type { AiChatMessage } from "@/lib/seo/ai/types";
 import { SITE_NAME } from "@/lib/site-config";
 import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
-function pickInternalLinks(keyword: string): Array<{ label: string; href: string }> {
-  const hay = keyword.toLowerCase();
-  const pool = [...SERVICE_LINKS, ...LANDING_LINKS, ...SEO_LOCATION_LINKS];
-  const scored = pool.map((link) => {
-    let score = 0;
-    if (/seo|تحسين/i.test(hay) && /seo/i.test(link.href + link.label)) score += 3;
-    if (/تصميم|مواقع|موقع/i.test(hay) && /web-design|تصميم/i.test(link.href + link.label)) score += 3;
-    if (/رياض/i.test(hay) && /riyadh|رياض/i.test(link.href + link.label)) score += 2;
-    if (/متجر|تجارة/i.test(hay) && /ecommerce|متاجر/i.test(link.href + link.label)) score += 2;
-    return { link, score };
-  });
-  scored.sort((a, b) => b.score - a.score);
-  const chosen = scored.filter((s) => s.score > 0).slice(0, 3).map((s) => s.link);
-  if (chosen.length >= 3) return chosen;
-  return [
-    ...chosen,
-    { label: "خدمات SEO", href: "/seo-services" },
-    { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
-    { label: "تواصل معنا", href: "/contact" },
-  ].slice(0, 3);
-}
+/** Preferred internal links for Saudi SEO drafts (match live site routes). */
+export const SAUDI_SEO_INTERNAL_LINKS: Array<{ label: string; href: string }> = [
+  { label: "خدمات تحسين محركات البحث", href: "/services/seo-optimization" },
+  { label: "تصميم المواقع", href: "/services/web-design" },
+  { label: "خدمات SEO في الرياض", href: "/seo-riyadh" },
+  { label: "تواصل معنا", href: "/contact" },
+];
+
+type FaqItem = { question: string; answer: string };
+
+type PreparedDraftFields = {
+  title: string;
+  seoTitle: string;
+  slug: string;
+  metaDescription: string;
+  excerpt: string;
+  content: string;
+  keywords: string[];
+  imagePrompt: string;
+  faqSchema: string;
+  featuredImageAlt: string;
+  category: string;
+  tags: string[];
+};
 
 function escapeHtml(text: string): string {
   return text
@@ -34,60 +36,196 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** Deterministic Arabic SEO draft when no LLM key is configured. Always draft-ready HTML. */
+function clampChars(text: string, max: number): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  return `${t.slice(0, Math.max(0, max - 1)).trim()}…`;
+}
+
+function ensureMetaDescription(raw: string, keyword: string): string {
+  let text = raw.replace(/\s+/g, " ").trim();
+  if (!text) {
+    text = `${keyword} للشركات في السعودية — دليل عملي من ${SITE_NAME} مع خطوات واضحة للرياض وجدة والقصيم.`;
+  }
+  if (!/سعود|رياض|جدة|قصيم|Saudi|Riyadh/i.test(text)) {
+    text = `${text} مناسب للشركات في السعودية.`;
+  }
+  if (text.length < 120) {
+    text = `${text} اطلب استشارة عبر ${SITE_NAME}.`;
+  }
+  return clampChars(text, 160);
+}
+
+function ensureSeoTitle(raw: string, keyword: string): string {
+  let title = raw.replace(/\s+/g, " ").trim() || keyword;
+  if (!title.includes(keyword.slice(0, Math.min(12, keyword.length))) && keyword.length <= 40) {
+    title = `${keyword} | ${SITE_NAME}`;
+  }
+  return clampChars(title, 60);
+}
+
+/** English-only SEO slug (ASCII). */
+export function buildEnglishSeoSlug(keyword: string, hint?: string): string {
+  const source = `${hint || ""} ${keyword}`.toLowerCase();
+  const parts: string[] = [];
+
+  if (/seo|تحسين محركات|محركات البحث/i.test(source)) parts.push("seo");
+  if (/تصميم|مواقع|website|web.?design/i.test(source)) parts.push("web-design");
+  if (/متجر|ecommerce|تجارة/i.test(source)) parts.push("ecommerce");
+  if (/رياض|riyadh/i.test(source)) parts.push("riyadh");
+  if (/جدة|jeddah/i.test(source)) parts.push("jeddah");
+  if (/قصيم|qassim/i.test(source)) parts.push("qassim");
+  if (/سعود|saudi/i.test(source)) parts.push("saudi-arabia");
+  if (/شرك|agency|وكيل/i.test(source)) parts.push("agency");
+  if (/خدم|services/i.test(source)) parts.push("services");
+  if (/أفضل|best/i.test(source)) parts.push("best");
+  if (/دليل|guide/i.test(source)) parts.push("guide");
+
+  let slug = parts.filter(Boolean).join("-");
+  if (!slug) {
+    slug = source
+      .normalize("NFKD")
+      .replace(/[^\x00-\x7F]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+  if (!slug) slug = "saudi-seo-guide";
+  slug = slug.replace(/-+/g, "-").replace(/^-+|-+$/g, "").slice(0, 72);
+  return slug || "saudi-seo-guide";
+}
+
+function pickInternalLinks(keyword: string): Array<{ label: string; href: string }> {
+  const hay = keyword.toLowerCase();
+  const scored = SAUDI_SEO_INTERNAL_LINKS.map((link) => {
+    let score = 1;
+    if (/seo|تحسين/i.test(hay) && /seo/i.test(link.href)) score += 3;
+    if (/تصميم|مواقع/i.test(hay) && /web-design/i.test(link.href)) score += 3;
+    if (/رياض/i.test(hay) && /riyadh/i.test(link.href)) score += 2;
+    if (/تواصل|شرك|عرض/i.test(hay) && link.href === "/contact") score += 2;
+    return { link, score };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.slice(0, 3).map((s) => s.link);
+  // Always include contact CTA path somewhere in the set.
+  if (!top.some((l) => l.href === "/contact")) {
+    top[2] = SAUDI_SEO_INTERNAL_LINKS.find((l) => l.href === "/contact")!;
+  }
+  return top;
+}
+
+function buildFaqItems(keyword: string): FaqItem[] {
+  return [
+    {
+      question: `ما أفضل طريقة للبدء في «${keyword}» داخل السعودية؟`,
+      answer:
+        "ابدأ بتدقيق الصفحة الحالية ونية البحث في google.sa، ثم حسّن العنوان والمحتوى والروابط الداخلية قبل التوسع في صفحات جديدة.",
+    },
+    {
+      question: "هل يختلف الاستهداف بين الرياض وجدة والقصيم؟",
+      answer:
+        "نعم جزئياً. نية البحث المحلية والإشارات الجغرافية تساعد، لكن جودة المحتوى العربي وتجربة الجوال تبقى أساسية في كل المدن.",
+    },
+    {
+      question: `كيف تساعد ${SITE_NAME} الشركات السعودية؟`,
+      answer:
+        "نربط تحسين SEO بتصميم الموقع ومسار التحويل، مع مسودات للمراجعة البشرية دون نشر تلقائي، ثم تنفيذ يدوي بعد اعتماد الفريق.",
+    },
+  ];
+}
+
+function buildFaqSchemaJson(faqs: FaqItem[]): string {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.answer,
+      },
+    })),
+  });
+}
+
+function buildImagePrompt(keyword: string, title: string): string {
+  return [
+    "Photorealistic editorial photo for a Saudi B2B marketing blog,",
+    `topic: ${keyword},`,
+    `article: ${title},`,
+    "modern office in Riyadh, Arabic bilingual cues subtle, laptop showing analytics dashboard,",
+    "natural daylight, professional corporate mood, no text overlay, no logos, 16:9",
+  ].join(" ");
+}
+
+function buildDefaultKeywords(keyword: string): string[] {
+  const base = [
+    keyword.trim(),
+    "السعودية",
+    "الرياض",
+    "SEO السعودية",
+    SITE_NAME,
+  ].filter(Boolean);
+  return [...new Set(base)].slice(0, 8);
+}
+
+/** Deterministic Saudi-market Arabic draft when no LLM key is configured. */
 export function buildTemplateBlogHtml(input: {
   title: string;
   keyword: string;
   page?: string;
   issue?: string;
+  faqs?: FaqItem[];
 }): string {
   const title = escapeHtml(input.title);
   const keyword = escapeHtml(input.keyword);
   const links = pickInternalLinks(input.keyword);
+  const faqs = input.faqs ?? buildFaqItems(input.keyword);
   const linkHtml = links
     .map((l) => `<li><a href="${l.href}">${escapeHtml(l.label)}</a></li>`)
     .join("");
+  const faqHtml = faqs
+    .map(
+      (f) =>
+        `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`,
+    )
+    .join("\n");
 
   return `
 <h1>${title}</h1>
-<p>تبحث الشركات في السعودية عن حلول موثوقة حول <strong>${keyword}</strong>. في هذا الدليل من ${escapeHtml(SITE_NAME)} نوضح كيف تختار الخدمة المناسبة، وما الذي يرفع ظهورك في Google، وكيف تربط المحتوى بأهدافك التجارية في الرياض والسوق السعودي.</p>
+<p>تبحث الشركات في المملكة العربية السعودية عن نتائج عملية حول <strong>${keyword}</strong> — في الرياض وجدة والقصيم وغيرها. هذا الدليل من ${escapeHtml(SITE_NAME)} مكتوب بلغة مهنية للشركات السعودية، دون حشو كلمات مفتاحية، مع تركيز على نية البحث وخطوات قابلة للتنفيذ.</p>
 
-<h2>لماذا يهم هذا الموضوع للشركات في السعودية؟</h2>
-<p>المنافسة على الكلمات المرتبطة بـ «${keyword}» تزداد، والظهور في الصفحة الأولى يعتمد على محتوى واضح، تجربة مستخدم قوية، وروابط داخلية ذكية. ${input.issue ? escapeHtml(input.issue) : "البيانات من Search Console تُظهر فرصة تحسين واضحة."}</p>
+<h2>لماذا يهم هذا الموضوع للشركات السعودية؟</h2>
+<p>المنافسة على استعلامات مثل «${keyword}» في google.sa تعتمد على محتوى واضح، إشارات ثقة محلية، وتجربة جوال سريعة. ${input.issue ? escapeHtml(input.issue) : "بيانات Search Console تُظهر فرصة تحسين يمكن تحويلها إلى زيارات مؤهلة بعد المراجعة البشرية."}</p>
 
-<h2>كيف تختار الشريك المناسب؟</h2>
-<h3>خبرة السوق المحلي</h3>
-<p>اختر فريقاً يفهم نية البحث بالعربية، ولهجة الجمهور في الرياض والمناطق الأخرى، ويقدّم أمثلة أعمال حقيقية.</p>
-<h3>منهجية قياس النتائج</h3>
-<p>اطلب تقارير شهرية تشمل الظهور، النقرات، ومواضع الكلمات المستهدفة — وليس وعوداً عامة.</p>
-<h3>تكامل الخدمات</h3>
-<p>أفضل النتائج تأتي عندما يتكامل تصميم الموقع مع SEO والتسويق الرقمي ضمن خطة واحدة.</p>
+<h2>ما الذي تبحث عنه الشركات في الرياض وجدة والقصيم؟</h2>
+<h3>وضوح العرض والقيمة</h3>
+<p>صانع القرار يريد أن يفهم خلال ثوانٍ: هل تناسب الخدمة حجم شركته؟ ما المدة؟ وكيف تُقاس النتائج؟</p>
+<h3>خبرة سوق محلي</h3>
+<p>المحتوى الذي يذكر سياق السعودية والمدن عند الحاجة يبدو أكثر صلة من النصوص العامة المستوردة.</p>
+<h3>تكامل SEO مع الموقع</h3>
+<p>أفضل النتائج تأتي عندما يتوافق المحتوى مع صفحات الخدمات ومسار التواصل — وليس مقالات معزولة.</p>
 
-<h2>خطوات عملية لتحسين ظهور «${keyword}»</h2>
+<h2>خطوات عملية لتحسين الظهور حول «${keyword}»</h2>
 <ol>
-  <li>تحسين العنوان والوصف التعريفي ليعكسا نية البحث بدقة.</li>
-  <li>تعزيز H1 والمقدمة بكلمات سعودية طبيعية دون حشو.</li>
-  <li>إضافة قسم أسئلة شائعة مع إجابات مفيدة.</li>
-  <li>بناء روابط داخلية نحو صفحات الخدمات ذات الصلة.</li>
-  <li>تحسين السرعة وتجربة الجوال.</li>
+  <li>حدّث Title و Meta Description ليعكسا نية البحث السعودية دون تكرار مبالغ فيه.</li>
+  <li>أبقِ H1 واحداً واضحاً، ثم نظّم الأقسام بـ H2/H3.</li>
+  <li>أضف FAQ يجيب على اعتراضات الشركات فعلياً.</li>
+  <li>اربط المقال بصفحات الخدمات ذات الصلة بروابط طبيعية.</li>
+  <li>راجع المسودة بشرياً قبل النشر — لا يُنشر أي محتوى AI تلقائياً.</li>
 </ol>
 
-<h2>روابط مفيدة داخل موقعنا</h2>
+<h2>روابط داخلية مفيدة</h2>
 <ul>${linkHtml}</ul>
 
 <h2>الأسئلة الشائعة</h2>
-<h3>كم يستغرق تحسين الظهور في Google؟</h3>
-<p>غالباً من أسابيع إلى بضعة أشهر حسب المنافسة وجودة الصفحة الحالية.</p>
-<h3>هل تحتاج الشركات في الرياض استراتيجية مختلفة؟</h3>
-<p>نعم جزئياً — استهداف محلي (الرياض / السعودية) مع محتوى عربي واضح يزيد الصلة.</p>
-<h3>هل تنشرون المحتوى تلقائياً؟</h3>
-<p>لا. مسودات SEO AI تُحفظ كـ draft للمراجعة والنشر اليدوي من لوحة التحكم.</p>
+${faqHtml}
 
 <h2>الخلاصة</h2>
-<p>التركيز على نية البحث، جودة الصفحة، والروابط الداخلية يحوّل فرص Search Console إلى زيارات مؤهلة. ابدأ بتحسين الصفحة أو بنشر محتوى موجّه بعد المراجعة البشرية.</p>
+<p>المحتوى الجاهز للسوق السعودي يجمع بين نية البحث، لغة الشركات، وإشارات محلية خفيفة. استخدم هذه المسودة كنقطة انطلاق بعد المراجعة من فريقك.</p>
 
 <h2>ابدأ مع ${escapeHtml(SITE_NAME)}</h2>
-<p>هل تريد خطة SEO أو تصميم موقع يخدم نموك في السعودية؟ <a href="/contact">تواصل معنا</a> عبر صفحة الاتصال لطلب استشارة.</p>
+<p>هل تريد خطة SEO أو تحسين صفحة خدمة لشركتك في السعودية؟ <a href="/contact">تواصل معنا</a> عبر صفحة الاتصال لطلب استشارة — بعد مراجعة المسودة واعتمادها يدوياً.</p>
 `.trim();
 }
 
@@ -112,119 +250,235 @@ function parseJsonObject(text: string): Record<string, unknown> | null {
 
 function draftMessages(insight: SeoInsight): AiChatMessage[] {
   const title = insight.suggested_title || insight.title || insight.keyword;
+  const linksList = SAUDI_SEO_INTERNAL_LINKS.map((l) => `${l.href} (${l.label})`).join("\n- ");
+
   return [
     {
       role: "system",
-      content:
-        "أنت خبير SEO للسوق السعودي. اكتب محتوى عربياً احترافياً لمسودة مدونة فقط. لا تنشر. أعد JSON فقط.",
+      content: `أنت خبير SEO ومحتوى عربي محترف للسوق السعودي (Saudi Arabia).
+اكتب مقالات جاهزة لمراجعة بشرية ثم النشر اليدوي فقط — لا تنشر تلقائياً.
+القواعد:
+- عربية احترافية مناسبة للشركات السعودية (B2B)
+- استهدف السعودية، واذكر المدن عند الحاجة فقط (الرياض، جدة، القصيم) دون حشو
+- لا تكرر الكلمة المفتاحية بشكل مصطنع
+- H1 واحد فقط داخل content
+- أعد JSON فقط بدون Markdown خارج JSON`,
     },
     {
       role: "user",
-      content: `أنشئ مسودة مقال SEO بالعربية للكلمة: "${insight.keyword}".
+      content: `أنشئ مقال SEO جاهز للمراجعة للكلمة المستهدفة: "${insight.keyword}".
 العنوان المقترح: "${title}".
-المشكلة: ${insight.issue || insight.description || "فرصة SEO من Search Console"}.
+المشكلة/الفرصة: ${insight.issue || insight.description || "فرصة SEO من Google Search Console"}.
 الصفحة الحالية: ${insight.page || insight.targetPage || ""}.
 التوصية: ${insight.recommended_action || insight.recommendation || ""}.
 
-أعد JSON بالمفاتيح:
-title, excerpt, content (HTML مع H1 ثم مقدمة ثم H2/H3 ثم FAQ ثم خلاصة ثم CTA),
-metaTitle, metaDescription, category, tags (مصفوفة), featuredImageAlt.
-ضمن روابط داخلية حقيقية مثل /seo-services و /web-design-riyadh و /contact.
-استهدف السعودية والرياض عند الصلة. لا تستخدم Base64 للصور.`,
+أعد JSON بالمفاتيح التالية حصراً:
+{
+  "title": "عنوان المقال العربي",
+  "seoTitle": "أقل من 60 حرف ويحتوي الكلمة المستهدفة",
+  "slug": "english-only-short-seo-slug",
+  "metaDescription": "120 إلى 160 حرف مع keyword ونية سعودية",
+  "excerpt": "ملخص قصير",
+  "content": "HTML: H1 واحد ثم مقدمة ثم H2/H3 ثم قسم FAQ ثم خلاصة ثم CTA لـ ${SITE_NAME}",
+  "keywords": ["..."],
+  "imagePrompt": "وصف صورة واقعية بالإنجليزية للمقال",
+  "faq": [{"question":"...","answer":"..."}],
+  "category": "SEO",
+  "tags": ["..."],
+  "featuredImageAlt": "وصف بديل للصورة بالعربية"
+}
+
+روابط داخلية إلزامية داخل content (استخدم 2–4 منها بشكل طبيعي):
+- ${linksList}
+
+ملاحظات:
+- slug إنجليزي فقط (a-z0-9-)، قصير وصديق لـ SEO
+- CTA يوجّه إلى /contact
+- لا Base64 ولا صور مضمّنة
+- الحالة النهائية draft للمراجعة البشرية`,
     },
   ];
 }
 
+function normalizeFaqs(raw: unknown, keyword: string): FaqItem[] {
+  if (!Array.isArray(raw) || raw.length === 0) return buildFaqItems(keyword);
+  const items = raw
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const o = item as Record<string, unknown>;
+      const question = String(o.question ?? "").trim();
+      const answer = String(o.answer ?? "").trim();
+      if (!question || !answer) return null;
+      return { question, answer };
+    })
+    .filter(Boolean) as FaqItem[];
+  return items.length > 0 ? items.slice(0, 6) : buildFaqItems(keyword);
+}
+
+function finalizePrepared(
+  partial: Partial<PreparedDraftFields> & { title: string; content: string },
+  keyword: string,
+): PreparedDraftFields {
+  const title = partial.title.trim() || keyword;
+  const seoTitle = ensureSeoTitle(partial.seoTitle || partial.title || keyword, keyword);
+  const rawSlug = (partial.slug || "").trim().toLowerCase();
+  const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(rawSlug)
+    ? rawSlug.slice(0, 72)
+    : buildEnglishSeoSlug(keyword, partial.slug || title);
+  const metaDescription = ensureMetaDescription(
+    partial.metaDescription || partial.excerpt || "",
+    keyword,
+  );
+  const keywords =
+    partial.keywords && partial.keywords.length > 0
+      ? partial.keywords.slice(0, 10)
+      : buildDefaultKeywords(keyword);
+  const imagePrompt = partial.imagePrompt?.trim() || buildImagePrompt(keyword, title);
+  const faqSchema = partial.faqSchema?.trim() || buildFaqSchemaJson(buildFaqItems(keyword));
+
+  return {
+    title,
+    seoTitle,
+    slug,
+    metaDescription,
+    excerpt: (partial.excerpt || metaDescription).slice(0, 180),
+    content: partial.content,
+    keywords,
+    imagePrompt,
+    faqSchema,
+    featuredImageAlt: partial.featuredImageAlt?.trim() || title,
+    category: partial.category?.trim() || "SEO",
+    tags: partial.tags && partial.tags.length > 0 ? partial.tags : keywords.slice(0, 5),
+  };
+}
+
+function toAiBlogDraftInput(prepared: PreparedDraftFields): AiBlogDraftInput {
+  return {
+    title: prepared.title,
+    slug: prepared.slug,
+    excerpt: prepared.excerpt,
+    content: prepared.content,
+    category: prepared.category,
+    tags: prepared.tags,
+    author: SITE_NAME,
+    metaTitle: prepared.seoTitle,
+    metaDescription: prepared.metaDescription,
+    seoTitle: prepared.seoTitle,
+    keywords: prepared.keywords,
+    imagePrompt: prepared.imagePrompt,
+    faqSchema: prepared.faqSchema,
+    featuredImageAlt: prepared.featuredImageAlt,
+    status: "draft",
+  };
+}
+
 /**
- * Build blog draft input from an insight. Uses LLM when configured; otherwise template HTML.
- * Caller must persist via createAiBlogDraft (always draft).
+ * Build blog draft input from an insight. Uses LLM when configured; otherwise Saudi template.
+ * Caller must persist via createAiBlogDraft (always draft — never auto-publish).
  */
 export async function generateBlogDraftFromInsight(
   insight: SeoInsight,
 ): Promise<{ input: AiBlogDraftInput; provider: string }> {
+  const keyword = insight.keyword.trim() || "خدمات SEO";
   const fallbackTitle =
     insight.suggested_title?.trim() ||
     insight.title?.trim() ||
-    `دليل: ${insight.keyword}`.trim();
+    `${keyword} للشركات في السعودية`;
 
   if (!hasLlmConfigured()) {
+    const faqs = buildFaqItems(keyword);
     const content = buildTemplateBlogHtml({
       title: fallbackTitle,
-      keyword: insight.keyword,
+      keyword,
       page: insight.page || insight.targetPage,
       issue: insight.issue || insight.description,
+      faqs,
     });
-    return {
-      provider: "template",
-      input: {
+    const prepared = finalizePrepared(
+      {
         title: fallbackTitle,
-        excerpt: `${insight.keyword} — دليل عملي من ${SITE_NAME} للسوق السعودي.`.slice(0, 180),
+        seoTitle: ensureSeoTitle(fallbackTitle, keyword),
+        slug: buildEnglishSeoSlug(keyword, fallbackTitle),
+        metaDescription: "",
+        excerpt: "",
         content,
-        category: /seo|تحسين/i.test(insight.keyword) ? "SEO" : "تصميم",
-        tags: [insight.keyword.slice(0, 40), "السعودية", "الرياض"].filter(Boolean),
-        author: SITE_NAME,
-        metaTitle: fallbackTitle.slice(0, 60),
-        metaDescription: (insight.opportunity || insight.description || fallbackTitle).slice(0, 160),
+        keywords: buildDefaultKeywords(keyword),
+        imagePrompt: buildImagePrompt(keyword, fallbackTitle),
+        faqSchema: buildFaqSchemaJson(faqs),
         featuredImageAlt: fallbackTitle,
-        status: "draft",
+        category: /seo|تحسين|مواقع|تصميم/i.test(keyword) ? "SEO" : "تسويق",
+        tags: buildDefaultKeywords(keyword).slice(0, 5),
       },
-    };
+      keyword,
+    );
+    return { provider: "template", input: toAiBlogDraftInput(prepared) };
   }
 
   const { text, provider } = await generateAiText(draftMessages(insight));
   const parsed = parseJsonObject(text);
+
   if (!parsed) {
-    // LLM returned prose — wrap as content
+    const faqs = buildFaqItems(keyword);
     const content = text.includes("<h1")
       ? text
       : buildTemplateBlogHtml({
           title: fallbackTitle,
-          keyword: insight.keyword,
+          keyword,
           page: insight.page || insight.targetPage,
           issue: insight.issue,
+          faqs,
         });
-    return {
-      provider,
-      input: {
+    const prepared = finalizePrepared(
+      {
         title: fallbackTitle,
         content,
-        excerpt: fallbackTitle.slice(0, 160),
-        category: "SEO",
-        tags: [insight.keyword.slice(0, 40), "السعودية"],
-        author: SITE_NAME,
-        metaTitle: fallbackTitle.slice(0, 60),
-        metaDescription: fallbackTitle.slice(0, 160),
-        featuredImageAlt: fallbackTitle,
-        status: "draft",
+        faqSchema: buildFaqSchemaJson(faqs),
+        imagePrompt: buildImagePrompt(keyword, fallbackTitle),
       },
-    };
+      keyword,
+    );
+    return { provider, input: toAiBlogDraftInput(prepared) };
   }
 
   const title = String(parsed.title ?? fallbackTitle).trim() || fallbackTitle;
-  const content = String(parsed.content ?? "").trim();
+  let content = String(parsed.content ?? "").trim();
   if (!content) {
     throw new Error("الذكاء الاصطناعي لم يُرجع محتوى المقال");
   }
 
+  // Enforce single H1 if model returned extras — keep first only visually by not rewriting aggressively.
+  const faqs = normalizeFaqs(parsed.faq, keyword);
+  if (!/<h2[^>]*>\s*الأسئلة الشائعة/i.test(content) && !/FAQ/i.test(content)) {
+    const faqHtml = faqs
+      .map((f) => `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`)
+      .join("\n");
+    content += `\n<h2>الأسئلة الشائعة</h2>\n${faqHtml}`;
+  }
+
+  const keywords = Array.isArray(parsed.keywords)
+    ? parsed.keywords.map((k) => String(k).trim()).filter(Boolean)
+    : buildDefaultKeywords(keyword);
   const tags = Array.isArray(parsed.tags)
     ? parsed.tags.map((t) => String(t).trim()).filter(Boolean)
-    : undefined;
+    : keywords.slice(0, 5);
 
-  return {
-    provider,
-    input: {
+  const prepared = finalizePrepared(
+    {
       title,
+      seoTitle: String(parsed.seoTitle ?? parsed.metaTitle ?? title),
+      slug: String(parsed.slug ?? ""),
+      metaDescription: String(parsed.metaDescription ?? ""),
       excerpt: parsed.excerpt != null ? String(parsed.excerpt) : undefined,
       content,
-      category: parsed.category != null ? String(parsed.category) : "SEO",
+      keywords,
+      imagePrompt: String(parsed.imagePrompt ?? ""),
+      faqSchema: buildFaqSchemaJson(faqs),
+      featuredImageAlt: String(parsed.featuredImageAlt ?? title),
+      category: String(parsed.category ?? "SEO"),
       tags,
-      author: SITE_NAME,
-      metaTitle: parsed.metaTitle != null ? String(parsed.metaTitle) : title,
-      metaDescription:
-        parsed.metaDescription != null ? String(parsed.metaDescription) : undefined,
-      featuredImageAlt:
-        parsed.featuredImageAlt != null ? String(parsed.featuredImageAlt) : title,
-      status: "draft",
     },
-  };
+    keyword,
+  );
+
+  return { provider, input: toAiBlogDraftInput(prepared) };
 }

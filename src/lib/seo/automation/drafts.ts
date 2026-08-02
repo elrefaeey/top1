@@ -55,18 +55,25 @@ export function buildAiBlogDraftPayload(
   const title = requireNonEmpty(String(input.title ?? ""), "title");
   const content = requireNonEmpty(String(input.content ?? ""), "content");
   const slugRaw = String(input.slug ?? "").trim() || slugify(title);
+  // Prefer English ASCII slug when provided by AI SEO generator.
   const slug = requireNonEmpty(slugRaw, "slug");
   const excerpt = String(input.excerpt ?? "").trim() || content.replace(/<[^>]+>/g, " ").slice(0, 180).trim();
   const category = String(input.category ?? "").trim() || "تصميم";
   const author = String(input.author ?? "").trim() || SITE_NAME;
+  const keywords = Array.isArray(input.keywords)
+    ? input.keywords.map((t) => String(t).trim()).filter(Boolean)
+    : [];
   const tags = Array.isArray(input.tags)
     ? input.tags.map((t) => String(t).trim()).filter(Boolean)
-    : [];
-  const metaTitle = String(input.metaTitle ?? "").trim() || title;
+    : keywords.slice(0, 5);
+  const seoTitle = String(input.seoTitle ?? input.metaTitle ?? "").trim() || title;
+  const metaTitle = String(input.metaTitle ?? input.seoTitle ?? "").trim() || seoTitle;
   const metaDescription =
     String(input.metaDescription ?? "").trim() || excerpt.slice(0, 160);
   const featuredImage = input.featuredImage?.trim() || undefined;
   const featuredImageAlt = input.featuredImageAlt?.trim() || undefined;
+  const imagePrompt = input.imagePrompt?.trim() || undefined;
+  const faqSchema = input.faqSchema?.trim() || undefined;
   const ts = nowIso();
 
   const data: Omit<BlogPost, "id"> = {
@@ -85,6 +92,10 @@ export function buildAiBlogDraftPayload(
     status: "draft",
     metaTitle,
     metaDescription,
+    seoTitle,
+    keywords: keywords.length > 0 ? keywords : undefined,
+    imagePrompt,
+    faqSchema,
     createdAt: ts,
     updatedAt: ts,
   };
@@ -115,6 +126,10 @@ export async function createAiBlogDraft(input: AiBlogDraftInput): Promise<{
     status: "draft",
     metaTitle: data.metaTitle,
     metaDescription: data.metaDescription,
+    seoTitle: data.seoTitle,
+    keywords: data.keywords,
+    imagePrompt: data.imagePrompt,
+    faqSchema: data.faqSchema,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
   };

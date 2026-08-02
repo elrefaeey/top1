@@ -82,8 +82,16 @@ export type AiBlogDraftInput = {
   category?: string;
   tags?: string[];
   author?: string;
+  /** SEO title (<60 chars). Stored as metaTitle; also persisted as seoTitle when provided. */
   metaTitle?: string;
+  seoTitle?: string;
   metaDescription?: string;
+  /** Target keywords for the draft (also mirrored into tags when tags empty). */
+  keywords?: string[];
+  /** Photorealistic image brief for designers / image tools. */
+  imagePrompt?: string;
+  /** FAQPage JSON-LD string for later schema injection. */
+  faqSchema?: string;
   /** Rejected if present and not "draft". */
   status?: string;
 };

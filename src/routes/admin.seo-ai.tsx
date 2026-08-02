@@ -432,68 +432,90 @@ function AdminSeoAiPage() {
 
       <AdminSection
         title="فرص SEO"
-        description="أولوية · كلمة · ترتيب · صفحة · توصية — ثم توليد مسودة draft فقط."
+        description="كل بطاقة = فرصة واحدة. راجع التوصية ثم أنشئ مسودة للنشر اليدوي."
       >
         {insights.length === 0 ? (
           <AdminEmpty message="لا توجد فرص بعد. نفّذ مزامنة GSC أو اضغط تحليل الفرص." />
         ) : (
-          <AdminTableCard>
-            <Table className="table-fixed">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[10%]">الأولوية</TableHead>
-                  <TableHead className="w-[16%]">الكلمة</TableHead>
-                  <TableHead className="w-[8%]">ترتيب</TableHead>
-                  <TableHead className="w-[16%]">الصفحة</TableHead>
-                  <TableHead className="w-[28%]">التوصية</TableHead>
-                  <TableHead className="w-[10%]">الحالة</TableHead>
-                  <TableHead className="w-[12%] text-end">إجراء</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {insights.slice(0, 25).map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <PriorityBadge priority={item.priority} />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      <span className="line-clamp-2" title={item.suggested_title || item.title}>
-                        {item.keyword || "—"}
-                      </span>
-                    </TableCell>
-                    <TableCell>{item.currentPosition.toFixed(1)}</TableCell>
-                    <TableCell className="text-sm text-muted-foreground" dir="ltr">
-                      <span className="line-clamp-2" title={item.page || item.targetPage}>
-                        {shortUrl(item.page || item.targetPage || "")}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      <span
-                        className="line-clamp-2"
-                        title={item.recommended_action || item.recommendation}
-                      >
-                        {item.recommended_action || item.recommendation || item.issue || "—"}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <AdminStatusBadge status={item.status} />
-                    </TableCell>
-                    <TableCell className="text-end">
+          <div className="space-y-3">
+            {insights.slice(0, 25).map((item) => {
+              const page = shortUrl(item.page || item.targetPage || "");
+              const action =
+                item.recommended_action || item.recommendation || item.issue || "—";
+              const typeLabel = opportunityTypeLabel(item.type);
+              const alreadyDrafted = item.status === "reviewed" || item.status === "completed";
+
+              return (
+                <AdminCard key={item.id} className="!p-4 sm:!p-5">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <PriorityBadge priority={item.priority} />
+                        <span className="inline-flex rounded-full border border-border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground">
+                          {typeLabel}
+                        </span>
+                        <AdminStatusBadge status={item.status} />
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">الكلمة المفتاحية</p>
+                        <h3 className="text-base font-semibold leading-snug text-foreground">
+                          {item.keyword || "—"}
+                        </h3>
+                        {item.suggested_title ? (
+                          <p className="mt-1 text-sm text-muted-foreground line-clamp-1" title={item.suggested_title}>
+                            مقترح العنوان: {item.suggested_title}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                        <MetaChip label="الترتيب" value={item.currentPosition.toFixed(1)} />
+                        <MetaChip label="الظهور" value={formatNum(item.impressions)} />
+                        <MetaChip label="CTR" value={formatPct(item.ctr)} />
+                        <MetaChip label="الصفحة" value={page || "—"} dir="ltr" />
+                      </div>
+
+                      <div className="rounded-lg border border-border/70 bg-muted/30 px-3 py-2.5">
+                        <p className="text-xs font-medium text-muted-foreground mb-1">ماذا تفعل؟</p>
+                        <p className="text-sm leading-relaxed text-foreground/90 line-clamp-3" title={action}>
+                          {simplifyRecommendation(action)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex shrink-0 flex-col gap-2 sm:w-44">
                       <button
                         type="button"
-                        className="btn-primary !py-1.5 !px-2.5 !text-xs inline-flex items-center gap-1.5"
+                        className="btn-primary !py-2.5 !px-3 !text-sm inline-flex w-full items-center justify-center gap-2"
                         disabled={generatingId === item.id}
                         onClick={() => void handleGenerateDraft(item.id)}
                       >
-                        <Sparkles className="h-3.5 w-3.5" />
-                        {generatingId === item.id ? "جارٍ…" : "Generate AI Draft"}
+                        <Sparkles className="h-4 w-4" />
+                        {generatingId === item.id
+                          ? "جارٍ التوليد…"
+                          : alreadyDrafted
+                            ? "إعادة توليد مسودة"
+                            : "توليد مسودة AI"}
                       </button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </AdminTableCard>
+                      {alreadyDrafted ? (
+                        <Link
+                          to="/admin/blog"
+                          className="text-center text-xs font-medium text-primary hover:underline"
+                        >
+                          فتح المسودات في المدونة
+                        </Link>
+                      ) : (
+                        <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
+                          تُحفظ كـ draft فقط — بدون نشر تلقائي
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </AdminCard>
+              );
+            })}
+          </div>
         )}
       </AdminSection>
 
@@ -619,6 +641,42 @@ function PriorityBadge({ priority }: { priority: string }) {
     >
       {labels[priority] ?? priority}
     </span>
+  );
+}
+
+function opportunityTypeLabel(type: string): string {
+  const map: Record<string, string> = {
+    quick_win: "فرصة سريعة",
+    content_opportunity: "فرصة محتوى",
+    page_improvement: "تحسين صفحة",
+    gsc_opportunity: "فرصة بحث",
+  };
+  return map[type] || "فرصة SEO";
+}
+
+function simplifyRecommendation(text: string): string {
+  return text
+    .replace(/\s*·\s*/g, "، ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function MetaChip({
+  label,
+  value,
+  dir,
+}: {
+  label: string;
+  value: string;
+  dir?: "ltr" | "rtl";
+}) {
+  return (
+    <div className="min-w-0">
+      <span className="text-xs text-muted-foreground">{label}: </span>
+      <span className="font-medium text-foreground" dir={dir} title={value}>
+        {value}
+      </span>
+    </div>
   );
 }
 
