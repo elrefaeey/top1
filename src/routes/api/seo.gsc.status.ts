@@ -27,11 +27,11 @@ export const Route = createFileRoute("/api/seo/gsc/status")({
 
           const idToken = extractBearerToken(request);
           const uid = await verifyFirebaseAdminRole(idToken);
-          const status = await getGscConnectionStatus(uid).catch(() => ({
-            connected: false,
-            connectedEmail: null as string | null,
-            siteUrl: (process.env.GSC_SITE_URL ?? "https://www.top1markting.com/").trim(),
-          }));
+          const status = await getGscConnectionStatus(uid, idToken);
+
+          console.info(
+            `[gsc-oauth:status] uid_suffix=${uid.slice(-6)} connected=${status.connected} connected_email_set=${Boolean(status.connectedEmail)}`,
+          );
 
           // Never return refresh tokens
           return applySecurityHeaders(

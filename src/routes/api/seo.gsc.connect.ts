@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   buildGoogleAuthorizeUrl,
+  buildGscFirebaseSessionCookie,
   createOAuthState,
   extractBearerToken,
   getGscOAuthConfig,
   logGscOAuthDebug,
+  rememberGscFirebaseSession,
   resolveGscRedirectUri,
 } from "@/lib/seo/gsc/auth";
 import { verifyFirebaseAdminRole } from "@/lib/security/firebase-auth-server";
@@ -37,18 +39,26 @@ export const Route = createFileRoute("/api/seo/gsc/connect")({
           const redirectUri = resolveGscRedirectUri(request);
           logGscOAuthDebug({ redirectUri, clientId, source: "connect" });
           const state = createOAuthState(uid, clientSecret);
+          // Bridge ID token to callback (memory + cookie). Never log the token.
+          rememberGscFirebaseSession(state, idToken);
           const authorizeUrl = buildGoogleAuthorizeUrl({
             clientId,
             redirectUri,
             state,
           });
 
-          return applySecurityHeaders(
+          const response = applySecurityHeaders(
             Response.json(
               { authorizeUrl, redirectUri },
               { headers: rateLimitHeaders(rl, RATE_MAX) },
             ),
           );
+          // Persist Firebase session for callback write when service account is absent.
+          response.headers.append("Set-Cookie", buildGscFirebaseSessionCookie(request, idToken));
+          console.info(
+            `[gsc-oauth:connect] session_bridged uid_suffix=${uid.slice(-6)} has_sa=${Boolean(process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim())}`,
+          );
+          return response;
         } catch (err) {
           console.error("[api/seo/gsc/connect]", err);
           const message = err instanceof Error ? err.message : "";

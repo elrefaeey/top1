@@ -73,9 +73,12 @@ export async function prepareInsightsFromSnapshots(
   return written;
 }
 
-export async function syncGscSearchAnalytics(userId: string): Promise<GscSyncResult> {
+export async function syncGscSearchAnalytics(
+  userId: string,
+  firebaseIdToken?: string,
+): Promise<GscSyncResult> {
   const { siteUrl } = getGscOAuthConfig();
-  const accessToken = await getAccessTokenForUser(userId);
+  const accessToken = await getAccessTokenForUser(userId, firebaseIdToken);
   const { startDate, endDate } = last28DayRange();
 
   const allRows: GscSearchRow[] = [];

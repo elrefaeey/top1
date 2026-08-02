@@ -8,33 +8,22 @@ import {
 import type { GscConnectionStatus, GscCredential, GscSearchRow } from "@/lib/seo/gsc/types";
 import {
   getFirestoreDocument,
+  getFirestoreDocumentAsUser,
+  hasFirebaseServiceAccount,
   upsertFirestoreDocument,
+  upsertFirestoreDocumentAsUser,
+  type FirestoreDocumentData,
 } from "@/lib/server/firebase-admin";
 
-export async function saveGscCredentials(input: {
-  userId: string;
-  refreshToken: string;
-  connectedEmail: string;
-}): Promise<void> {
-  const existing = await getFirestoreDocument(COLLECTIONS.gscCredentials, input.userId);
-  const ts = nowIso();
-  await upsertFirestoreDocument(COLLECTIONS.gscCredentials, input.userId, {
-    userId: input.userId,
-    refreshToken: input.refreshToken,
-    connectedEmail: input.connectedEmail,
-    createdAt: typeof existing?.createdAt === "string" ? existing.createdAt : ts,
-    updatedAt: ts,
-  });
-}
-
-export async function getGscCredentials(userId: string): Promise<GscCredential | null> {
-  const doc = await getFirestoreDocument(COLLECTIONS.gscCredentials, userId);
-  if (!doc) return null;
+function mapCredentialDoc(
+  doc: Record<string, unknown> & { id: string },
+  fallbackUserId: string,
+): GscCredential | null {
   const refreshToken = String(doc.refreshToken ?? "");
   if (!refreshToken) return null;
   return {
     id: doc.id,
-    userId: String(doc.userId ?? userId),
+    userId: String(doc.userId ?? fallbackUserId),
     refreshToken,
     connectedEmail: String(doc.connectedEmail ?? ""),
     createdAt: String(doc.createdAt ?? ""),
@@ -42,9 +31,104 @@ export async function getGscCredentials(userId: string): Promise<GscCredential |
   };
 }
 
-export async function getGscConnectionStatus(userId: string): Promise<GscConnectionStatus> {
+export async function saveGscCredentials(input: {
+  userId: string;
+  refreshToken: string;
+  connectedEmail: string;
+  /** Firebase ID token — used when service account is unavailable. */
+  firebaseIdToken?: string;
+}): Promise<void> {
+  if (!input.refreshToken) {
+    throw new Error("لم يُرجع Google refresh_token — أعد الربط مع الموافقة");
+  }
+
+  const ts = nowIso();
+  let createdAt = ts;
+  const useSa = hasFirebaseServiceAccount();
+
+  // Prefer user token when present so local OAuth works without service account.
+  // Admin REST is used only when SA is configured and no user token was bridged.
+  if (input.firebaseIdToken) {
+    try {
+      const existing = await getFirestoreDocumentAsUser(
+        input.firebaseIdToken,
+        COLLECTIONS.gscCredentials,
+        input.userId,
+      );
+      if (typeof existing?.createdAt === "string" && existing.createdAt) {
+        createdAt = existing.createdAt;
+      }
+    } catch {
+      // first-time create
+    }
+  } else if (useSa) {
+    try {
+      const existing = await getFirestoreDocument(COLLECTIONS.gscCredentials, input.userId);
+      if (typeof existing?.createdAt === "string" && existing.createdAt) {
+        createdAt = existing.createdAt;
+      }
+    } catch {
+      // ignore read errors; still attempt write
+    }
+  }
+
+  const payload: FirestoreDocumentData = {
+    userId: input.userId,
+    refreshToken: input.refreshToken,
+    connectedEmail: input.connectedEmail,
+    createdAt,
+    updatedAt: ts,
+  };
+
+  if (input.firebaseIdToken) {
+    await upsertFirestoreDocumentAsUser(
+      input.firebaseIdToken,
+      COLLECTIONS.gscCredentials,
+      input.userId,
+      payload,
+    );
+    return;
+  }
+
+  if (useSa) {
+    await upsertFirestoreDocument(COLLECTIONS.gscCredentials, input.userId, payload);
+    return;
+  }
+
+  throw new Error(
+    "تعذّر حفظ بيانات GSC — أعد محاولة الربط من لوحة التحكم (جلسة الربط مفقودة)",
+  );
+}
+
+export async function getGscCredentials(
+  userId: string,
+  firebaseIdToken?: string,
+): Promise<GscCredential | null> {
+  // Prefer the caller's ID token when present (status/sync paths) so local
+  // environments without a service account can still read gsc_credentials.
+  if (firebaseIdToken) {
+    const doc = await getFirestoreDocumentAsUser(
+      firebaseIdToken,
+      COLLECTIONS.gscCredentials,
+      userId,
+    );
+    return doc ? mapCredentialDoc(doc, userId) : null;
+  }
+
+  if (hasFirebaseServiceAccount()) {
+    const doc = await getFirestoreDocument(COLLECTIONS.gscCredentials, userId);
+    return doc ? mapCredentialDoc(doc, userId) : null;
+  }
+
+  return null;
+}
+
+export async function getGscConnectionStatus(
+  userId: string,
+  firebaseIdToken?: string,
+): Promise<GscConnectionStatus> {
   const { siteUrl } = getGscOAuthConfig();
-  const creds = await getGscCredentials(userId);
+  const creds = await getGscCredentials(userId, firebaseIdToken);
   return {
     connected: Boolean(creds?.refreshToken),
     connectedEmail: creds?.connectedEmail || null,
@@ -52,8 +136,11 @@ export async function getGscConnectionStatus(userId: string): Promise<GscConnect
   };
 }
 
-export async function getAccessTokenForUser(userId: string): Promise<string> {
-  const creds = await getGscCredentials(userId);
+export async function getAccessTokenForUser(
+  userId: string,
+  firebaseIdToken?: string,
+): Promise<string> {
+  const creds = await getGscCredentials(userId, firebaseIdToken);
   if (!creds) throw new Error("Google Search Console غير مربوط — اربط الحساب أولاً");
   const { clientId, clientSecret } = getGscOAuthConfig();
   return refreshGoogleAccessToken({

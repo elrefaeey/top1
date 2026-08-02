@@ -47,6 +47,22 @@ function readServiceAccount(): ServiceAccount {
   }
 }
 
+/** True when Admin REST service account JSON is configured. */
+export function hasFirebaseServiceAccount(): boolean {
+  return Boolean(process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim());
+}
+
+function resolveProjectId(): string {
+  if (hasFirebaseServiceAccount()) return readServiceAccount().project_id;
+  const id = (
+    process.env.FIREBASE_PROJECT_ID ||
+    process.env.VITE_FIREBASE_PROJECT_ID ||
+    ""
+  ).trim();
+  if (!id) throw new Error("VITE_FIREBASE_PROJECT_ID غير مُعد على السيرفر");
+  return id;
+}
+
 function toBase64Url(input: string): string {
   return Buffer.from(input, "utf8").toString("base64url");
 }
@@ -201,20 +217,55 @@ export async function upsertFirestoreDocument(
 ): Promise<void> {
   const sa = readServiceAccount();
   const token = await getAccessToken(sa);
-  const fieldPaths = Object.keys(data).filter((k) => data[k] !== undefined);
+  await patchFirestoreDocument({
+    projectId: sa.project_id,
+    accessToken: token,
+    collection,
+    documentId,
+    data,
+  });
+}
+
+/**
+ * Upsert via the signed-in user's ID token (subject to Firestore security rules).
+ * Used when FIREBASE_SERVICE_ACCOUNT_JSON is not configured (local OAuth callback).
+ */
+export async function upsertFirestoreDocumentAsUser(
+  idToken: string,
+  collection: string,
+  documentId: string,
+  data: FirestoreDocumentData,
+): Promise<void> {
+  await patchFirestoreDocument({
+    projectId: resolveProjectId(),
+    accessToken: idToken,
+    collection,
+    documentId,
+    data,
+  });
+}
+
+async function patchFirestoreDocument(input: {
+  projectId: string;
+  accessToken: string;
+  collection: string;
+  documentId: string;
+  data: FirestoreDocumentData;
+}): Promise<void> {
+  const fieldPaths = Object.keys(input.data).filter((k) => input.data[k] !== undefined);
   const mask = fieldPaths.map((p) => `updateMask.fieldPaths=${encodeURIComponent(p)}`).join("&");
   const url =
-    `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}` +
-    `/databases/(default)/documents/${encodeURIComponent(collection)}/${encodeURIComponent(documentId)}` +
+    `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(input.projectId)}` +
+    `/databases/(default)/documents/${encodeURIComponent(input.collection)}/${encodeURIComponent(input.documentId)}` +
     (mask ? `?${mask}` : "");
 
   const res = await fetch(url, {
     method: "PATCH",
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${input.accessToken}`,
       "content-type": "application/json",
     },
-    body: JSON.stringify({ fields: toFirestoreFields(data) }),
+    body: JSON.stringify({ fields: toFirestoreFields(input.data) }),
   });
 
   if (!res.ok) {
@@ -230,13 +281,41 @@ export async function getFirestoreDocument(
 ): Promise<(Record<string, unknown> & { id: string }) | null> {
   const sa = readServiceAccount();
   const token = await getAccessToken(sa);
+  return fetchFirestoreDocument({
+    projectId: sa.project_id,
+    accessToken: token,
+    collection,
+    documentId,
+  });
+}
+
+/** Read a document using the signed-in user's ID token (rules apply). */
+export async function getFirestoreDocumentAsUser(
+  idToken: string,
+  collection: string,
+  documentId: string,
+): Promise<(Record<string, unknown> & { id: string }) | null> {
+  return fetchFirestoreDocument({
+    projectId: resolveProjectId(),
+    accessToken: idToken,
+    collection,
+    documentId,
+  });
+}
+
+async function fetchFirestoreDocument(input: {
+  projectId: string;
+  accessToken: string;
+  collection: string;
+  documentId: string;
+}): Promise<(Record<string, unknown> & { id: string }) | null> {
   const url =
-    `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(sa.project_id)}` +
-    `/databases/(default)/documents/${encodeURIComponent(collection)}/${encodeURIComponent(documentId)}`;
+    `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(input.projectId)}` +
+    `/databases/(default)/documents/${encodeURIComponent(input.collection)}/${encodeURIComponent(input.documentId)}`;
 
   const res = await fetch(url, {
     method: "GET",
-    headers: { authorization: `Bearer ${token}` },
+    headers: { authorization: `Bearer ${input.accessToken}` },
   });
 
   if (res.status === 404) return null;

@@ -24,7 +24,7 @@ export const Route = createFileRoute("/api/seo/gsc/sync")({
 
           const idToken = extractBearerToken(request);
           const uid = await verifyFirebaseAdminRole(idToken);
-          const result = await syncGscSearchAnalytics(uid);
+          const result = await syncGscSearchAnalytics(uid, idToken);
 
           return applySecurityHeaders(
             Response.json(

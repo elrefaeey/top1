@@ -64,7 +64,10 @@ export function createOAuthState(uid: string, clientSecret: string): string {
   return `${payload}.${sig}`;
 }
 
-export function parseOAuthState(state: string, clientSecret: string): { uid: string } {
+export function parseOAuthState(
+  state: string,
+  clientSecret: string,
+): { uid: string; nonce: string } {
   const [payload, sig] = state.split(".");
   if (!payload || !sig) throw new Error("حالة OAuth غير صالحة");
 
@@ -78,10 +81,42 @@ export function parseOAuthState(state: string, clientSecret: string): { uid: str
   const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
     uid?: string;
     exp?: number;
+    n?: string;
   };
   if (!data.uid || typeof data.uid !== "string") throw new Error("حالة OAuth ناقصة");
   if (!data.exp || Date.now() > data.exp) throw new Error("انتهت صلاحية طلب الربط — أعد المحاولة");
-  return { uid: data.uid };
+  if (!data.n || typeof data.n !== "string") throw new Error("حالة OAuth ناقصة");
+  return { uid: data.uid, nonce: data.n };
+}
+
+/**
+ * In-process bridge for Firebase ID token between /connect and /callback.
+ * Cookie is still set for multi-instance hosts; this covers local single-process when Set-Cookie is dropped.
+ * Never log the token.
+ */
+const pendingFirebaseSessions = new Map<string, { idToken: string; exp: number }>();
+
+export function rememberGscFirebaseSession(state: string, idToken: string): void {
+  try {
+    const [payload] = state.split(".");
+    if (!payload) return;
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
+      n?: string;
+      exp?: number;
+    };
+    if (!data.n || !data.exp || !idToken) return;
+    pendingFirebaseSessions.set(data.n, { idToken, exp: data.exp });
+  } catch {
+    // ignore malformed state — connect still returns authorizeUrl
+  }
+}
+
+export function takeGscFirebaseSession(nonce: string): string | null {
+  const entry = pendingFirebaseSessions.get(nonce);
+  pendingFirebaseSessions.delete(nonce);
+  if (!entry) return null;
+  if (Date.now() > entry.exp) return null;
+  return entry.idToken;
 }
 
 function cryptoRandom(): string {
@@ -189,4 +224,34 @@ export function extractBearerToken(request: Request): string {
   const match = /^Bearer\s+(.+)$/i.exec(auth);
   if (!match?.[1]) throw new Error("غير مصرح — يلزم توكن مدير");
   return match[1].trim();
+}
+
+const GSC_FB_SESSION_COOKIE = "gsc_fb_session";
+
+/** HttpOnly cookie so OAuth callback can write gsc_credentials without service account. */
+export function buildGscFirebaseSessionCookie(request: Request, idToken: string): string {
+  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
+  // Max-Age 15m — matches OAuth state TTL. Never log the token.
+  return `${GSC_FB_SESSION_COOKIE}=${encodeURIComponent(idToken)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=900${secure}`;
+}
+
+export function clearGscFirebaseSessionCookie(request: Request): string {
+  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
+  return `${GSC_FB_SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
+}
+
+export function readGscFirebaseSessionCookie(request: Request): string | null {
+  const raw = request.headers.get("cookie") ?? "";
+  const parts = raw.split(";").map((p) => p.trim());
+  for (const part of parts) {
+    if (!part.startsWith(`${GSC_FB_SESSION_COOKIE}=`)) continue;
+    const value = part.slice(GSC_FB_SESSION_COOKIE.length + 1);
+    try {
+      const token = decodeURIComponent(value).trim();
+      return token || null;
+    } catch {
+      return null;
+    }
+  }
+  return null;
 }

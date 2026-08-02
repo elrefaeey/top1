@@ -135,10 +135,21 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
-    // GSC OAuth credentials — refresh tokens. Admin read only; all writes via Admin REST.
-    match /gsc_credentials/{docId} {
-      allow read: if isAdmin() && request.auth.uid == resource.data.userId;
-      allow create, update, delete: if false;
+    // GSC OAuth credentials — refresh tokens.
+    // Admin may read/write ONLY their own doc (docId == auth.uid). No public access.
+    // Service account (Admin REST) still bypasses rules when configured.
+    match /gsc_credentials/{userId} {
+      allow read: if isAdmin() && request.auth.uid == userId;
+      allow create, update: if isAdmin()
+        && request.auth.uid == userId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.keys().hasOnly(['userId', 'refreshToken', 'connectedEmail', 'createdAt', 'updatedAt'])
+        && request.resource.data.refreshToken is string
+        && request.resource.data.refreshToken.size() > 0
+        && request.resource.data.connectedEmail is string
+        && request.resource.data.createdAt is string
+        && request.resource.data.updatedAt is string;
+      allow delete: if false;
     }
 
     // Deny anything not explicitly matched above.
