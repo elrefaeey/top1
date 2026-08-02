@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -31,7 +31,7 @@ function AdminServicesList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="الخدمات"
         description="إدارة خدمات الموقع — العنوان، SEO، والترتيب."

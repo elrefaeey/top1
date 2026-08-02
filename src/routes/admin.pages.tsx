@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { ExternalLink, Pencil } from "lucide-react";
 import {
   AdminActionLink,
@@ -53,7 +53,7 @@ function AdminPagesList() {
   const extraPages = cmsPages.filter((p) => !STATIC_SLUGS.has(p.slug) && !STATIC_SLUGS.has(p.id));
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="الصفحات"
         description="إدارة صفحات الموقع وإعدادات SEO لكل صفحة."

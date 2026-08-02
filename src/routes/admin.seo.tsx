@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   AdminCard,
@@ -79,7 +79,7 @@ function AdminSeoPage() {
   }
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="SEO"
         description="تقييم شامل لعناوين الصفحات، الوصف، Schema، والصور."
@@ -112,7 +112,7 @@ function AdminSeoPage() {
 
       <AdminSection title="الخدمات" description="حالة النشر وعناوين SEO للخدمات.">
         <AdminTableCard>
-          <Table className="table-fixed">
+          <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[35%]">العنوان</TableHead>
@@ -150,7 +150,7 @@ function AdminSeoPage() {
 
       <AdminSection title="المقالات" description="حالة النشر وعناوين SEO للمدونة.">
         <AdminTableCard>
-          <Table className="table-fixed">
+          <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[35%]">العنوان</TableHead>

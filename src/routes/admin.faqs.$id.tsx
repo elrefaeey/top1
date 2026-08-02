@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import type { FaqItem, PublishStatus } from "@/types/cms";
 import {
@@ -54,7 +54,7 @@ function AdminFaqEdit() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader title={isNew ? "سؤال جديد" : "تعديل سؤال"} backTo="/admin/faqs" />
       <form onSubmit={handleSubmit} className="space-y-6">

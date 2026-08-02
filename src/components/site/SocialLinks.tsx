@@ -24,8 +24,8 @@ export function SocialLinks({
 
   const btnClass =
     variant === "footer"
-      ? "grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-white/70 hover:text-white hover:bg-white/10 hover:border-white/25 transition-colors"
-      : "grid h-9 w-9 place-items-center rounded-md border border-border bg-surface text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors";
+      ? "grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/5 text-white/70 hover:text-white hover:bg-white/10 hover:border-white/25 transition-colors"
+      : "grid h-11 w-11 place-items-center rounded-md border border-border bg-surface text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors";
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { PublishStatus, Testimonial } from "@/types/cms";
 import {
@@ -58,7 +58,7 @@ function AdminTestimonialEdit() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader title={isNew ? "رأي جديد" : "تعديل رأي"} backTo="/admin/testimonials" />
       <form onSubmit={handleSubmit} className="space-y-6">

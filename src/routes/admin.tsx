@@ -103,13 +103,13 @@ function AdminGate() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-dvh bg-background">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-muted/30">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur md:hidden">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
           <button
             type="button"
-            className="rounded-lg border border-border p-2 text-foreground hover:bg-accent/60"
+            className="grid h-11 w-11 place-items-center rounded-lg border border-border text-foreground hover:bg-accent/60"
             aria-label="فتح القائمة"
             aria-expanded={sidebarOpen}
             onClick={() => setSidebarOpen(true)}
@@ -123,7 +123,7 @@ function AdminGate() {
           </div>
         </header>
         <AdminFirestoreBanner />
-        <div className="mx-auto w-full min-w-0 max-w-6xl">
+        <div className="mx-auto w-full min-w-0 max-w-6xl pb-[max(1rem,env(safe-area-inset-bottom))]">
           <Outlet />
         </div>
       </main>

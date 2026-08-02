@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { SiteSettings } from "@/types/cms";
 import {
@@ -77,7 +77,7 @@ function AdminSettingsPage() {
   }
 
   return (
-    <div className="w-full max-w-5xl p-6 md:p-8 lg:max-w-6xl">
+    <div className="w-full max-w-5xl p-4 sm:p-6 md:p-8 lg:max-w-6xl">
       <AdminFetchingBar show={isFetching && !data} />
       <AdminPageHeader
         title="إعدادات الموقع"

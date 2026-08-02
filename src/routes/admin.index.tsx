@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   FileText,
   Briefcase,
@@ -88,7 +88,7 @@ function AdminDashboard() {
   ];
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <div className="mb-8">
         <span className="eyebrow">لوحة التحكم</span>
         <h1 className="mt-3 text-2xl font-bold tracking-tight">

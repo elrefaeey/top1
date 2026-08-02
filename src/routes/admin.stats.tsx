@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { Pencil, Trash2 } from "lucide-react";
 import {
   AdminEmpty,
@@ -29,7 +29,7 @@ function AdminStatsList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="الإحصائيات"
         description="أرقام قسم الإحصائيات في الصفحة الرئيسية."
@@ -72,14 +72,14 @@ function AdminStatsList() {
                       <Link
                         to="/admin/stats/$id"
                         params={{ id: s.id }}
-                        className="grid h-8 w-8 place-items-center rounded-md hover:bg-accent"
+                        className="grid h-11 w-11 place-items-center rounded-md hover:bg-accent"
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </Link>
                       <button
                         type="button"
                         onClick={() => confirm("حذف؟") && del.mutate(s.id)}
-                        className="grid h-8 w-8 place-items-center rounded-md hover:bg-destructive/10 text-destructive"
+                        className="grid h-11 w-11 place-items-center rounded-md hover:bg-destructive/10 text-destructive"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>

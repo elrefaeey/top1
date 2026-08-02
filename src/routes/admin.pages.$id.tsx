@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import type { CmsPage, PublishStatus } from "@/types/cms";
 import {
@@ -82,7 +82,7 @@ function AdminPageEdit() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader title={`SEO — ${form.title}`} backTo="/admin/pages" />
       {saveError && (

@@ -61,10 +61,15 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose?.();
+    };
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, onClose]);
 
   return (
     <>
@@ -85,13 +90,14 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           // Desktop/laptop: sticky full-height column so footer stays visible
           "md:sticky md:top-0 md:z-auto md:h-dvh md:max-w-none md:translate-x-0",
           // Mobile: off-canvas drawer (transforms ONLY below md — avoids RTL conflict)
-          "fixed inset-y-0 start-0 z-50 h-dvh max-w-[85vw] transition-transform duration-200 ease-out",
+          "fixed inset-y-0 start-0 z-50 h-dvh max-w-[min(85vw,20rem)] transition-transform duration-200 ease-out",
+          "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
           open
             ? "translate-x-0"
             : "max-md:ltr:-translate-x-full max-md:rtl:translate-x-full",
         )}
       >
-        <div className="flex shrink-0 items-start justify-between gap-2 border-b border-border px-5 py-5">
+        <div className="flex shrink-0 items-start justify-between gap-2 border-b border-border px-4 py-4 sm:px-5 sm:py-5">
           <div className="min-w-0">
             <Link
               to="/admin"
@@ -107,7 +113,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           </div>
           <button
             type="button"
-            className="rounded-lg p-2 text-muted-foreground hover:bg-accent/60 hover:text-foreground md:hidden"
+            className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground hover:bg-accent/60 hover:text-foreground md:hidden"
             aria-label="إغلاق القائمة"
             onClick={onClose}
           >
@@ -124,7 +130,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
                 to={to}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                  "flex min-h-11 items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors",
                   active
                     ? "bg-accent font-medium text-foreground"
                     : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",

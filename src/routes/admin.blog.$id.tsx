@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { BlogPost, PublishStatus } from "@/types/cms";
 import {
@@ -79,7 +79,7 @@ function AdminBlogEdit() {
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-3xl">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader title={isNew ? "مقال جديد" : "تعديل مقال"} backTo="/admin/blog" />
       <form onSubmit={handleSubmit} className="space-y-6">

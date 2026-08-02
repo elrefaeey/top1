@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -30,7 +30,7 @@ function AdminPortfolioList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="أعمالنا"
         description="إدارة مشاريع Portfolio."
@@ -49,7 +49,7 @@ function AdminPortfolioList() {
       )}
       {data.length > 0 && (
         <AdminTableCard>
-          <Table className="table-fixed">
+          <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[40%]">العنوان</TableHead>

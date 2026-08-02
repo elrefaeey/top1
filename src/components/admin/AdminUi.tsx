@@ -31,21 +31,27 @@ export function AdminPageHeader({
   actionLabel?: string;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-      <div>
+    <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
+      <div className="min-w-0">
         {backTo && (
           <Link
             to={backTo}
-            className="mb-2 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary"
+            className="mb-2 inline-flex min-h-11 items-center gap-1 text-sm text-muted-foreground hover:text-primary"
           >
             <ArrowRight className="h-3.5 w-3.5 rtl-flip" /> {backLabel}
           </Link>
         )}
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-        {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
+        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
+        {description && (
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        )}
       </div>
       {actionTo && actionLabel && (
-        <Link to={actionTo} params={actionParams} className="btn-primary !py-2.5 !px-4 !text-sm">
+        <Link
+          to={actionTo}
+          params={actionParams}
+          className="btn-primary inline-flex w-full justify-center !py-2.5 !px-4 !text-sm sm:w-auto"
+        >
           <Plus className="h-4 w-4" /> {actionLabel}
         </Link>
       )}
@@ -123,7 +129,7 @@ export function adminInputClass(extra = "") {
 }
 
 export function AdminCard({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("surface-card p-5 md:p-6", className)}>{children}</div>;
+  return <div className={cn("surface-card p-4 sm:p-5 md:p-6", className)}>{children}</div>;
 }
 
 export function AdminLoading() {
@@ -310,7 +316,7 @@ export function AdminSection({
   );
 }
 
-/** جدول داخل بطاقة مع تنسيق موحّد */
+/** جدول داخل بطاقة — يسمح بالتمرير الأفقي على الموبايل */
 export function AdminTableCard({
   children,
   className,
@@ -318,7 +324,16 @@ export function AdminTableCard({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn("surface-card overflow-hidden", className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        "surface-card max-w-full overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }
 
 export function AdminActionLink({
@@ -372,8 +387,9 @@ export function AdminRowActions({
       <Link
         to={editTo}
         params={editParams}
-        className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
         title="تحرير"
+        aria-label="تحرير"
       >
         <Pencil className="h-4 w-4" />
       </Link>
@@ -381,8 +397,9 @@ export function AdminRowActions({
         <button
           type="button"
           onClick={onDelete}
-          className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+          className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
           title={deleteLabel}
+          aria-label={deleteLabel}
         >
           <Trash2 className="h-4 w-4" />
         </button>

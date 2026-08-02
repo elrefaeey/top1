@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -35,7 +35,7 @@ function AdminLeadsList() {
   const { data = [], isFetching } = useAdminLeads();
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="الرسائل"
         description="استفسارات الزوار من نموذج التواصل — الاسم ورقم الجوال والرسالة."

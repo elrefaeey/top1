@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BarChart3,
@@ -279,7 +279,7 @@ function AdminSeoAiPage() {
   }
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <AdminPageHeader
         title="SEO AI"
         description="ربط Search Console، مزامنة الأداء، مراجعة الفرص، ثم نشر المسودات يدوياً."
@@ -394,7 +394,7 @@ function AdminSeoAiPage() {
           <AdminEmpty message="لا توجد بيانات بعد. اربط GSC ثم اضغط مزامنة." />
         ) : (
           <AdminTableCard>
-            <Table className="table-fixed">
+            <Table className="min-w-[40rem]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[28%]">الاستعلام</TableHead>
