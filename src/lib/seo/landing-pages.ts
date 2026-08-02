@@ -95,7 +95,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل الموقع محسّن لمحركات البحث من البداية؟",
         answer:
           "نعم — نضبط العناوين، البنية، السرعة، والبيانات المنظمة (Schema) من اليوم الأول حتى يكون الموقع جاهزاً للفهرسة.",
-      }
+      },
     ],
     relatedServiceSlug: "web-design",
     relatedLinks: WEB_DESIGN_LOCATION_LINKS,
@@ -159,7 +159,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "كم يستغرق مشروع تصميم موقع لشركة في الرياض؟",
         answer:
           "غالباً 2–4 أسابيع للموقع التعريفي. المشاريع الأكبر أو المتكاملة مع حملات إعلانية تُجدول حسب النطاق والمتطلبات.",
-      }
+      },
     ],
     relatedServiceSlug: "web-design",
     areaServed: [
@@ -227,7 +227,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل يناسب الموقع الشركات الصغيرة في القصيم؟",
         answer:
           "نعم. نبدأ بنطاق عملي: موقع واضح + قنوات تواصل + أساس SEO، ثم نوسّع المتجر أو الحملات عند الحاجة.",
-      }
+      },
     ],
     relatedServiceSlug: "web-design",
     areaServed: [
@@ -296,7 +296,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل يمكن ربط الموقع بواتساب ونماذج تواصل؟",
         answer:
           "نعم — نجهّز أزرار واتساب ونماذج استفسار واضحة لتقليل احتكاك التحويل وزيادة طلبات الخدمة.",
-      }
+      },
     ],
     relatedServiceSlug: "web-design",
     areaServed: [
@@ -365,9 +365,8 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
       {
         question: "هل يشمل SEO تقارير شهرية؟",
-        answer:
-          "نعم — نشارك مؤشرات الترتيب والزيارات والفرص التالية بتقارير شهرية واضحة بالعربية.",
-      }
+        answer: "نعم — نشارك مؤشرات الترتيب والزيارات والفرص التالية بتقارير شهرية واضحة بالعربية.",
+      },
     ],
     relatedServiceSlug: "seo",
     areaServed: [
@@ -437,7 +436,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل SEO في الرياض يحتاج ميزانية إعلانات أيضاً؟",
         answer:
           "ليس شرطاً. كثير من المشاريع تبدأ بـ SEO عضوي، ويمكن إضافة إعلانات لاحقاً لتسريع النتائج في الكلمات التنافسية.",
-      }
+      },
     ],
     relatedServiceSlug: "seo",
     areaServed: [
@@ -504,9 +503,8 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
       {
         question: "هل تناسب خدمات SEO المتاجر المحلية في القصيم؟",
-        answer:
-          "نعم — خصوصاً مع Local SEO وصفحات خدمات واضحة وربط صحيح ببيانات النشاط التجاري.",
-      }
+        answer: "نعم — خصوصاً مع Local SEO وصفحات خدمات واضحة وربط صحيح ببيانات النشاط التجاري.",
+      },
     ],
     relatedServiceSlug: "seo",
     areaServed: [
@@ -575,7 +573,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "كيف أبدأ خدمة SEO مع Top1Markting من بريدة؟",
         answer:
           "تواصل عبر واتساب أو النموذج — نراجع موقعك سريعاً ونقترح أولويات واضحة قبل أي التزام طويل.",
-      }
+      },
     ],
     relatedServiceSlug: "seo",
     areaServed: [
@@ -646,7 +644,7 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
         question: "هل المتجر يدعم الدفع والشحن في السعودية؟",
         answer:
           "نعم — نربط بوابات دفع وخيارات شحن شائعة في السوق السعودي حسب منصة المتجر والمتطلبات.",
-      }
+      },
     ],
     relatedServiceSlug: "web-apps",
     areaServed: [
@@ -722,9 +720,8 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       },
       {
         question: "هل يمكن الجمع بين التسويق الرقمي وSEO؟",
-        answer:
-          "نعم — غالباً هذا أفضل مسار: إعلانات سريعة النتائج مع SEO يبني أصولاً طويلة الأمد.",
-      }
+        answer: "نعم — غالباً هذا أفضل مسار: إعلانات سريعة النتائج مع SEO يبني أصولاً طويلة الأمد.",
+      },
     ],
     relatedServiceSlug: "digital-solutions",
     areaServed: [
