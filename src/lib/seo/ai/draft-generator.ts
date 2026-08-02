@@ -11,13 +11,17 @@ function pickInternalLinks(keyword: string): Array<{ label: string; href: string
   const scored = pool.map((link) => {
     let score = 0;
     if (/seo|تحسين/i.test(hay) && /seo/i.test(link.href + link.label)) score += 3;
-    if (/تصميم|مواقع|موقع/i.test(hay) && /web-design|تصميم/i.test(link.href + link.label)) score += 3;
+    if (/تصميم|مواقع|موقع/i.test(hay) && /web-design|تصميم/i.test(link.href + link.label))
+      score += 3;
     if (/رياض/i.test(hay) && /riyadh|رياض/i.test(link.href + link.label)) score += 2;
     if (/متجر|تجارة/i.test(hay) && /ecommerce|متاجر/i.test(link.href + link.label)) score += 2;
     return { link, score };
   });
   scored.sort((a, b) => b.score - a.score);
-  const chosen = scored.filter((s) => s.score > 0).slice(0, 3).map((s) => s.link);
+  const chosen = scored
+    .filter((s) => s.score > 0)
+    .slice(0, 3)
+    .map((s) => s.link);
   if (chosen.length >= 3) return chosen;
   return [
     ...chosen,
@@ -143,9 +147,7 @@ export async function generateBlogDraftFromInsight(
   insight: SeoInsight,
 ): Promise<{ input: AiBlogDraftInput; provider: string }> {
   const fallbackTitle =
-    insight.suggested_title?.trim() ||
-    insight.title?.trim() ||
-    `دليل: ${insight.keyword}`.trim();
+    insight.suggested_title?.trim() || insight.title?.trim() || `دليل: ${insight.keyword}`.trim();
 
   if (!hasLlmConfigured()) {
     const content = demoteArticleH1(
@@ -166,7 +168,10 @@ export async function generateBlogDraftFromInsight(
         tags: [insight.keyword.slice(0, 40), "السعودية", "الرياض"].filter(Boolean),
         author: SITE_NAME,
         metaTitle: fallbackTitle.slice(0, 60),
-        metaDescription: (insight.opportunity || insight.description || fallbackTitle).slice(0, 160),
+        metaDescription: (insight.opportunity || insight.description || fallbackTitle).slice(
+          0,
+          160,
+        ),
         featuredImageAlt: fallbackTitle,
         status: "draft",
       },
@@ -224,10 +229,8 @@ export async function generateBlogDraftFromInsight(
       tags,
       author: SITE_NAME,
       metaTitle: parsed.metaTitle != null ? String(parsed.metaTitle) : title,
-      metaDescription:
-        parsed.metaDescription != null ? String(parsed.metaDescription) : undefined,
-      featuredImageAlt:
-        parsed.featuredImageAlt != null ? String(parsed.featuredImageAlt) : title,
+      metaDescription: parsed.metaDescription != null ? String(parsed.metaDescription) : undefined,
+      featuredImageAlt: parsed.featuredImageAlt != null ? String(parsed.featuredImageAlt) : title,
       status: "draft",
     },
   };

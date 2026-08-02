@@ -224,7 +224,10 @@ function About() {
       </section>
 
       {/* Offers */}
-      <section className="section border-y border-border bg-surface" aria-labelledby="about-offers-heading">
+      <section
+        className="section border-y border-border bg-surface"
+        aria-labelledby="about-offers-heading"
+      >
         <div className="container-page">
           <div className="page-intro-block me-auto w-full text-start">
             <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
@@ -283,7 +286,8 @@ function About() {
               بدأنا مؤخراً — ونبني معك من اليوم.
             </h2>
             <p className="page-intro-desc mt-3 !max-w-none">
-              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
+              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة
+              بخطوة.
             </p>
           </div>
           <ol className="section-body grid list-none gap-5 p-0 md:grid-cols-3">
