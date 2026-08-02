@@ -11,6 +11,7 @@ import {
   Inbox,
   Settings,
   Search,
+  Sparkles,
   LogOut,
   BarChart3,
   X,
@@ -31,6 +32,7 @@ const navItems = [
   { to: "/admin/stats", label: "الإحصائيات", icon: BarChart3 },
   { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle },
   { to: "/admin/seo", label: "SEO", icon: Search },
+  { to: "/admin/seo-ai", label: "SEO AI", icon: Sparkles },
   { to: "/admin/settings", label: "الإعدادات", icon: Settings },
 ];
 

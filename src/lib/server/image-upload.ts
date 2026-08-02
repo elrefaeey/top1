@@ -159,7 +159,8 @@ export async function handleImageUploadRequest(request: Request): Promise<Respon
     const file = form.get("file");
     const folder = String(form.get("folder") ?? "misc").replace(/[^a-zA-Z0-9_-]/g, "");
 
-    if (!(file instanceof File) && !(file instanceof Blob)) {
+    // File extends Blob — check Blob first so TS does not narrow to string|null.
+    if (!(file instanceof Blob)) {
       return Response.json({ error: "لم تُرسل صورة" }, { status: 400 });
     }
 

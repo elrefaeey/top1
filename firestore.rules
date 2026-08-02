@@ -115,6 +115,32 @@ service cloud.firestore {
       allow read, update, delete: if isEditor();
     }
 
+    // AI SEO Growth — client cannot create/delete; Admin REST (service account) bypasses rules.
+    // Editors may read for Admin SEO AI UI; insights status can be updated for workflow.
+    match /seo_insights/{docId} {
+      allow read: if isEditor();
+      allow create, delete: if false;
+      allow update: if isEditor()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && request.resource.data.status in ['pending', 'reviewed', 'completed'];
+    }
+
+    match /gsc_snapshots/{docId} {
+      allow read: if isEditor();
+      allow create, update, delete: if false;
+    }
+
+    match /ai_logs/{docId} {
+      allow read: if isEditor();
+      allow create, update, delete: if false;
+    }
+
+    // GSC OAuth credentials — refresh tokens. Admin read only; all writes via Admin REST.
+    match /gsc_credentials/{docId} {
+      allow read: if isAdmin() && request.auth.uid == resource.data.userId;
+      allow create, update, delete: if false;
+    }
+
     // Deny anything not explicitly matched above.
     match /{document=**} {
       allow read, write: if false;

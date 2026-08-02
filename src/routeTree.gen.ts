@@ -46,6 +46,7 @@ import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonia
 import { Route as AdminStatsRouteImport } from './routes/admin.stats'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
+import { Route as AdminSeoAiRouteImport } from './routes/admin.seo-ai'
 import { Route as AdminSeoRouteImport } from './routes/admin.seo'
 import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminPortfolioRouteImport } from './routes/admin.portfolio'
@@ -54,6 +55,9 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
+import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
+import { Route as ApiSeoCreateDraftRouteImport } from './routes/api/seo.create-draft'
 import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
@@ -63,6 +67,10 @@ import { Route as AdminPortfolioIdRouteImport } from './routes/admin.portfolio.$
 import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
+import { Route as ApiSeoGscSyncRouteImport } from './routes/api/seo.gsc.sync'
+import { Route as ApiSeoGscStatusRouteImport } from './routes/api/seo.gsc.status'
+import { Route as ApiSeoGscConnectRouteImport } from './routes/api/seo.gsc.connect'
+import { Route as ApiSeoGscCallbackRouteImport } from './routes/api/seo.gsc.callback'
 
 const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
   id: '/web-design-saudi-arabia',
@@ -249,6 +257,11 @@ const AdminServicesRoute = AdminServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSeoAiRoute = AdminSeoAiRouteImport.update({
+  id: '/seo-ai',
+  path: '/seo-ai',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSeoRoute = AdminSeoRouteImport.update({
   id: '/seo',
   path: '/seo',
@@ -288,6 +301,21 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
   getParentRoute: () => AdminRoute,
+} as any)
+const ApiSeoInsightsRoute = ApiSeoInsightsRouteImport.update({
+  id: '/api/seo/insights',
+  path: '/api/seo/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSeoGscRoute = ApiSeoGscRouteImport.update({
+  id: '/api/seo/gsc',
+  path: '/api/seo/gsc',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSeoCreateDraftRoute = ApiSeoCreateDraftRouteImport.update({
+  id: '/api/seo/create-draft',
+  path: '/api/seo/create-draft',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCmsResourceRoute = ApiCmsResourceRouteImport.update({
   id: '/api/cms/$resource',
@@ -334,6 +362,26 @@ const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminBlogRoute,
 } as any)
+const ApiSeoGscSyncRoute = ApiSeoGscSyncRouteImport.update({
+  id: '/sync',
+  path: '/sync',
+  getParentRoute: () => ApiSeoGscRoute,
+} as any)
+const ApiSeoGscStatusRoute = ApiSeoGscStatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => ApiSeoGscRoute,
+} as any)
+const ApiSeoGscConnectRoute = ApiSeoGscConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => ApiSeoGscRoute,
+} as any)
+const ApiSeoGscCallbackRoute = ApiSeoGscCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => ApiSeoGscRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -369,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
   '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
+  '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
@@ -390,6 +439,13 @@ export interface FileRoutesByFullPath {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
+  '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
+  '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
+  '/api/seo/gsc/sync': typeof ApiSeoGscSyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -424,6 +480,7 @@ export interface FileRoutesByTo {
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
   '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
+  '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
@@ -445,6 +502,13 @@ export interface FileRoutesByTo {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
+  '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
+  '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
+  '/api/seo/gsc/sync': typeof ApiSeoGscSyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -481,6 +545,7 @@ export interface FileRoutesById {
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
   '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
+  '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/stats': typeof AdminStatsRouteWithChildren
@@ -502,6 +567,13 @@ export interface FileRoutesById {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
+  '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
+  '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
+  '/api/seo/gsc/sync': typeof ApiSeoGscSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -539,6 +611,7 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/pricing'
     | '/admin/seo'
+    | '/admin/seo-ai'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/stats'
@@ -560,6 +633,13 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/create-draft'
+    | '/api/seo/gsc'
+    | '/api/seo/insights'
+    | '/api/seo/gsc/callback'
+    | '/api/seo/gsc/connect'
+    | '/api/seo/gsc/status'
+    | '/api/seo/gsc/sync'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -594,6 +674,7 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/pricing'
     | '/admin/seo'
+    | '/admin/seo-ai'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/stats'
@@ -615,6 +696,13 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/create-draft'
+    | '/api/seo/gsc'
+    | '/api/seo/insights'
+    | '/api/seo/gsc/callback'
+    | '/api/seo/gsc/connect'
+    | '/api/seo/gsc/status'
+    | '/api/seo/gsc/sync'
   id:
     | '__root__'
     | '/'
@@ -650,6 +738,7 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/pricing'
     | '/admin/seo'
+    | '/admin/seo-ai'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/stats'
@@ -671,6 +760,13 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/create-draft'
+    | '/api/seo/gsc'
+    | '/api/seo/insights'
+    | '/api/seo/gsc/callback'
+    | '/api/seo/gsc/connect'
+    | '/api/seo/gsc/status'
+    | '/api/seo/gsc/sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -704,6 +800,9 @@ export interface RootRouteChildren {
   ApiUploadImageRoute: typeof ApiUploadImageRoute
   MediaIdRoute: typeof MediaIdRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
+  ApiSeoCreateDraftRoute: typeof ApiSeoCreateDraftRoute
+  ApiSeoGscRoute: typeof ApiSeoGscRouteWithChildren
+  ApiSeoInsightsRoute: typeof ApiSeoInsightsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -967,6 +1066,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/seo-ai': {
+      id: '/admin/seo-ai'
+      path: '/seo-ai'
+      fullPath: '/admin/seo-ai'
+      preLoaderRoute: typeof AdminSeoAiRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/seo': {
       id: '/admin/seo'
       path: '/seo'
@@ -1022,6 +1128,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/seo/insights': {
+      id: '/api/seo/insights'
+      path: '/api/seo/insights'
+      fullPath: '/api/seo/insights'
+      preLoaderRoute: typeof ApiSeoInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/seo/gsc': {
+      id: '/api/seo/gsc'
+      path: '/api/seo/gsc'
+      fullPath: '/api/seo/gsc'
+      preLoaderRoute: typeof ApiSeoGscRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/seo/create-draft': {
+      id: '/api/seo/create-draft'
+      path: '/api/seo/create-draft'
+      fullPath: '/api/seo/create-draft'
+      preLoaderRoute: typeof ApiSeoCreateDraftRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/cms/$resource': {
       id: '/api/cms/$resource'
@@ -1085,6 +1212,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/blog/$id'
       preLoaderRoute: typeof AdminBlogIdRouteImport
       parentRoute: typeof AdminBlogRoute
+    }
+    '/api/seo/gsc/sync': {
+      id: '/api/seo/gsc/sync'
+      path: '/sync'
+      fullPath: '/api/seo/gsc/sync'
+      preLoaderRoute: typeof ApiSeoGscSyncRouteImport
+      parentRoute: typeof ApiSeoGscRoute
+    }
+    '/api/seo/gsc/status': {
+      id: '/api/seo/gsc/status'
+      path: '/status'
+      fullPath: '/api/seo/gsc/status'
+      preLoaderRoute: typeof ApiSeoGscStatusRouteImport
+      parentRoute: typeof ApiSeoGscRoute
+    }
+    '/api/seo/gsc/connect': {
+      id: '/api/seo/gsc/connect'
+      path: '/connect'
+      fullPath: '/api/seo/gsc/connect'
+      preLoaderRoute: typeof ApiSeoGscConnectRouteImport
+      parentRoute: typeof ApiSeoGscRoute
+    }
+    '/api/seo/gsc/callback': {
+      id: '/api/seo/gsc/callback'
+      path: '/callback'
+      fullPath: '/api/seo/gsc/callback'
+      preLoaderRoute: typeof ApiSeoGscCallbackRouteImport
+      parentRoute: typeof ApiSeoGscRoute
     }
   }
 }
@@ -1193,6 +1348,7 @@ interface AdminRouteChildren {
   AdminPortfolioRoute: typeof AdminPortfolioRouteWithChildren
   AdminPricingRoute: typeof AdminPricingRouteWithChildren
   AdminSeoRoute: typeof AdminSeoRoute
+  AdminSeoAiRoute: typeof AdminSeoAiRoute
   AdminServicesRoute: typeof AdminServicesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminStatsRoute: typeof AdminStatsRouteWithChildren
@@ -1209,6 +1365,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPortfolioRoute: AdminPortfolioRouteWithChildren,
   AdminPricingRoute: AdminPricingRouteWithChildren,
   AdminSeoRoute: AdminSeoRoute,
+  AdminSeoAiRoute: AdminSeoAiRoute,
   AdminServicesRoute: AdminServicesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminStatsRoute: AdminStatsRouteWithChildren,
@@ -1252,6 +1409,24 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
+interface ApiSeoGscRouteChildren {
+  ApiSeoGscCallbackRoute: typeof ApiSeoGscCallbackRoute
+  ApiSeoGscConnectRoute: typeof ApiSeoGscConnectRoute
+  ApiSeoGscStatusRoute: typeof ApiSeoGscStatusRoute
+  ApiSeoGscSyncRoute: typeof ApiSeoGscSyncRoute
+}
+
+const ApiSeoGscRouteChildren: ApiSeoGscRouteChildren = {
+  ApiSeoGscCallbackRoute: ApiSeoGscCallbackRoute,
+  ApiSeoGscConnectRoute: ApiSeoGscConnectRoute,
+  ApiSeoGscStatusRoute: ApiSeoGscStatusRoute,
+  ApiSeoGscSyncRoute: ApiSeoGscSyncRoute,
+}
+
+const ApiSeoGscRouteWithChildren = ApiSeoGscRoute._addFileChildren(
+  ApiSeoGscRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
@@ -1283,6 +1458,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiUploadImageRoute: ApiUploadImageRoute,
   MediaIdRoute: MediaIdRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
+  ApiSeoCreateDraftRoute: ApiSeoCreateDraftRoute,
+  ApiSeoGscRoute: ApiSeoGscRouteWithChildren,
+  ApiSeoInsightsRoute: ApiSeoInsightsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

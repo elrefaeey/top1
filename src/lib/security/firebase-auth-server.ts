@@ -26,6 +26,24 @@ export async function verifyFirebaseIdToken(idToken: string): Promise<string> {
 
 export async function verifyFirebaseEditorRole(idToken: string): Promise<string> {
   const uid = await verifyFirebaseIdToken(idToken);
+  const role = await readUserRole(uid, idToken);
+  if (role !== "admin" && role !== "editor") {
+    throw new Error("لا توجد صلاحية رفع — يتطلب دور محرر أو مدير");
+  }
+  return uid;
+}
+
+/** Admin-only (not editor). Used for GSC OAuth connect / credential access. */
+export async function verifyFirebaseAdminRole(idToken: string): Promise<string> {
+  const uid = await verifyFirebaseIdToken(idToken);
+  const role = await readUserRole(uid, idToken);
+  if (role !== "admin") {
+    throw new Error("يتطلب صلاحية مدير (admin) لربط Google Search Console");
+  }
+  return uid;
+}
+
+async function readUserRole(uid: string, idToken: string): Promise<string | undefined> {
   const projectId = env("FIREBASE_PROJECT_ID") || env("VITE_FIREBASE_PROJECT_ID");
   if (!projectId) throw new Error("Firebase project id missing on server");
 
@@ -34,15 +52,10 @@ export async function verifyFirebaseEditorRole(idToken: string): Promise<string>
     { headers: { Authorization: `Bearer ${idToken}` } },
   );
 
-  if (!docRes.ok) throw new Error("لا توجد صلاحية رفع — حساب غير مصرح");
+  if (!docRes.ok) throw new Error("لا توجد صلاحية — حساب غير مصرح");
 
   const doc = (await docRes.json()) as {
     fields?: { role?: { stringValue?: string } };
   };
-  const role = doc.fields?.role?.stringValue;
-  if (role !== "admin" && role !== "editor") {
-    throw new Error("لا توجد صلاحية رفع — يتطلب دور محرر أو مدير");
-  }
-
-  return uid;
+  return doc.fields?.role?.stringValue;
 }

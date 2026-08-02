@@ -14,4 +14,10 @@ export const COLLECTIONS = {
   siteStats: "site_stats",
   leads: "leads",
   media: "media",
+  /** AI SEO Growth — server-written; editors may read (see firestore.rules) */
+  seoInsights: "seo_insights",
+  gscSnapshots: "gsc_snapshots",
+  aiLogs: "ai_logs",
+  /** GSC OAuth refresh tokens — admin-only; server writes via Admin REST */
+  gscCredentials: "gsc_credentials",
 } as const;
