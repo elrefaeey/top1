@@ -18,7 +18,7 @@ const QUICK_LINKS = [
   { label: "تواصل", href: "/contact" },
 ];
 
-const FOOTER_LANDING_LINKS = FOOTER_SEO_LINKS.slice(0, 6);
+const FOOTER_LANDING_LINKS = FOOTER_SEO_LINKS.slice(0, 9);
 
 const LEGAL_LINKS = [
   { label: "سياسة الخصوصية", href: "/privacy" },
