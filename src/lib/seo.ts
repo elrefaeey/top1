@@ -397,6 +397,12 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:type", content: input.type ?? "website" },
     { property: "og:image", content: image },
     { property: "og:image:alt", content: input.title },
+    ...(image.endsWith(SITE_OG_IMAGE_URL) || image.includes("/og-default.jpg")
+      ? [
+          { property: "og:image:width", content: "1200" },
+          { property: "og:image:height", content: "630" },
+        ]
+      : []),
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:locale", content: "ar_SA" },
     { name: "twitter:card", content: "summary_large_image" },
