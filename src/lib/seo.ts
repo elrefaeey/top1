@@ -62,6 +62,10 @@ export function resolveStaticPageOgImage(
 function resolveCanonicalUrl(path: string, cms?: CmsPageHeadFields | null): string {
   const custom = cms?.canonicalUrl?.trim();
   if (custom) {
+    // Accept absolute https URLs or root-relative paths from CMS.
+    if (custom.startsWith("/") && !custom.startsWith("//")) {
+      return absoluteUrl(custom);
+    }
     try {
       const parsed = new URL(custom);
       if (parsed.protocol === "https:" && parsed.pathname) {
