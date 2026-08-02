@@ -59,17 +59,23 @@ export function resolveStaticPageOgImage(
   return cms?.ogImage?.trim() || STATIC_PAGE_OG_FALLBACK[page] || DEFAULT_OG_IMAGE;
 }
 
+function isSiteHost(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+  return host === "top1markting.com" || host === "www.top1markting.com";
+}
+
 function resolveCanonicalUrl(path: string, cms?: CmsPageHeadFields | null): string {
   const custom = cms?.canonicalUrl?.trim();
   if (custom) {
-    // Accept absolute https URLs or root-relative paths from CMS.
+    // Accept absolute https URLs on our production host, or root-relative CMS paths.
     if (custom.startsWith("/") && !custom.startsWith("//")) {
       return absoluteUrl(custom);
     }
     try {
       const parsed = new URL(custom);
-      if (parsed.protocol === "https:" && parsed.pathname) {
-        return parsed.href;
+      if (parsed.protocol === "https:" && parsed.pathname && isSiteHost(parsed.hostname)) {
+        // Normalize apex → www so canonicals stay consistent with SITE_PRODUCTION_URL.
+        return absoluteUrl(`${parsed.pathname}${parsed.search}${parsed.hash}`);
       }
     } catch {
       // fall through
@@ -427,10 +433,11 @@ export function buildPageHead(input: PageHeadInput) {
     ...(input.extraLinks ?? []),
   ];
 
-  const scripts = [...(input.scripts ?? [])];
-
-  // Schema تلقائي من العنوان + الرابط الكانوني (لكل الصفحات العامة)
+  // Noindex pages should not emit JSON-LD (avoids indexing signals on excluded URLs).
+  const scripts: Array<{ type: string; children: string }> = [];
   if (!input.noIndex) {
+    scripts.push(...(input.scripts ?? []));
+    // Schema تلقائي من العنوان + الرابط الكانوني (لكل الصفحات العامة)
     if (!scriptsHaveSchemaType(scripts, "WebPage")) {
       scripts.unshift(
         jsonLdScript(
@@ -538,7 +545,9 @@ export function buildBlogPostHead(post: BlogPost, slugParam: string) {
     description,
     path,
     type: "article",
-    image: post.featuredImage ?? DEFAULT_OG_IMAGE,
+    image: post.ogImage?.trim() || post.featuredImage || DEFAULT_OG_IMAGE,
+    canonicalUrl: resolveCanonicalUrl(path, post),
+    noIndex: post.noIndex,
     scripts,
   });
 }
@@ -581,7 +590,9 @@ export function buildServiceHead(
     description,
     path,
     type: "website",
-    image: service.imageUrl ?? DEFAULT_OG_IMAGE,
+    image: service.ogImage?.trim() || service.imageUrl || DEFAULT_OG_IMAGE,
+    canonicalUrl: resolveCanonicalUrl(path, service),
+    noIndex: service.noIndex,
     scripts,
   });
 }
@@ -596,7 +607,9 @@ export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
     description,
     path,
     type: "website",
-    image: item.imageUrl || DEFAULT_OG_IMAGE,
+    image: item.ogImage?.trim() || item.imageUrl || DEFAULT_OG_IMAGE,
+    canonicalUrl: resolveCanonicalUrl(path, item),
+    noIndex: item.noIndex,
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",

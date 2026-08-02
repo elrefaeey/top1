@@ -64,20 +64,40 @@ export async function loadPortfolioItemForSeo(slug: string): Promise<WithId<Port
   return getPortfolioItemBySlug(slug);
 }
 
+/** CMS static page slug → public path used in sitemap. */
+const STATIC_SITEMAP_PAGE_PATHS: Record<string, string> = {
+  home: "/",
+  about: "/about",
+  services: "/services",
+  portfolio: "/portfolio",
+  blog: "/blog",
+  contact: "/contact",
+};
+
 export async function loadSitemapEntries(): Promise<{
   services: WithId<Service>[];
   blog: WithId<BlogPost>[];
   portfolio: WithId<PortfolioItem>[];
+  noIndexPaths: string[];
 }> {
-  const [services, blog, portfolio] = await Promise.all([
+  const { loadPublishedPageSeo } = await import("@/lib/seo/cms-page-seo");
+  const [services, blog, portfolio, ...staticPages] = await Promise.all([
     getServices(),
     getBlogPosts(),
     getPortfolio(),
+    ...Object.keys(STATIC_SITEMAP_PAGE_PATHS).map((slug) => loadPublishedPageSeo(slug)),
   ]);
+
+  const noIndexPaths = Object.keys(STATIC_SITEMAP_PAGE_PATHS).flatMap((slug, index) => {
+    const page = staticPages[index];
+    if (!page?.noIndex) return [];
+    return [STATIC_SITEMAP_PAGE_PATHS[slug]!];
+  });
 
   return {
     services: services.length > 0 ? services : FALLBACK_SERVICES.map((s) => ({ ...s })),
     blog: blog.length > 0 ? blog : FALLBACK_BLOG_POSTS.map((p) => ({ ...p })),
     portfolio,
+    noIndexPaths,
   };
 }

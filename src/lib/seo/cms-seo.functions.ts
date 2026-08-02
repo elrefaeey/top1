@@ -109,6 +109,7 @@ export const loadSitemapEntriesFn = createServerFn({ method: "GET", strict: fals
     services: WithId<Service>[];
     blog: WithId<BlogPost>[];
     portfolio: WithId<PortfolioItem>[];
+    noIndexPaths: string[];
   }> => {
     const { loadSitemapEntries } = await import("@/lib/seo/cms-loaders");
     return loadSitemapEntries();

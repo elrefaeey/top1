@@ -23,7 +23,9 @@ export function buildSitemapEntries(input: {
   services: WithId<Service>[];
   blog: WithId<BlogPost>[];
   portfolio: WithId<PortfolioItem>[];
+  noIndexPaths?: string[];
 }): SitemapEntry[] {
+  const noIndexPaths = new Set(input.noIndexPaths ?? []);
   const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => ({
     path: p.path,
     changefreq: "monthly" as const,
@@ -45,28 +47,34 @@ export function buildSitemapEntries(input: {
     { path: "/terms", changefreq: "yearly", priority: "0.3" },
     { path: "/cookies", changefreq: "yearly", priority: "0.3" },
     ...landingPages,
-  ];
+  ].filter((entry) => !noIndexPaths.has(entry.path));
 
-  const servicePages: SitemapEntry[] = input.services.map((service) => ({
-    path: `/services/${preferredServiceSlug(service.slug || service.id)}`,
-    changefreq: "monthly" as const,
-    priority: "0.7",
-    lastmod: toLastmod(service.updatedAt),
-  }));
+  const servicePages: SitemapEntry[] = input.services
+    .filter((service) => !service.noIndex)
+    .map((service) => ({
+      path: `/services/${preferredServiceSlug(service.slug || service.id)}`,
+      changefreq: "monthly" as const,
+      priority: "0.7",
+      lastmod: toLastmod(service.updatedAt),
+    }));
 
-  const blogPages: SitemapEntry[] = input.blog.map((post) => ({
-    path: `/blog/${blogPostSlug(post)}`,
-    changefreq: "monthly" as const,
-    priority: "0.6",
-    lastmod: toLastmod(post.updatedAt ?? post.publishedAt),
-  }));
+  const blogPages: SitemapEntry[] = input.blog
+    .filter((post) => !post.noIndex)
+    .map((post) => ({
+      path: `/blog/${blogPostSlug(post)}`,
+      changefreq: "monthly" as const,
+      priority: "0.6",
+      lastmod: toLastmod(post.updatedAt ?? post.publishedAt),
+    }));
 
-  const portfolioPages: SitemapEntry[] = input.portfolio.map((item) => ({
-    path: `/portfolio/${portfolioItemSlug(item)}`,
-    changefreq: "monthly" as const,
-    priority: "0.6",
-    lastmod: toLastmod(item.updatedAt),
-  }));
+  const portfolioPages: SitemapEntry[] = input.portfolio
+    .filter((item) => !item.noIndex)
+    .map((item) => ({
+      path: `/portfolio/${portfolioItemSlug(item)}`,
+      changefreq: "monthly" as const,
+      priority: "0.6",
+      lastmod: toLastmod(item.updatedAt),
+    }));
 
   const seen = new Set<string>();
   return [...staticPages, ...servicePages, ...blogPages, ...portfolioPages].filter((entry) => {
