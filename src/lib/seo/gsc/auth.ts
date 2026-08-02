@@ -38,6 +38,18 @@ export function resolveGscRedirectUri(request: Request): string {
   return `${url.origin}/api/seo/gsc/callback`;
 }
 
+/** Temporary debug helper — never logs secrets or tokens. */
+export function logGscOAuthDebug(input: {
+  redirectUri: string;
+  clientId: string;
+  source: string;
+}): void {
+  const suffix = input.clientId.slice(-10);
+  console.info(
+    `[gsc-oauth:${input.source}] redirect_uri=${input.redirectUri} client_id_suffix=${suffix}`,
+  );
+}
+
 function stateSecret(clientSecret: string): string {
   return clientSecret;
 }

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   BarChart3,
   FileText,
@@ -9,9 +9,28 @@ import {
   ScrollText,
   Sparkles,
 } from "lucide-react";
-import { AdminCard, AdminPageHeader } from "@/components/admin/AdminUi";
+import {
+  AdminCard,
+  AdminEmpty,
+  AdminFetchingBar,
+  AdminPageHeader,
+  AdminRowActions,
+  AdminSection,
+  AdminStatusBadge,
+  AdminTableCard,
+} from "@/components/admin/AdminUi";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useAdminBlogPosts } from "@/hooks/use-admin-cms";
 import { auth } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
+import type { AiLog, GscSnapshot, SeoInsight } from "@/types/seo-automation";
 
 export const Route = createFileRoute("/admin/seo-ai")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -21,60 +40,116 @@ export const Route = createFileRoute("/admin/seo-ai")({
   component: AdminSeoAiPage,
 });
 
-async function getAdminIdToken(): Promise<string> {
+async function getIdToken(): Promise<string> {
   const user = auth.currentUser;
   if (!user) throw new Error("يجب تسجيل الدخول");
   return user.getIdToken();
 }
 
+function formatPct(ctr: number) {
+  return `${(ctr * 100).toFixed(1)}%`;
+}
+
+function formatNum(n: number) {
+  return Math.round(n).toLocaleString("ar-SA");
+}
+
+function shortUrl(url: string) {
+  try {
+    const u = new URL(url);
+    return u.pathname + u.search;
+  } catch {
+    return url.length > 60 ? `${url.slice(0, 57)}…` : url;
+  }
+}
+
 function AdminSeoAiPage() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, isEditor } = useAuth();
   const search = useRouterState({
     select: (s) => s.location.search as { gsc?: string; message?: string },
   });
+  const { data: blogPosts = [], isFetching: loadingBlog } = useAdminBlogPosts();
+
   const [connected, setConnected] = useState(false);
   const [connectedEmail, setConnectedEmail] = useState<string | null>(null);
   const [siteUrl, setSiteUrl] = useState("https://www.top1markting.com/");
-  const [statusLoading, setStatusLoading] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [banner, setBanner] = useState<{ type: "success" | "error" | "info"; text: string } | null>(
-    null,
-  );
-  const [syncResult, setSyncResult] = useState<string | null>(null);
+  const [loadingData, setLoadingData] = useState(false);
+  const [banner, setBanner] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [syncMeta, setSyncMeta] = useState<string | null>(null);
 
-  const refreshStatus = useCallback(async () => {
-    if (!isAdmin) return;
-    setStatusLoading(true);
+  const [snapshots, setSnapshots] = useState<GscSnapshot[]>([]);
+  const [insights, setInsights] = useState<SeoInsight[]>([]);
+  const [logs, setLogs] = useState<AiLog[]>([]);
+
+  const drafts = useMemo(
+    () => blogPosts.filter((p) => p.status === "draft").slice(0, 10),
+    [blogPosts],
+  );
+
+  const pendingInsights = useMemo(
+    () => insights.filter((i) => i.status === "pending").length,
+    [insights],
+  );
+
+  const topSnapshots = useMemo(() => {
+    return [...snapshots]
+      .sort((a, b) => b.impressions - a.impressions)
+      .slice(0, 15);
+  }, [snapshots]);
+
+  const loadDashboard = useCallback(async () => {
+    if (!isEditor) return;
+    setLoadingData(true);
     try {
-      const token = await getAdminIdToken();
-      const res = await fetch("/api/seo/gsc/status", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = (await res.json()) as {
-        connected?: boolean;
-        connectedEmail?: string | null;
-        siteUrl?: string;
-        error?: string;
-      };
-      if (!res.ok) throw new Error(data.error || "تعذّر التحقق من الحالة");
-      setConnected(Boolean(data.connected));
-      setConnectedEmail(data.connectedEmail ?? null);
-      if (data.siteUrl) setSiteUrl(data.siteUrl);
+      const token = await getIdToken();
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const [gscRes, insightsRes, logsRes, statusRes] = await Promise.all([
+        fetch("/api/seo/gsc?limit=100", { headers }),
+        fetch("/api/seo/insights?limit=50", { headers }),
+        fetch("/api/seo/logs?limit=20", { headers }),
+        isAdmin
+          ? fetch("/api/seo/gsc/status", { headers })
+          : Promise.resolve(null),
+      ]);
+
+      if (gscRes.ok) {
+        const data = (await gscRes.json()) as { snapshots?: GscSnapshot[] };
+        setSnapshots(data.snapshots ?? []);
+      }
+      if (insightsRes.ok) {
+        const data = (await insightsRes.json()) as { insights?: SeoInsight[] };
+        setInsights(data.insights ?? []);
+      }
+      if (logsRes.ok) {
+        const data = (await logsRes.json()) as { logs?: AiLog[] };
+        setLogs(data.logs ?? []);
+      }
+      if (statusRes?.ok) {
+        const data = (await statusRes.json()) as {
+          connected?: boolean;
+          connectedEmail?: string | null;
+          siteUrl?: string;
+        };
+        setConnected(Boolean(data.connected));
+        setConnectedEmail(data.connectedEmail ?? null);
+        if (data.siteUrl) setSiteUrl(data.siteUrl);
+      }
     } catch (err) {
-      setConnected(false);
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "تعذّر التحقق من حالة GSC",
+        text: err instanceof Error ? err.message : "تعذّر تحميل لوحة SEO AI",
       });
     } finally {
-      setStatusLoading(false);
+      setLoadingData(false);
     }
-  }, [isAdmin]);
+  }, [isAdmin, isEditor]);
 
   useEffect(() => {
     if (search.gsc === "connected") {
-      setBanner({ type: "success", text: "Google Search Console Connected" });
+      setBanner({ type: "success", text: "تم ربط Google Search Console بنجاح." });
       setConnected(true);
     } else if (search.gsc === "error") {
       setBanner({
@@ -85,21 +160,19 @@ function AdminSeoAiPage() {
   }, [search.gsc, search.message]);
 
   useEffect(() => {
-    void refreshStatus();
-  }, [refreshStatus]);
+    void loadDashboard();
+  }, [loadDashboard]);
 
   async function handleConnect() {
     setConnecting(true);
     setBanner(null);
     try {
-      const token = await getAdminIdToken();
+      const token = await getIdToken();
       const res = await fetch("/api/seo/gsc/connect", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = (await res.json()) as { authorizeUrl?: string; error?: string };
-      if (!res.ok || !data.authorizeUrl) {
-        throw new Error(data.error || "تعذّر بدء الربط");
-      }
+      if (!res.ok || !data.authorizeUrl) throw new Error(data.error || "تعذّر بدء الربط");
       window.location.href = data.authorizeUrl;
     } catch (err) {
       setBanner({
@@ -113,15 +186,14 @@ function AdminSeoAiPage() {
   async function handleSync() {
     setSyncing(true);
     setBanner(null);
-    setSyncResult(null);
+    setSyncMeta(null);
     try {
-      const token = await getAdminIdToken();
+      const token = await getIdToken();
       const res = await fetch("/api/seo/gsc/sync", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = (await res.json()) as {
-        ok?: boolean;
         syncedRows?: number;
         insightsPrepared?: number;
         periodStart?: string;
@@ -129,11 +201,11 @@ function AdminSeoAiPage() {
         error?: string;
       };
       if (!res.ok) throw new Error(data.error || "فشلت المزامنة");
-      setBanner({ type: "success", text: "تمت مزامنة Search Console بنجاح" });
-      setSyncResult(
-        `${data.syncedRows ?? 0} صف · ${data.insightsPrepared ?? 0} فرصة SEO · ${data.periodStart} → ${data.periodEnd}`,
+      setBanner({ type: "success", text: "تمت مزامنة Search Console وتجهيز فرص SEO." });
+      setSyncMeta(
+        `${data.syncedRows ?? 0} صف · ${data.insightsPrepared ?? 0} فرصة · ${data.periodStart} → ${data.periodEnd}`,
       );
-      await refreshStatus();
+      await loadDashboard();
     } catch (err) {
       setBanner({
         type: "error",
@@ -145,27 +217,42 @@ function AdminSeoAiPage() {
   }
 
   return (
-    <div>
+    <div className="p-6 md:p-8">
       <AdminPageHeader
         title="SEO AI"
-        description="GSC → رؤى → مسودات → مراجعة بشرية → نشر. لا يوجد نشر تلقائي."
+        description="ربط Search Console، مزامنة الأداء، مراجعة الفرص، ثم نشر المسودات يدوياً."
       />
+
+      <AdminFetchingBar show={loadingData || loadingBlog || syncing} />
 
       {banner && (
         <div
           className={
             banner.type === "success"
               ? "mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800"
-              : banner.type === "error"
-                ? "mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
-                : "mb-4 rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm"
+              : "mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
           }
         >
           {banner.text}
         </div>
       )}
 
-      <AdminCard className="mb-6">
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          label="حالة GSC"
+          value={connected ? "متصل" : "غير متصل"}
+          hint={connectedEmail || siteUrl}
+        />
+        <StatCard label="صفوف الأداء" value={formatNum(snapshots.length)} hint="gsc_snapshots" />
+        <StatCard
+          label="فرص بانتظار المراجعة"
+          value={formatNum(pendingInsights)}
+          hint={`من أصل ${insights.length}`}
+        />
+        <StatCard label="مسودات المدونة" value={formatNum(drafts.length)} hint="status: draft" />
+      </div>
+
+      <AdminCard className="mb-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
@@ -174,17 +261,16 @@ function AdminSeoAiPage() {
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {connected
-                ? "Google Search Console Connected"
-                : "اربط حساب Google لسحب أداء البحث (آخر 28 يوماً)."}
+                ? "الحساب مربوط. يمكنك مزامنة آخر 28 يوماً وتحديث الفرص."
+                : "اربط حساب Google أولاً لسحب بيانات البحث."}
             </p>
             <p className="text-xs text-muted-foreground" dir="ltr">
               {siteUrl}
               {connectedEmail ? ` · ${connectedEmail}` : ""}
-              {statusLoading ? " · …" : ""}
             </p>
-            {syncResult && (
+            {syncMeta && (
               <p className="text-xs text-muted-foreground" dir="ltr">
-                Last sync: {syncResult}
+                آخر مزامنة: {syncMeta}
               </p>
             )}
           </div>
@@ -199,11 +285,7 @@ function AdminSeoAiPage() {
                   onClick={() => void handleConnect()}
                 >
                   <Link2 className="h-4 w-4" />
-                  {connecting
-                    ? "جارٍ التوجيه…"
-                    : connected
-                      ? "إعادة ربط Google Search Console"
-                      : "Connect Google Search Console"}
+                  {connecting ? "جارٍ التوجيه…" : connected ? "إعادة الربط" : "ربط Search Console"}
                 </button>
                 <button
                   type="button"
@@ -212,87 +294,258 @@ function AdminSeoAiPage() {
                   onClick={() => void handleSync()}
                 >
                   <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
-                  {syncing ? "جارٍ المزامنة…" : "Sync Search Console Data"}
+                  {syncing ? "جارٍ المزامنة…" : "مزامنة البيانات"}
                 </button>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">ربط GSC متاح لمدير النظام فقط.</p>
+              <p className="text-sm text-muted-foreground">الربط والمزامنة للمدير فقط.</p>
             )}
+            <button
+              type="button"
+              className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+              disabled={loadingData}
+              onClick={() => void loadDashboard()}
+            >
+              <RefreshCw className={`h-4 w-4 ${loadingData ? "animate-spin" : ""}`} />
+              تحديث العرض
+            </button>
           </div>
         </div>
       </AdminCard>
 
-      <AdminCard className="mb-6 border-primary/20 bg-primary/5">
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          مسار البيانات:{" "}
-          <span dir="ltr" className="text-foreground">
-            GSC → gsc_snapshots → seo_insights → create-draft → blog_posts (draft)
-          </span>
-          . المزامنة تُجهّز فرص SEO بحالة pending دون نشر مقالات.
-        </p>
-      </AdminCard>
+      <AdminSection
+        title="أداء البحث"
+        description="أعلى الاستعلامات حسب الظهور من آخر مزامنة."
+      >
+        {topSnapshots.length === 0 ? (
+          <AdminEmpty message="لا توجد بيانات بعد. اربط GSC ثم اضغط مزامنة." />
+        ) : (
+          <AdminTableCard>
+            <Table className="table-fixed">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[28%]">الاستعلام</TableHead>
+                  <TableHead className="w-[28%]">الصفحة</TableHead>
+                  <TableHead className="w-[11%]">نقرات</TableHead>
+                  <TableHead className="w-[11%]">ظهور</TableHead>
+                  <TableHead className="w-[11%]">CTR</TableHead>
+                  <TableHead className="w-[11%]">ترتيب</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {topSnapshots.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell className="font-medium">
+                      <span className="line-clamp-2" title={row.query}>
+                        {row.query || "—"}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground" dir="ltr">
+                      <span className="line-clamp-2" title={row.page}>
+                        {shortUrl(row.page)}
+                      </span>
+                    </TableCell>
+                    <TableCell>{formatNum(row.clicks)}</TableCell>
+                    <TableCell>{formatNum(row.impressions)}</TableCell>
+                    <TableCell>{formatPct(row.ctr)}</TableCell>
+                    <TableCell>{row.position.toFixed(1)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </AdminTableCard>
+        )}
+      </AdminSection>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <AdminCard>
-          <SectionIcon icon={BarChart3} title="Google Performance" />
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            صفوف الأداء في gsc_snapshots بعد المزامنة (query, page, country, device).
-          </p>
-          <p className="mt-3 text-xs text-muted-foreground" dir="ltr">
-            GET /api/seo/gsc
-          </p>
-        </AdminCard>
+      <AdminSection
+        title="فرص SEO"
+        description="توصيات جاهزة للمراجعة — لا تُنشر مقالات تلقائياً."
+      >
+        {insights.length === 0 ? (
+          <AdminEmpty message="لا توجد فرص بعد. نفّذ مزامنة GSC لتوليد فرص أولية." />
+        ) : (
+          <AdminTableCard>
+            <Table className="table-fixed">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[22%]">العنوان</TableHead>
+                  <TableHead className="w-[18%]">الكلمة</TableHead>
+                  <TableHead className="w-[10%]">الظهور</TableHead>
+                  <TableHead className="w-[10%]">CTR</TableHead>
+                  <TableHead className="w-[10%]">ترتيب</TableHead>
+                  <TableHead className="w-[12%]">الأولوية</TableHead>
+                  <TableHead className="w-[18%]">الحالة</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {insights.slice(0, 20).map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">
+                      <span className="line-clamp-2" title={item.recommendation}>
+                        {item.title}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      <span className="line-clamp-2">{item.keyword || "—"}</span>
+                    </TableCell>
+                    <TableCell>{formatNum(item.impressions)}</TableCell>
+                    <TableCell>{formatPct(item.ctr)}</TableCell>
+                    <TableCell>{item.currentPosition.toFixed(1)}</TableCell>
+                    <TableCell>
+                      <PriorityBadge priority={item.priority} />
+                    </TableCell>
+                    <TableCell>
+                      <AdminStatusBadge status={item.status} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </AdminTableCard>
+        )}
+      </AdminSection>
 
-        <AdminCard>
-          <SectionIcon icon={Lightbulb} title="SEO Opportunities" />
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            توصيات pending في seo_insights — تُحضَّر تلقائياً بعد المزامنة للمراجعة.
-          </p>
-          <p className="mt-3 text-xs text-muted-foreground" dir="ltr">
-            GET /api/seo/insights
-          </p>
-        </AdminCard>
+      <div className="grid gap-8 lg:grid-cols-2">
+        <AdminSection
+          title="مسودات المدونة"
+          description="مقالات بحالة draft — راجعها وانشرها من المدونة."
+        >
+          {drafts.length === 0 ? (
+            <AdminEmpty
+              message="لا توجد مسودات حالياً."
+              actionTo="/admin/blog/$id"
+              actionParams={{ id: "new" }}
+              actionLabel="مقال جديد"
+            />
+          ) : (
+            <AdminTableCard>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>العنوان</TableHead>
+                    <TableHead>الحالة</TableHead>
+                    <TableHead className="text-end">إجراءات</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {drafts.map((post) => (
+                    <TableRow key={post.id}>
+                      <TableCell className="font-medium">
+                        <span className="line-clamp-2">{post.title}</span>
+                      </TableCell>
+                      <TableCell>
+                        <AdminStatusBadge status={post.status} />
+                      </TableCell>
+                      <TableCell>
+                        <AdminRowActions editTo="/admin/blog/$id" editParams={{ id: post.id }} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AdminTableCard>
+          )}
+          <div className="mt-3">
+            <Link to="/admin/blog" className="text-sm font-medium text-primary hover:underline">
+              فتح كل مقالات المدونة
+            </Link>
+          </div>
+        </AdminSection>
 
-        <AdminCard>
-          <SectionIcon icon={FileText} title="AI Generated Drafts" />
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            مسودات المدونة بحالة draft فقط — النشر يدوي من لوحة المدونة.
-          </p>
-          <Link
-            to="/admin/blog"
-            className="mt-3 inline-flex text-sm font-medium text-primary hover:underline"
-          >
-            فتح المدونة لمراجعة المسودات
-          </Link>
-        </AdminCard>
+        <AdminSection title="سجل الأتمتة" description="آخر إجراءات الربط والمزامنة وإنشاء المسودات.">
+          {logs.length === 0 ? (
+            <AdminEmpty message="لا يوجد نشاط مسجّل بعد." />
+          ) : (
+            <AdminTableCard>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>الإجراء</TableHead>
+                    <TableHead>التفاصيل</TableHead>
+                    <TableHead>الوقت</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {logs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell className="font-medium whitespace-nowrap" dir="ltr">
+                        {log.action}
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        <span className="line-clamp-2">{log.description}</span>
+                      </TableCell>
+                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap" dir="ltr">
+                        {log.createdAt ? new Date(log.createdAt).toLocaleString("ar-SA") : "—"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AdminTableCard>
+          )}
+        </AdminSection>
+      </div>
 
-        <AdminCard>
-          <SectionIcon icon={ScrollText} title="AI Activity Logs" />
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            سجل gsc_connect / gsc_sync في ai_logs.
-          </p>
-          <p className="mt-3 text-xs text-muted-foreground" dir="ltr">
-            collection: ai_logs
-          </p>
-        </AdminCard>
+      <div className="mt-8 grid gap-4 md:grid-cols-4">
+        <MiniHint icon={BarChart3} title="Performance" text="بيانات من gsc_snapshots" />
+        <MiniHint icon={Lightbulb} title="Opportunities" text="فرص من seo_insights" />
+        <MiniHint icon={FileText} title="Drafts" text="نشر يدوي فقط من المدونة" />
+        <MiniHint icon={ScrollText} title="Logs" text="تتبع عبر ai_logs" />
       </div>
     </div>
   );
 }
 
-function SectionIcon({
+function StatCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
+  return (
+    <AdminCard className="!p-4">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="mt-1 text-xl font-semibold tracking-tight">{value}</p>
+      {hint ? (
+        <p className="mt-1 truncate text-xs text-muted-foreground" dir="ltr" title={hint}>
+          {hint}
+        </p>
+      ) : null}
+    </AdminCard>
+  );
+}
+
+function PriorityBadge({ priority }: { priority: string }) {
+  const map: Record<string, string> = {
+    high: "bg-destructive/10 text-destructive border-destructive/20",
+    medium: "bg-amber-500/10 text-amber-700 border-amber-500/20",
+    low: "bg-muted text-muted-foreground border-border",
+  };
+  const labels: Record<string, string> = {
+    high: "عالية",
+    medium: "متوسطة",
+    low: "منخفضة",
+  };
+  return (
+    <span
+      className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${map[priority] ?? map.low}`}
+    >
+      {labels[priority] ?? priority}
+    </span>
+  );
+}
+
+function MiniHint({
   icon: Icon,
   title,
+  text,
 }: {
   icon: typeof BarChart3;
   title: string;
+  text: string;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
-        <Icon className="h-5 w-5" />
-      </span>
-      <h2 className="text-base font-semibold">{title}</h2>
+    <div className="flex items-start gap-2.5 text-sm text-muted-foreground">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+      <div>
+        <p className="font-medium text-foreground">{title}</p>
+        <p className="text-xs leading-relaxed">{text}</p>
+      </div>
     </div>
   );
 }

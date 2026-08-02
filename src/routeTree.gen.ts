@@ -55,6 +55,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
 import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
 import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
 import { Route as ApiSeoCreateDraftRouteImport } from './routes/api/seo.create-draft'
@@ -302,6 +303,11 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiSeoLogsRoute = ApiSeoLogsRouteImport.update({
+  id: '/api/seo/logs',
+  path: '/api/seo/logs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSeoInsightsRoute = ApiSeoInsightsRouteImport.update({
   id: '/api/seo/insights',
   path: '/api/seo/insights',
@@ -442,6 +448,7 @@ export interface FileRoutesByFullPath {
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -505,6 +512,7 @@ export interface FileRoutesByTo {
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -570,6 +578,7 @@ export interface FileRoutesById {
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
+  '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -636,6 +645,7 @@ export interface FileRouteTypes {
     | '/api/seo/create-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
+    | '/api/seo/logs'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -699,6 +709,7 @@ export interface FileRouteTypes {
     | '/api/seo/create-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
+    | '/api/seo/logs'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -763,6 +774,7 @@ export interface FileRouteTypes {
     | '/api/seo/create-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
+    | '/api/seo/logs'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -803,6 +815,7 @@ export interface RootRouteChildren {
   ApiSeoCreateDraftRoute: typeof ApiSeoCreateDraftRoute
   ApiSeoGscRoute: typeof ApiSeoGscRouteWithChildren
   ApiSeoInsightsRoute: typeof ApiSeoInsightsRoute
+  ApiSeoLogsRoute: typeof ApiSeoLogsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1128,6 +1141,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/seo/logs': {
+      id: '/api/seo/logs'
+      path: '/api/seo/logs'
+      fullPath: '/api/seo/logs'
+      preLoaderRoute: typeof ApiSeoLogsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/seo/insights': {
       id: '/api/seo/insights'
@@ -1461,6 +1481,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSeoCreateDraftRoute: ApiSeoCreateDraftRoute,
   ApiSeoGscRoute: ApiSeoGscRouteWithChildren,
   ApiSeoInsightsRoute: ApiSeoInsightsRoute,
+  ApiSeoLogsRoute: ApiSeoLogsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,6 +4,7 @@ import {
   createOAuthState,
   extractBearerToken,
   getGscOAuthConfig,
+  logGscOAuthDebug,
   resolveGscRedirectUri,
 } from "@/lib/seo/gsc/auth";
 import { verifyFirebaseAdminRole } from "@/lib/security/firebase-auth-server";
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/api/seo/gsc/connect")({
           const uid = await verifyFirebaseAdminRole(idToken);
           const { clientId, clientSecret } = getGscOAuthConfig();
           const redirectUri = resolveGscRedirectUri(request);
+          logGscOAuthDebug({ redirectUri, clientId, source: "connect" });
           const state = createOAuthState(uid, clientSecret);
           const authorizeUrl = buildGoogleAuthorizeUrl({
             clientId,

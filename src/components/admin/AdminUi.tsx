@@ -66,6 +66,9 @@ export function AdminStatusBadge({ status }: { status: PublishStatus | string })
     new: "bg-primary/10 text-primary border-primary/20",
     contacted: "bg-amber-500/10 text-amber-700 border-amber-500/20",
     closed: "bg-muted text-muted-foreground border-border",
+    pending: "bg-amber-500/10 text-amber-700 border-amber-500/20",
+    reviewed: "bg-blue-500/10 text-blue-700 border-blue-500/20",
+    completed: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
   };
   const labels: Record<string, string> = {
     published: "منشور",
@@ -74,6 +77,9 @@ export function AdminStatusBadge({ status }: { status: PublishStatus | string })
     new: "جديد",
     contacted: "تم التواصل",
     closed: "مغلق",
+    pending: "بانتظار",
+    reviewed: "تمت المراجعة",
+    completed: "مكتمل",
   };
   return (
     <span

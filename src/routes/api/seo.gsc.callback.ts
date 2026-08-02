@@ -3,6 +3,7 @@ import {
   exchangeAuthorizationCode,
   fetchGoogleAccountEmail,
   getGscOAuthConfig,
+  logGscOAuthDebug,
   parseOAuthState,
   resolveGscRedirectUri,
 } from "@/lib/seo/gsc/auth";
@@ -50,6 +51,7 @@ export const Route = createFileRoute("/api/seo/gsc/callback")({
           const { clientId, clientSecret } = getGscOAuthConfig();
           const { uid } = parseOAuthState(state, clientSecret);
           const redirectUri = resolveGscRedirectUri(request);
+          logGscOAuthDebug({ redirectUri, clientId, source: "callback" });
           const tokens = await exchangeAuthorizationCode({
             code,
             redirectUri,
