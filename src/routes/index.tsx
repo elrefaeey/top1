@@ -9,9 +9,20 @@ import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { SITE_NAME } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
-import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
-import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import {
+  absoluteImageUrl,
+  buildStaticPageHead,
+  faqPageSchema,
+  jsonLdScript,
+  resolveStaticPageOgImage,
+} from "@/lib/seo";
+import {
+  loadHomeFaqsFn,
+  loadHomeHeroSettingsFn,
+  loadPublishedPageSeoFn,
+} from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
+import { HomeCtaSection, HomeFaqSection } from "@/components/home/HomeFaqCta";
 
 const HomeBelowFold = lazy(() =>
   import("@/components/home/HomeBelowFold").then((m) => ({ default: m.HomeBelowFold })),
@@ -19,11 +30,12 @@ const HomeBelowFold = lazy(() =>
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [cms, hero] = await Promise.all([
+    const [cms, hero, faqs] = await Promise.all([
       loadPublishedPageSeoFn({ data: { slug: "home" } }),
       loadHomeHeroSettingsFn(),
+      loadHomeFaqsFn(),
     ]);
-    return { cms, hero };
+    return { cms, hero, faqs };
   },
   head: ({ loaderData }) => {
     const cms = loaderData?.cms;
@@ -42,10 +54,12 @@ export const Route = createFileRoute("/")({
             },
           ]
         : undefined;
+    const faqs = loaderData?.faqs ?? [];
     return buildStaticPageHead("home", "/", {
       cms,
       image: heroUrl && !heroUrl.startsWith("data:") ? heroUrl : image,
       extraLinks,
+      scripts: faqs.length > 0 ? [jsonLdScript(faqPageSchema(faqs))] : undefined,
     });
   },
   component: Home,
@@ -63,6 +77,7 @@ const MARQUEE_ITEMS = [
 ];
 
 function Home() {
+  const { faqs } = Route.useLoaderData();
   return (
     <>
       <Hero />
@@ -85,6 +100,8 @@ function Home() {
       >
         <HomeBelowFold />
       </Suspense>
+      <HomeFaqSection faqs={faqs} />
+      <HomeCtaSection />
     </>
   );
 }
@@ -97,10 +114,7 @@ function Hero() {
   const usableCmsSrc = cmsSrc && !cmsSrc.startsWith("data:") ? cmsSrc : "";
   const [cmsFailed, setCmsFailed] = useState(false);
   const heroSrc = !cmsFailed && usableCmsSrc ? usableCmsSrc : siteImages.hero.main;
-  const heroAlt =
-    settings?.heroImageAlt?.trim() ||
-    hero.heroImageAlt ||
-    siteImages.hero.mainAlt;
+  const heroAlt = settings?.heroImageAlt?.trim() || hero.heroImageAlt || siteImages.hero.mainAlt;
 
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
@@ -110,9 +124,7 @@ function Hero() {
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
             تصميم مواقع وSEO
-            <span className="hero-studio-title-line">
-              يحوّلان الزوار إلى عملاء في السعودية.
-            </span>
+            <span className="hero-studio-title-line">يحوّلان الزوار إلى عملاء في السعودية.</span>
           </h1>
 
           <p className="hero-studio-desc animate-hero animate-hero-delay-3">

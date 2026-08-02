@@ -22,7 +22,9 @@ const fromTs = [...redirectsMod.matchAll(/"(\/[^"]+)"\s*:\s*"(\/[^"]+)"/g)].map(
   m[1],
   m[2],
 ]);
-const fromVercel = (vercel.redirects || []).map((r) => [r.source, r.destination]);
+const fromVercel = (vercel.redirects || [])
+  .filter((r) => !r.has?.length) // host/condition redirects are not path aliases
+  .map((r) => [r.source, r.destination]);
 
 for (const [src, dest] of fromTs) {
   const hit = fromVercel.find((r) => r[0] === src);
@@ -34,6 +36,15 @@ for (const [src] of fromVercel) {
   if (!fromTs.find((r) => r[0] === src)) {
     warnings.push(`vercel.json has extra redirect not in permanent-redirects.ts: ${src}`);
   }
+}
+
+const apexWww = (vercel.redirects || []).find(
+  (r) =>
+    r.has?.some((h) => h.type === "host" && h.value === "top1markting.com") &&
+    String(r.destination || "").includes("www.top1markting.com"),
+);
+if (!apexWww) {
+  warnings.push("vercel.json missing apex → www host redirect for top1markting.com");
 }
 
 // 2) robots route must disallow /api and /admin

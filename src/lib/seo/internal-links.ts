@@ -32,7 +32,7 @@ export const SEO_LOCATION_LINKS: InternalLink[] = [
   { label: "خدمات SEO السعودية", href: "/seo-services" },
 ];
 
-/** Footer mix: national + Riyadh + SEO cities + ecommerce */
+/** Footer mix: national + city landings (web design + SEO) + ecommerce */
 export const FOOTER_SEO_LINKS: InternalLink[] = [
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
   { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
@@ -42,6 +42,7 @@ export const FOOTER_SEO_LINKS: InternalLink[] = [
   { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
   { label: "خدمات SEO القصيم", href: "/seo-qassim" },
   { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
+  { label: "خدمات SEO بريدة", href: "/seo-buraidah" },
 ];
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
@@ -120,6 +121,7 @@ export function servicesPageInternalLinks(
   for (const link of [
     ...LANDING_LINKS,
     ...LOCATION_LINKS,
+    ...SEO_LOCATION_LINKS,
     { label: "المدونة", href: "/blog" },
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },

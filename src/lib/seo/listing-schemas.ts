@@ -4,7 +4,6 @@ import {
   absoluteUrl,
   DEFAULT_OG_IMAGE,
   faqPageSchema,
-  serviceSchema,
   STATIC_PAGE_SEO,
 } from "@/lib/seo";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
@@ -21,9 +20,13 @@ export function creativeWorkSchema(item: PortfolioItem) {
     url: absoluteUrl(path),
     genre: item.category,
     keywords: item.tags?.length ? item.tags.join(", ") : undefined,
+    creator: {
+      "@type": "Organization",
+      name: SITE_NAME,
+    },
     ...(item.client
       ? {
-          creator: {
+          about: {
             "@type": "Organization",
             name: item.client,
           },
@@ -55,22 +58,29 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
   const schemas: unknown[] = [];
 
   if (services.length > 0) {
+    // ItemList only on the listing URL — full Service (+ FAQ) schemas live on detail pages.
     schemas.push({
       "@context": "https://schema.org",
       "@type": "ItemList",
       name: `خدمات ${SITE_NAME}`,
       url: absoluteUrl("/services"),
       numberOfItems: services.length,
-      itemListElement: services.map((service, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: serviceSchema(service, preferredServiceSlug(service.slug)),
-      })),
+      itemListElement: services.map((service, index) => {
+        const slug = preferredServiceSlug(service.slug);
+        const url = absoluteUrl(`/services/${slug}`);
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          name: service.title,
+          url,
+          item: {
+            "@type": "Service",
+            name: service.title,
+            url,
+          },
+        };
+      }),
     });
-
-    for (const service of services) {
-      schemas.push(serviceSchema(service, preferredServiceSlug(service.slug)));
-    }
   }
 
   if (faqs.length > 0) {
@@ -89,7 +99,7 @@ export function blogListingSchemas(posts: BlogPost[]) {
     name: `مدونة ${SITE_NAME}`,
     description: STATIC_PAGE_SEO.blog.description,
     url: absoluteUrl("/blog"),
-    inLanguage: "ar",
+    inLanguage: "ar-SA",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
