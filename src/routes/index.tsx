@@ -9,8 +9,18 @@ import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { SITE_NAME } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
-import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
-import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import {
+  absoluteImageUrl,
+  buildStaticPageHead,
+  faqPageSchema,
+  jsonLdScript,
+  resolveStaticPageOgImage,
+} from "@/lib/seo";
+import {
+  loadHomeFaqsFn,
+  loadHomeHeroSettingsFn,
+  loadPublishedPageSeoFn,
+} from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
 
 const HomeBelowFold = lazy(() =>
@@ -19,11 +29,12 @@ const HomeBelowFold = lazy(() =>
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [cms, hero] = await Promise.all([
+    const [cms, hero, faqs] = await Promise.all([
       loadPublishedPageSeoFn({ data: { slug: "home" } }),
       loadHomeHeroSettingsFn(),
+      loadHomeFaqsFn(),
     ]);
-    return { cms, hero };
+    return { cms, hero, faqs };
   },
   head: ({ loaderData }) => {
     const cms = loaderData?.cms;
@@ -42,10 +53,12 @@ export const Route = createFileRoute("/")({
             },
           ]
         : undefined;
+    const faqs = loaderData?.faqs ?? [];
     return buildStaticPageHead("home", "/", {
       cms,
       image: heroUrl && !heroUrl.startsWith("data:") ? heroUrl : image,
       extraLinks,
+      scripts: faqs.length > 0 ? [jsonLdScript(faqPageSchema(faqs))] : undefined,
     });
   },
   component: Home,
@@ -63,6 +76,7 @@ const MARQUEE_ITEMS = [
 ];
 
 function Home() {
+  const { faqs } = Route.useLoaderData();
   return (
     <>
       <Hero />
@@ -83,7 +97,7 @@ function Home() {
           </div>
         }
       >
-        <HomeBelowFold />
+        <HomeBelowFold initialFaqs={faqs} />
       </Suspense>
     </>
   );
