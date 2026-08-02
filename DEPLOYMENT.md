@@ -47,8 +47,16 @@ Also listed in `vercel.json` and enforced in `src/server.ts` (Nitro entry) so th
 |------|-----|--------|
 | `/egypt` | `/web-design-saudi-arabia` | 301 |
 | `/web-design-egypt` | `/web-design-saudi-arabia` | 301 |
-| `/web-design` | `/services/web-design-development` | 301 |
-| `/services/web-design` | `/services/web-design-development` | 301 |
+| `/web-design` | `/web-design-saudi-arabia` | 301 |
+| `/services/web-design-development` | `/services/web-design` | 301 |
+| `/services/seo-optimization` | `/services/seo` | 301 |
+| `/services/ecommerce-development` | `/ecommerce-development` | 301 |
+| `/services/ui-ux-design` | `/services/ui-ux` | 301 |
+| `/saudi-web-design` | `/web-design-saudi-arabia` | 301 |
+| `/saudi-seo-services` | `/seo-services` | 301 |
+| `/riyadh-web-development` | `/web-design-riyadh` | 301 |
+
+Host-level (Vercel only, not in `permanent-redirects.ts`): `top1markting.com/*` → `https://www.top1markting.com/*` (301).
 
 Verify before push:
 
