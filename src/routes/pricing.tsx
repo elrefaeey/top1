@@ -2,7 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, MessageCircle } from "lucide-react";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { SITE_NAME } from "@/lib/site-config";
-import { buildPageHead, breadcrumbSchema, jsonLdScript } from "@/lib/seo";
+import { buildPageHead, breadcrumbSchema, faqPageSchema, jsonLdScript } from "@/lib/seo";
+
+const PRICING_FAQS = [
+  {
+    id: "pricing-fixed",
+    question: "هل لديكم أسعار ثابتة؟",
+    answer: "نحدد النطاق حسب حجم المشروع والمتطلبات. نرسل عرض سعر مخصص بعد فهم احتياجك.",
+  },
+  {
+    id: "pricing-factors",
+    question: "ما الذي يؤثر على السعر؟",
+    answer:
+      "عدد الصفحات، التصميم المخصص، المتجر والدفع، محتوى SEO، التكاملات، ومدة الدعم بعد الإطلاق.",
+  },
+] as const;
 
 export const Route = createFileRoute("/pricing")({
   head: () =>
@@ -17,28 +31,19 @@ export const Route = createFileRoute("/pricing")({
             { name: "الأسعار", path: "/pricing" },
           ]),
         ),
-        jsonLdScript({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "هل لديكم أسعار ثابتة؟",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "نحدد النطاق حسب حجم المشروع والمتطلبات. نرسل عرض سعر مخصص بعد فهم احتياجك.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "ما الذي يؤثر على السعر؟",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "عدد الصفحات، التصميم المخصص، المتجر والدفع، محتوى SEO، التكاملات، ومدة الدعم بعد الإطلاق.",
-              },
-            },
-          ],
-        }),
+        jsonLdScript(
+          faqPageSchema(
+            PRICING_FAQS.map((faq) => ({
+              id: faq.id,
+              question: faq.question,
+              answer: faq.answer,
+              order: 0,
+              status: "published" as const,
+              createdAt: "",
+              updatedAt: "",
+            })),
+          ),
+        ),
       ],
     }),
   component: PricingPage,
@@ -47,7 +52,7 @@ export const Route = createFileRoute("/pricing")({
 const PACKAGES = [
   {
     name: "موقع تعريفي",
-    blurb: " للشركات والعلامات التي تحتاج حضوراً واضحاً على الويب.",
+    blurb: "للشركات والعلامات التي تحتاج حضوراً واضحاً على الويب.",
     points: ["تصميم متجاوب", "صفحات أساسية", "SEO تأسيسي", "تسليم واضح بمراحل"],
   },
   {
@@ -118,6 +123,29 @@ function PricingPage() {
                 استكشف الخدمات
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section bg-surface/50" aria-labelledby="pricing-faq-heading">
+        <div className="container-page max-w-3xl">
+          <div className="page-intro-block mx-auto text-center">
+            <span className="page-intro-eyebrow">أسئلة شائعة</span>
+            <h2 id="pricing-faq-heading" className="page-intro-title page-intro-title--section">
+              إجابات سريعة عن التسعير.
+            </h2>
+          </div>
+          <div className="section-body flex flex-col gap-3">
+            {PRICING_FAQS.map((faq) => (
+              <details key={faq.id} className="faq-item-new group">
+                <summary className="faq-trigger cursor-pointer list-none">
+                  <span className="min-w-0 font-medium text-[0.9375rem]">{faq.question}</span>
+                </summary>
+                <p className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
