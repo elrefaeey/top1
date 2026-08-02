@@ -58,7 +58,9 @@ import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
 import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
 import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
+import { Route as ApiSeoGenerateDraftRouteImport } from './routes/api/seo.generate-draft'
 import { Route as ApiSeoCreateDraftRouteImport } from './routes/api/seo.create-draft'
+import { Route as ApiSeoAnalyzeRouteImport } from './routes/api/seo.analyze'
 import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
@@ -318,9 +320,19 @@ const ApiSeoGscRoute = ApiSeoGscRouteImport.update({
   path: '/api/seo/gsc',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSeoGenerateDraftRoute = ApiSeoGenerateDraftRouteImport.update({
+  id: '/api/seo/generate-draft',
+  path: '/api/seo/generate-draft',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSeoCreateDraftRoute = ApiSeoCreateDraftRouteImport.update({
   id: '/api/seo/create-draft',
   path: '/api/seo/create-draft',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSeoAnalyzeRoute = ApiSeoAnalyzeRouteImport.update({
+  id: '/api/seo/analyze',
+  path: '/api/seo/analyze',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiCmsResourceRoute = ApiCmsResourceRouteImport.update({
@@ -445,7 +457,9 @@ export interface FileRoutesByFullPath {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
@@ -509,7 +523,9 @@ export interface FileRoutesByTo {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
@@ -575,7 +591,9 @@ export interface FileRoutesById {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/api/cms/$resource': typeof ApiCmsResourceRoute
+  '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
+  '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
@@ -642,7 +660,9 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/analyze'
     | '/api/seo/create-draft'
+    | '/api/seo/generate-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
@@ -706,7 +726,9 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/analyze'
     | '/api/seo/create-draft'
+    | '/api/seo/generate-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
@@ -771,7 +793,9 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/api/cms/$resource'
+    | '/api/seo/analyze'
     | '/api/seo/create-draft'
+    | '/api/seo/generate-draft'
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
@@ -812,7 +836,9 @@ export interface RootRouteChildren {
   ApiUploadImageRoute: typeof ApiUploadImageRoute
   MediaIdRoute: typeof MediaIdRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
+  ApiSeoAnalyzeRoute: typeof ApiSeoAnalyzeRoute
   ApiSeoCreateDraftRoute: typeof ApiSeoCreateDraftRoute
+  ApiSeoGenerateDraftRoute: typeof ApiSeoGenerateDraftRoute
   ApiSeoGscRoute: typeof ApiSeoGscRouteWithChildren
   ApiSeoInsightsRoute: typeof ApiSeoInsightsRoute
   ApiSeoLogsRoute: typeof ApiSeoLogsRoute
@@ -1163,11 +1189,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSeoGscRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/seo/generate-draft': {
+      id: '/api/seo/generate-draft'
+      path: '/api/seo/generate-draft'
+      fullPath: '/api/seo/generate-draft'
+      preLoaderRoute: typeof ApiSeoGenerateDraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/seo/create-draft': {
       id: '/api/seo/create-draft'
       path: '/api/seo/create-draft'
       fullPath: '/api/seo/create-draft'
       preLoaderRoute: typeof ApiSeoCreateDraftRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/seo/analyze': {
+      id: '/api/seo/analyze'
+      path: '/api/seo/analyze'
+      fullPath: '/api/seo/analyze'
+      preLoaderRoute: typeof ApiSeoAnalyzeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/cms/$resource': {
@@ -1478,7 +1518,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiUploadImageRoute: ApiUploadImageRoute,
   MediaIdRoute: MediaIdRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
+  ApiSeoAnalyzeRoute: ApiSeoAnalyzeRoute,
   ApiSeoCreateDraftRoute: ApiSeoCreateDraftRoute,
+  ApiSeoGenerateDraftRoute: ApiSeoGenerateDraftRoute,
   ApiSeoGscRoute: ApiSeoGscRouteWithChildren,
   ApiSeoInsightsRoute: ApiSeoInsightsRoute,
   ApiSeoLogsRoute: ApiSeoLogsRoute,

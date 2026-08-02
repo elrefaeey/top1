@@ -4,19 +4,35 @@ export type SeoInsightStatus = "pending" | "reviewed" | "completed";
 
 export type SeoInsightPriority = "low" | "medium" | "high";
 
+export type SeoInsightType =
+  | "quick_win"
+  | "content_opportunity"
+  | "page_improvement"
+  | "gsc_opportunity"
+  | string;
+
 export interface SeoInsight {
   id: string;
-  type: string;
+  type: SeoInsightType;
   title: string;
   description: string;
   keyword: string;
+  /** Page URL (preferred). Falls back to targetPage for older docs. */
+  page: string;
   targetPage: string;
+  issue: string;
+  opportunity: string;
+  recommended_action: string;
+  suggested_title: string;
+  suggested_content: string;
+  estimated_value: number;
   currentPosition: number;
   impressions: number;
   clicks: number;
   ctr: number;
   priority: SeoInsightPriority;
   status: SeoInsightStatus;
+  /** Alias / legacy field for recommended_action. */
   recommendation: string;
   createdAt: string;
   updatedAt: string;

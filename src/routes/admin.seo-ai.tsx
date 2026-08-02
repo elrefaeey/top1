@@ -75,6 +75,8 @@ function AdminSeoAiPage() {
   const [siteUrl, setSiteUrl] = useState("https://www.top1markting.com/");
   const [connecting, setConnecting] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [generatingId, setGeneratingId] = useState<string | null>(null);
   const [loadingData, setLoadingData] = useState(false);
   const [banner, setBanner] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [syncMeta, setSyncMeta] = useState<string | null>(null);
@@ -216,6 +218,66 @@ function AdminSeoAiPage() {
     }
   }
 
+  async function handleAnalyze() {
+    setAnalyzing(true);
+    setBanner(null);
+    try {
+      const token = await getIdToken();
+      const res = await fetch("/api/seo/analyze", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = (await res.json()) as { opportunities?: number; error?: string };
+      if (!res.ok) throw new Error(data.error || "فشل التحليل");
+      setBanner({
+        type: "success",
+        text: `تم تحليل فرص SEO: ${data.opportunities ?? 0} فرصة.`,
+      });
+      await loadDashboard();
+    } catch (err) {
+      setBanner({
+        type: "error",
+        text: err instanceof Error ? err.message : "فشل التحليل",
+      });
+    } finally {
+      setAnalyzing(false);
+    }
+  }
+
+  async function handleGenerateDraft(insightId: string) {
+    setGeneratingId(insightId);
+    setBanner(null);
+    try {
+      const token = await getIdToken();
+      const res = await fetch("/api/seo/generate-draft", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ insightId }),
+      });
+      const data = (await res.json()) as {
+        slug?: string;
+        status?: string;
+        error?: string;
+      };
+      if (!res.ok) throw new Error(data.error || "فشل توليد المسودة");
+      setBanner({
+        type: "success",
+        text: `تم إنشاء مسودة draft: ${data.slug ?? ""} — راجعها من المدونة قبل النشر.`,
+      });
+      await loadDashboard();
+    } catch (err) {
+      setBanner({
+        type: "error",
+        text: err instanceof Error ? err.message : "فشل توليد المسودة",
+      });
+    } finally {
+      setGeneratingId(null);
+    }
+  }
+
   return (
     <div className="p-6 md:p-8">
       <AdminPageHeader
@@ -223,7 +285,7 @@ function AdminSeoAiPage() {
         description="ربط Search Console، مزامنة الأداء، مراجعة الفرص، ثم نشر المسودات يدوياً."
       />
 
-      <AdminFetchingBar show={loadingData || loadingBlog || syncing} />
+      <AdminFetchingBar show={loadingData || loadingBlog || syncing || analyzing || Boolean(generatingId)} />
 
       {banner && (
         <div
@@ -300,6 +362,17 @@ function AdminSeoAiPage() {
             ) : (
               <p className="text-sm text-muted-foreground">الربط والمزامنة للمدير فقط.</p>
             )}
+            {isEditor ? (
+              <button
+                type="button"
+                className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+                disabled={analyzing || snapshots.length === 0}
+                onClick={() => void handleAnalyze()}
+              >
+                <Lightbulb className={`h-4 w-4 ${analyzing ? "animate-pulse" : ""}`} />
+                {analyzing ? "جارٍ التحليل…" : "تحليل الفرص"}
+              </button>
+            ) : null}
             <button
               type="button"
               className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
@@ -359,43 +432,62 @@ function AdminSeoAiPage() {
 
       <AdminSection
         title="فرص SEO"
-        description="توصيات جاهزة للمراجعة — لا تُنشر مقالات تلقائياً."
+        description="أولوية · كلمة · ترتيب · صفحة · توصية — ثم توليد مسودة draft فقط."
       >
         {insights.length === 0 ? (
-          <AdminEmpty message="لا توجد فرص بعد. نفّذ مزامنة GSC لتوليد فرص أولية." />
+          <AdminEmpty message="لا توجد فرص بعد. نفّذ مزامنة GSC أو اضغط تحليل الفرص." />
         ) : (
           <AdminTableCard>
             <Table className="table-fixed">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[22%]">العنوان</TableHead>
-                  <TableHead className="w-[18%]">الكلمة</TableHead>
-                  <TableHead className="w-[10%]">الظهور</TableHead>
-                  <TableHead className="w-[10%]">CTR</TableHead>
-                  <TableHead className="w-[10%]">ترتيب</TableHead>
-                  <TableHead className="w-[12%]">الأولوية</TableHead>
-                  <TableHead className="w-[18%]">الحالة</TableHead>
+                  <TableHead className="w-[10%]">الأولوية</TableHead>
+                  <TableHead className="w-[16%]">الكلمة</TableHead>
+                  <TableHead className="w-[8%]">ترتيب</TableHead>
+                  <TableHead className="w-[16%]">الصفحة</TableHead>
+                  <TableHead className="w-[28%]">التوصية</TableHead>
+                  <TableHead className="w-[10%]">الحالة</TableHead>
+                  <TableHead className="w-[12%] text-end">إجراء</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {insights.slice(0, 20).map((item) => (
+                {insights.slice(0, 25).map((item) => (
                   <TableRow key={item.id}>
-                    <TableCell className="font-medium">
-                      <span className="line-clamp-2" title={item.recommendation}>
-                        {item.title}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      <span className="line-clamp-2">{item.keyword || "—"}</span>
-                    </TableCell>
-                    <TableCell>{formatNum(item.impressions)}</TableCell>
-                    <TableCell>{formatPct(item.ctr)}</TableCell>
-                    <TableCell>{item.currentPosition.toFixed(1)}</TableCell>
                     <TableCell>
                       <PriorityBadge priority={item.priority} />
                     </TableCell>
+                    <TableCell className="font-medium">
+                      <span className="line-clamp-2" title={item.suggested_title || item.title}>
+                        {item.keyword || "—"}
+                      </span>
+                    </TableCell>
+                    <TableCell>{item.currentPosition.toFixed(1)}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground" dir="ltr">
+                      <span className="line-clamp-2" title={item.page || item.targetPage}>
+                        {shortUrl(item.page || item.targetPage || "")}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      <span
+                        className="line-clamp-2"
+                        title={item.recommended_action || item.recommendation}
+                      >
+                        {item.recommended_action || item.recommendation || item.issue || "—"}
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <AdminStatusBadge status={item.status} />
+                    </TableCell>
+                    <TableCell className="text-end">
+                      <button
+                        type="button"
+                        className="btn-primary !py-1.5 !px-2.5 !text-xs inline-flex items-center gap-1.5"
+                        disabled={generatingId === item.id}
+                        onClick={() => void handleGenerateDraft(item.id)}
+                      >
+                        <Sparkles className="h-3.5 w-3.5" />
+                        {generatingId === item.id ? "جارٍ…" : "Generate AI Draft"}
+                      </button>
                     </TableCell>
                   </TableRow>
                 ))}

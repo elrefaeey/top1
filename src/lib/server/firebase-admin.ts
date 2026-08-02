@@ -25,38 +25,143 @@ type FirestoreValue =
 
 let cachedToken: { accessToken: string; expiresAt: number } | null = null;
 
-function readServiceAccount(): ServiceAccount {
-  const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
-  if (!raw) {
-    throw new Error(
-      "FIREBASE_SERVICE_ACCOUNT_JSON غير مُعد على السيرفر — مطلوب لإرسال نماذج التواصل بأمان",
-    );
-  }
+const SA_ENV_NAME = "FIREBASE_SERVICE_ACCOUNT_JSON";
+
+/** Dynamic lookup — avoids accidental build-time inlining of the secret name. */
+function readServerEnv(name: string): string {
   try {
-    const parsed = JSON.parse(raw) as Partial<ServiceAccount>;
-    if (!parsed.project_id || !parsed.client_email || !parsed.private_key) {
-      throw new Error("invalid");
-    }
+    const value = process.env[name];
+    return typeof value === "string" ? value.trim() : "";
+  } catch {
+    return "";
+  }
+}
+
+export type ServiceAccountDiagnostics = {
+  has_service_account: boolean;
+  environment: string;
+  json_char_length: number;
+  parse_ok: boolean;
+  has_project_id: boolean;
+  has_client_email: boolean;
+  has_private_key: boolean;
+};
+
+/**
+ * Safe diagnostics for ops logs — never includes JSON, keys, or emails.
+ */
+export function getServiceAccountDiagnostics(): ServiceAccountDiagnostics {
+  const raw = normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME));
+  const environment =
+    readServerEnv("VERCEL_ENV") ||
+    readServerEnv("NODE_ENV") ||
+    "unknown";
+
+  const base: ServiceAccountDiagnostics = {
+    has_service_account: Boolean(raw),
+    environment,
+    json_char_length: raw.length,
+    parse_ok: false,
+    has_project_id: false,
+    has_client_email: false,
+    has_private_key: false,
+  };
+
+  if (!raw) return base;
+
+  try {
+    const parsed = parseServiceAccountObject(raw);
     return {
-      project_id: parsed.project_id,
-      client_email: parsed.client_email,
-      private_key: parsed.private_key.replace(/\\n/g, "\n"),
+      ...base,
+      parse_ok: true,
+      has_project_id: Boolean(parsed.project_id),
+      has_client_email: Boolean(parsed.client_email),
+      has_private_key: Boolean(parsed.private_key),
     };
   } catch {
-    throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON غير صالح (JSON)");
+    return base;
   }
+}
+
+/** Strip BOM / wrapping quotes / accidental double-encoding from Vercel dashboard pastes. */
+function normalizeServiceAccountJson(raw: string): string {
+  let value = raw.replace(/^\uFEFF/, "").trim();
+  if (!value) return "";
+
+  // Dashboard sometimes stores the whole JSON wrapped in extra quotes.
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    value = value.slice(1, -1).trim();
+  }
+
+  // If the value is a JSON string containing JSON, unwrap once.
+  if (value.startsWith('"') && value.includes("{")) {
+    try {
+      const once = JSON.parse(value);
+      if (typeof once === "string") value = once.trim();
+    } catch {
+      // keep as-is
+    }
+  }
+
+  return value;
+}
+
+function parseServiceAccountObject(raw: string): ServiceAccount {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error(`${SA_ENV_NAME} غير صالح (JSON)`);
+  }
+
+  // Double-encoded: JSON.parse → string → parse again
+  if (typeof parsed === "string") {
+    try {
+      parsed = JSON.parse(parsed);
+    } catch {
+      throw new Error(`${SA_ENV_NAME} غير صالح (JSON)`);
+    }
+  }
+
+  if (!parsed || typeof parsed !== "object") {
+    throw new Error(`${SA_ENV_NAME} غير صالح (JSON)`);
+  }
+
+  const obj = parsed as Partial<ServiceAccount>;
+  if (!obj.project_id || !obj.client_email || !obj.private_key) {
+    throw new Error(`${SA_ENV_NAME} غير صالح (JSON)`);
+  }
+
+  return {
+    project_id: String(obj.project_id),
+    client_email: String(obj.client_email),
+    private_key: String(obj.private_key).replace(/\\n/g, "\n"),
+  };
+}
+
+function readServiceAccount(): ServiceAccount {
+  const raw = normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME));
+  if (!raw) {
+    throw new Error(
+      `${SA_ENV_NAME} غير مُعد على السيرفر — مطلوب لإرسال نماذج التواصل بأمان`,
+    );
+  }
+  return parseServiceAccountObject(raw);
 }
 
 /** True when Admin REST service account JSON is configured. */
 export function hasFirebaseServiceAccount(): boolean {
-  return Boolean(process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim());
+  return Boolean(normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME)));
 }
 
 function resolveProjectId(): string {
   if (hasFirebaseServiceAccount()) return readServiceAccount().project_id;
   const id = (
-    process.env.FIREBASE_PROJECT_ID ||
-    process.env.VITE_FIREBASE_PROJECT_ID ||
+    readServerEnv("FIREBASE_PROJECT_ID") ||
+    readServerEnv("VITE_FIREBASE_PROJECT_ID") ||
     ""
   ).trim();
   if (!id) throw new Error("VITE_FIREBASE_PROJECT_ID غير مُعد على السيرفر");

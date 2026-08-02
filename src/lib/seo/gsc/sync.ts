@@ -1,5 +1,6 @@
 import { nowIso } from "@/lib/cms/admin-utils";
 import { COLLECTIONS } from "@/lib/firebase/collections";
+import { runOpportunityEngineFromSnapshots } from "@/lib/seo/ai/opportunity-engine";
 import {
   getAccessTokenForUser,
   gscSnapshotDocId,
@@ -9,6 +10,7 @@ import { getGscOAuthConfig } from "@/lib/seo/gsc/auth";
 import type { GscSearchRow, GscSyncResult } from "@/lib/seo/gsc/types";
 import { appendAiLog } from "@/lib/seo/automation/drafts";
 import { upsertFirestoreDocument } from "@/lib/server/firebase-admin";
+import type { GscSnapshot } from "@/types/seo-automation";
 
 function formatDateUTC(d: Date): string {
   return d.toISOString().slice(0, 10);
@@ -16,61 +18,38 @@ function formatDateUTC(d: Date): string {
 
 function last28DayRange(): { startDate: string; endDate: string } {
   const end = new Date();
-  // GSC data often lags ~2 days; end at yesterday UTC
   end.setUTCDate(end.getUTCDate() - 1);
   const start = new Date(end);
   start.setUTCDate(start.getUTCDate() - 27);
   return { startDate: formatDateUTC(start), endDate: formatDateUTC(end) };
 }
 
+function rowsToSnapshots(rows: GscSearchRow[], date: string): GscSnapshot[] {
+  return rows.map((row, index) => ({
+    id: gscSnapshotDocId({ ...row, date }) || `row-${index}`,
+    query: row.query,
+    page: row.page,
+    clicks: row.clicks,
+    impressions: row.impressions,
+    ctr: row.ctr,
+    position: row.position,
+    date,
+    country: row.country,
+    device: row.device,
+  }));
+}
+
 /**
- * Rule-based insight prep (no LLM) — high impressions + weak CTR/position → pending seo_insights.
- * Keeps status pending for human / future AI review. Never publishes blog posts.
+ * Opportunity engine from GSC rows → seo_insights (quick wins / content / page improvements).
+ * Never publishes blog posts.
  */
 export async function prepareInsightsFromSnapshots(
   rows: GscSearchRow[],
   periodEnd: string,
 ): Promise<number> {
-  const candidates = rows
-    .filter((r) => r.impressions >= 50 && (r.ctr < 0.03 || r.position > 10))
-    .sort((a, b) => b.impressions - a.impressions)
-    .slice(0, 25);
-
-  const ts = nowIso();
-  let written = 0;
-
-  for (const row of candidates) {
-    const id = gscSnapshotDocId({ ...row, date: `insight-${periodEnd}` }).slice(0, 28);
-    const priority =
-      row.impressions >= 500 && row.ctr < 0.02
-        ? "high"
-        : row.impressions >= 150
-          ? "medium"
-          : "low";
-
-    await upsertFirestoreDocument(COLLECTIONS.seoInsights, id, {
-      type: "gsc_opportunity",
-      title: `تحسين الظهور لـ: ${row.query.slice(0, 80)}`,
-      description: `استعلام بإظهار ${Math.round(row.impressions)} ونقرات ${Math.round(row.clicks)} ومتوسط ترتيب ${row.position.toFixed(1)}.`,
-      keyword: row.query,
-      targetPage: row.page,
-      currentPosition: Number(row.position.toFixed(2)),
-      impressions: Math.round(row.impressions),
-      clicks: Math.round(row.clicks),
-      ctr: Number(row.ctr.toFixed(4)),
-      priority,
-      status: "pending",
-      recommendation:
-        row.ctr < 0.03
-          ? "CTR منخفض — حسّن العنوان والوصف التعريفي، أو أنشئ مسودة مقال تستهدف الاستعلام."
-          : "ترتيب خارج الصفحة الأولى — عزّز المحتوى والروابط الداخلية نحو الصفحة المستهدفة.",
-      createdAt: ts,
-      updatedAt: ts,
-    });
-    written += 1;
-  }
-
-  return written;
+  const snapshots = rowsToSnapshots(rows, periodEnd);
+  const { opportunities } = await runOpportunityEngineFromSnapshots(snapshots);
+  return opportunities;
 }
 
 export async function syncGscSearchAnalytics(
