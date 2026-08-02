@@ -1,6 +1,7 @@
 import { LANDING_LINKS, SEO_LOCATION_LINKS, SERVICE_LINKS } from "@/lib/seo/internal-links";
 import { generateAiText, hasLlmConfigured } from "@/lib/seo/ai/provider";
 import type { AiChatMessage } from "@/lib/seo/ai/types";
+import { demoteArticleH1 } from "@/lib/seo/blog-utils";
 import { SITE_NAME } from "@/lib/site-config";
 import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
@@ -41,15 +42,14 @@ export function buildTemplateBlogHtml(input: {
   page?: string;
   issue?: string;
 }): string {
-  const title = escapeHtml(input.title);
   const keyword = escapeHtml(input.keyword);
   const links = pickInternalLinks(input.keyword);
   const linkHtml = links
     .map((l) => `<li><a href="${l.href}">${escapeHtml(l.label)}</a></li>`)
     .join("");
 
+  // No <h1> here — the public blog template already renders post.title as the page H1.
   return `
-<h1>${title}</h1>
 <p>تبحث الشركات في السعودية عن حلول موثوقة حول <strong>${keyword}</strong>. في هذا الدليل من ${escapeHtml(SITE_NAME)} نوضح كيف تختار الخدمة المناسبة، وما الذي يرفع ظهورك في Google، وكيف تربط المحتوى بأهدافك التجارية في الرياض والسوق السعودي.</p>
 
 <h2>لماذا يهم هذا الموضوع للشركات في السعودية؟</h2>
@@ -127,10 +127,10 @@ function draftMessages(insight: SeoInsight): AiChatMessage[] {
 التوصية: ${insight.recommended_action || insight.recommendation || ""}.
 
 أعد JSON بالمفاتيح:
-title, excerpt, content (HTML مع H1 ثم مقدمة ثم H2/H3 ثم FAQ ثم خلاصة ثم CTA),
+title, excerpt, content (HTML: مقدمة ثم H2/H3 ثم FAQ ثم خلاصة ثم CTA — بدون أي H1 لأن العنوان يُعرض منفصلاً),
 metaTitle, metaDescription, category, tags (مصفوفة), featuredImageAlt.
 ضمن روابط داخلية حقيقية مثل /seo-services و /web-design-riyadh و /contact.
-استهدف السعودية والرياض عند الصلة. لا تستخدم Base64 للصور.`,
+استهدف السعودية والرياض عند الصلة. لا تستخدم Base64 للصور. لا تُدرج وسم H1 داخل content.`,
     },
   ];
 }
@@ -148,12 +148,14 @@ export async function generateBlogDraftFromInsight(
     `دليل: ${insight.keyword}`.trim();
 
   if (!hasLlmConfigured()) {
-    const content = buildTemplateBlogHtml({
-      title: fallbackTitle,
-      keyword: insight.keyword,
-      page: insight.page || insight.targetPage,
-      issue: insight.issue || insight.description,
-    });
+    const content = demoteArticleH1(
+      buildTemplateBlogHtml({
+        title: fallbackTitle,
+        keyword: insight.keyword,
+        page: insight.page || insight.targetPage,
+        issue: insight.issue || insight.description,
+      }),
+    );
     return {
       provider: "template",
       input: {
@@ -174,15 +176,17 @@ export async function generateBlogDraftFromInsight(
   const { text, provider } = await generateAiText(draftMessages(insight));
   const parsed = parseJsonObject(text);
   if (!parsed) {
-    // LLM returned prose — wrap as content
-    const content = text.includes("<h1")
-      ? text
-      : buildTemplateBlogHtml({
-          title: fallbackTitle,
-          keyword: insight.keyword,
-          page: insight.page || insight.targetPage,
-          issue: insight.issue,
-        });
+    // LLM returned prose — wrap as content (never keep body H1; page template owns H1)
+    const content = demoteArticleH1(
+      /<h[1-6]\b/i.test(text)
+        ? text
+        : buildTemplateBlogHtml({
+            title: fallbackTitle,
+            keyword: insight.keyword,
+            page: insight.page || insight.targetPage,
+            issue: insight.issue,
+          }),
+    );
     return {
       provider,
       input: {
@@ -201,7 +205,7 @@ export async function generateBlogDraftFromInsight(
   }
 
   const title = String(parsed.title ?? fallbackTitle).trim() || fallbackTitle;
-  const content = String(parsed.content ?? "").trim();
+  const content = demoteArticleH1(String(parsed.content ?? "").trim());
   if (!content) {
     throw new Error("الذكاء الاصطناعي لم يُرجع محتوى المقال");
   }
