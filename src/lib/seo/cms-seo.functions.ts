@@ -29,14 +29,15 @@ export const loadHomeHeroSettingsFn = createServerFn({ method: "GET", strict: fa
   },
 );
 
-/** Home FAQs for SSR HTML + FAQPage JSON-LD (below-the-fold still hydrates from CMS). */
+/** Home FAQs for SSR HTML + FAQPage JSON-LD (eager section, not in lazy chunk). */
 export const loadHomeFaqsFn = createServerFn({ method: "GET", strict: false }).handler(
   async (): Promise<WithId<FaqItem>[]> => {
     try {
       const { getFaqs } = await import("@/lib/cms/content-service");
       return await getFaqs();
     } catch {
-      return [];
+      const { FALLBACK_FAQS } = await import("@/lib/cms/fallback-data");
+      return FALLBACK_FAQS.map((faq) => ({ ...faq }));
     }
   },
 );

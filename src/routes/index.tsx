@@ -22,6 +22,7 @@ import {
   loadPublishedPageSeoFn,
 } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
+import { HomeCtaSection, HomeFaqSection } from "@/components/home/HomeFaqCta";
 
 const HomeBelowFold = lazy(() =>
   import("@/components/home/HomeBelowFold").then((m) => ({ default: m.HomeBelowFold })),
@@ -97,8 +98,10 @@ function Home() {
           </div>
         }
       >
-        <HomeBelowFold initialFaqs={faqs} />
+        <HomeBelowFold />
       </Suspense>
+      <HomeFaqSection faqs={faqs} />
+      <HomeCtaSection />
     </>
   );
 }

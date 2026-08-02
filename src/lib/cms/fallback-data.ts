@@ -402,7 +402,7 @@ export const FALLBACK_FAQS: FaqItem[] = [
     id: "faq-1",
     question: "كم يستغرق المشروع عادةً؟",
     answer:
-      "المواقع التسويقية: 2-4 أسابيع. تطبيقات الويب: 6-12 أسبوعاً حسب النطاق. نعمل بـ sprints أسبوعين مع عروض أسبوعية.",
+      "المواقع التعريفية عادةً خلال 2–4 أسابيع. تطبيقات الويب: 6–12 أسبوعاً حسب النطاق. نعمل بمراحل قصيرة مع تحديثات أسبوعية.",
     order: 1,
     status: "published",
     createdAt: ts,
@@ -410,9 +410,9 @@ export const FALLBACK_FAQS: FaqItem[] = [
   },
   {
     id: "faq-2",
-    question: "هل تعملون مع startups أو منظمات غير ربحية؟",
+    question: "هل تعملون مع الشركات الناشئة أو المنظمات غير الربحية؟",
     answer:
-      "نعم — نخصص مقاعد كل ربع سنة لمشاريع ذات أثر اجتماعي بأسعار مخفّضة. تواصل معنا وشاركنا قصتك.",
+      "نعم — نخصص فرصاً كل ربع سنة لمشاريع ذات أثر اجتماعي بأسعار مخفّضة. تواصل معنا وشاركنا قصتك.",
     order: 2,
     status: "published",
     createdAt: ts,
@@ -422,7 +422,7 @@ export const FALLBACK_FAQS: FaqItem[] = [
     id: "faq-3",
     question: "ما التقنيات التي تستخدمونها؟",
     answer:
-      "React، Next.js، TypeScript، Tailwind وFirebase. نختار stack مجرّب يبقى مدعوماً لسنوات.",
+      "نعتمد تقنيات حديثة مثل React وTypeScript وTailwind وFirebase، ونختار أدوات مجرّبة تبقى مدعومة لسنوات.",
     order: 3,
     status: "published",
     createdAt: ts,
@@ -432,7 +432,7 @@ export const FALLBACK_FAQS: FaqItem[] = [
     id: "faq-4",
     question: "هل تقدمون SEO ونمو مستمر؟",
     answer:
-      "بالتأكيد — retainers شهرية للـ SEO وCRO والمحتوى. كثير من العملاء يبدأون ببناء ثم يتحولون لشراكة طويلة.",
+      "نعم — باقات شهرية لتحسين محركات البحث وتحسين التحويل والمحتوى. كثير من العملاء يبدأون ببناء الموقع ثم يستمرون معنا للنمو.",
     order: 4,
     status: "published",
     createdAt: ts,
@@ -442,7 +442,7 @@ export const FALLBACK_FAQS: FaqItem[] = [
     id: "faq-5",
     question: "هل نستطيع إدارة المحتوى بأنفسنا؟",
     answer:
-      "نعم. كل موقع نسلّمه جاهز لـ CMS مع لوحة تحكم نظيفة — فريقك يعدّل النصوص والصور بدون لمس الكود.",
+      "نعم. كل موقع نسلّمه مع لوحة تحكم واضحة — فريقك يعدّل النصوص والصور بدون الحاجة لتعديل الكود.",
     order: 5,
     status: "published",
     createdAt: ts,
