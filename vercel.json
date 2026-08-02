@@ -5,6 +5,12 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "top1markting.com" }],
+      "destination": "https://www.top1markting.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/web-design-egypt",
       "destination": "/web-design-saudi-arabia",
       "permanent": true

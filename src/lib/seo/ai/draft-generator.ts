@@ -1,13 +1,16 @@
 import { generateAiText, hasLlmConfigured } from "@/lib/seo/ai/provider";
 import type { AiChatMessage } from "@/lib/seo/ai/types";
+import { demoteArticleH1 } from "@/lib/seo/blog-utils";
 import { SITE_NAME } from "@/lib/site-config";
 import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
-/** Preferred internal links for Saudi SEO drafts (match live site routes). */
+/** Preferred internal links for Saudi SEO drafts (canonical live routes only). */
 export const SAUDI_SEO_INTERNAL_LINKS: Array<{ label: string; href: string }> = [
-  { label: "خدمات تحسين محركات البحث", href: "/services/seo-optimization" },
+  { label: "خدمات تحسين محركات البحث", href: "/services/seo" },
+  { label: "خدمات SEO", href: "/seo-services" },
   { label: "تصميم المواقع", href: "/services/web-design" },
   { label: "خدمات SEO في الرياض", href: "/seo-riyadh" },
+  { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
   { label: "تواصل معنا", href: "/contact" },
 ];
 
@@ -159,13 +162,7 @@ function buildImagePrompt(keyword: string, title: string): string {
 }
 
 function buildDefaultKeywords(keyword: string): string[] {
-  const base = [
-    keyword.trim(),
-    "السعودية",
-    "الرياض",
-    "SEO السعودية",
-    SITE_NAME,
-  ].filter(Boolean);
+  const base = [keyword.trim(), "السعودية", "الرياض", "SEO السعودية", SITE_NAME].filter(Boolean);
   return [...new Set(base)].slice(0, 8);
 }
 
@@ -177,7 +174,6 @@ export function buildTemplateBlogHtml(input: {
   issue?: string;
   faqs?: FaqItem[];
 }): string {
-  const title = escapeHtml(input.title);
   const keyword = escapeHtml(input.keyword);
   const links = pickInternalLinks(input.keyword);
   const faqs = input.faqs ?? buildFaqItems(input.keyword);
@@ -185,14 +181,11 @@ export function buildTemplateBlogHtml(input: {
     .map((l) => `<li><a href="${l.href}">${escapeHtml(l.label)}</a></li>`)
     .join("");
   const faqHtml = faqs
-    .map(
-      (f) =>
-        `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`,
-    )
+    .map((f) => `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`)
     .join("\n");
 
+  // No <h1> here — the public blog template already renders post.title as the page H1.
   return `
-<h1>${title}</h1>
 <p>تبحث الشركات في المملكة العربية السعودية عن نتائج عملية حول <strong>${keyword}</strong> — في الرياض وجدة والقصيم وغيرها. هذا الدليل من ${escapeHtml(SITE_NAME)} مكتوب بلغة مهنية للشركات السعودية، دون حشو كلمات مفتاحية، مع تركيز على نية البحث وخطوات قابلة للتنفيذ.</p>
 
 <h2>لماذا يهم هذا الموضوع للشركات السعودية؟</h2>
@@ -209,7 +202,7 @@ export function buildTemplateBlogHtml(input: {
 <h2>خطوات عملية لتحسين الظهور حول «${keyword}»</h2>
 <ol>
   <li>حدّث Title و Meta Description ليعكسا نية البحث السعودية دون تكرار مبالغ فيه.</li>
-  <li>أبقِ H1 واحداً واضحاً، ثم نظّم الأقسام بـ H2/H3.</li>
+  <li>أبقِ H1 واحداً واضحاً في عنوان الصفحة، ثم نظّم أقسام المحتوى بـ H2/H3 فقط.</li>
   <li>أضف FAQ يجيب على اعتراضات الشركات فعلياً.</li>
   <li>اربط المقال بصفحات الخدمات ذات الصلة بروابط طبيعية.</li>
   <li>راجع المسودة بشرياً قبل النشر — لا يُنشر أي محتوى AI تلقائياً.</li>
@@ -261,7 +254,7 @@ function draftMessages(insight: SeoInsight): AiChatMessage[] {
 - عربية احترافية مناسبة للشركات السعودية (B2B)
 - استهدف السعودية، واذكر المدن عند الحاجة فقط (الرياض، جدة، القصيم) دون حشو
 - لا تكرر الكلمة المفتاحية بشكل مصطنع
-- H1 واحد فقط داخل content
+- لا تُدرج أي وسم H1 داخل content — قالب صفحة المقال يعرض العنوان كـ H1 وحيد
 - أعد JSON فقط بدون Markdown خارج JSON`,
     },
     {
@@ -279,7 +272,7 @@ function draftMessages(insight: SeoInsight): AiChatMessage[] {
   "slug": "english-only-short-seo-slug",
   "metaDescription": "120 إلى 160 حرف مع keyword ونية سعودية",
   "excerpt": "ملخص قصير",
-  "content": "HTML: H1 واحد ثم مقدمة ثم H2/H3 ثم قسم FAQ ثم خلاصة ثم CTA لـ ${SITE_NAME}",
+  "content": "HTML: مقدمة ثم H2/H3 ثم قسم FAQ ثم خلاصة ثم CTA لـ ${SITE_NAME} — بدون أي H1",
   "keywords": ["..."],
   "imagePrompt": "وصف صورة واقعية بالإنجليزية للمقال",
   "faq": [{"question":"...","answer":"..."}],
@@ -342,7 +335,8 @@ function finalizePrepared(
     slug,
     metaDescription,
     excerpt: (partial.excerpt || metaDescription).slice(0, 180),
-    content: partial.content,
+    // Page template owns the only H1 — demote any body H1 from templates/LLM output.
+    content: demoteArticleH1(partial.content),
     keywords,
     imagePrompt,
     faqSchema,
@@ -419,7 +413,7 @@ export async function generateBlogDraftFromInsight(
 
   if (!parsed) {
     const faqs = buildFaqItems(keyword);
-    const content = text.includes("<h1")
+    const content = /<h[1-6]\b/i.test(text)
       ? text
       : buildTemplateBlogHtml({
           title: fallbackTitle,
@@ -446,7 +440,6 @@ export async function generateBlogDraftFromInsight(
     throw new Error("الذكاء الاصطناعي لم يُرجع محتوى المقال");
   }
 
-  // Enforce single H1 if model returned extras — keep first only visually by not rewriting aggressively.
   const faqs = normalizeFaqs(parsed.faq, keyword);
   if (!/<h2[^>]*>\s*الأسئلة الشائعة/i.test(content) && !/FAQ/i.test(content)) {
     const faqHtml = faqs
