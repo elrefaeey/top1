@@ -97,9 +97,14 @@ function applyDefaultMetaPenalty(points: number, fromCms: boolean): number {
 function isValidCanonical(path: string, cmsCanonical?: string): boolean {
   const custom = cmsCanonical?.trim();
   if (custom) {
+    if (custom.startsWith("/") && !custom.startsWith("//")) {
+      return custom.length > 1 || custom === "/";
+    }
     try {
       const parsed = new URL(custom);
-      return parsed.protocol === "https:" && Boolean(parsed.pathname);
+      const host = parsed.hostname.toLowerCase();
+      const isSite = host === "top1markting.com" || host === "www.top1markting.com";
+      return parsed.protocol === "https:" && Boolean(parsed.pathname) && isSite;
     } catch {
       return false;
     }
