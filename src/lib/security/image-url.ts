@@ -18,6 +18,18 @@ export function isHttpImageUrl(value: string): boolean {
   }
 }
 
+/**
+ * Public reads must never ship Base64 data URLs — they bloat SSR HTML,
+ * JSON-LD, and /api/cms payloads (often hundreds of KB per image).
+ * Returns fallback (default "") when the value is a data:image URL.
+ */
+export function sanitizePublicImageUrl(value: string | undefined | null, fallback = ""): string {
+  const trimmed = (value ?? "").trim();
+  if (!trimmed) return fallback;
+  if (isDataImageUrl(trimmed) || /data:image\//i.test(trimmed)) return fallback;
+  return trimmed;
+}
+
 /** Public/CMS content must use hosted URLs — refuse Base64 data URLs. */
 export function assertPublicImageUrl(value: string, fieldLabel = "الصورة"): string {
   const trimmed = value.trim();
