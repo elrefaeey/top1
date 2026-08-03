@@ -26,7 +26,10 @@ function Blog() {
   const isPost = useMatch({ from: "/blog/$slug", shouldThrow: false });
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("الكل");
-  const { data: posts = [], isLoading, isError, refetch } = useBlogPosts();
+  const { posts: loaderPosts = [] } = Route.useLoaderData();
+  const { data: queryPosts = [], isLoading, isError, isSuccess, refetch } = useBlogPosts();
+  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
+  const posts = isSuccess ? queryPosts : loaderPosts.length > 0 ? loaderPosts : queryPosts;
 
   const categories = useMemo(() => {
     const cats = [...new Set(posts.map((p) => p.category).filter(Boolean))];
@@ -73,6 +76,7 @@ function Blog() {
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="ابحث في المقالات…"
+                  aria-label="ابحث في المقالات"
                   className="w-full h-12 ps-11 pe-4 rounded-lg border border-border bg-surface text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
@@ -99,13 +103,13 @@ function Blog() {
             ))}
           </div>
 
-          {isLoading && (
+          {isLoading && posts.length === 0 && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل المقالات…
             </div>
           )}
 
-          {isError && (
+          {isError && posts.length === 0 && (
             <ContentError message="تعذّر تحميل المقالات." onRetry={() => void refetch()} />
           )}
 
@@ -115,7 +119,7 @@ function Blog() {
             </p>
           )}
 
-          {!isLoading && trending.length > 0 && cat === "الكل" && q === "" && (
+          {trending.length > 0 && cat === "الكل" && q === "" && (
             <div className="mb-12">
               <div className="flex items-center gap-2 text-sm font-semibold mb-5">
                 <TrendingUp className="h-4 w-4 text-primary" /> الأكثر رواجاً

@@ -18,8 +18,7 @@ import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
 
-export const SITE_TAGLINE_EN =
-  "Digital agency serving Saudi Arabia and the United Arab Emirates";
+export const SITE_TAGLINE_EN = "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
 /** مناطق الخدمة — السعودية والإمارات + مدن رئيسية */
 export const SEO_AREAS_SERVED = [
@@ -120,7 +119,7 @@ export function absoluteUrl(path: string): string {
 }
 
 export function absoluteImageUrl(src: string): string {
-  if (!src) return absoluteUrl(SITE_LOGO_URL);
+  if (!src || src.startsWith("data:")) return absoluteUrl(SITE_LOGO_URL);
   if (src.startsWith("http://") || src.startsWith("https://")) return src;
   return absoluteUrl(src);
 }
