@@ -1,6 +1,5 @@
 import {
   SITE_CONTACT_EMAIL,
-  SITE_CONTACT_PHONE,
   SITE_LOGO_URL,
   SITE_NAME,
   SITE_OG_IMAGE_URL,
@@ -143,6 +142,15 @@ export function organizationSchema() {
     url: absoluteUrl("/"),
     logo: absoluteImageUrl(SITE_LOGO_URL),
     description: SITE_TAGLINE_AR,
+    telephone: `+${SITE_WHATSAPP_NUMBER}`,
+    email: SITE_CONTACT_EMAIL,
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: `+${SITE_WHATSAPP_NUMBER}`,
+      contactType: "customer service",
+      areaServed: "SA",
+      availableLanguage: ["Arabic", "ar"],
+    },
     areaServed: [...SEO_AREAS_SERVED],
     knowsAbout: [...SEO_KNOWS_ABOUT],
     sameAs: [...SITE_SOCIAL_SAME_AS],
