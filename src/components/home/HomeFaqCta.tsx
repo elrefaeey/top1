@@ -52,13 +52,13 @@ export function HomeFaqSection({ initialFaqs = [] }: { initialFaqs?: WithId<FaqI
                       )}
                     </span>
                   </button>
-                  {isOpen ? (
-                    <div
-                      id={panelId}
-                      className="prose prose-sm max-w-none break-words px-5 pb-5 text-sm leading-relaxed text-muted-foreground"
-                      dangerouslySetInnerHTML={{ __html: f.answer }}
-                    />
-                  ) : null}
+                  {/* Keep answers in SSR HTML for FAQPage parity; hide closed panels visually. */}
+                  <div
+                    id={panelId}
+                    hidden={!isOpen}
+                    className="prose prose-sm max-w-none break-words px-5 pb-5 text-sm leading-relaxed text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: f.answer }}
+                  />
                 </div>
               );
             })}
