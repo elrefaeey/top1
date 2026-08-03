@@ -3,28 +3,43 @@ import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, TrendingUp, Target } from "
 import { lazy, Suspense, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
-import { useHomeBundle } from "@/hooks/use-cms";
+import { HomeCtaSection, HomeFaqSection } from "@/components/home/HomeFaqCta";
+import { SectionIntro } from "@/components/site/SectionIntro";
+import { MarketsServeStrip } from "@/components/site/MarketsContact";
+import { cmsKeys, useHomeBundle } from "@/hooks/use-cms";
 import { statIcon } from "@/lib/stat-icons";
 import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { serviceIcon } from "@/lib/service-icons";
 import { SITE_NAME } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
-import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
-import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
-import { SectionIntro } from "@/components/site/SectionIntro";
-import { MarketsServeStrip } from "@/components/site/MarketsContact";
+import {
+  absoluteImageUrl,
+  buildStaticPageHead,
+  faqPageSchema,
+  jsonLdScript,
+  resolveStaticPageOgImage,
+} from "@/lib/seo";
+import {
+  loadHomeFaqsFn,
+  loadHomeHeroSettingsFn,
+  loadPublishedPageSeoFn,
+} from "@/lib/seo/cms-seo.functions";
 
 const HomeBelowFold = lazy(() =>
   import("@/components/home/HomeBelowFold").then((m) => ({ default: m.HomeBelowFold })),
 );
 
 export const Route = createFileRoute("/")({
-  loader: async () => {
-    const [cms, hero] = await Promise.all([
+  loader: async ({ context }) => {
+    const [cms, hero, faqs] = await Promise.all([
       loadPublishedPageSeoFn({ data: { slug: "home" } }),
       loadHomeHeroSettingsFn(),
+      loadHomeFaqsFn(),
     ]);
-    return { cms, hero };
+    if (faqs.length > 0) {
+      context.queryClient.setQueryData(cmsKeys.faqs(), faqs);
+    }
+    return { cms, hero, faqs };
   },
   head: ({ loaderData }) => {
     const cms = loaderData?.cms;
@@ -43,10 +58,12 @@ export const Route = createFileRoute("/")({
             },
           ]
         : undefined;
+    const faqs = loaderData?.faqs ?? [];
     return buildStaticPageHead("home", "/", {
       cms,
       image: heroUrl && !heroUrl.startsWith("data:") ? heroUrl : image,
       extraLinks,
+      scripts: faqs.length > 0 ? [jsonLdScript(faqPageSchema(faqs))] : undefined,
     });
   },
   component: Home,
@@ -65,6 +82,7 @@ const MARQUEE_ITEMS = [
 ];
 
 function Home() {
+  const { faqs = [] } = Route.useLoaderData();
   return (
     <>
       <Hero />
@@ -87,6 +105,8 @@ function Home() {
       >
         <HomeBelowFold />
       </Suspense>
+      <HomeFaqSection initialFaqs={faqs} />
+      <HomeCtaSection />
     </>
   );
 }
@@ -112,7 +132,7 @@ function Hero() {
           <MarketsServeStrip className="hero-markets-serve animate-hero animate-hero-delay-1" />
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
-            تصميم مواقع وSEO
+            {"تصميم مواقع وSEO "}
             <span className="hero-studio-title-line">
               يحوّلان الزوار إلى عملاء في السعودية والإمارات.
             </span>
