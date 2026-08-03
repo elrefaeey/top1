@@ -96,7 +96,38 @@ export function serviceLinksForBlogPost(post: BlogPost): InternalLink[] {
     }
   }
 
-  return links.slice(0, 3);
+  // Pass link equity from Saudi blog posts into city commercial landings.
+  const locationHints: Array<{ match: RegExp; links: InternalLink[] }> = [
+    {
+      match: /رياض|riyadh/,
+      links: [
+        { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+        { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
+      ],
+    },
+    {
+      match: /قصيم|qassim/,
+      links: [
+        { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
+        { label: "خدمات SEO القصيم", href: "/seo-qassim" },
+      ],
+    },
+    {
+      match: /بريدة|buraidah|buraydah/,
+      links: [
+        { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
+        { label: "خدمات SEO بريدة", href: "/seo-buraidah" },
+      ],
+    },
+  ];
+  for (const hint of locationHints) {
+    if (!hint.match.test(haystack)) continue;
+    for (const link of hint.links) {
+      if (!links.some((item) => item.href === link.href)) links.push(link);
+    }
+  }
+
+  return links.slice(0, 5);
 }
 
 export function footerInternalLinks(): InternalLink[] {
