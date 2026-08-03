@@ -1,4 +1,6 @@
 import { createSign, randomUUID, timingSafeEqual } from "node:crypto";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
 /**
  * Server-only Firebase Admin access via Firestore REST + service-account JWT.
@@ -51,7 +53,7 @@ export type ServiceAccountDiagnostics = {
  * Safe diagnostics for ops logs — never includes JSON, keys, or emails.
  */
 export function getServiceAccountDiagnostics(): ServiceAccountDiagnostics {
-  const raw = normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME));
+  const raw = readServiceAccountRaw();
   const environment =
     readServerEnv("VERCEL_ENV") ||
     readServerEnv("NODE_ENV") ||
@@ -142,8 +144,30 @@ function parseServiceAccountObject(raw: string): ServiceAccount {
   };
 }
 
+function readServiceAccountRaw(): string {
+  const fromEnv = normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME));
+  if (fromEnv) return fromEnv;
+
+  // Local DX: allow *firebase-adminsdk*.json in project root when env is unset (never in production).
+  const nodeEnv = readServerEnv("NODE_ENV") || "development";
+  const vercelEnv = readServerEnv("VERCEL_ENV");
+  if (nodeEnv === "production" || vercelEnv === "production" || vercelEnv === "preview") {
+    return "";
+  }
+
+  try {
+    const root = process.cwd();
+    const match = readdirSync(root).find((name) => /firebase-adminsdk.*\.json$/i.test(name));
+    if (!match) return "";
+    const raw = readFileSync(join(root, match), "utf8");
+    return normalizeServiceAccountJson(raw);
+  } catch {
+    return "";
+  }
+}
+
 function readServiceAccount(): ServiceAccount {
-  const raw = normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME));
+  const raw = readServiceAccountRaw();
   if (!raw) {
     throw new Error(
       `${SA_ENV_NAME} غير مُعد على السيرفر — مطلوب لإرسال نماذج التواصل بأمان`,
@@ -154,7 +178,7 @@ function readServiceAccount(): ServiceAccount {
 
 /** True when Admin REST service account JSON is configured. */
 export function hasFirebaseServiceAccount(): boolean {
-  return Boolean(normalizeServiceAccountJson(readServerEnv(SA_ENV_NAME)));
+  return Boolean(readServiceAccountRaw());
 }
 
 function resolveProjectId(): string {

@@ -9,7 +9,8 @@
 const SERVICE_SLUG_GROUPS: ReadonlyArray<readonly string[]> = [
   ["web-design", "web-design-saudi", "web-design-development"],
   ["seo", "seo-saudi", "seo-optimization"],
-  ["web-apps", "ecommerce-development"],
+  // Keep ecommerce landing `/ecommerce-development` separate from CMS service `/services/web-apps`
+  ["web-apps"],
   ["ui-ux", "ui-ux-design"],
   ["digital-solutions"],
 ];

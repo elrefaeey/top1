@@ -9,18 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebDesignSharjahRouteImport } from './routes/web-design-sharjah'
 import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
 import { Route as WebDesignRiyadhRouteImport } from './routes/web-design-riyadh'
 import { Route as WebDesignQassimRouteImport } from './routes/web-design-qassim'
+import { Route as WebDesignKhobarRouteImport } from './routes/web-design-khobar'
+import { Route as WebDesignJeddahRouteImport } from './routes/web-design-jeddah'
 import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
+import { Route as WebDesignDubaiRouteImport } from './routes/web-design-dubai'
+import { Route as WebDesignDammamRouteImport } from './routes/web-design-dammam'
 import { Route as WebDesignBuraidahRouteImport } from './routes/web-design-buraidah'
+import { Route as WebDesignAbuDhabiRouteImport } from './routes/web-design-abu-dhabi'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoServicesRouteImport } from './routes/seo-services'
 import { Route as SeoRiyadhRouteImport } from './routes/seo-riyadh'
 import { Route as SeoQassimRouteImport } from './routes/seo-qassim'
+import { Route as SeoDubaiRouteImport } from './routes/seo-dubai'
 import { Route as SeoBuraidahRouteImport } from './routes/seo-buraidah'
+import { Route as SeoAbuDhabiRouteImport } from './routes/seo-abu-dhabi'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -39,6 +47,7 @@ import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as MediaIdRouteImport } from './routes/media.$id'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthorsSlugRouteImport } from './routes/authors.$slug'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
 import { Route as ApiLeadsRouteImport } from './routes/api/leads'
 import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
@@ -55,6 +64,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
+import { Route as AdminAuthorsRouteImport } from './routes/admin.authors'
 import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
 import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
 import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
@@ -70,11 +80,17 @@ import { Route as AdminPortfolioIdRouteImport } from './routes/admin.portfolio.$
 import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
 import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
+import { Route as AdminAuthorsIdRouteImport } from './routes/admin.authors.$id'
 import { Route as ApiSeoGscSyncRouteImport } from './routes/api/seo.gsc.sync'
 import { Route as ApiSeoGscStatusRouteImport } from './routes/api/seo.gsc.status'
 import { Route as ApiSeoGscConnectRouteImport } from './routes/api/seo.gsc.connect'
 import { Route as ApiSeoGscCallbackRouteImport } from './routes/api/seo.gsc.callback'
 
+const WebDesignSharjahRoute = WebDesignSharjahRouteImport.update({
+  id: '/web-design-sharjah',
+  path: '/web-design-sharjah',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
   id: '/web-design-saudi-arabia',
   path: '/web-design-saudi-arabia',
@@ -90,14 +106,39 @@ const WebDesignQassimRoute = WebDesignQassimRouteImport.update({
   path: '/web-design-qassim',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebDesignKhobarRoute = WebDesignKhobarRouteImport.update({
+  id: '/web-design-khobar',
+  path: '/web-design-khobar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignJeddahRoute = WebDesignJeddahRouteImport.update({
+  id: '/web-design-jeddah',
+  path: '/web-design-jeddah',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
   id: '/web-design-egypt',
   path: '/web-design-egypt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebDesignDubaiRoute = WebDesignDubaiRouteImport.update({
+  id: '/web-design-dubai',
+  path: '/web-design-dubai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignDammamRoute = WebDesignDammamRouteImport.update({
+  id: '/web-design-dammam',
+  path: '/web-design-dammam',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebDesignBuraidahRoute = WebDesignBuraidahRouteImport.update({
   id: '/web-design-buraidah',
   path: '/web-design-buraidah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignAbuDhabiRoute = WebDesignAbuDhabiRouteImport.update({
+  id: '/web-design-abu-dhabi',
+  path: '/web-design-abu-dhabi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -130,9 +171,19 @@ const SeoQassimRoute = SeoQassimRouteImport.update({
   path: '/seo-qassim',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SeoDubaiRoute = SeoDubaiRouteImport.update({
+  id: '/seo-dubai',
+  path: '/seo-dubai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SeoBuraidahRoute = SeoBuraidahRouteImport.update({
   id: '/seo-buraidah',
   path: '/seo-buraidah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoAbuDhabiRoute = SeoAbuDhabiRouteImport.update({
+  id: '/seo-abu-dhabi',
+  path: '/seo-abu-dhabi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -225,6 +276,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AuthorsSlugRoute = AuthorsSlugRouteImport.update({
+  id: '/authors/$slug',
+  path: '/authors/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
   id: '/api/upload-image',
   path: '/api/upload-image',
@@ -305,6 +361,11 @@ const AdminBlogRoute = AdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAuthorsRoute = AdminAuthorsRouteImport.update({
+  id: '/authors',
+  path: '/authors',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiSeoLogsRoute = ApiSeoLogsRouteImport.update({
   id: '/api/seo/logs',
   path: '/api/seo/logs',
@@ -380,6 +441,11 @@ const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminBlogRoute,
 } as any)
+const AdminAuthorsIdRoute = AdminAuthorsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminAuthorsRoute,
+} as any)
 const ApiSeoGscSyncRoute = ApiSeoGscSyncRouteImport.update({
   id: '/sync',
   path: '/sync',
@@ -415,18 +481,27 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
   '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-dubai': typeof SeoDubaiRoute
   '/seo-qassim': typeof SeoQassimRoute
   '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-abu-dhabi': typeof WebDesignAbuDhabiRoute
   '/web-design-buraidah': typeof WebDesignBuraidahRoute
+  '/web-design-dammam': typeof WebDesignDammamRoute
+  '/web-design-dubai': typeof WebDesignDubaiRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-jeddah': typeof WebDesignJeddahRoute
+  '/web-design-khobar': typeof WebDesignKhobarRoute
   '/web-design-qassim': typeof WebDesignQassimRoute
   '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
+  '/web-design-sharjah': typeof WebDesignSharjahRoute
+  '/admin/authors': typeof AdminAuthorsRouteWithChildren
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -443,11 +518,13 @@ export interface FileRoutesByFullPath {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
@@ -481,18 +558,27 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
   '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-dubai': typeof SeoDubaiRoute
   '/seo-qassim': typeof SeoQassimRoute
   '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-abu-dhabi': typeof WebDesignAbuDhabiRoute
   '/web-design-buraidah': typeof WebDesignBuraidahRoute
+  '/web-design-dammam': typeof WebDesignDammamRoute
+  '/web-design-dubai': typeof WebDesignDubaiRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-jeddah': typeof WebDesignJeddahRoute
+  '/web-design-khobar': typeof WebDesignKhobarRoute
   '/web-design-qassim': typeof WebDesignQassimRoute
   '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
+  '/web-design-sharjah': typeof WebDesignSharjahRoute
+  '/admin/authors': typeof AdminAuthorsRouteWithChildren
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -509,11 +595,13 @@ export interface FileRoutesByTo {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
@@ -549,18 +637,27 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
   '/seo-buraidah': typeof SeoBuraidahRoute
+  '/seo-dubai': typeof SeoDubaiRoute
   '/seo-qassim': typeof SeoQassimRoute
   '/seo-riyadh': typeof SeoRiyadhRoute
   '/seo-services': typeof SeoServicesRoute
   '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-abu-dhabi': typeof WebDesignAbuDhabiRoute
   '/web-design-buraidah': typeof WebDesignBuraidahRoute
+  '/web-design-dammam': typeof WebDesignDammamRoute
+  '/web-design-dubai': typeof WebDesignDubaiRoute
   '/web-design-egypt': typeof WebDesignEgyptRoute
+  '/web-design-jeddah': typeof WebDesignJeddahRoute
+  '/web-design-khobar': typeof WebDesignKhobarRoute
   '/web-design-qassim': typeof WebDesignQassimRoute
   '/web-design-riyadh': typeof WebDesignRiyadhRoute
   '/web-design-saudi-arabia': typeof WebDesignSaudiArabiaRoute
+  '/web-design-sharjah': typeof WebDesignSharjahRoute
+  '/admin/authors': typeof AdminAuthorsRouteWithChildren
   '/admin/blog': typeof AdminBlogRouteWithChildren
   '/admin/faqs': typeof AdminFaqsRouteWithChildren
   '/admin/leads': typeof AdminLeadsRoute
@@ -577,11 +674,13 @@ export interface FileRoutesById {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
@@ -618,18 +717,27 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-abu-dhabi'
     | '/seo-buraidah'
+    | '/seo-dubai'
     | '/seo-qassim'
     | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-abu-dhabi'
     | '/web-design-buraidah'
+    | '/web-design-dammam'
+    | '/web-design-dubai'
     | '/web-design-egypt'
+    | '/web-design-jeddah'
+    | '/web-design-khobar'
     | '/web-design-qassim'
     | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
+    | '/web-design-sharjah'
+    | '/admin/authors'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -646,11 +754,13 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/authors/$slug'
     | '/blog/$slug'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
+    | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
@@ -684,18 +794,27 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-abu-dhabi'
     | '/seo-buraidah'
+    | '/seo-dubai'
     | '/seo-qassim'
     | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-abu-dhabi'
     | '/web-design-buraidah'
+    | '/web-design-dammam'
+    | '/web-design-dubai'
     | '/web-design-egypt'
+    | '/web-design-jeddah'
+    | '/web-design-khobar'
     | '/web-design-qassim'
     | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
+    | '/web-design-sharjah'
+    | '/admin/authors'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -712,11 +831,13 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/authors/$slug'
     | '/blog/$slug'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin'
+    | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
@@ -751,18 +872,27 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy'
     | '/robots.txt'
+    | '/seo-abu-dhabi'
     | '/seo-buraidah'
+    | '/seo-dubai'
     | '/seo-qassim'
     | '/seo-riyadh'
     | '/seo-services'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-abu-dhabi'
     | '/web-design-buraidah'
+    | '/web-design-dammam'
+    | '/web-design-dubai'
     | '/web-design-egypt'
+    | '/web-design-jeddah'
+    | '/web-design-khobar'
     | '/web-design-qassim'
     | '/web-design-riyadh'
     | '/web-design-saudi-arabia'
+    | '/web-design-sharjah'
+    | '/admin/authors'
     | '/admin/blog'
     | '/admin/faqs'
     | '/admin/leads'
@@ -779,11 +909,13 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/authors/$slug'
     | '/blog/$slug'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
+    | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
@@ -819,21 +951,30 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SeoAbuDhabiRoute: typeof SeoAbuDhabiRoute
   SeoBuraidahRoute: typeof SeoBuraidahRoute
+  SeoDubaiRoute: typeof SeoDubaiRoute
   SeoQassimRoute: typeof SeoQassimRoute
   SeoRiyadhRoute: typeof SeoRiyadhRoute
   SeoServicesRoute: typeof SeoServicesRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  WebDesignAbuDhabiRoute: typeof WebDesignAbuDhabiRoute
   WebDesignBuraidahRoute: typeof WebDesignBuraidahRoute
+  WebDesignDammamRoute: typeof WebDesignDammamRoute
+  WebDesignDubaiRoute: typeof WebDesignDubaiRoute
   WebDesignEgyptRoute: typeof WebDesignEgyptRoute
+  WebDesignJeddahRoute: typeof WebDesignJeddahRoute
+  WebDesignKhobarRoute: typeof WebDesignKhobarRoute
   WebDesignQassimRoute: typeof WebDesignQassimRoute
   WebDesignRiyadhRoute: typeof WebDesignRiyadhRoute
   WebDesignSaudiArabiaRoute: typeof WebDesignSaudiArabiaRoute
+  WebDesignSharjahRoute: typeof WebDesignSharjahRoute
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
+  AuthorsSlugRoute: typeof AuthorsSlugRoute
   MediaIdRoute: typeof MediaIdRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
   ApiSeoAnalyzeRoute: typeof ApiSeoAnalyzeRoute
@@ -846,6 +987,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-design-sharjah': {
+      id: '/web-design-sharjah'
+      path: '/web-design-sharjah'
+      fullPath: '/web-design-sharjah'
+      preLoaderRoute: typeof WebDesignSharjahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/web-design-saudi-arabia': {
       id: '/web-design-saudi-arabia'
       path: '/web-design-saudi-arabia'
@@ -867,6 +1015,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebDesignQassimRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/web-design-khobar': {
+      id: '/web-design-khobar'
+      path: '/web-design-khobar'
+      fullPath: '/web-design-khobar'
+      preLoaderRoute: typeof WebDesignKhobarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-jeddah': {
+      id: '/web-design-jeddah'
+      path: '/web-design-jeddah'
+      fullPath: '/web-design-jeddah'
+      preLoaderRoute: typeof WebDesignJeddahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/web-design-egypt': {
       id: '/web-design-egypt'
       path: '/web-design-egypt'
@@ -874,11 +1036,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebDesignEgyptRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/web-design-dubai': {
+      id: '/web-design-dubai'
+      path: '/web-design-dubai'
+      fullPath: '/web-design-dubai'
+      preLoaderRoute: typeof WebDesignDubaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-dammam': {
+      id: '/web-design-dammam'
+      path: '/web-design-dammam'
+      fullPath: '/web-design-dammam'
+      preLoaderRoute: typeof WebDesignDammamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/web-design-buraidah': {
       id: '/web-design-buraidah'
       path: '/web-design-buraidah'
       fullPath: '/web-design-buraidah'
       preLoaderRoute: typeof WebDesignBuraidahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-abu-dhabi': {
+      id: '/web-design-abu-dhabi'
+      path: '/web-design-abu-dhabi'
+      fullPath: '/web-design-abu-dhabi'
+      preLoaderRoute: typeof WebDesignAbuDhabiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -923,11 +1106,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SeoQassimRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/seo-dubai': {
+      id: '/seo-dubai'
+      path: '/seo-dubai'
+      fullPath: '/seo-dubai'
+      preLoaderRoute: typeof SeoDubaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seo-buraidah': {
       id: '/seo-buraidah'
       path: '/seo-buraidah'
       fullPath: '/seo-buraidah'
       preLoaderRoute: typeof SeoBuraidahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-abu-dhabi': {
+      id: '/seo-abu-dhabi'
+      path: '/seo-abu-dhabi'
+      fullPath: '/seo-abu-dhabi'
+      preLoaderRoute: typeof SeoAbuDhabiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -1056,6 +1253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/authors/$slug': {
+      id: '/authors/$slug'
+      path: '/authors/$slug'
+      fullPath: '/authors/$slug'
+      preLoaderRoute: typeof AuthorsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/upload-image': {
       id: '/api/upload-image'
       path: '/api/upload-image'
@@ -1168,6 +1372,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/authors': {
+      id: '/admin/authors'
+      path: '/authors'
+      fullPath: '/admin/authors'
+      preLoaderRoute: typeof AdminAuthorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/seo/logs': {
       id: '/api/seo/logs'
       path: '/api/seo/logs'
@@ -1273,6 +1484,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogIdRouteImport
       parentRoute: typeof AdminBlogRoute
     }
+    '/admin/authors/$id': {
+      id: '/admin/authors/$id'
+      path: '/$id'
+      fullPath: '/admin/authors/$id'
+      preLoaderRoute: typeof AdminAuthorsIdRouteImport
+      parentRoute: typeof AdminAuthorsRoute
+    }
     '/api/seo/gsc/sync': {
       id: '/api/seo/gsc/sync'
       path: '/sync'
@@ -1303,6 +1521,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminAuthorsRouteChildren {
+  AdminAuthorsIdRoute: typeof AdminAuthorsIdRoute
+}
+
+const AdminAuthorsRouteChildren: AdminAuthorsRouteChildren = {
+  AdminAuthorsIdRoute: AdminAuthorsIdRoute,
+}
+
+const AdminAuthorsRouteWithChildren = AdminAuthorsRoute._addFileChildren(
+  AdminAuthorsRouteChildren,
+)
 
 interface AdminBlogRouteChildren {
   AdminBlogIdRoute: typeof AdminBlogIdRoute
@@ -1400,6 +1630,7 @@ const AdminTestimonialsRouteWithChildren =
   AdminTestimonialsRoute._addFileChildren(AdminTestimonialsRouteChildren)
 
 interface AdminRouteChildren {
+  AdminAuthorsRoute: typeof AdminAuthorsRouteWithChildren
   AdminBlogRoute: typeof AdminBlogRouteWithChildren
   AdminFaqsRoute: typeof AdminFaqsRouteWithChildren
   AdminLeadsRoute: typeof AdminLeadsRoute
@@ -1417,6 +1648,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuthorsRoute: AdminAuthorsRouteWithChildren,
   AdminBlogRoute: AdminBlogRouteWithChildren,
   AdminFaqsRoute: AdminFaqsRouteWithChildren,
   AdminLeadsRoute: AdminLeadsRoute,
@@ -1501,21 +1733,30 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SeoAbuDhabiRoute: SeoAbuDhabiRoute,
   SeoBuraidahRoute: SeoBuraidahRoute,
+  SeoDubaiRoute: SeoDubaiRoute,
   SeoQassimRoute: SeoQassimRoute,
   SeoRiyadhRoute: SeoRiyadhRoute,
   SeoServicesRoute: SeoServicesRoute,
   ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  WebDesignAbuDhabiRoute: WebDesignAbuDhabiRoute,
   WebDesignBuraidahRoute: WebDesignBuraidahRoute,
+  WebDesignDammamRoute: WebDesignDammamRoute,
+  WebDesignDubaiRoute: WebDesignDubaiRoute,
   WebDesignEgyptRoute: WebDesignEgyptRoute,
+  WebDesignJeddahRoute: WebDesignJeddahRoute,
+  WebDesignKhobarRoute: WebDesignKhobarRoute,
   WebDesignQassimRoute: WebDesignQassimRoute,
   WebDesignRiyadhRoute: WebDesignRiyadhRoute,
   WebDesignSaudiArabiaRoute: WebDesignSaudiArabiaRoute,
+  WebDesignSharjahRoute: WebDesignSharjahRoute,
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiLeadsRoute: ApiLeadsRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
+  AuthorsSlugRoute: AuthorsSlugRoute,
   MediaIdRoute: MediaIdRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
   ApiSeoAnalyzeRoute: ApiSeoAnalyzeRoute,

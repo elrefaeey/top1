@@ -25,8 +25,12 @@ export const SEO_AREAS_SERVED = [
   { "@type": "Country", name: "Saudi Arabia" },
   { "@type": "Country", name: "United Arab Emirates" },
   { "@type": "City", name: "Riyadh" },
+  { "@type": "City", name: "Jeddah" },
+  { "@type": "City", name: "Dammam" },
+  { "@type": "City", name: "Khobar" },
   { "@type": "City", name: "Dubai" },
   { "@type": "City", name: "Abu Dhabi" },
+  { "@type": "City", name: "Sharjah" },
   { "@type": "AdministrativeArea", name: "Al-Qassim" },
   { "@type": "City", name: "Buraidah" },
 ] as const;
@@ -86,7 +90,7 @@ export const STATIC_PAGE_SEO = {
   about: {
     title: "من نحن | Top1Markting",
     description:
-      "Top1Markting وكالة رقمية تخدم السعودية والإمارات — تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي من الفكرة إلى الإطلاق.",
+      "تعرف على فريق Top1Markting وخبرتنا في السعودية والإمارات — تصميم مواقع، SEO، وتسويق رقمي مع ثقة E-E-A-T من الفكرة إلى الإطلاق.",
   },
   services: {
     title: "خدماتنا | تصميم مواقع ومتاجر إلكترونية وSEO | Top1Markting",
@@ -323,7 +327,7 @@ export function articleSchema(post: BlogPost, slug: string) {
   const path = `/blog/${slug}`;
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.metaDescription || post.excerpt,
     image: post.featuredImage
@@ -409,6 +413,7 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:image", content: image },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:locale", content: "ar_SA" },
+    { property: "og:locale:alternate", content: "ar_AE" },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: SITE_TWITTER },
     { name: "twitter:title", content: input.title },
@@ -631,6 +636,22 @@ export function buildLandingPageHead(page: LandingPageContent) {
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: stripHtml(faq.answer) },
+        })),
+      }),
+    );
+  }
+  if (page.process.length >= 2) {
+    scripts.push(
+      jsonLdScript({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: page.h1,
+        description: page.metaDescription,
+        step: page.process.map((step, index) => ({
+          "@type": "HowToStep",
+          position: index + 1,
+          name: step.title,
+          text: step.description,
         })),
       }),
     );

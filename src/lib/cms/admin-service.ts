@@ -3,6 +3,7 @@ import { getDb, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firesto
 import { isDataImageUrl } from "@/lib/security/image-url";
 import { nowIso } from "./admin-utils";
 import type {
+  Author,
   BlogPost,
   CmsPage,
   FaqItem,
@@ -260,6 +261,13 @@ export const getAdminTestimonial = (id: string) =>
 export const saveAdminTestimonial = (id: string, data: Omit<Testimonial, "id">) =>
   saveAdminDoc(COLLECTIONS.testimonials, id, data);
 export const deleteAdminTestimonial = (id: string) => deleteAdminDoc(COLLECTIONS.testimonials, id);
+
+// ── Authors ──
+export const listAdminAuthors = () => listCollection<Author>(COLLECTIONS.authors, "order");
+export const getAdminAuthor = (id: string) => getAdminDoc<Author>(COLLECTIONS.authors, id);
+export const saveAdminAuthor = (id: string, data: Omit<Author, "id">) =>
+  saveAdminDoc(COLLECTIONS.authors, id, data);
+export const deleteAdminAuthor = (id: string) => deleteAdminDoc(COLLECTIONS.authors, id);
 
 // ── FAQs ──
 export const listAdminFaqs = () => listCollection<FaqItem>(COLLECTIONS.faqs, "order");

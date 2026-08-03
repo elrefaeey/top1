@@ -1,6 +1,7 @@
 import { doc, setDoc, writeBatch } from "firebase/firestore";
 import { getDb, COLLECTIONS } from "@/lib/firebase/firestore";
 import {
+  FALLBACK_AUTHORS,
   FALLBACK_BLOG_POSTS,
   FALLBACK_FAQS,
   FALLBACK_PRICING,
@@ -49,8 +50,8 @@ const SITE_SETTINGS: SiteSettings = {
   headerNav: [
     { label: "Services", href: "/services", order: 1 },
     { label: "Portfolio", href: "/portfolio", order: 2 },
-    { label: "Blog", href: "/blog", order: 3 },
-    { label: "About", href: "/about", order: 4 },
+    { label: "Blog", href: "/blog", order: 4 },
+    { label: "About", href: "/about", order: 5 },
   ],
   footerNav: [
     { label: "Contact", href: "/contact", order: 1 },
@@ -65,6 +66,7 @@ export interface SeedResult {
   services: number;
   blogPosts: number;
   testimonials: number;
+  authors: number;
   pricingPlans: number;
   faqs: number;
   siteStats: number;
@@ -89,6 +91,11 @@ export async function seedFirestoreContent(): Promise<SeedResult> {
     batch.set(doc(getDb(), COLLECTIONS.testimonials, id), data);
   }
 
+  for (const author of FALLBACK_AUTHORS) {
+    const { id, ...data } = author;
+    batch.set(doc(getDb(), COLLECTIONS.authors, id), data);
+  }
+
   for (const plan of FALLBACK_PRICING) {
     const { id, ...data } = plan;
     batch.set(doc(getDb(), COLLECTIONS.pricingPlans, id), data);
@@ -111,6 +118,7 @@ export async function seedFirestoreContent(): Promise<SeedResult> {
     services: FALLBACK_SERVICES.length,
     blogPosts: FALLBACK_BLOG_POSTS.length,
     testimonials: FALLBACK_TESTIMONIALS.length,
+    authors: FALLBACK_AUTHORS.length,
     pricingPlans: FALLBACK_PRICING.length,
     faqs: FALLBACK_FAQS.length,
     siteStats: FALLBACK_SITE_STATS.length,

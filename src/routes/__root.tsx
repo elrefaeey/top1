@@ -15,6 +15,7 @@ import { reportClientError } from "../lib/client-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
+import { MobileStickyCta } from "../components/site/MobileStickyCta";
 import { DeferredFirebaseAnalytics } from "../components/site/DeferredFirebaseAnalytics";
 import { GoogleTagManager } from "../components/site/GoogleTagManager";
 import { ToastProvider } from "../components/site/Toast";
@@ -88,8 +89,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: SITE_NAME },
       { name: "theme-color", content: "#4F46E5" },
-      { name: "geo.region", content: "SA-05" },
-      { name: "geo.placename", content: "Buraidah, Al-Qassim, Saudi Arabia" },
+      { name: "geo.region", content: "SA;AE" },
+      { name: "geo.placename", content: "Saudi Arabia, United Arab Emirates" },
+      {
+        name: "DC.coverage",
+        content: "Saudi Arabia; United Arab Emirates; Riyadh; Dubai; Abu Dhabi; Al-Qassim",
+      },
     ];
     const gsc = import.meta.env.VITE_GSC_VERIFICATION?.trim();
     if (gsc) {
@@ -99,17 +104,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       meta,
       links: [
         { rel: "stylesheet", href: appCss },
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-        {
-          rel: "preload",
-          as: "style",
-          href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap",
-        },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap",
-        },
+        { rel: "preload", as: "font", type: "font/woff2", href: "/fonts/tajawal-400-arabic.woff2", crossOrigin: "anonymous" },
+        { rel: "preload", as: "font", type: "font/woff2", href: "/fonts/tajawal-700-arabic.woff2", crossOrigin: "anonymous" },
         { rel: "icon", href: "/favicon.ico", sizes: "any" },
         { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
         { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
@@ -127,7 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar-SA" dir="rtl">
+    <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
       </head>
@@ -161,6 +157,7 @@ function RootComponent() {
               <Outlet />
             </main>
             <SiteFooter />
+            <MobileStickyCta />
             <WhatsAppButton />
           </div>
         )}

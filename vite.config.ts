@@ -15,10 +15,20 @@ const nitroPreset =
       : "vercel";
 
 export default defineConfig(({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd(), "VITE_");
+  // Load all env keys (VITE_* + FIREBASE_* etc.) into process.env for SSR/API routes.
+  // Dynamic import.meta.env[key] is NOT replaced by Vite `define` — server must use process.env.
+  const env = loadEnv(mode, process.cwd(), "");
+  for (const [key, value] of Object.entries(env)) {
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  }
+
   const envDefine: Record<string, string> = {};
   for (const [key, value] of Object.entries(env)) {
-    envDefine[`import.meta.env.${key}`] = JSON.stringify(value);
+    if (key.startsWith("VITE_")) {
+      envDefine[`import.meta.env.${key}`] = JSON.stringify(value);
+    }
   }
 
   const plugins = [

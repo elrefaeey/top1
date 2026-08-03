@@ -7,6 +7,7 @@ import {
 } from "@/lib/firebase/firestore";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import type {
+  Author,
   BlogPost,
   CmsPage,
   FaqItem,
@@ -339,4 +340,41 @@ export async function getSiteStats(): Promise<WithId<SiteStat>[]> {
   const items = await safeList(() => getPublished<SiteStat>(COLLECTIONS.siteStats));
   if (items.length > 0) return items;
   return FALLBACK_SITE_STATS.map((s) => ({ ...s }));
+}
+
+export async function getAuthors(): Promise<WithId<Author>[]> {
+  const { FALLBACK_AUTHORS } = await import("@/lib/cms/fallback-data");
+  const items = await safeList(() => getPublished<Author>(COLLECTIONS.authors));
+  if (items.length > 0) return items;
+  return FALLBACK_AUTHORS.map((a) => ({ ...a }));
+}
+
+export async function getAuthorBySlug(slug: string): Promise<WithId<Author> | null> {
+  const normalized = normalizeBlogSlugParam(slug);
+  if (!normalized) return null;
+
+  if (isFirebaseConfigured()) {
+    try {
+      const snap = await withFirestoreTimeout(
+        getDoc(doc(getDb(), COLLECTIONS.authors, normalized)),
+        READ_MS,
+      );
+      if (snap.exists()) {
+        const author = mapDoc<Author>(snap);
+        if (isPublicCmsItem(author as unknown as Record<string, unknown>)) return author;
+      }
+    } catch {
+      // fall through
+    }
+  }
+
+  const authors = await getAuthors();
+  return (
+    authors.find(
+      (a) =>
+        a.slug === normalized ||
+        a.id === normalized ||
+        (a.slug && encodeURIComponent(a.slug) === slug),
+    ) ?? null
+  );
 }

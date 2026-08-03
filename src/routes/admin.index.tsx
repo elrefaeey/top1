@@ -41,7 +41,7 @@ const quickLinks = [
 ];
 
 function AdminDashboard() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const { data: blogPosts = [] } = useAdminBlogPosts();
   const { data: services = [] } = useAdminServices();
@@ -56,6 +56,15 @@ function AdminDashboard() {
   } | null>(null);
 
   async function handleSeed() {
+    if (!isAdmin) {
+      setSeedMessage({ type: "error", text: "الاستيراد متاح للمدير فقط." });
+      return;
+    }
+    const confirmed = window.confirm(
+      "تحذير: الاستيراد قد يستبدل مستندات موجودة في Firestore. هل أنت متأكد؟",
+    );
+    if (!confirmed) return;
+
     setSeeding(true);
     setSeedMessage(null);
     try {
@@ -121,12 +130,14 @@ function AdminDashboard() {
               استيراد محتوى Firestore
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              استيراد الخدمات والمقالات وآراء العملاء والأسئلة الشائعة.
+              {isAdmin
+                ? "استيراد الخدمات والمقالات وآراء العملاء والأسئلة الشائعة (للمدير فقط — قد يستبدل بيانات موجودة)."
+                : "الاستيراد متاح لحساب المدير فقط."}
             </p>
           </div>
           <button
             onClick={handleSeed}
-            disabled={seeding}
+            disabled={seeding || !isAdmin}
             className="btn-primary disabled:opacity-60"
           >
             {seeding ? "جاري الاستيراد…" : "استيراد المحتوى"}

@@ -18,8 +18,8 @@ export function buildContentSecurityPolicy(isDev: boolean): string {
       .filter(Boolean)
       .join(" "),
     "script-src-attr 'none'",
-    ["style-src 'self'", "'unsafe-inline'", "https://fonts.googleapis.com"].join(" "),
-    "font-src 'self' https://fonts.gstatic.com data:",
+    ["style-src 'self'", "'unsafe-inline'"].join(" "),
+    "font-src 'self' data:",
     [
       "img-src 'self'",
       // data: kept temporarily for legacy CMS heroes; new uploads reject Base64.

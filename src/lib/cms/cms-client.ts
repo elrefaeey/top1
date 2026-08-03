@@ -25,6 +25,7 @@ export const cmsClient = {
       testimonials: unknown[];
       faqs: unknown[];
       blog: unknown[];
+      authors: unknown[];
     }>("home", { blogMax: "3" }),
   getServices: () => fetchCmsApi("services"),
   getServiceBySlug: (slug: string) => fetchCmsApi("service", { slug }),
@@ -35,6 +36,8 @@ export const cmsClient = {
   getBlogPostBySlug: (slug: string) => fetchCmsApi("blog-post", { slug }),
   getTrendingPosts: (max = 3) => fetchCmsApi("trending", { max: String(max) }),
   getTestimonials: () => fetchCmsApi("testimonials"),
+  getAuthors: () => fetchCmsApi("authors"),
+  getAuthorBySlug: (slug: string) => fetchCmsApi("author", { slug }),
   getPricingPlans: () => fetchCmsApi("pricing"),
   getFaqs: () => fetchCmsApi("faqs"),
   getSiteStats: () => fetchCmsApi("stats"),

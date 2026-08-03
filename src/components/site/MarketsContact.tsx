@@ -10,6 +10,21 @@ type Props = {
   className?: string;
 };
 
+function MarketFlag({ code, className = "" }: { code: "sa" | "ae"; className?: string }) {
+  const src = code === "sa" ? "/flags/sa.png" : "/flags/ae.svg";
+  return (
+    <img
+      className={className}
+      src={src}
+      width={36}
+      height={24}
+      alt=""
+      decoding="async"
+      loading="lazy"
+    />
+  );
+}
+
 /** بطاقتا اتصال للسعودية والإمارات */
 export function MarketsPhoneCards({
   phoneUae,
@@ -28,7 +43,9 @@ export function MarketsPhoneCards({
         className="market-phone market-phone--sa"
         aria-label={`السعودية ${formatSaPhoneIntl(sa)}`}
       >
-        <span className="market-phone-flag" aria-hidden />
+        <span className="market-phone-flag" aria-hidden>
+          <MarketFlag code="sa" className="market-phone-flag-svg" />
+        </span>
         <span className="market-phone-body">
           <span className="market-phone-label">السعودية</span>
           <span className="market-phone-num" dir="ltr">
@@ -41,7 +58,9 @@ export function MarketsPhoneCards({
         className="market-phone market-phone--ae"
         aria-label={`الإمارات ${formatUaePhoneIntl(uae)}`}
       >
-        <span className="market-phone-flag" aria-hidden />
+        <span className="market-phone-flag" aria-hidden>
+          <MarketFlag code="ae" className="market-phone-flag-svg" />
+        </span>
         <span className="market-phone-body">
           <span className="market-phone-label">الإمارات</span>
           <span className="market-phone-num" dir="ltr">

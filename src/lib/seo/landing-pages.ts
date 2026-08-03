@@ -30,6 +30,8 @@ const WEB_DESIGN_LOCATION_LINKS: InternalLink[] = [
   ...LOCATION_LINKS,
   { label: "خدمات SEO", href: "/seo-services" },
   { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
+  { label: "خدمات SEO دبي", href: "/seo-dubai" },
+  { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
   { label: "متاجر إلكترونية", href: "/ecommerce-development" },
   { label: "تواصل معنا", href: "/contact" },
 ];
@@ -38,8 +40,12 @@ const SEO_LOCATION_LINKS: InternalLink[] = [
   { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
   { label: "خدمات SEO القصيم", href: "/seo-qassim" },
   { label: "خدمات SEO بريدة", href: "/seo-buraidah" },
+  { label: "خدمات SEO دبي", href: "/seo-dubai" },
+  { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
   { label: "خدمات SEO السعودية", href: "/seo-services" },
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+  { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+  { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
   { label: "تسويق رقمي", href: "/digital-marketing" },
   { label: "تواصل معنا", href: "/contact" },
 ];
@@ -84,10 +90,19 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
       {
         question: "هل لديكم صفحات مخصصة للرياض والقصيم؟",
         answer:
-          "نعم — لدينا صفحات مخصصة لتصميم المواقع في الرياض والقصيم وبريدة، بالإضافة لهذه الصفحة الوطنية.",
+          "نعم — لدينا صفحات مخصصة لتصميم المواقع في الرياض وجدة والدمام والخبر والقصيم وبريدة، بالإضافة لدبي وأبوظبي والشارقة، وهذه الصفحة الوطنية.",
       },
     ],
     relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "Saudi Arabia" },
+      { "@type": "City", name: "Riyadh" },
+      { "@type": "City", name: "Jeddah" },
+      { "@type": "City", name: "Dammam" },
+      { "@type": "City", name: "Khobar" },
+      { "@type": "AdministrativeArea", name: "Al-Qassim" },
+      { "@type": "City", name: "Buraidah" },
+    ],
     relatedLinks: WEB_DESIGN_LOCATION_LINKS,
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
@@ -689,6 +704,454 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
     breadcrumbs: [
       { name: "الرئيسية", path: "/" },
       { name: "تسويق رقمي", path: "/digital-marketing" },
+    ],
+  },
+  {
+    slug: "web-design-dubai",
+    path: "/web-design-dubai",
+    title: "تصميم مواقع في دبي",
+    metaTitle: "تصميم مواقع في دبي | شركة تصميم مواقع الإمارات | Top1Markting",
+    metaDescription:
+      "تصميم مواقع في دبي للشركات والمتاجر — مواقع سريعة، عربية/إنجليزية، ومحسّنة لـ SEO المحلي. Top1Markting تخدم دبي والإمارات مع تواصل واتساب مباشر.",
+    h1: "تصميم مواقع إلكترونية احترافية في دبي",
+    tagline: "حضور رقمي يليق بسوق دبي التنافسي",
+    intro: [
+      "دبي سوق رقمي سريع الإيقاع — موقعك يحتاج سرعة، وضوح عرض القيمة، وتجربة جوال ممتازة. Top1Markting تبني مواقع للشركات في دبي تحوّل الزوار إلى استفسارات وعملاء.",
+      "نغطي المواقع التعريفية، صفحات الهبوط للحملات، والمتاجر الإلكترونية مع هيكل SEO مناسب لكلمات البحث في الإمارات ودبي.",
+      "نعمل عن بُعد باجتماعات مرنة، مع رقم إماراتي للتواصل وواتساب سعودي للدعم السريع حسب تفضيلك.",
+    ],
+    features: [
+      "تصميم RTL احترافي مع خيار ثنائي اللغة عند الحاجة",
+      "أداء عالٍ على الجوال (قناة أساسية في الإمارات)",
+      "SEO محلي لكلمات دبي والإمارات",
+      "ربط واتساب ونماذج تحويل منخفضة الاحتكاك",
+      "هيكل صفحات جاهز للحملات الإعلانية",
+      "تسليم واضح مع دعم بعد الإطلاق",
+    ],
+    process: [
+      {
+        title: "اكتشاف السوق",
+        description: "نراجع نشاطك في دبي، منافسيك، وأفضل صفحات التحويل لقطاعك.",
+      },
+      {
+        title: "تصميم وتحويل",
+        description: "نبني واجهة واضحة، سرعة عالية، ومسارات تواصل مباشرة.",
+      },
+      {
+        title: "إطلاق وتحسين",
+        description: "نطلق الموقع ثم نحسّن بناءً على الاستفسارات والأداء.",
+      },
+    ],
+    faqs: [
+      {
+        question: "هل تخدمون شركات في دبي فقط؟",
+        answer:
+          "نخدم دبي وأبوظبي وباقي الإمارات، بالإضافة للسعودية. صفحة دبي تركّز على نية البحث المحلية لتصميم المواقع في دبي.",
+      },
+      {
+        question: "هل الموقع يدعم العربية والإنجليزية؟",
+        answer:
+          "نعم — يمكن بناء موقع عربي بالكامل أو ثنائي اللغة حسب احتياج علامتك في سوق دبي.",
+      },
+      {
+        question: "كيف أتواصل معكم من الإمارات؟",
+        answer:
+          "يمكنك الاتصال على الرقم الإماراتي أو مراسلتنا عبر واتساب، بالإضافة لنموذج صفحة التواصل.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "City", name: "Dubai" },
+    ],
+    relatedLinks: [
+      { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
+      { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+      { label: "خدمات SEO دبي", href: "/seo-dubai" },
+      { label: "متاجر إلكترونية", href: "/ecommerce-development" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع دبي", path: "/web-design-dubai" },
+    ],
+  },
+  {
+    slug: "web-design-abu-dhabi",
+    path: "/web-design-abu-dhabi",
+    title: "تصميم مواقع في أبوظبي",
+    metaTitle: "تصميم مواقع في أبوظبي | شركة تصميم مواقع | Top1Markting",
+    metaDescription:
+      "تصميم مواقع في أبوظبي للشركات والمؤسسات — مواقع احترافية، سريعة، ومحسّنة للبحث المحلي. Top1Markting تخدم أبوظبي ودبي والإمارات.",
+    h1: "تصميم مواقع إلكترونية في أبوظبي",
+    tagline: "مواقع احترافية لمؤسسات وشركات أبوظبي",
+    intro: [
+      "شركات أبوظبي تحتاج حضوراً رقمياً يعكس الجدية والوضوح — ليس مجرد قالب جاهز. Top1Markting تصمم مواقع تساعد على التعريف بالخدمات وجذب استفسارات مؤهلة.",
+      "نركز على تجربة استخدام عربية سليمة، سرعة الجوال، وهيكل محتوى يناسب البحث المحلي في أبوظبي والإمارات.",
+      "نعمل مع فرق محلية وعن بُعد، مع قنوات تواصل للسعودية والإمارات.",
+    ],
+    features: [
+      "هوية بصرية واضحة تناسب قطاع الأعمال والمؤسسات",
+      "صفحات خدمات منظمة لسهولة التحويل",
+      "SEO محلي لأبوظبي والإمارات",
+      "توافق كامل مع الجوال",
+      "نماذج تواصل وواتساب مدمجة",
+      "إطلاق مرتب مع متابعة بعد التسليم",
+    ],
+    process: [
+      {
+        title: "فهم الاحتياج",
+        description: "نحدد أهداف الموقع والجمهور في أبوظبي قبل أي تصميم.",
+      },
+      {
+        title: "بناء الصفحات",
+        description: "نصمم هيكلاً واضحاً للخدمات والاتصال والتحويل.",
+      },
+      {
+        title: "تحسين مستمر",
+        description: "بعد الإطلاق نراجع الأداء ونحسّن نقاط الاحتكاك.",
+      },
+    ],
+    faqs: [
+      {
+        question: "هل تخدمون أبوظبي ودبي معاً؟",
+        answer:
+          "نعم — لدينا صفحات مخصصة لدبي وأبوظبي، مع خدمة موحّدة للجودة والدعم عبر الإمارات والسعودية.",
+      },
+      {
+        question: "كم يستغرق تصميم موقع في أبوظبي؟",
+        answer:
+          "يعتمد على النطاق. المواقع التعريفية غالباً أسابيع قليلة بعد اعتماد المحتوى والتصميم.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "City", name: "Abu Dhabi" },
+    ],
+    relatedLinks: [
+      { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+      { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
+      { label: "خدمات SEO دبي", href: "/seo-dubai" },
+      { label: "تصميم مواقع الشارقة", href: "/web-design-sharjah" },
+      { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع أبوظبي", path: "/web-design-abu-dhabi" },
+    ],
+  },
+  {
+    slug: "seo-dubai",
+    path: "/seo-dubai",
+    title: "خدمات SEO في دبي",
+    metaTitle: "خدمات SEO في دبي | تحسين محركات البحث الإمارات | Top1Markting",
+    metaDescription:
+      "شركة خدمات SEO في دبي — تدقيق تقني، محتوى عربي، وبحث محلي للإمارات. Top1Markting ترفع ظهور موقعك في Google وتجلب استفسارات جاهزة.",
+    h1: "تحسين محركات البحث (SEO) في دبي",
+    tagline: "ترتيب أقوى في سوق دبي الرقمي",
+    intro: [
+      "المنافسة على كلمات دبي قوية — تحتاج استراتيجية SEO تجمع بين التقنية، المحتوى، والنية التجارية. Top1Markting تقدّم تحسين محركات البحث للشركات التي تريد عملاء من Google في دبي والإمارات.",
+      "نغطي التدقيق التقني، On-Page، الكلمات المفتاحية بالعربية، المحتوى التجاري، وLocal SEO عند الحاجة.",
+      "نربط العمل بأهداف واضحة: زيارات مؤهلة، استفسارات، وفرص مبيعات — وليس تقارير عامة فقط.",
+    ],
+    features: [
+      "تدقيق تقني وCore Web Vitals",
+      "كلمات مفتاحية إماراتية بعزم تجاري",
+      "محتوى عربي مهني بدون حشو",
+      "تحسين صفحات الخدمات والهبوط",
+      "Local SEO لدبي عند الحاجة",
+      "تقارير واضحة وخطوات تنفيذ",
+    ],
+    process: [
+      {
+        title: "تحليل الفرص",
+        description: "نفحص الموقع والمنافسين في دبي ونحدد أسرع نقاط النمو.",
+      },
+      {
+        title: "تنفيذ التحسينات",
+        description: "نصلح التقنية، نحسّن الصفحات، ونبني محتوى يستهدف نية البحث.",
+      },
+      {
+        title: "قياس ونمو",
+        description: "نتابع الترتيب والاستفسارات ونوسّع ما يعمل.",
+      },
+    ],
+    faqs: [
+      {
+        question: "هل SEO دبي يختلف عن SEO السعودية؟",
+        answer:
+          "الأسس واحدة، لكن الكلمات والمنافسة والنية المحلية تختلف. نصمّم الخطة حسب سوق دبي مع الاستفادة من خبرتنا في الخليج.",
+      },
+      {
+        question: "متى تظهر نتائج SEO؟",
+        answer:
+          "النتائج تختلف حسب المنافسة والحالة التقنية. عادة تظهر إشارات خلال أسابيع، والنمو المستدام يحتاج تنفيذاً مستمراً.",
+      },
+    ],
+    relatedServiceSlug: "seo",
+    areaServed: [
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "City", name: "Dubai" },
+    ],
+    relatedLinks: [
+      { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
+      { label: "خدمات SEO السعودية", href: "/seo-services" },
+      { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+      { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
+      { label: "تصميم مواقع الشارقة", href: "/web-design-sharjah" },
+      { label: "تسويق رقمي", href: "/digital-marketing" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "خدمات SEO", path: "/seo-services" },
+      { name: "خدمات SEO دبي", path: "/seo-dubai" },
+    ],
+  },
+  {
+    slug: "web-design-jeddah",
+    path: "/web-design-jeddah",
+    title: "تصميم مواقع في جدة",
+    metaTitle: "تصميم مواقع في جدة | شركة تصميم مواقع إلكترونية | Top1Markting",
+    metaDescription:
+      "شركة تصميم مواقع في جدة — مواقع سريعة، عربية، ومحسّنة لـ Google. Top1Markting تخدم شركات جدة بتصميم احترافي وSEO محلي.",
+    h1: "تصميم مواقع إلكترونية في جدة",
+    tagline: "حضور رقمي قوي لشركات جدة والساحل الغربي",
+    intro: [
+      "جدة سوق تجاري وخدماتي نشط — موقعك يحتاج وضوح عرض القيمة وسرعة على الجوال. Top1Markting تقدّم تصميم مواقع في جدة للشركات التي تريد استفسارات وعملاء من الويب.",
+      "نبني مواقع تعريفية، صفحات هبوط، ومتاجر مع هيكل SEO مناسب لكلمات جدة والسعودية.",
+      "نعمل عن بُعد باجتماعات مرنة مع فرق جدة، بنفس جودة التسليم في الرياض والقصيم.",
+    ],
+    features: [
+      "تصميم عربي متجاوب يركز على التحويل",
+      "SEO محلي لكلمات جدة",
+      "سرعة عالية على الجوال",
+      "ربط واتساب ونماذج تواصل",
+      "صفحات خدمات منظمة",
+      "دعم بعد الإطلاق",
+    ],
+    process: [
+      { title: "فهم النشاط", description: "نراجع خدماتك وجمهورك في جدة قبل التصميم." },
+      { title: "بناء الموقع", description: "واجهة واضحة، سرعة، ومسارات تحويل مباشرة." },
+      { title: "إطلاق وتحسين", description: "نطلق ثم نحسّن بناءً على الاستفسارات." },
+    ],
+    faqs: [
+      {
+        question: "هل تخدمون جدة فقط عن بُعد؟",
+        answer:
+          "نعم نعمل عن بُعد بكفاءة عالية مع شركات جدة، مع اجتماعات أونلاين وتتبع واضح للمراحل.",
+      },
+      {
+        question: "هل لديكم صفحات لمدن أخرى؟",
+        answer:
+          "نعم — الرياض، الدمام، الخبر، القصيم، بريدة، ودبي وأبوظبي والشارقة، بالإضافة للصفحة الوطنية.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "Saudi Arabia" },
+      { "@type": "City", name: "Jeddah" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-jeddah"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع جدة", path: "/web-design-jeddah" },
+    ],
+  },
+  {
+    slug: "web-design-dammam",
+    path: "/web-design-dammam",
+    title: "تصميم مواقع في الدمام",
+    metaTitle: "تصميم مواقع في الدمام | شركة تصميم مواقع الشرقية | Top1Markting",
+    metaDescription:
+      "تصميم مواقع في الدمام والمنطقة الشرقية — مواقع سريعة ومحسّنة للبحث المحلي. Top1Markting تخدم شركات الدمام بتصميم احترافي.",
+    h1: "تصميم مواقع إلكترونية في الدمام",
+    tagline: "مواقع تحوّل الزوار لعملاء في الشرقية",
+    intro: [
+      "الدمام مركز أعمال في المنطقة الشرقية — المنافسة الرقمية تتزايد. Top1Markting تبني مواقع تساعد شركات الدمام على الظهور والاستفسارات.",
+      "نركز على تجربة عربية سليمة، سرعة الجوال، وهيكل محتوى يناسب البحث المحلي في الدمام والخبر والشرقية.",
+      "يمكن ربط الموقع بحملات أو SEO لاحقاً حسب مرحلة نموك.",
+    ],
+    features: [
+      "تصميم مخصص لقطاعك في الشرقية",
+      "SEO محلي للدمام",
+      "أداء جوال قوي",
+      "نماذج وواتساب مدمجة",
+      "هيكل صفحات خدمات واضح",
+      "متابعة بعد الإطلاق",
+    ],
+    process: [
+      { title: "اكتشاف", description: "نحدد أهداف الموقع والجمهور في الدمام." },
+      { title: "تصميم وبناء", description: "نبني واجهة سريعة ومحتوى يخدم التحويل." },
+      { title: "إطلاق", description: "نسلم الموقع مع أساسيات القياس والتحسين." },
+    ],
+    faqs: [
+      {
+        question: "هل تغطون الخبر أيضاً؟",
+        answer: "نعم — لدينا صفحة مخصصة للخبر، ونخدم عموم المنطقة الشرقية.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "Saudi Arabia" },
+      { "@type": "City", name: "Dammam" },
+      { "@type": "AdministrativeArea", name: "Eastern Province" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-dammam"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع الدمام", path: "/web-design-dammam" },
+    ],
+  },
+  {
+    slug: "web-design-khobar",
+    path: "/web-design-khobar",
+    title: "تصميم مواقع في الخبر",
+    metaTitle: "تصميم مواقع في الخبر | شركة تصميم مواقع | Top1Markting",
+    metaDescription:
+      "تصميم مواقع في الخبر — مواقع احترافية سريعة ومحسّنة لـ Google. Top1Markting تخدم شركات الخبر والدمام والشرقية.",
+    h1: "تصميم مواقع إلكترونية في الخبر",
+    tagline: "حضور رقمي واضح لشركات الخبر",
+    intro: [
+      "الخبر سوق حيوي في الشرقية — موقعك يجب أن يعكس احترافية خدماتك ويجلب استفسارات. Top1Markting تصمم مواقع لشركات الخبر بسرعة وتحويل أعلى.",
+      "نغطي المواقع التعريفية وصفحات الهبوط مع SEO محلي مناسب للخبر والمنطقة الشرقية.",
+    ],
+    features: [
+      "تصميم RTL احترافي",
+      "SEO محلي للخبر",
+      "سرعة وتحويل",
+      "تكامل واتساب",
+      "صفحات خدمات منظمة",
+      "دعم بعد التسليم",
+    ],
+    process: [
+      { title: "تخطيط", description: "نفهم عرضك وجمهورك في الخبر." },
+      { title: "تنفيذ", description: "نبني الموقع مع تركيز على الجوال والتحويل." },
+      { title: "تحسين", description: "نراجع الأداء بعد الإطلاق." },
+    ],
+    faqs: [
+      {
+        question: "هل تعملون مع الدمام والخبر معاً؟",
+        answer: "نعم — صفحات منفصلة لكل مدينة مع خدمة موحّدة للجودة والدعم.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "Saudi Arabia" },
+      { "@type": "City", name: "Khobar" },
+      { "@type": "AdministrativeArea", name: "Eastern Province" },
+    ],
+    relatedLinks: WEB_DESIGN_LOCATION_LINKS.filter((l) => l.href !== "/web-design-khobar"),
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع السعودية", path: "/web-design-saudi-arabia" },
+      { name: "تصميم مواقع الخبر", path: "/web-design-khobar" },
+    ],
+  },
+  {
+    slug: "web-design-sharjah",
+    path: "/web-design-sharjah",
+    title: "تصميم مواقع في الشارقة",
+    metaTitle: "تصميم مواقع في الشارقة | شركة تصميم مواقع الإمارات | Top1Markting",
+    metaDescription:
+      "تصميم مواقع في الشارقة للشركات والمتاجر — مواقع سريعة ومحسّنة للبحث المحلي. Top1Markting تخدم الشارقة ودبي وأبوظبي.",
+    h1: "تصميم مواقع إلكترونية في الشارقة",
+    tagline: "مواقع احترافية لشركات الشارقة",
+    intro: [
+      "الشارقة سوق متنامٍ يحتاج حضوراً رقمياً واضحاً. Top1Markting تبني مواقع لشركات الشارقة تساعد على التعريف بالخدمات وجذب العملاء.",
+      "نركز على تجربة عربية/ثنائية اللغة عند الحاجة، وسرعة الجوال، وSEO محلي للشارقة والإمارات.",
+    ],
+    features: [
+      "تصميم يناسب السوق الإماراتي",
+      "SEO محلي للشارقة",
+      "خيار ثنائي اللغة",
+      "أداء جوال عالٍ",
+      "مسارات تواصل مباشرة",
+      "دعم بعد الإطلاق",
+    ],
+    process: [
+      { title: "اكتشاف", description: "نراجع نشاطك في الشارقة واحتياج التحويل." },
+      { title: "بناء", description: "نصمم ونطلق موقعاً سريعاً وواضحاً." },
+      { title: "نمو", description: "نحسّن بناءً على الاستفسارات والأداء." },
+    ],
+    faqs: [
+      {
+        question: "هل تخدمون الشارقة ودبي وأبوظبي؟",
+        answer: "نعم — صفحات مخصصة لكل مدينة مع خدمة موحّدة عبر الإمارات والسعودية.",
+      },
+    ],
+    relatedServiceSlug: "web-design",
+    areaServed: [
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "City", name: "Sharjah" },
+    ],
+    relatedLinks: [
+      { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+      { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
+      { label: "خدمات SEO دبي", href: "/seo-dubai" },
+      { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
+      { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "تصميم مواقع الشارقة", path: "/web-design-sharjah" },
+    ],
+  },
+  {
+    slug: "seo-abu-dhabi",
+    path: "/seo-abu-dhabi",
+    title: "خدمات SEO في أبوظبي",
+    metaTitle: "خدمات SEO في أبوظبي | تحسين محركات البحث | Top1Markting",
+    metaDescription:
+      "خدمات SEO في أبوظبي — تدقيق تقني، محتوى عربي، وبحث محلي. Top1Markting ترفع ظهور موقعك في Google لأبوظبي والإمارات.",
+    h1: "تحسين محركات البحث (SEO) في أبوظبي",
+    tagline: "ظهور أقوى لشركات ومؤسسات أبوظبي",
+    intro: [
+      "البحث في أبوظبي تنافسي ويتطلب محتوى تقني وتجاري واضح. Top1Markting تقدّم SEO يساعد مواقع أبوظبي على جلب استفسارات مؤهلة من Google.",
+      "نغطي التدقيق التقني، الكلمات المحلية، On-Page، والمحتوى الذي يخدم نية الشراء أو طلب الخدمة.",
+    ],
+    features: [
+      "تدقيق تقني وCore Web Vitals",
+      "كلمات أبوظبي بعزم تجاري",
+      "محتوى عربي مهني",
+      "تحسين صفحات الخدمات",
+      "Local SEO عند الحاجة",
+      "تقارير وخطوات تنفيذ",
+    ],
+    process: [
+      { title: "تحليل", description: "نفحص الموقع والمنافسين في أبوظبي." },
+      { title: "تنفيذ", description: "نصلح التقنية ونحسّن الصفحات والمحتوى." },
+      { title: "قياس", description: "نتابع الترتيب والاستفسارات ونوسّع ما يعمل." },
+    ],
+    faqs: [
+      {
+        question: "هل SEO أبوظبي مختلف عن دبي؟",
+        answer:
+          "الأسس واحدة مع اختلاف المنافسة والكلمات المحلية. نصمّم الخطة حسب سوق أبوظبي.",
+      },
+    ],
+    relatedServiceSlug: "seo",
+    areaServed: [
+      { "@type": "Country", name: "United Arab Emirates" },
+      { "@type": "City", name: "Abu Dhabi" },
+    ],
+    relatedLinks: [
+      { label: "خدمات SEO دبي", href: "/seo-dubai" },
+      { label: "خدمات SEO السعودية", href: "/seo-services" },
+      { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
+      { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+      { label: "تصميم مواقع الشارقة", href: "/web-design-sharjah" },
+      { label: "تواصل معنا", href: "/contact" },
+    ],
+    breadcrumbs: [
+      { name: "الرئيسية", path: "/" },
+      { name: "خدمات SEO", path: "/seo-services" },
+      { name: "خدمات SEO أبوظبي", path: "/seo-abu-dhabi" },
     ],
   },
 ];

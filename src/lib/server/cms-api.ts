@@ -1,4 +1,6 @@
 import {
+  getAuthors,
+  getAuthorBySlug,
   getBlogPostBySlug,
   getBlogPosts,
   getFaqs,
@@ -73,6 +75,13 @@ export async function handleCmsApiGet(
     }
     case "testimonials":
       return getTestimonials();
+    case "authors":
+      return getAuthors();
+    case "author": {
+      const slug = searchParams.get("slug");
+      if (!slug) throw new Error("Missing slug");
+      return getAuthorBySlug(slug);
+    }
     case "pricing":
       return getPricingPlans();
     case "faqs":
@@ -82,15 +91,17 @@ export async function handleCmsApiGet(
     case "home": {
       const blogMaxRaw = searchParams.get("blogMax");
       const blogMax = blogMaxRaw ? Number(blogMaxRaw) : 3;
-      const [settings, services, portfolio, stats, testimonials, faqs, blog] = await Promise.all([
-        getSiteSettings(),
-        getServices(),
-        getPortfolio(),
-        getSiteStats(),
-        getTestimonials(),
-        getFaqs(),
-        getBlogPosts(Number.isFinite(blogMax) ? blogMax : 3),
-      ]);
+      const [settings, services, portfolio, stats, testimonials, faqs, blog, authors] =
+        await Promise.all([
+          getSiteSettings(),
+          getServices(),
+          getPortfolio(),
+          getSiteStats(),
+          getTestimonials(),
+          getFaqs(),
+          getBlogPosts(Number.isFinite(blogMax) ? blogMax : 3),
+          getAuthors(),
+        ]);
       return {
         settings,
         services,
@@ -99,6 +110,7 @@ export async function handleCmsApiGet(
         testimonials,
         faqs,
         blog,
+        authors,
       };
     }
     case "page": {

@@ -9,6 +9,7 @@ export const COLLECTIONS = {
   blogCategories: "blog_categories",
   blogTags: "blog_tags",
   testimonials: "testimonials",
+  authors: "authors",
   pricingPlans: "pricing_plans",
   faqs: "faqs",
   siteStats: "site_stats",

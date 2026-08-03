@@ -24,6 +24,8 @@ dist-ssr
 # Firebase / Google service account keys (never commit)
 *firebase-adminsdk*.json
 *-firebase-adminsdk-*.json
+.admin-bootstrap-credentials.txt
+*credentials*.txt
 
 # Wrangler / Cloudflare
 .wrangler/

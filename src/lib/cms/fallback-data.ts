@@ -1,4 +1,12 @@
-import type { BlogPost, FaqItem, PricingPlan, Service, SiteStat, Testimonial } from "@/types/cms";
+import type {
+  Author,
+  BlogPost,
+  FaqItem,
+  PricingPlan,
+  Service,
+  SiteStat,
+  Testimonial,
+} from "@/types/cms";
 import { blogImage, serviceImage } from "@/lib/site-images";
 
 const ts = "2026-06-01T00:00:00.000Z";
@@ -490,6 +498,43 @@ export const FALLBACK_SITE_STATS: SiteStat[] = [
     status: "published",
     createdAt: ts,
     updatedAt: ts,
+  },
+];
+
+export const FALLBACK_AUTHORS: Author[] = [
+  {
+    id: "ahmed-refaei",
+    slug: "ahmed-refaei",
+    name: "أحمد الرفاعي",
+    role: "مؤسس ومدير استراتيجي",
+    bio: "يقود استراتيجية النمو الرقمي لـ Top1Markting في السعودية والإمارات — من تصميم المواقع حتى SEO والتسويق القابل للقياس. يركز على تحويل الزيارات إلى استفسارات وعملاء.",
+    expertise: ["استراتيجية رقمية", "SEO", "تصميم مواقع", "تحويل"],
+    yearsExperience: 8,
+    order: 1,
+    status: "published",
+    metaTitle: "أحمد الرفاعي | مؤسس Top1Markting",
+    metaDescription:
+      "ملف أحمد الرفاعي — مؤسس Top1Markting. خبرة في تصميم المواقع وSEO والتسويق الرقمي للسعودية والإمارات.",
+    createdAt: ts,
+    updatedAt: ts,
+    publishedAt: ts,
+  },
+  {
+    id: "sara-digital",
+    slug: "sara-digital",
+    name: "سارة الرقمي",
+    role: "أخصائية SEO ومحتوى",
+    bio: "تضع خطط الكلمات المفتاحية والمحتوى التجاري بالعربية، وتربط صفحات الخدمات والمدن بنية بحث حقيقية في السعودية والإمارات.",
+    expertise: ["SEO تقني", "محتوى عربي", "بحث محلي", "Schema"],
+    yearsExperience: 5,
+    order: 2,
+    status: "published",
+    metaTitle: "سارة الرقمي | أخصائية SEO — Top1Markting",
+    metaDescription:
+      "سارة الرقمي أخصائية SEO ومحتوى في Top1Markting — تحسين محركات البحث والمحتوى العربي للشركات.",
+    createdAt: ts,
+    updatedAt: ts,
+    publishedAt: ts,
   },
 ];
 

@@ -3,11 +3,14 @@ import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
 export type InternalLink = { label: string; href: string };
 
-/** Real service/landing paths — must match fallback or resolve via slug aliases */
+/**
+ * Capability hubs — prefer money landings for commercial intent (anti-cannibalization).
+ * `/services/*` remains for brand/capability detail; clusters link landings as primary CTAs.
+ */
 export const SERVICE_LINKS: InternalLink[] = [
-  { label: "تصميم المواقع", href: "/services/web-design" },
+  { label: "تصميم المواقع", href: "/web-design-saudi-arabia" },
   { label: "المتاجر الإلكترونية", href: "/ecommerce-development" },
-  { label: "تحسين SEO", href: "/services/seo" },
+  { label: "تحسين SEO", href: "/seo-services" },
   { label: "تصميم UI/UX", href: "/services/ui-ux" },
 ];
 
@@ -20,36 +23,45 @@ export const LANDING_LINKS: InternalLink[] = [
 
 export const LOCATION_LINKS: InternalLink[] = [
   { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+  { label: "تصميم مواقع جدة", href: "/web-design-jeddah" },
+  { label: "تصميم مواقع الدمام", href: "/web-design-dammam" },
+  { label: "تصميم مواقع الخبر", href: "/web-design-khobar" },
   { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
   { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
+  { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+  { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
+  { label: "تصميم مواقع الشارقة", href: "/web-design-sharjah" },
 ];
 
 export const SEO_LOCATION_LINKS: InternalLink[] = [
   { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
   { label: "خدمات SEO القصيم", href: "/seo-qassim" },
   { label: "خدمات SEO بريدة", href: "/seo-buraidah" },
+  { label: "خدمات SEO دبي", href: "/seo-dubai" },
+  { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
   { label: "خدمات SEO السعودية", href: "/seo-services" },
 ];
 
-/** Footer mix: national + Riyadh + SEO cities + ecommerce */
+/** Footer mix: national + major cities SA/AE + SEO + proof */
 export const FOOTER_SEO_LINKS: InternalLink[] = [
   { label: "تصميم مواقع السعودية", href: "/web-design-saudi-arabia" },
   { label: "تصميم مواقع الرياض", href: "/web-design-riyadh" },
+  { label: "تصميم مواقع جدة", href: "/web-design-jeddah" },
+  { label: "تصميم مواقع دبي", href: "/web-design-dubai" },
+  { label: "تصميم مواقع أبوظبي", href: "/web-design-abu-dhabi" },
   { label: "خدمات SEO", href: "/seo-services" },
-  { label: "خدمات SEO الرياض", href: "/seo-riyadh" },
+  { label: "خدمات SEO دبي", href: "/seo-dubai" },
+  { label: "خدمات SEO أبوظبي", href: "/seo-abu-dhabi" },
   { label: "متاجر إلكترونية", href: "/ecommerce-development" },
-  { label: "تصميم مواقع القصيم", href: "/web-design-qassim" },
-  { label: "خدمات SEO القصيم", href: "/seo-qassim" },
-  { label: "تصميم مواقع بريدة", href: "/web-design-buraidah" },
 ];
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
-  "تصميم مواقع": "/services/web-design",
-  مواقع: "/services/web-design",
+  "تصميم مواقع": "/web-design-saudi-arabia",
+  مواقع: "/web-design-saudi-arabia",
   متجر: "/ecommerce-development",
   "تجارة إلكترونية": "/ecommerce-development",
-  SEO: "/services/seo",
+  SEO: "/seo-services",
   UI: "/services/ui-ux",
   UX: "/services/ui-ux",
   تسويق: "/digital-marketing",
@@ -57,8 +69,8 @@ const CATEGORY_SERVICE_MAP: Record<string, string> = {
 };
 
 const TAG_SERVICE_MAP: Record<string, string> = {
-  seo: "/services/seo",
-  "web-design": "/services/web-design",
+  seo: "/seo-services",
+  "web-design": "/web-design-saudi-arabia",
   "ui-ux": "/services/ui-ux",
   ecommerce: "/ecommerce-development",
   marketing: "/digital-marketing",
@@ -104,7 +116,7 @@ export function footerInternalLinks(): InternalLink[] {
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
     ...SERVICE_LINKS.slice(0, 3),
-    ...LOCATION_LINKS.slice(0, 2),
+    ...LOCATION_LINKS.slice(0, 3),
     ...LANDING_LINKS.slice(0, 2),
   ];
 }
@@ -119,7 +131,7 @@ export function servicesPageInternalLinks(
 
   for (const link of [
     ...LANDING_LINKS,
-    ...LOCATION_LINKS,
+    ...LOCATION_LINKS.slice(0, 6),
     { label: "المدونة", href: "/blog" },
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
@@ -135,7 +147,7 @@ export function servicesPageInternalLinks(
 export function portfolioPageInternalLinks(): InternalLink[] {
   return [
     ...SERVICE_LINKS.slice(0, 3),
-    ...LANDING_LINKS.slice(0, 2),
+    ...LANDING_LINKS.slice(0, 3),
     { label: "المدونة", href: "/blog" },
     { label: "تواصل معنا", href: "/contact" },
   ];
@@ -144,7 +156,7 @@ export function portfolioPageInternalLinks(): InternalLink[] {
 export function blogListingInternalLinks(_posts: BlogPost[]): InternalLink[] {
   return [
     ...SERVICE_LINKS,
-    ...LANDING_LINKS.slice(0, 2),
+    ...LANDING_LINKS.slice(0, 3),
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
   ];

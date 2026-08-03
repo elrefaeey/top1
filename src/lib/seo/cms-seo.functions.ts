@@ -1,5 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service, WithId } from "@/types/cms";
+import type {
+  Author,
+  BlogPost,
+  CmsPage,
+  FaqItem,
+  PortfolioItem,
+  Service,
+  WithId,
+} from "@/types/cms";
 
 /**
  * SEO CMS loaders as server functions.
@@ -92,11 +100,19 @@ export const loadPortfolioItemForSeoFn = createServerFn({ method: "GET", strict:
     return loadPortfolioItemForSeo(data.slug);
   });
 
+export const loadAuthorForSeoFn = createServerFn({ method: "GET", strict: false })
+  .validator((data: { slug: string }) => data)
+  .handler(async ({ data }): Promise<WithId<Author> | null> => {
+    const { getAuthorBySlug } = await import("@/lib/cms/content-service");
+    return getAuthorBySlug(data.slug);
+  });
+
 export const loadSitemapEntriesFn = createServerFn({ method: "GET", strict: false }).handler(
   async (): Promise<{
     services: WithId<Service>[];
     blog: WithId<BlogPost>[];
     portfolio: WithId<PortfolioItem>[];
+    authors: WithId<Author>[];
   }> => {
     const { loadSitemapEntries } = await import("@/lib/seo/cms-loaders");
     return loadSitemapEntries();

@@ -7,6 +7,7 @@ import {
   Image,
   BookOpen,
   MessageSquare,
+  DollarSign,
   HelpCircle,
   Inbox,
   Settings,
@@ -15,6 +16,7 @@ import {
   LogOut,
   BarChart3,
   X,
+  UserRound,
 } from "lucide-react";
 import { logout } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
@@ -27,8 +29,10 @@ const navItems = [
   { to: "/admin/pages", label: "الصفحات", icon: FileText },
   { to: "/admin/services", label: "الخدمات", icon: Briefcase },
   { to: "/admin/portfolio", label: "أعمالنا", icon: Image },
+  { to: "/admin/authors", label: "الكتّاب", icon: UserRound },
   { to: "/admin/blog", label: "المدونة", icon: BookOpen },
   { to: "/admin/testimonials", label: "آراء العملاء", icon: MessageSquare },
+  { to: "/admin/pricing", label: "الأسعار", icon: DollarSign },
   { to: "/admin/stats", label: "الإحصائيات", icon: BarChart3 },
   { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle },
   { to: "/admin/seo", label: "SEO", icon: Search },
@@ -50,6 +54,8 @@ type AdminSidebarProps = {
 export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
   const { user } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const items = navItems;
 
   useEffect(() => {
     onClose?.();
@@ -122,7 +128,7 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
         </div>
 
         <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto p-3">
-          {navItems.map(({ to, label, icon: Icon, exact }) => {
+          {items.map(({ to, label, icon: Icon, exact }) => {
             const active = isNavActive(pathname, to, exact);
             return (
               <Link

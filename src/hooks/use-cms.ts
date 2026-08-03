@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cmsClient } from "@/lib/cms/cms-client";
 import type {
+  Author,
   BlogPost,
   CmsPage,
   FaqItem,
@@ -25,6 +26,8 @@ export const cmsKeys = {
   blogPost: (slug: string) => [...cmsKeys.all, "blog", slug] as const,
   trending: () => [...cmsKeys.all, "trending"] as const,
   testimonials: () => [...cmsKeys.all, "testimonials"] as const,
+  authors: () => [...cmsKeys.all, "authors"] as const,
+  author: (slug: string) => [...cmsKeys.all, "author", slug] as const,
   pricing: () => [...cmsKeys.all, "pricing"] as const,
   faqs: () => [...cmsKeys.all, "faqs"] as const,
   stats: () => [...cmsKeys.all, "stats"] as const,
@@ -52,6 +55,7 @@ export function useHomeBundle() {
         testimonials: (data.testimonials ?? []) as WithId<Testimonial>[],
         faqs: (data.faqs ?? []) as WithId<FaqItem>[],
         blog: (data.blog ?? []) as WithId<BlogPost>[],
+        authors: (data.authors ?? []) as WithId<Author>[],
       };
       // Seed related queries so header/footer/other sections avoid duplicate fetches.
       if (result.settings) qc.setQueryData(cmsKeys.settings(), result.settings);
@@ -61,6 +65,7 @@ export function useHomeBundle() {
       qc.setQueryData(cmsKeys.testimonials(), result.testimonials);
       qc.setQueryData(cmsKeys.faqs(), result.faqs);
       qc.setQueryData(cmsKeys.blog(), result.blog);
+      qc.setQueryData(cmsKeys.authors(), result.authors);
       return result;
     },
     ...cmsQuery,
@@ -161,6 +166,24 @@ export function useTestimonials() {
     queryKey: cmsKeys.testimonials(),
     queryFn: () => cmsClient.getTestimonials() as Promise<WithId<Testimonial>[]>,
     placeholderData: [],
+    ...cmsQuery,
+  });
+}
+
+export function useAuthors() {
+  return useQuery({
+    queryKey: cmsKeys.authors(),
+    queryFn: () => cmsClient.getAuthors() as Promise<WithId<Author>[]>,
+    placeholderData: [],
+    ...cmsQuery,
+  });
+}
+
+export function useAuthor(slug: string) {
+  return useQuery({
+    queryKey: cmsKeys.author(slug),
+    queryFn: () => cmsClient.getAuthorBySlug(slug) as Promise<WithId<Author> | null>,
+    enabled: !!slug,
     ...cmsQuery,
   });
 }

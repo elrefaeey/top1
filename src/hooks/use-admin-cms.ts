@@ -1,12 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteAdminBlogPost,
+  deleteAdminAuthor,
   deleteAdminFaq,
   deleteAdminPortfolioItem,
   deleteAdminPricingPlan,
   deleteAdminService,
   deleteAdminSiteStat,
   deleteAdminTestimonial,
+  getAdminAuthor,
   getAdminBlogPost,
   getAdminFaq,
   getAdminPage,
@@ -16,6 +18,7 @@ import {
   getAdminSiteSettings,
   getAdminSiteStat,
   getAdminTestimonial,
+  listAdminAuthors,
   listAdminBlogPosts,
   listAdminFaqs,
   listAdminLeads,
@@ -25,6 +28,7 @@ import {
   listAdminServices,
   listAdminSiteStats,
   listAdminTestimonials,
+  saveAdminAuthor,
   saveAdminBlogPost,
   saveAdminFaq,
   saveAdminPage,
@@ -37,6 +41,7 @@ import {
 } from "@/lib/cms/admin-service";
 import { cmsKeys } from "@/hooks/use-cms";
 import type {
+  Author,
   BlogPost,
   CmsPage,
   FaqItem,
@@ -60,6 +65,8 @@ export const adminKeys = {
   pricingPlan: (id: string) => [...adminKeys.all, "pricing", id] as const,
   testimonials: () => [...adminKeys.all, "testimonials"] as const,
   testimonial: (id: string) => [...adminKeys.all, "testimonial", id] as const,
+  authors: () => [...adminKeys.all, "authors"] as const,
+  author: (id: string) => [...adminKeys.all, "author", id] as const,
   faqs: () => [...adminKeys.all, "faqs"] as const,
   faq: (id: string) => [...adminKeys.all, "faq", id] as const,
   stats: () => [...adminKeys.all, "stats"] as const,
@@ -272,6 +279,45 @@ export function useDeleteTestimonial() {
     mutationFn: deleteAdminTestimonial,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.testimonials() });
+      await invalidatePublic(qc);
+    },
+  });
+}
+
+// Authors
+export function useAdminAuthors() {
+  return useQuery({
+    queryKey: adminKeys.authors(),
+    queryFn: listAdminAuthors,
+    placeholderData: [],
+    ...adminQueryOptions,
+  });
+}
+export function useAdminAuthor(id: string, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.author(id),
+    queryFn: () => getAdminAuthor(id),
+    enabled: enabled && id !== "new",
+    ...adminQueryOptions,
+  });
+}
+export function useSaveAuthor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Omit<Author, "id"> }) =>
+      saveAdminAuthor(id, data),
+    onSuccess: async () => {
+      await qc.invalidateQueries({ queryKey: adminKeys.authors() });
+      await invalidatePublic(qc);
+    },
+  });
+}
+export function useDeleteAuthor() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: deleteAdminAuthor,
+    onSuccess: async () => {
+      await qc.invalidateQueries({ queryKey: adminKeys.authors() });
       await invalidatePublic(qc);
     },
   });

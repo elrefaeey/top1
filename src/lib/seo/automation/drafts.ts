@@ -3,6 +3,7 @@ import { COLLECTIONS } from "@/lib/firebase/collections";
 import { isDataImageUrl } from "@/lib/security/image-url";
 import {
   createFirestoreDocument,
+  getFirestoreDocument,
   listFirestoreDocuments,
   upsertFirestoreDocument,
   type FirestoreDocumentData,
@@ -110,6 +111,14 @@ export async function createAiBlogDraft(input: AiBlogDraftInput): Promise<{
   status: "draft";
 }> {
   const { id, data } = buildAiBlogDraftPayload(input);
+
+  const existing = await getFirestoreDocument(COLLECTIONS.blogPosts, id).catch(() => null);
+  if (existing && String(existing.status ?? "") === "published") {
+    throw new Error(
+      `لا يمكن استبدال مقال منشور بنفس الـ slug (${id}) — غيّر الـ slug أو ألغِ النشر يدوياً أولاً`,
+    );
+  }
+
   const payload: FirestoreDocumentData = {
     title: data.title,
     slug: data.slug,

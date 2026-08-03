@@ -122,6 +122,26 @@ function AdminTestimonialEdit() {
               />
             </AdminField>
           </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label="المدينة (اختياري)" id="city">
+              <input
+                id="city"
+                value={form.city ?? ""}
+                onChange={(e) => patch({ city: e.target.value || undefined })}
+                className={adminInputClass()}
+              />
+            </AdminField>
+            <AdminField label="خدمة مرتبطة (slug)" id="serviceSlug">
+              <input
+                id="serviceSlug"
+                dir="ltr"
+                value={form.serviceSlug ?? ""}
+                onChange={(e) => patch({ serviceSlug: e.target.value || undefined })}
+                className={adminInputClass()}
+                placeholder="web-design"
+              />
+            </AdminField>
+          </div>
           <AdminPublishSelect
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}

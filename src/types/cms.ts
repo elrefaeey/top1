@@ -106,6 +106,8 @@ export interface BlogPost extends SeoFields, Timestamps {
   category: string;
   tags: string[];
   author: string;
+  /** Links blog byline to CMS author profile (`/authors/$slug`). */
+  authorSlug?: string;
   authorAvatar?: string;
   readTime: number;
   views: number;
@@ -121,6 +123,20 @@ export interface BlogPost extends SeoFields, Timestamps {
   faqSchema?: string;
 }
 
+/** E-E-A-T author / team profile for About, blog bylines, and Person schema. */
+export interface Author extends SeoFields, Timestamps {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  avatarUrl?: string;
+  expertise: string[];
+  linkedinUrl?: string;
+  yearsExperience?: number;
+  order: number;
+  status: PublishStatus;
+}
+
 export interface Testimonial extends Timestamps {
   id: string;
   name: string;
@@ -129,6 +145,10 @@ export interface Testimonial extends Timestamps {
   quote: string;
   avatarUrl?: string;
   rating: number;
+  /** Optional city for local E-E-A-T signals */
+  city?: string;
+  /** Optional service slug association */
+  serviceSlug?: string;
   order: number;
   status: PublishStatus;
 }

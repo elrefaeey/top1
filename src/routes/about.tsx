@@ -14,6 +14,7 @@ import {
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
 import { MarketsServeStrip } from "@/components/site/MarketsContact";
+import { TrustAuthoritySections } from "@/components/site/TrustAuthoritySections";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildStaticPageHead } from "@/lib/seo";
@@ -59,29 +60,25 @@ function About() {
       icon: Layout,
       t: "تصميم مواقع",
       d: "مواقع سريعة وواضحة تعكس هوية نشاطك.",
-      to: "/services/$slug" as const,
-      slug: "web-design",
+      href: "/web-design-saudi-arabia",
     },
     {
       icon: ShoppingBag,
       t: "متاجر إلكترونية",
       d: "تجربة شراء سلسة جاهزة للبيع أونلاين.",
-      to: "/services/$slug" as const,
-      slug: "web-apps",
+      href: "/ecommerce-development",
     },
     {
       icon: Search,
       t: "SEO",
       d: "تحسين ظهورك في Google بجهد عملي مستمر.",
-      to: "/services/$slug" as const,
-      slug: "seo",
+      href: "/seo-services",
     },
     {
       icon: Megaphone,
       t: "تسويق رقمي",
       d: "حملات ورسائل تساعد على جذب عملاء حقيقيين.",
-      to: "/services/$slug" as const,
-      slug: "digital-solutions",
+      href: "/digital-marketing",
     },
   ];
 
@@ -200,8 +197,7 @@ function About() {
             {offers.map((o, i) => (
               <Reveal key={o.t} delay={i * 60}>
                 <Link
-                  to={o.to}
-                  params={{ slug: o.slug }}
+                  to={o.href}
                   className="about-offer-card group flex h-full gap-4 rounded-2xl border border-border bg-background p-5 transition-colors hover:border-primary/30 hover:bg-accent/40"
                 >
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
@@ -231,6 +227,8 @@ function About() {
           </div>
         </div>
       </section>
+
+      <TrustAuthoritySections />
 
       {/* How we work — right aligned intro + process */}
       <section className="section" aria-labelledby="about-steps-heading">

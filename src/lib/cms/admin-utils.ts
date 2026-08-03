@@ -18,6 +18,11 @@ export function portfolioItemSlug(item: { slug?: string; id: string }): string {
   return item.slug?.trim() || item.id;
 }
 
+/** Slug used in public author profile URLs. */
+export function authorSlug(item: { slug?: string; id: string }): string {
+  return item.slug?.trim() || item.id;
+}
+
 export function nowIso(): string {
   return new Date().toISOString();
 }

@@ -4,6 +4,98 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Self-hosted Tajawal — must pair with public/fonts/*.woff2 preloads */
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/tajawal-400-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/tajawal-400-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/tajawal-500-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/tajawal-500-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/tajawal-700-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/tajawal-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/tajawal-700-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/tajawal-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/tajawal-800-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF,
+    U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Tajawal";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/tajawal-800-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* Top1Markting — Premium Arabic Design System */
 
 @theme inline {
@@ -343,10 +435,14 @@
 }
 
 .reveal {
-  opacity: 0;
+  opacity: 1;
   min-width: 0;
   transition:
     opacity var(--duration-slow) var(--ease-smooth);
+}
+
+.reveal.reveal-pending {
+  opacity: 0;
 }
 
 .reveal.revealed {
@@ -1394,14 +1490,15 @@
   height: 1.55rem;
   border-radius: 0.3rem;
   flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
 }
 
-.market-phone--sa .market-phone-flag {
-  background: linear-gradient(180deg, #006c35 0%, #ffffff 46%, #006c35 50%, #ffffff 100%);
-}
-.market-phone--ae .market-phone-flag {
-  background: linear-gradient(90deg, #ce1126 0 25%, #ffffff 25% 50%, #000000 50% 75%, #00732f 75% 100%);
+.market-phone-flag-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .market-phone-body {
@@ -2433,7 +2530,63 @@
   }
 }
 
-/* ─── WhatsApp float — يمين الشاشة (فizical right) ─── */
+/* ─── WhatsApp float — يمين الشاشة (physical right) ─── */
+.mobile-sticky-cta {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-sticky-cta {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 9990;
+    display: grid;
+    grid-template-columns: 1.25fr 0.9fr 0.9fr;
+    gap: 0.4rem;
+    padding: 0.5rem 0.65rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+  }
+
+  .mobile-sticky-cta a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    border-radius: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobile-sticky-cta-wa {
+    background: #25d366;
+    color: #fff;
+  }
+
+  .mobile-sticky-cta-call {
+    background: color-mix(in srgb, var(--primary) 12%, var(--surface));
+    color: var(--foreground);
+    border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
+  }
+
+  .mobile-sticky-cta-form {
+    background: var(--gradient-primary);
+    color: var(--primary-foreground);
+  }
+
+  .site-shell {
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .whatsapp-float {
+    display: none !important;
+  }
+}
+
 .whatsapp-float {
   position: fixed;
   z-index: 9999;

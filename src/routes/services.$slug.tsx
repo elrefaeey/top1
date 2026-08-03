@@ -9,6 +9,7 @@ import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { footerInternalLinks } from "@/lib/seo/internal-links";
 import { getServiceSeoBlock } from "@/lib/seo/service-content";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
+import { serviceLocationClusterLinks, moneyPageForService } from "@/lib/seo/service-money-pages";
 import { buildServiceHead, notFoundHead } from "@/lib/seo";
 import { stripHtml } from "@/lib/seo/blog-utils";
 
@@ -68,6 +69,9 @@ function ServiceDetail() {
   const Icon = getServiceIcon(s.icon);
   const deliverables = s.deliverables ?? s.features;
   const process = s.process ?? [];
+  const preferred = preferredServiceSlug(slug);
+  const moneyPage = moneyPageForService(preferred);
+  const locationCluster = serviceLocationClusterLinks(preferred);
   const breadcrumbs = [
     { name: "الرئيسية", path: "/" },
     { name: "الخدمات", path: "/services" },
@@ -79,6 +83,18 @@ function ServiceDetail() {
       <section className="hero-bg relative overflow-hidden">
         <div className="container-page relative pb-16 pt-6">
           <BreadcrumbNav items={breadcrumbs} className="mb-6" />
+          {moneyPage && (
+            <p className="mb-6 text-sm text-muted-foreground">
+              للبحث حسب المدينة أو الدولة، ابدأ من{" "}
+              <Link
+                to={moneyPage}
+                className="font-medium text-primary underline-offset-2 hover:underline"
+              >
+                صفحة الخدمة الرئيسية
+              </Link>
+              .
+            </p>
+          )}
           <div className="grid items-center gap-10 lg:grid-cols-2">
             {s.imageUrl && (
               <SiteImage
@@ -232,9 +248,14 @@ function ServiceDetail() {
             </Link>
           </div>
           <InternalLinksBlock
-            title="روابط ذات صلة"
-            links={footerInternalLinks()}
+            title="صفحات المدن والخدمات ذات الصلة"
+            links={locationCluster}
             className="mt-12 text-start"
+          />
+          <InternalLinksBlock
+            title="روابط إضافية"
+            links={footerInternalLinks()}
+            className="mt-8 text-start"
           />
         </div>
       </section>

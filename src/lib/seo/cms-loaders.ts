@@ -1,5 +1,6 @@
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import {
+  getAuthors,
   getBlogPostBySlug,
   getBlogPosts,
   getPortfolio,
@@ -10,7 +11,7 @@ import {
 import { FALLBACK_BLOG_POSTS, FALLBACK_SERVICES } from "@/lib/cms/fallback-data";
 import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
 import { serviceSlugCandidates } from "@/lib/seo/service-slug-aliases";
-import type { BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
+import type { Author, BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
 function sanitizeFallbackPost(post: WithId<BlogPost>): WithId<BlogPost> {
   return {
@@ -68,16 +69,19 @@ export async function loadSitemapEntries(): Promise<{
   services: WithId<Service>[];
   blog: WithId<BlogPost>[];
   portfolio: WithId<PortfolioItem>[];
+  authors: WithId<Author>[];
 }> {
-  const [services, blog, portfolio] = await Promise.all([
+  const [services, blog, portfolio, authors] = await Promise.all([
     getServices(),
     getBlogPosts(),
     getPortfolio(),
+    getAuthors(),
   ]);
 
   return {
     services: services.length > 0 ? services : FALLBACK_SERVICES.map((s) => ({ ...s })),
     blog: blog.length > 0 ? blog : FALLBACK_BLOG_POSTS.map((p) => ({ ...p })),
     portfolio,
+    authors,
   };
 }

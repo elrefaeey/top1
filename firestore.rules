@@ -82,6 +82,11 @@ service cloud.firestore {
       allow write: if isEditor();
     }
 
+    match /authors/{docId} {
+      allow read: if isPublicContent() || isEditor();
+      allow write: if isEditor();
+    }
+
     match /pricing_plans/{docId} {
       allow read: if isPublicContent() || isEditor();
       allow write: if isEditor();
