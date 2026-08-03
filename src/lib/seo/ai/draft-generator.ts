@@ -5,7 +5,7 @@ import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
 /** Preferred internal links for Saudi SEO drafts (match live site routes). */
 export const SAUDI_SEO_INTERNAL_LINKS: Array<{ label: string; href: string }> = [
-  { label: "خدمات تحسين محركات البحث", href: "/services/seo-optimization" },
+  { label: "خدمات تحسين محركات البحث", href: "/services/seo" },
   { label: "تصميم المواقع", href: "/services/web-design" },
   { label: "خدمات SEO في الرياض", href: "/seo-riyadh" },
   { label: "تواصل معنا", href: "/contact" },
@@ -85,12 +85,15 @@ export function buildEnglishSeoSlug(keyword: string, hint?: string): string {
   if (!slug) {
     slug = source
       .normalize("NFKD")
-      .replace(/[^\x00-\x7F]/g, "")
+      .replace(/[^\u0020-\u007E]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
   }
   if (!slug) slug = "saudi-seo-guide";
-  slug = slug.replace(/-+/g, "-").replace(/^-+|-+$/g, "").slice(0, 72);
+  slug = slug
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 72);
   return slug || "saudi-seo-guide";
 }
 
@@ -159,13 +162,7 @@ function buildImagePrompt(keyword: string, title: string): string {
 }
 
 function buildDefaultKeywords(keyword: string): string[] {
-  const base = [
-    keyword.trim(),
-    "السعودية",
-    "الرياض",
-    "SEO السعودية",
-    SITE_NAME,
-  ].filter(Boolean);
+  const base = [keyword.trim(), "السعودية", "الرياض", "SEO السعودية", SITE_NAME].filter(Boolean);
   return [...new Set(base)].slice(0, 8);
 }
 
@@ -185,10 +182,7 @@ export function buildTemplateBlogHtml(input: {
     .map((l) => `<li><a href="${l.href}">${escapeHtml(l.label)}</a></li>`)
     .join("");
   const faqHtml = faqs
-    .map(
-      (f) =>
-        `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`,
-    )
+    .map((f) => `<h3>${escapeHtml(f.question)}</h3>\n<p>${escapeHtml(f.answer)}</p>`)
     .join("\n");
 
   return `
@@ -381,9 +375,7 @@ export async function generateBlogDraftFromInsight(
 ): Promise<{ input: AiBlogDraftInput; provider: string }> {
   const keyword = insight.keyword.trim() || "خدمات SEO";
   const fallbackTitle =
-    insight.suggested_title?.trim() ||
-    insight.title?.trim() ||
-    `${keyword} للشركات في السعودية`;
+    insight.suggested_title?.trim() || insight.title?.trim() || `${keyword} للشركات في السعودية`;
 
   if (!hasLlmConfigured()) {
     const faqs = buildFaqItems(keyword);

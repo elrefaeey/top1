@@ -23,17 +23,66 @@ function isThinOrGenericPage(page: string): boolean {
   return path === "/" || path === "/blog" || path === "/services" || path.length < 3;
 }
 
+/** Money / focus surfaces for weekly AI SEO growth. */
+function isFocusPage(page: string): boolean {
+  const path = pagePath(page).toLowerCase();
+  return (
+    path.startsWith("/services/") ||
+    path.startsWith("/blog/") ||
+    path.startsWith("/web-design") ||
+    path === "/seo-riyadh" ||
+    path.startsWith("/seo-")
+  );
+}
+
+function isCommercialKeyword(query: string): boolean {
+  return /سعر|تكلفة|شرك|أفضل|خدمة|خدمات|تصميم|seo|متجر|وكالة|agency|company|price|cost|شراء|عرض/i.test(
+    query,
+  );
+}
+
+function isSaudiSignal(row: GscSnapshot): boolean {
+  const country = String(row.country ?? "").toLowerCase();
+  if (country === "sau" || country === "saudi arabia" || country.startsWith("sa")) return true;
+  return /سعود|رياض|جدة|قصيم|بريدة|الدمام|الخبر|saudi|riyadh|jeddah|qassim|buraidah/i.test(
+    row.query,
+  );
+}
+
+/** Preferred SERP band for safe organic growth (page 1–3 stretch). */
+function inTargetPositionBand(position: number): boolean {
+  return position >= 8 && position <= 30;
+}
+
 function priorityFor(row: GscSnapshot, type: OpportunityType): SeoInsightPriority {
+  const focus = isFocusPage(row.page);
+  const saudi = isSaudiSignal(row);
+  const commercial = isCommercialKeyword(row.query);
+  const sweetSpot = inTargetPositionBand(row.position);
+  const lowCtr = row.ctr <= 0.02;
+
   if (type === "quick_win") {
+    if (row.impressions >= 80 && lowCtr && (sweetSpot || focus) && (saudi || commercial)) {
+      return "high";
+    }
     if (row.impressions >= 100 && row.ctr < 0.01) return "high";
+    if (row.impressions >= 30 && (focus || saudi || commercial)) return "medium";
     if (row.impressions >= 30) return "medium";
     return "low";
   }
   if (type === "content_opportunity") {
+    if (
+      row.impressions >= 25 &&
+      (saudi || commercial) &&
+      (focus || sweetSpot || isThinOrGenericPage(row.page))
+    ) {
+      return "high";
+    }
     if (row.impressions >= 40) return "high";
     if (row.impressions >= 15) return "medium";
     return "low";
   }
+  if (row.impressions >= 50 && sweetSpot && focus) return "high";
   if (row.impressions >= 80 && row.position <= 15) return "high";
   if (row.impressions >= 25) return "medium";
   return "low";
@@ -41,9 +90,26 @@ function priorityFor(row: GscSnapshot, type: OpportunityType): SeoInsightPriorit
 
 function estimatedValue(row: GscSnapshot, type: OpportunityType): number {
   const ctrGap = Math.max(0.02 - row.ctr, 0);
-  const posBoost = row.position > 20 ? 1.4 : row.position > 10 ? 1.2 : 1;
-  const typeBoost = type === "quick_win" ? 1.3 : type === "content_opportunity" ? 1.1 : 1;
-  return Math.round(row.impressions * (1 + ctrGap * 40) * posBoost * typeBoost);
+  const posBoost = inTargetPositionBand(row.position)
+    ? 1.55
+    : row.position > 20
+      ? 1.35
+      : row.position > 10
+        ? 1.2
+        : 1;
+  const typeBoost = type === "quick_win" ? 1.3 : type === "content_opportunity" ? 1.15 : 1;
+  const focusBoost = isFocusPage(row.page) ? 1.35 : 1;
+  const saudiBoost = isSaudiSignal(row) ? 1.25 : 1;
+  const commercialBoost = isCommercialKeyword(row.query) ? 1.2 : 1;
+  return Math.round(
+    row.impressions *
+      (1 + ctrGap * 40) *
+      posBoost *
+      typeBoost *
+      focusBoost *
+      saudiBoost *
+      commercialBoost,
+  );
 }
 
 function suggestedTitleFor(keyword: string, type: OpportunityType): string {
@@ -200,8 +266,20 @@ function buildPageImprovement(row: GscSnapshot, ts: string): SeoOpportunityDraft
   };
 }
 
+function rowSortScore(row: GscSnapshot): number {
+  let score = row.impressions;
+  if (inTargetPositionBand(row.position)) score *= 1.4;
+  if (row.ctr <= 0.02) score *= 1.25;
+  if (isFocusPage(row.page)) score *= 1.35;
+  if (isSaudiSignal(row)) score *= 1.3;
+  if (isCommercialKeyword(row.query)) score *= 1.2;
+  return score;
+}
+
 /**
  * Analyze GSC snapshot rows into seo_insights opportunities.
+ * Prioritizes position 8–30, high impressions, low CTR, Saudi + commercial intent,
+ * and focus pages (/services/*, /seo-riyadh, /blog/*, /web-design*).
  * Rule-based (no LLM required). Never publishes content.
  */
 export function analyzeGscSnapshotsForOpportunities(
@@ -214,22 +292,30 @@ export function analyzeGscSnapshotsForOpportunities(
   const contentOps: SeoOpportunityDraft[] = [];
   const pageImps: SeoOpportunityDraft[] = [];
 
-  const sorted = [...rows].sort((a, b) => b.impressions - a.impressions);
+  const sorted = [...rows].sort((a, b) => rowSortScore(b) - rowSortScore(a));
 
   for (const row of sorted) {
     if (!row.query?.trim() || !row.page?.trim()) continue;
 
     const lowCtr = row.ctr <= 0.02;
-    const midLowPos = row.position >= 10 && row.position <= 100;
+    // Prefer 8–30; still allow stretch to 40 for high-impression Saudi/commercial rows.
+    const targetBand =
+      inTargetPositionBand(row.position) ||
+      (row.position > 30 &&
+        row.position <= 40 &&
+        row.impressions >= 40 &&
+        (isSaudiSignal(row) || isCommercialKeyword(row.query)));
 
-    if (row.impressions > 10 && lowCtr && midLowPos && quickWins.length < maxPerType) {
+    if (row.impressions > 10 && lowCtr && targetBand && quickWins.length < maxPerType) {
       quickWins.push(buildQuickWin(row, ts));
       continue;
     }
 
     if (
       row.impressions >= 8 &&
-      (row.position > 20 || isThinOrGenericPage(row.page)) &&
+      (row.position > 20 ||
+        isThinOrGenericPage(row.page) ||
+        (isFocusPage(row.page) && row.position >= 15)) &&
       contentOps.length < maxPerType
     ) {
       contentOps.push(buildContentOpportunity(row, ts));
@@ -238,8 +324,8 @@ export function analyzeGscSnapshotsForOpportunities(
 
     if (
       row.impressions >= 10 &&
-      row.position >= 4 &&
-      row.position < 20 &&
+      row.position >= 8 &&
+      row.position <= 30 &&
       !isThinOrGenericPage(row.page) &&
       pageImps.length < maxPerType
     ) {
@@ -249,6 +335,41 @@ export function analyzeGscSnapshotsForOpportunities(
 
   return [...quickWins, ...contentOps, ...pageImps].sort(
     (a, b) => b.estimated_value - a.estimated_value,
+  );
+}
+
+/**
+ * Auto-approve high-value content opportunities for draft generation (draft-only).
+ * Does not publish. Skips already reviewed/completed insights.
+ */
+export function isDraftApprovedOpportunity(op: {
+  type?: string;
+  priority?: string;
+  status?: string;
+  keyword?: string;
+  page?: string;
+  targetPage?: string;
+  impressions?: number;
+}): boolean {
+  if (op.status && op.status !== "pending") return false;
+  if (op.type !== "content_opportunity") return false;
+  if (op.priority !== "high") return false;
+  if (!op.keyword?.trim()) return false;
+  const page = op.page || op.targetPage || "";
+  return (
+    isFocusPage(page) ||
+    isThinOrGenericPage(page) ||
+    isSaudiSignal({
+      id: "",
+      query: op.keyword,
+      page,
+      clicks: 0,
+      impressions: op.impressions ?? 0,
+      ctr: 0,
+      position: 0,
+      date: "",
+    }) ||
+    isCommercialKeyword(op.keyword)
   );
 }
 
