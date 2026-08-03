@@ -1,15 +1,13 @@
 import { createHash } from "node:crypto";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { COLLECTIONS } from "@/lib/firebase/collections";
-import {
-  getGscOAuthConfig,
-  refreshGoogleAccessToken,
-} from "@/lib/seo/gsc/auth";
+import { getGscOAuthConfig, refreshGoogleAccessToken } from "@/lib/seo/gsc/auth";
 import type { GscConnectionStatus, GscCredential, GscSearchRow } from "@/lib/seo/gsc/types";
 import {
   getFirestoreDocument,
   getFirestoreDocumentAsUser,
   hasFirebaseServiceAccount,
+  listFirestoreDocuments,
   upsertFirestoreDocument,
   upsertFirestoreDocumentAsUser,
   type FirestoreDocumentData,
@@ -95,9 +93,7 @@ export async function saveGscCredentials(input: {
     return;
   }
 
-  throw new Error(
-    "تعذّر حفظ بيانات GSC — أعد محاولة الربط من لوحة التحكم (جلسة الربط مفقودة)",
-  );
+  throw new Error("تعذّر حفظ بيانات GSC — أعد محاولة الربط من لوحة التحكم (جلسة الربط مفقودة)");
 }
 
 export async function getGscCredentials(
@@ -134,6 +130,43 @@ export async function getGscConnectionStatus(
     connectedEmail: creds?.connectedEmail || null,
     siteUrl,
   };
+}
+
+/** List stored GSC OAuth credentials (service account). Never expose refresh tokens to clients. */
+export async function listGscCredentialSummaries(): Promise<
+  Array<{ userId: string; connectedEmail: string; updatedAt: string }>
+> {
+  if (!hasFirebaseServiceAccount()) return [];
+  const docs = await listFirestoreDocuments(COLLECTIONS.gscCredentials, { pageSize: 20 });
+  return docs
+    .filter((d) => Boolean(String(d.refreshToken ?? "").trim()))
+    .map((d) => ({
+      userId: String(d.userId ?? d.id),
+      connectedEmail: String(d.connectedEmail ?? ""),
+      updatedAt: String(d.updatedAt ?? ""),
+    }));
+}
+
+/** Automation-friendly status: connected if any admin has linked GSC. */
+export async function getAnyGscConnectionStatus(): Promise<GscConnectionStatus> {
+  const { siteUrl } = getGscOAuthConfig();
+  const summaries = await listGscCredentialSummaries();
+  const first = summaries[0];
+  return {
+    connected: Boolean(first),
+    connectedEmail: first?.connectedEmail || null,
+    siteUrl,
+  };
+}
+
+/** Resolve a userId that has a usable GSC refresh token (for automation sync). */
+export async function resolveGscSyncUserId(): Promise<string> {
+  const summaries = await listGscCredentialSummaries();
+  const userId = summaries[0]?.userId?.trim();
+  if (!userId) {
+    throw new Error("Google Search Console غير مربوط — اربط الحساب أولاً من لوحة التحكم");
+  }
+  return userId;
 }
 
 export async function getAccessTokenForUser(

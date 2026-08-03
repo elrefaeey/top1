@@ -1,21 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { extractBearerToken } from "@/lib/seo/gsc/auth";
-import { getGscConnectionStatus } from "@/lib/seo/gsc/client";
+import { getAnyGscConnectionStatus, getGscConnectionStatus } from "@/lib/seo/gsc/client";
+import { safeEqualString } from "@/lib/server/firebase-admin";
 import { verifyFirebaseAdminRole } from "@/lib/security/firebase-auth-server";
 import { applySecurityHeaders, jsonError } from "@/lib/security/headers";
 import { checkRateLimitAsync, rateLimitHeaders, rateLimitKey } from "@/lib/security/rate-limit";
 
 const RATE_MAX = 60;
 
+function hasValidAutomationKey(request: Request): boolean {
+  const automationKey = (process.env.SEO_AUTOMATION_API_KEY ?? "").trim();
+  const providedKey = (request.headers.get("x-seo-automation-key") ?? "").trim();
+  return Boolean(automationKey && providedKey && safeEqualString(providedKey, automationKey));
+}
+
 export const Route = createFileRoute("/api/seo/gsc/status")({
   server: {
     handlers: {
       GET: async ({ request }) => {
         try {
-          const rl = await checkRateLimitAsync(
-            rateLimitKey(request, "seo-gsc-status"),
-            RATE_MAX,
-          );
+          const rl = await checkRateLimitAsync(rateLimitKey(request, "seo-gsc-status"), RATE_MAX);
           if (!rl.ok) {
             return applySecurityHeaders(
               Response.json(
@@ -25,12 +29,16 @@ export const Route = createFileRoute("/api/seo/gsc/status")({
             );
           }
 
-          const idToken = extractBearerToken(request);
-          const uid = await verifyFirebaseAdminRole(idToken);
-          const status = await getGscConnectionStatus(uid, idToken);
+          const status = hasValidAutomationKey(request)
+            ? await getAnyGscConnectionStatus()
+            : await (async () => {
+                const idToken = extractBearerToken(request);
+                const uid = await verifyFirebaseAdminRole(idToken);
+                return getGscConnectionStatus(uid, idToken);
+              })();
 
           console.info(
-            `[gsc-oauth:status] uid_suffix=${uid.slice(-6)} connected=${status.connected} connected_email_set=${Boolean(status.connectedEmail)}`,
+            `[gsc-oauth:status] mode=${hasValidAutomationKey(request) ? "automation" : "admin"} connected=${status.connected} connected_email_set=${Boolean(status.connectedEmail)}`,
           );
 
           // Never return refresh tokens

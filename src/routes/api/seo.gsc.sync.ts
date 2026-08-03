@@ -1,11 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { extractBearerToken } from "@/lib/seo/gsc/auth";
+import { resolveGscSyncUserId } from "@/lib/seo/gsc/client";
 import { syncGscSearchAnalytics } from "@/lib/seo/gsc/sync";
+import { safeEqualString } from "@/lib/server/firebase-admin";
 import { verifyFirebaseAdminRole } from "@/lib/security/firebase-auth-server";
 import { applySecurityHeaders, jsonError } from "@/lib/security/headers";
 import { checkRateLimitAsync, rateLimitHeaders, rateLimitKey } from "@/lib/security/rate-limit";
 
 const RATE_MAX = 6;
+
+function hasValidAutomationKey(request: Request): boolean {
+  const automationKey = (process.env.SEO_AUTOMATION_API_KEY ?? "").trim();
+  const providedKey = (request.headers.get("x-seo-automation-key") ?? "").trim();
+  return Boolean(automationKey && providedKey && safeEqualString(providedKey, automationKey));
+}
 
 export const Route = createFileRoute("/api/seo/gsc/sync")({
   server: {
@@ -22,15 +30,19 @@ export const Route = createFileRoute("/api/seo/gsc/sync")({
             );
           }
 
-          const idToken = extractBearerToken(request);
-          const uid = await verifyFirebaseAdminRole(idToken);
-          const result = await syncGscSearchAnalytics(uid, idToken);
+          let result;
+          if (hasValidAutomationKey(request)) {
+            // Weekly Cursor automation: use any linked GSC credential via service account.
+            const userId = await resolveGscSyncUserId();
+            result = await syncGscSearchAnalytics(userId);
+          } else {
+            const idToken = extractBearerToken(request);
+            const uid = await verifyFirebaseAdminRole(idToken);
+            result = await syncGscSearchAnalytics(uid, idToken);
+          }
 
           return applySecurityHeaders(
-            Response.json(
-              { ok: true, ...result },
-              { headers: rateLimitHeaders(rl, RATE_MAX) },
-            ),
+            Response.json({ ok: true, ...result }, { headers: rateLimitHeaders(rl, RATE_MAX) }),
           );
         } catch (err) {
           console.error("[api/seo/gsc/sync]", err);

@@ -9,185 +9,77 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
-import { Route as WebDesignRiyadhRouteImport } from './routes/web-design-riyadh'
-import { Route as WebDesignQassimRouteImport } from './routes/web-design-qassim'
-import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
-import { Route as WebDesignBuraidahRouteImport } from './routes/web-design-buraidah'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as SeoServicesRouteImport } from './routes/seo-services'
-import { Route as SeoRiyadhRouteImport } from './routes/seo-riyadh'
-import { Route as SeoQassimRouteImport } from './routes/seo-qassim'
-import { Route as SeoBuraidahRouteImport } from './routes/seo-buraidah'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
-import { Route as EcommerceDevelopmentRouteImport } from './routes/ecommerce-development'
-import { Route as DigitalMarketingRouteImport } from './routes/digital-marketing'
-import { Route as CookiesRouteImport } from './routes/cookies'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SplatRouteImport } from './routes/$'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as DigitalMarketingRouteImport } from './routes/digital-marketing'
+import { Route as EcommerceDevelopmentRouteImport } from './routes/ecommerce-development'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SeoBuraidahRouteImport } from './routes/seo-buraidah'
+import { Route as SeoQassimRouteImport } from './routes/seo-qassim'
+import { Route as SeoRiyadhRouteImport } from './routes/seo-riyadh'
+import { Route as SeoServicesRouteImport } from './routes/seo-services'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as WebDesignBuraidahRouteImport } from './routes/web-design-buraidah'
+import { Route as WebDesignEgyptRouteImport } from './routes/web-design-egypt'
+import { Route as WebDesignQassimRouteImport } from './routes/web-design-qassim'
+import { Route as WebDesignRiyadhRouteImport } from './routes/web-design-riyadh'
+import { Route as WebDesignSaudiArabiaRouteImport } from './routes/web-design-saudi-arabia'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
-import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
-import { Route as MediaIdRouteImport } from './routes/media.$id'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
-import { Route as ApiLeadsRouteImport } from './routes/api/leads'
-import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
-import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
-import { Route as AdminStatsRouteImport } from './routes/admin.stats'
-import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
-import { Route as AdminServicesRouteImport } from './routes/admin.services'
-import { Route as AdminSeoAiRouteImport } from './routes/admin.seo-ai'
-import { Route as AdminSeoRouteImport } from './routes/admin.seo'
-import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
-import { Route as AdminPortfolioRouteImport } from './routes/admin.portfolio'
-import { Route as AdminPagesRouteImport } from './routes/admin.pages'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
-import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
-import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
-import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
-import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
-import { Route as ApiSeoGenerateDraftRouteImport } from './routes/api/seo.generate-draft'
-import { Route as ApiSeoCreateDraftRouteImport } from './routes/api/seo.create-draft'
-import { Route as ApiSeoAnalyzeRouteImport } from './routes/api/seo.analyze'
-import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
-import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
-import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
-import { Route as AdminServicesIdRouteImport } from './routes/admin.services.$id'
-import { Route as AdminPricingIdRouteImport } from './routes/admin.pricing.$id'
-import { Route as AdminPortfolioIdRouteImport } from './routes/admin.portfolio.$id'
-import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
-import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
+import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminPagesRouteImport } from './routes/admin.pages'
+import { Route as AdminPortfolioRouteImport } from './routes/admin.portfolio'
+import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
+import { Route as AdminSeoRouteImport } from './routes/admin.seo'
+import { Route as AdminSeoAiRouteImport } from './routes/admin.seo-ai'
+import { Route as AdminServicesRouteImport } from './routes/admin.services'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminStatsRouteImport } from './routes/admin.stats'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
+import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
+import { Route as ApiLeadsRouteImport } from './routes/api/leads'
+import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as MediaIdRouteImport } from './routes/media.$id'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
-import { Route as ApiSeoGscSyncRouteImport } from './routes/api/seo.gsc.sync'
-import { Route as ApiSeoGscStatusRouteImport } from './routes/api/seo.gsc.status'
-import { Route as ApiSeoGscConnectRouteImport } from './routes/api/seo.gsc.connect'
+import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
+import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
+import { Route as AdminPortfolioIdRouteImport } from './routes/admin.portfolio.$id'
+import { Route as AdminPricingIdRouteImport } from './routes/admin.pricing.$id'
+import { Route as AdminServicesIdRouteImport } from './routes/admin.services.$id'
+import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
+import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
+import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
+import { Route as ApiSeoAnalyzeRouteImport } from './routes/api/seo.analyze'
+import { Route as ApiSeoCreateDraftRouteImport } from './routes/api/seo.create-draft'
+import { Route as ApiSeoGenerateDraftRouteImport } from './routes/api/seo.generate-draft'
+import { Route as ApiSeoGenerateDraftsRouteImport } from './routes/api/seo.generate-drafts'
+import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
+import { Route as ApiSeoHealthRouteImport } from './routes/api/seo.health'
+import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
+import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
 import { Route as ApiSeoGscCallbackRouteImport } from './routes/api/seo.gsc.callback'
+import { Route as ApiSeoGscConnectRouteImport } from './routes/api/seo.gsc.connect'
+import { Route as ApiSeoGscStatusRouteImport } from './routes/api/seo.gsc.status'
+import { Route as ApiSeoGscSyncRouteImport } from './routes/api/seo.gsc.sync'
 
-const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
-  id: '/web-design-saudi-arabia',
-  path: '/web-design-saudi-arabia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WebDesignRiyadhRoute = WebDesignRiyadhRouteImport.update({
-  id: '/web-design-riyadh',
-  path: '/web-design-riyadh',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WebDesignQassimRoute = WebDesignQassimRouteImport.update({
-  id: '/web-design-qassim',
-  path: '/web-design-qassim',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
-  id: '/web-design-egypt',
-  path: '/web-design-egypt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WebDesignBuraidahRoute = WebDesignBuraidahRouteImport.update({
-  id: '/web-design-buraidah',
-  path: '/web-design-buraidah',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SeoServicesRoute = SeoServicesRouteImport.update({
-  id: '/seo-services',
-  path: '/seo-services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SeoRiyadhRoute = SeoRiyadhRouteImport.update({
-  id: '/seo-riyadh',
-  path: '/seo-riyadh',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SeoQassimRoute = SeoQassimRouteImport.update({
-  id: '/seo-qassim',
-  path: '/seo-qassim',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SeoBuraidahRoute = SeoBuraidahRouteImport.update({
-  id: '/seo-buraidah',
-  path: '/seo-buraidah',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EcommerceDevelopmentRoute = EcommerceDevelopmentRouteImport.update({
-  id: '/ecommerce-development',
-  path: '/ecommerce-development',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DigitalMarketingRoute = DigitalMarketingRouteImport.update({
-  id: '/digital-marketing',
-  path: '/digital-marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookiesRoute = CookiesRouteImport.update({
-  id: '/cookies',
-  path: '/cookies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SplatRoute = SplatRouteImport.update({
@@ -195,9 +87,119 @@ const SplatRoute = SplatRouteImport.update({
   path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DigitalMarketingRoute = DigitalMarketingRouteImport.update({
+  id: '/digital-marketing',
+  path: '/digital-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EcommerceDevelopmentRoute = EcommerceDevelopmentRouteImport.update({
+  id: '/ecommerce-development',
+  path: '/ecommerce-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoBuraidahRoute = SeoBuraidahRouteImport.update({
+  id: '/seo-buraidah',
+  path: '/seo-buraidah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoQassimRoute = SeoQassimRouteImport.update({
+  id: '/seo-qassim',
+  path: '/seo-qassim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoRiyadhRoute = SeoRiyadhRouteImport.update({
+  id: '/seo-riyadh',
+  path: '/seo-riyadh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeoServicesRoute = SeoServicesRouteImport.update({
+  id: '/seo-services',
+  path: '/seo-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignBuraidahRoute = WebDesignBuraidahRouteImport.update({
+  id: '/web-design-buraidah',
+  path: '/web-design-buraidah',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignEgyptRoute = WebDesignEgyptRouteImport.update({
+  id: '/web-design-egypt',
+  path: '/web-design-egypt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignQassimRoute = WebDesignQassimRouteImport.update({
+  id: '/web-design-qassim',
+  path: '/web-design-qassim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignRiyadhRoute = WebDesignRiyadhRouteImport.update({
+  id: '/web-design-riyadh',
+  path: '/web-design-riyadh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDesignSaudiArabiaRoute = WebDesignSaudiArabiaRouteImport.update({
+  id: '/web-design-saudi-arabia',
+  path: '/web-design-saudi-arabia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -205,94 +207,9 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ServicesRoute,
-} as any)
-const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PortfolioRoute,
-} as any)
-const MediaIdRoute = MediaIdRouteImport.update({
-  id: '/media/$id',
-  path: '/media/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
-} as any)
-const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
-  id: '/api/upload-image',
-  path: '/api/upload-image',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiLeadsRoute = ApiLeadsRouteImport.update({
-  id: '/api/leads',
-  path: '/api/leads',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiFirebaseConfigRoute = ApiFirebaseConfigRouteImport.update({
-  id: '/api/firebase-config',
-  path: '/api/firebase-config',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
-  id: '/testimonials',
-  path: '/testimonials',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminStatsRoute = AdminStatsRouteImport.update({
-  id: '/stats',
-  path: '/stats',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminServicesRoute = AdminServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSeoAiRoute = AdminSeoAiRouteImport.update({
-  id: '/seo-ai',
-  path: '/seo-ai',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSeoRoute = AdminSeoRouteImport.update({
-  id: '/seo',
-  path: '/seo',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPricingRoute = AdminPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPortfolioRoute = AdminPortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminPagesRoute = AdminPagesRouteImport.update({
-  id: '/pages',
-  path: '/pages',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminLeadsRoute = AdminLeadsRouteImport.update({
-  id: '/leads',
-  path: '/leads',
+const AdminBlogRoute = AdminBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminFaqsRoute = AdminFaqsRouteImport.update({
@@ -300,34 +217,139 @@ const AdminFaqsRoute = AdminFaqsRouteImport.update({
   path: '/faqs',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminBlogRoute = AdminBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
   getParentRoute: () => AdminRoute,
 } as any)
-const ApiSeoLogsRoute = ApiSeoLogsRouteImport.update({
-  id: '/api/seo/logs',
-  path: '/api/seo/logs',
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesRoute = AdminPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPortfolioRoute = AdminPortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPricingRoute = AdminPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSeoRoute = AdminSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSeoAiRoute = AdminSeoAiRouteImport.update({
+  id: '/seo-ai',
+  path: '/seo-ai',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminServicesRoute = AdminServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStatsRoute = AdminStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiFirebaseConfigRoute = ApiFirebaseConfigRouteImport.update({
+  id: '/api/firebase-config',
+  path: '/api/firebase-config',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSeoInsightsRoute = ApiSeoInsightsRouteImport.update({
-  id: '/api/seo/insights',
-  path: '/api/seo/insights',
+const ApiLeadsRoute = ApiLeadsRouteImport.update({
+  id: '/api/leads',
+  path: '/api/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSeoGscRoute = ApiSeoGscRouteImport.update({
-  id: '/api/seo/gsc',
-  path: '/api/seo/gsc',
+const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
+  id: '/api/upload-image',
+  path: '/api/upload-image',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSeoGenerateDraftRoute = ApiSeoGenerateDraftRouteImport.update({
-  id: '/api/seo/generate-draft',
-  path: '/api/seo/generate-draft',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const MediaIdRoute = MediaIdRouteImport.update({
+  id: '/media/$id',
+  path: '/media/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSeoCreateDraftRoute = ApiSeoCreateDraftRouteImport.update({
-  id: '/api/seo/create-draft',
-  path: '/api/seo/create-draft',
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PortfolioRoute,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminBlogRoute,
+} as any)
+const AdminFaqsIdRoute = AdminFaqsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminFaqsRoute,
+} as any)
+const AdminPagesIdRoute = AdminPagesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPagesRoute,
+} as any)
+const AdminPortfolioIdRoute = AdminPortfolioIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPortfolioRoute,
+} as any)
+const AdminPricingIdRoute = AdminPricingIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPricingRoute,
+} as any)
+const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminServicesRoute,
+} as any)
+const AdminStatsIdRoute = AdminStatsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminStatsRoute,
+} as any)
+const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminTestimonialsRoute,
+} as any)
+const ApiCmsResourceRoute = ApiCmsResourceRouteImport.update({
+  id: '/api/cms/$resource',
+  path: '/api/cms/$resource',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSeoAnalyzeRoute = ApiSeoAnalyzeRouteImport.update({
@@ -335,59 +357,44 @@ const ApiSeoAnalyzeRoute = ApiSeoAnalyzeRouteImport.update({
   path: '/api/seo/analyze',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiCmsResourceRoute = ApiCmsResourceRouteImport.update({
-  id: '/api/cms/$resource',
-  path: '/api/cms/$resource',
+const ApiSeoCreateDraftRoute = ApiSeoCreateDraftRouteImport.update({
+  id: '/api/seo/create-draft',
+  path: '/api/seo/create-draft',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminTestimonialsRoute,
+const ApiSeoGenerateDraftRoute = ApiSeoGenerateDraftRouteImport.update({
+  id: '/api/seo/generate-draft',
+  path: '/api/seo/generate-draft',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminStatsIdRoute = AdminStatsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminStatsRoute,
+const ApiSeoGenerateDraftsRoute = ApiSeoGenerateDraftsRouteImport.update({
+  id: '/api/seo/generate-drafts',
+  path: '/api/seo/generate-drafts',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminServicesRoute,
+const ApiSeoGscRoute = ApiSeoGscRouteImport.update({
+  id: '/api/seo/gsc',
+  path: '/api/seo/gsc',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminPricingIdRoute = AdminPricingIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPricingRoute,
+const ApiSeoHealthRoute = ApiSeoHealthRouteImport.update({
+  id: '/api/seo/health',
+  path: '/api/seo/health',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminPortfolioIdRoute = AdminPortfolioIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPortfolioRoute,
+const ApiSeoInsightsRoute = ApiSeoInsightsRouteImport.update({
+  id: '/api/seo/insights',
+  path: '/api/seo/insights',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminPagesIdRoute = AdminPagesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPagesRoute,
+const ApiSeoLogsRoute = ApiSeoLogsRouteImport.update({
+  id: '/api/seo/logs',
+  path: '/api/seo/logs',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminFaqsIdRoute = AdminFaqsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminFaqsRoute,
-} as any)
-const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminBlogRoute,
-} as any)
-const ApiSeoGscSyncRoute = ApiSeoGscSyncRouteImport.update({
-  id: '/sync',
-  path: '/sync',
-  getParentRoute: () => ApiSeoGscRoute,
-} as any)
-const ApiSeoGscStatusRoute = ApiSeoGscStatusRouteImport.update({
-  id: '/status',
-  path: '/status',
+const ApiSeoGscCallbackRoute = ApiSeoGscCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
   getParentRoute: () => ApiSeoGscRoute,
 } as any)
 const ApiSeoGscConnectRoute = ApiSeoGscConnectRouteImport.update({
@@ -395,9 +402,14 @@ const ApiSeoGscConnectRoute = ApiSeoGscConnectRouteImport.update({
   path: '/connect',
   getParentRoute: () => ApiSeoGscRoute,
 } as any)
-const ApiSeoGscCallbackRoute = ApiSeoGscCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
+const ApiSeoGscStatusRoute = ApiSeoGscStatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => ApiSeoGscRoute,
+} as any)
+const ApiSeoGscSyncRoute = ApiSeoGscSyncRouteImport.update({
+  id: '/sync',
+  path: '/sync',
   getParentRoute: () => ApiSeoGscRoute,
 } as any)
 
@@ -460,7 +472,9 @@ export interface FileRoutesByFullPath {
   '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
+  '/api/seo/generate-drafts': typeof ApiSeoGenerateDraftsRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/health': typeof ApiSeoHealthRoute
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
@@ -526,7 +540,9 @@ export interface FileRoutesByTo {
   '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
+  '/api/seo/generate-drafts': typeof ApiSeoGenerateDraftsRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/health': typeof ApiSeoHealthRoute
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
@@ -594,7 +610,9 @@ export interface FileRoutesById {
   '/api/seo/analyze': typeof ApiSeoAnalyzeRoute
   '/api/seo/create-draft': typeof ApiSeoCreateDraftRoute
   '/api/seo/generate-draft': typeof ApiSeoGenerateDraftRoute
+  '/api/seo/generate-drafts': typeof ApiSeoGenerateDraftsRoute
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
+  '/api/seo/health': typeof ApiSeoHealthRoute
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
@@ -663,7 +681,9 @@ export interface FileRouteTypes {
     | '/api/seo/analyze'
     | '/api/seo/create-draft'
     | '/api/seo/generate-draft'
+    | '/api/seo/generate-drafts'
     | '/api/seo/gsc'
+    | '/api/seo/health'
     | '/api/seo/insights'
     | '/api/seo/logs'
     | '/api/seo/gsc/callback'
@@ -729,7 +749,9 @@ export interface FileRouteTypes {
     | '/api/seo/analyze'
     | '/api/seo/create-draft'
     | '/api/seo/generate-draft'
+    | '/api/seo/generate-drafts'
     | '/api/seo/gsc'
+    | '/api/seo/health'
     | '/api/seo/insights'
     | '/api/seo/logs'
     | '/api/seo/gsc/callback'
@@ -796,7 +818,9 @@ export interface FileRouteTypes {
     | '/api/seo/analyze'
     | '/api/seo/create-draft'
     | '/api/seo/generate-draft'
+    | '/api/seo/generate-drafts'
     | '/api/seo/gsc'
+    | '/api/seo/health'
     | '/api/seo/insights'
     | '/api/seo/logs'
     | '/api/seo/gsc/callback'
@@ -839,172 +863,20 @@ export interface RootRouteChildren {
   ApiSeoAnalyzeRoute: typeof ApiSeoAnalyzeRoute
   ApiSeoCreateDraftRoute: typeof ApiSeoCreateDraftRoute
   ApiSeoGenerateDraftRoute: typeof ApiSeoGenerateDraftRoute
+  ApiSeoGenerateDraftsRoute: typeof ApiSeoGenerateDraftsRoute
   ApiSeoGscRoute: typeof ApiSeoGscRouteWithChildren
+  ApiSeoHealthRoute: typeof ApiSeoHealthRoute
   ApiSeoInsightsRoute: typeof ApiSeoInsightsRoute
   ApiSeoLogsRoute: typeof ApiSeoLogsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/web-design-saudi-arabia': {
-      id: '/web-design-saudi-arabia'
-      path: '/web-design-saudi-arabia'
-      fullPath: '/web-design-saudi-arabia'
-      preLoaderRoute: typeof WebDesignSaudiArabiaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/web-design-riyadh': {
-      id: '/web-design-riyadh'
-      path: '/web-design-riyadh'
-      fullPath: '/web-design-riyadh'
-      preLoaderRoute: typeof WebDesignRiyadhRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/web-design-qassim': {
-      id: '/web-design-qassim'
-      path: '/web-design-qassim'
-      fullPath: '/web-design-qassim'
-      preLoaderRoute: typeof WebDesignQassimRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/web-design-egypt': {
-      id: '/web-design-egypt'
-      path: '/web-design-egypt'
-      fullPath: '/web-design-egypt'
-      preLoaderRoute: typeof WebDesignEgyptRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/web-design-buraidah': {
-      id: '/web-design-buraidah'
-      path: '/web-design-buraidah'
-      fullPath: '/web-design-buraidah'
-      preLoaderRoute: typeof WebDesignBuraidahRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seo-services': {
-      id: '/seo-services'
-      path: '/seo-services'
-      fullPath: '/seo-services'
-      preLoaderRoute: typeof SeoServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seo-riyadh': {
-      id: '/seo-riyadh'
-      path: '/seo-riyadh'
-      fullPath: '/seo-riyadh'
-      preLoaderRoute: typeof SeoRiyadhRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seo-qassim': {
-      id: '/seo-qassim'
-      path: '/seo-qassim'
-      fullPath: '/seo-qassim'
-      preLoaderRoute: typeof SeoQassimRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seo-buraidah': {
-      id: '/seo-buraidah'
-      path: '/seo-buraidah'
-      fullPath: '/seo-buraidah'
-      preLoaderRoute: typeof SeoBuraidahRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ecommerce-development': {
-      id: '/ecommerce-development'
-      path: '/ecommerce-development'
-      fullPath: '/ecommerce-development'
-      preLoaderRoute: typeof EcommerceDevelopmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/digital-marketing': {
-      id: '/digital-marketing'
-      path: '/digital-marketing'
-      fullPath: '/digital-marketing'
-      preLoaderRoute: typeof DigitalMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookies': {
-      id: '/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof CookiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$': {
@@ -1014,11 +886,165 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/digital-marketing': {
+      id: '/digital-marketing'
+      path: '/digital-marketing'
+      fullPath: '/digital-marketing'
+      preLoaderRoute: typeof DigitalMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ecommerce-development': {
+      id: '/ecommerce-development'
+      path: '/ecommerce-development'
+      fullPath: '/ecommerce-development'
+      preLoaderRoute: typeof EcommerceDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-buraidah': {
+      id: '/seo-buraidah'
+      path: '/seo-buraidah'
+      fullPath: '/seo-buraidah'
+      preLoaderRoute: typeof SeoBuraidahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-qassim': {
+      id: '/seo-qassim'
+      path: '/seo-qassim'
+      fullPath: '/seo-qassim'
+      preLoaderRoute: typeof SeoQassimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-riyadh': {
+      id: '/seo-riyadh'
+      path: '/seo-riyadh'
+      fullPath: '/seo-riyadh'
+      preLoaderRoute: typeof SeoRiyadhRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seo-services': {
+      id: '/seo-services'
+      path: '/seo-services'
+      fullPath: '/seo-services'
+      preLoaderRoute: typeof SeoServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-buraidah': {
+      id: '/web-design-buraidah'
+      path: '/web-design-buraidah'
+      fullPath: '/web-design-buraidah'
+      preLoaderRoute: typeof WebDesignBuraidahRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-egypt': {
+      id: '/web-design-egypt'
+      path: '/web-design-egypt'
+      fullPath: '/web-design-egypt'
+      preLoaderRoute: typeof WebDesignEgyptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-qassim': {
+      id: '/web-design-qassim'
+      path: '/web-design-qassim'
+      fullPath: '/web-design-qassim'
+      preLoaderRoute: typeof WebDesignQassimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-riyadh': {
+      id: '/web-design-riyadh'
+      path: '/web-design-riyadh'
+      fullPath: '/web-design-riyadh'
+      preLoaderRoute: typeof WebDesignRiyadhRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-design-saudi-arabia': {
+      id: '/web-design-saudi-arabia'
+      path: '/web-design-saudi-arabia'
+      fullPath: '/web-design-saudi-arabia'
+      preLoaderRoute: typeof WebDesignSaudiArabiaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -1028,130 +1054,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/services/$slug': {
-      id: '/services/$slug'
-      path: '/$slug'
-      fullPath: '/services/$slug'
-      preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof ServicesRoute
-    }
-    '/portfolio/$slug': {
-      id: '/portfolio/$slug'
-      path: '/$slug'
-      fullPath: '/portfolio/$slug'
-      preLoaderRoute: typeof PortfolioSlugRouteImport
-      parentRoute: typeof PortfolioRoute
-    }
-    '/media/$id': {
-      id: '/media/$id'
-      path: '/media/$id'
-      fullPath: '/media/$id'
-      preLoaderRoute: typeof MediaIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
-    }
-    '/api/upload-image': {
-      id: '/api/upload-image'
-      path: '/api/upload-image'
-      fullPath: '/api/upload-image'
-      preLoaderRoute: typeof ApiUploadImageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/leads': {
-      id: '/api/leads'
-      path: '/api/leads'
-      fullPath: '/api/leads'
-      preLoaderRoute: typeof ApiLeadsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/firebase-config': {
-      id: '/api/firebase-config'
-      path: '/api/firebase-config'
-      fullPath: '/api/firebase-config'
-      preLoaderRoute: typeof ApiFirebaseConfigRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/testimonials': {
-      id: '/admin/testimonials'
-      path: '/testimonials'
-      fullPath: '/admin/testimonials'
-      preLoaderRoute: typeof AdminTestimonialsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/stats': {
-      id: '/admin/stats'
-      path: '/stats'
-      fullPath: '/admin/stats'
-      preLoaderRoute: typeof AdminStatsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/settings': {
-      id: '/admin/settings'
-      path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/services': {
-      id: '/admin/services'
-      path: '/services'
-      fullPath: '/admin/services'
-      preLoaderRoute: typeof AdminServicesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/seo-ai': {
-      id: '/admin/seo-ai'
-      path: '/seo-ai'
-      fullPath: '/admin/seo-ai'
-      preLoaderRoute: typeof AdminSeoAiRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/seo': {
-      id: '/admin/seo'
-      path: '/seo'
-      fullPath: '/admin/seo'
-      preLoaderRoute: typeof AdminSeoRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/pricing': {
-      id: '/admin/pricing'
-      path: '/pricing'
-      fullPath: '/admin/pricing'
-      preLoaderRoute: typeof AdminPricingRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/portfolio': {
-      id: '/admin/portfolio'
-      path: '/portfolio'
-      fullPath: '/admin/portfolio'
-      preLoaderRoute: typeof AdminPortfolioRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/pages': {
-      id: '/admin/pages'
-      path: '/pages'
-      fullPath: '/admin/pages'
-      preLoaderRoute: typeof AdminPagesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/leads': {
-      id: '/admin/leads'
-      path: '/leads'
-      fullPath: '/admin/leads'
-      preLoaderRoute: typeof AdminLeadsRouteImport
+    '/admin/blog': {
+      id: '/admin/blog'
+      path: '/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AdminBlogRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/faqs': {
@@ -1161,46 +1068,193 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminFaqsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/blog': {
-      id: '/admin/blog'
-      path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AdminBlogRouteImport
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/api/seo/logs': {
-      id: '/api/seo/logs'
-      path: '/api/seo/logs'
-      fullPath: '/api/seo/logs'
-      preLoaderRoute: typeof ApiSeoLogsRouteImport
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pages': {
+      id: '/admin/pages'
+      path: '/pages'
+      fullPath: '/admin/pages'
+      preLoaderRoute: typeof AdminPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/portfolio': {
+      id: '/admin/portfolio'
+      path: '/portfolio'
+      fullPath: '/admin/portfolio'
+      preLoaderRoute: typeof AdminPortfolioRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pricing': {
+      id: '/admin/pricing'
+      path: '/pricing'
+      fullPath: '/admin/pricing'
+      preLoaderRoute: typeof AdminPricingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/seo': {
+      id: '/admin/seo'
+      path: '/seo'
+      fullPath: '/admin/seo'
+      preLoaderRoute: typeof AdminSeoRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/seo-ai': {
+      id: '/admin/seo-ai'
+      path: '/seo-ai'
+      fullPath: '/admin/seo-ai'
+      preLoaderRoute: typeof AdminSeoAiRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/services': {
+      id: '/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AdminServicesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/stats': {
+      id: '/admin/stats'
+      path: '/stats'
+      fullPath: '/admin/stats'
+      preLoaderRoute: typeof AdminStatsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/firebase-config': {
+      id: '/api/firebase-config'
+      path: '/api/firebase-config'
+      fullPath: '/api/firebase-config'
+      preLoaderRoute: typeof ApiFirebaseConfigRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/seo/insights': {
-      id: '/api/seo/insights'
-      path: '/api/seo/insights'
-      fullPath: '/api/seo/insights'
-      preLoaderRoute: typeof ApiSeoInsightsRouteImport
+    '/api/leads': {
+      id: '/api/leads'
+      path: '/api/leads'
+      fullPath: '/api/leads'
+      preLoaderRoute: typeof ApiLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/seo/gsc': {
-      id: '/api/seo/gsc'
-      path: '/api/seo/gsc'
-      fullPath: '/api/seo/gsc'
-      preLoaderRoute: typeof ApiSeoGscRouteImport
+    '/api/upload-image': {
+      id: '/api/upload-image'
+      path: '/api/upload-image'
+      fullPath: '/api/upload-image'
+      preLoaderRoute: typeof ApiUploadImageRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/seo/generate-draft': {
-      id: '/api/seo/generate-draft'
-      path: '/api/seo/generate-draft'
-      fullPath: '/api/seo/generate-draft'
-      preLoaderRoute: typeof ApiSeoGenerateDraftRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/media/$id': {
+      id: '/media/$id'
+      path: '/media/$id'
+      fullPath: '/media/$id'
+      preLoaderRoute: typeof MediaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/seo/create-draft': {
-      id: '/api/seo/create-draft'
-      path: '/api/seo/create-draft'
-      fullPath: '/api/seo/create-draft'
-      preLoaderRoute: typeof ApiSeoCreateDraftRouteImport
+    '/portfolio/$slug': {
+      id: '/portfolio/$slug'
+      path: '/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof PortfolioRoute
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/admin/blog/$id': {
+      id: '/admin/blog/$id'
+      path: '/$id'
+      fullPath: '/admin/blog/$id'
+      preLoaderRoute: typeof AdminBlogIdRouteImport
+      parentRoute: typeof AdminBlogRoute
+    }
+    '/admin/faqs/$id': {
+      id: '/admin/faqs/$id'
+      path: '/$id'
+      fullPath: '/admin/faqs/$id'
+      preLoaderRoute: typeof AdminFaqsIdRouteImport
+      parentRoute: typeof AdminFaqsRoute
+    }
+    '/admin/pages/$id': {
+      id: '/admin/pages/$id'
+      path: '/$id'
+      fullPath: '/admin/pages/$id'
+      preLoaderRoute: typeof AdminPagesIdRouteImport
+      parentRoute: typeof AdminPagesRoute
+    }
+    '/admin/portfolio/$id': {
+      id: '/admin/portfolio/$id'
+      path: '/$id'
+      fullPath: '/admin/portfolio/$id'
+      preLoaderRoute: typeof AdminPortfolioIdRouteImport
+      parentRoute: typeof AdminPortfolioRoute
+    }
+    '/admin/pricing/$id': {
+      id: '/admin/pricing/$id'
+      path: '/$id'
+      fullPath: '/admin/pricing/$id'
+      preLoaderRoute: typeof AdminPricingIdRouteImport
+      parentRoute: typeof AdminPricingRoute
+    }
+    '/admin/services/$id': {
+      id: '/admin/services/$id'
+      path: '/$id'
+      fullPath: '/admin/services/$id'
+      preLoaderRoute: typeof AdminServicesIdRouteImport
+      parentRoute: typeof AdminServicesRoute
+    }
+    '/admin/stats/$id': {
+      id: '/admin/stats/$id'
+      path: '/$id'
+      fullPath: '/admin/stats/$id'
+      preLoaderRoute: typeof AdminStatsIdRouteImport
+      parentRoute: typeof AdminStatsRoute
+    }
+    '/admin/testimonials/$id': {
+      id: '/admin/testimonials/$id'
+      path: '/$id'
+      fullPath: '/admin/testimonials/$id'
+      preLoaderRoute: typeof AdminTestimonialsIdRouteImport
+      parentRoute: typeof AdminTestimonialsRoute
+    }
+    '/api/cms/$resource': {
+      id: '/api/cms/$resource'
+      path: '/api/cms/$resource'
+      fullPath: '/api/cms/$resource'
+      preLoaderRoute: typeof ApiCmsResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/seo/analyze': {
@@ -1210,81 +1264,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSeoAnalyzeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/cms/$resource': {
-      id: '/api/cms/$resource'
-      path: '/api/cms/$resource'
-      fullPath: '/api/cms/$resource'
-      preLoaderRoute: typeof ApiCmsResourceRouteImport
+    '/api/seo/create-draft': {
+      id: '/api/seo/create-draft'
+      path: '/api/seo/create-draft'
+      fullPath: '/api/seo/create-draft'
+      preLoaderRoute: typeof ApiSeoCreateDraftRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/testimonials/$id': {
-      id: '/admin/testimonials/$id'
-      path: '/$id'
-      fullPath: '/admin/testimonials/$id'
-      preLoaderRoute: typeof AdminTestimonialsIdRouteImport
-      parentRoute: typeof AdminTestimonialsRoute
+    '/api/seo/generate-draft': {
+      id: '/api/seo/generate-draft'
+      path: '/api/seo/generate-draft'
+      fullPath: '/api/seo/generate-draft'
+      preLoaderRoute: typeof ApiSeoGenerateDraftRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/stats/$id': {
-      id: '/admin/stats/$id'
-      path: '/$id'
-      fullPath: '/admin/stats/$id'
-      preLoaderRoute: typeof AdminStatsIdRouteImport
-      parentRoute: typeof AdminStatsRoute
+    '/api/seo/generate-drafts': {
+      id: '/api/seo/generate-drafts'
+      path: '/api/seo/generate-drafts'
+      fullPath: '/api/seo/generate-drafts'
+      preLoaderRoute: typeof ApiSeoGenerateDraftsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/services/$id': {
-      id: '/admin/services/$id'
-      path: '/$id'
-      fullPath: '/admin/services/$id'
-      preLoaderRoute: typeof AdminServicesIdRouteImport
-      parentRoute: typeof AdminServicesRoute
+    '/api/seo/gsc': {
+      id: '/api/seo/gsc'
+      path: '/api/seo/gsc'
+      fullPath: '/api/seo/gsc'
+      preLoaderRoute: typeof ApiSeoGscRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/pricing/$id': {
-      id: '/admin/pricing/$id'
-      path: '/$id'
-      fullPath: '/admin/pricing/$id'
-      preLoaderRoute: typeof AdminPricingIdRouteImport
-      parentRoute: typeof AdminPricingRoute
+    '/api/seo/health': {
+      id: '/api/seo/health'
+      path: '/api/seo/health'
+      fullPath: '/api/seo/health'
+      preLoaderRoute: typeof ApiSeoHealthRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/portfolio/$id': {
-      id: '/admin/portfolio/$id'
-      path: '/$id'
-      fullPath: '/admin/portfolio/$id'
-      preLoaderRoute: typeof AdminPortfolioIdRouteImport
-      parentRoute: typeof AdminPortfolioRoute
+    '/api/seo/insights': {
+      id: '/api/seo/insights'
+      path: '/api/seo/insights'
+      fullPath: '/api/seo/insights'
+      preLoaderRoute: typeof ApiSeoInsightsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/pages/$id': {
-      id: '/admin/pages/$id'
-      path: '/$id'
-      fullPath: '/admin/pages/$id'
-      preLoaderRoute: typeof AdminPagesIdRouteImport
-      parentRoute: typeof AdminPagesRoute
+    '/api/seo/logs': {
+      id: '/api/seo/logs'
+      path: '/api/seo/logs'
+      fullPath: '/api/seo/logs'
+      preLoaderRoute: typeof ApiSeoLogsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/faqs/$id': {
-      id: '/admin/faqs/$id'
-      path: '/$id'
-      fullPath: '/admin/faqs/$id'
-      preLoaderRoute: typeof AdminFaqsIdRouteImport
-      parentRoute: typeof AdminFaqsRoute
-    }
-    '/admin/blog/$id': {
-      id: '/admin/blog/$id'
-      path: '/$id'
-      fullPath: '/admin/blog/$id'
-      preLoaderRoute: typeof AdminBlogIdRouteImport
-      parentRoute: typeof AdminBlogRoute
-    }
-    '/api/seo/gsc/sync': {
-      id: '/api/seo/gsc/sync'
-      path: '/sync'
-      fullPath: '/api/seo/gsc/sync'
-      preLoaderRoute: typeof ApiSeoGscSyncRouteImport
-      parentRoute: typeof ApiSeoGscRoute
-    }
-    '/api/seo/gsc/status': {
-      id: '/api/seo/gsc/status'
-      path: '/status'
-      fullPath: '/api/seo/gsc/status'
-      preLoaderRoute: typeof ApiSeoGscStatusRouteImport
+    '/api/seo/gsc/callback': {
+      id: '/api/seo/gsc/callback'
+      path: '/callback'
+      fullPath: '/api/seo/gsc/callback'
+      preLoaderRoute: typeof ApiSeoGscCallbackRouteImport
       parentRoute: typeof ApiSeoGscRoute
     }
     '/api/seo/gsc/connect': {
@@ -1294,11 +1327,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSeoGscConnectRouteImport
       parentRoute: typeof ApiSeoGscRoute
     }
-    '/api/seo/gsc/callback': {
-      id: '/api/seo/gsc/callback'
-      path: '/callback'
-      fullPath: '/api/seo/gsc/callback'
-      preLoaderRoute: typeof ApiSeoGscCallbackRouteImport
+    '/api/seo/gsc/status': {
+      id: '/api/seo/gsc/status'
+      path: '/status'
+      fullPath: '/api/seo/gsc/status'
+      preLoaderRoute: typeof ApiSeoGscStatusRouteImport
+      parentRoute: typeof ApiSeoGscRoute
+    }
+    '/api/seo/gsc/sync': {
+      id: '/api/seo/gsc/sync'
+      path: '/sync'
+      fullPath: '/api/seo/gsc/sync'
+      preLoaderRoute: typeof ApiSeoGscSyncRouteImport
       parentRoute: typeof ApiSeoGscRoute
     }
   }
@@ -1521,20 +1561,12 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSeoAnalyzeRoute: ApiSeoAnalyzeRoute,
   ApiSeoCreateDraftRoute: ApiSeoCreateDraftRoute,
   ApiSeoGenerateDraftRoute: ApiSeoGenerateDraftRoute,
+  ApiSeoGenerateDraftsRoute: ApiSeoGenerateDraftsRoute,
   ApiSeoGscRoute: ApiSeoGscRouteWithChildren,
+  ApiSeoHealthRoute: ApiSeoHealthRoute,
   ApiSeoInsightsRoute: ApiSeoInsightsRoute,
   ApiSeoLogsRoute: ApiSeoLogsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
