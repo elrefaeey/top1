@@ -112,7 +112,7 @@ function Hero() {
           <MarketsServeStrip className="hero-markets-serve animate-hero animate-hero-delay-1" />
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
-            تصميم مواقع وSEO
+            تصميم مواقع وSEO{" "}
             <span className="hero-studio-title-line">
               يحوّلان الزوار إلى عملاء في السعودية والإمارات.
             </span>

@@ -1,36 +1,14 @@
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
-import {
-  absoluteImageUrl,
-  absoluteUrl,
-  DEFAULT_OG_IMAGE,
-  faqPageSchema,
-  serviceSchema,
-  STATIC_PAGE_SEO,
-} from "@/lib/seo";
+import { absoluteUrl, faqPageSchema, STATIC_PAGE_SEO } from "@/lib/seo";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { SITE_NAME } from "@/lib/site-config";
 import type { BlogPost, FaqItem, PortfolioItem, Service } from "@/types/cms";
 
-export function creativeWorkSchema(item: PortfolioItem) {
-  const path = `/portfolio/${portfolioItemSlug(item)}`;
-  return {
-    "@type": "CreativeWork",
-    name: item.title,
-    description: item.description || item.metaDescription || item.category,
-    image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
-    url: absoluteUrl(path),
-    genre: item.category,
-    keywords: item.tags?.length ? item.tags.join(", ") : undefined,
-    ...(item.client
-      ? {
-          creator: {
-            "@type": "Organization",
-            name: item.client,
-          },
-        }
-      : {}),
-  };
-}
+/**
+ * Listing pages only need lightweight ItemList / Blog signals.
+ * Full Service / CreativeWork / Article schemas (with images) live on detail pages.
+ * Embedding CMS Base64 images here previously bloated /services|/portfolio|/blog HTML to 1–2.5MB.
+ */
 
 export function portfolioListingSchemas(items: PortfolioItem[]) {
   if (items.length === 0) return [];
@@ -44,7 +22,8 @@ export function portfolioListingSchemas(items: PortfolioItem[]) {
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: creativeWorkSchema(item),
+      name: item.title,
+      url: absoluteUrl(`/portfolio/${portfolioItemSlug(item)}`),
     })),
   };
 
@@ -61,16 +40,16 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
       name: `خدمات ${SITE_NAME}`,
       url: absoluteUrl("/services"),
       numberOfItems: services.length,
-      itemListElement: services.map((service, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: serviceSchema(service, preferredServiceSlug(service.slug)),
-      })),
+      itemListElement: services.map((service, index) => {
+        const slug = preferredServiceSlug(service.slug);
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          name: service.title,
+          url: absoluteUrl(`/services/${slug}`),
+        };
+      }),
     });
-
-    for (const service of services) {
-      schemas.push(serviceSchema(service, preferredServiceSlug(service.slug)));
-    }
   }
 
   if (faqs.length > 0) {
@@ -89,7 +68,7 @@ export function blogListingSchemas(posts: BlogPost[]) {
     name: `مدونة ${SITE_NAME}`,
     description: STATIC_PAGE_SEO.blog.description,
     url: absoluteUrl("/blog"),
-    inLanguage: "ar",
+    inLanguage: "ar-SA",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -102,9 +81,6 @@ export function blogListingSchemas(posts: BlogPost[]) {
       url: absoluteUrl(`/blog/${blogPostSlug(post)}`),
       datePublished: post.publishedAt ?? post.createdAt,
       dateModified: post.updatedAt,
-      image: post.featuredImage
-        ? absoluteImageUrl(post.featuredImage)
-        : absoluteImageUrl(DEFAULT_OG_IMAGE),
       author: {
         "@type": "Person",
         name: post.author,
