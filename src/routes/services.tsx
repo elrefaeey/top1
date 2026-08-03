@@ -24,7 +24,14 @@ export const Route = createFileRoute("/services")({
 
 function Services() {
   const isDetail = useMatch({ from: "/services/$slug", shouldThrow: false });
-  const { data: services = [], isLoading, isError, refetch } = useServices();
+  const { services: loaderServices = [] } = Route.useLoaderData();
+  const { data: queryServices = [], isLoading, isError, isSuccess, refetch } = useServices();
+  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
+  const services = isSuccess
+    ? queryServices
+    : loaderServices.length > 0
+      ? loaderServices
+      : queryServices;
 
   if (isDetail) return <Outlet />;
 
@@ -42,12 +49,12 @@ function Services() {
 
       <section className="section">
         <div className="container-page space-y-8">
-          {isLoading && (
+          {isLoading && services.length === 0 && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل الخدمات…
             </div>
           )}
-          {isError && (
+          {isError && services.length === 0 && (
             <ContentError message="تعذّر تحميل الخدمات." onRetry={() => void refetch()} />
           )}
           {!isLoading && !isError && services.length === 0 && (
