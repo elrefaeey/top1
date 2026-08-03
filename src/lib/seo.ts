@@ -18,8 +18,7 @@ import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
 
-export const SITE_TAGLINE_EN =
-  "Digital agency serving Saudi Arabia and the United Arab Emirates";
+export const SITE_TAGLINE_EN = "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
 /** مناطق الخدمة — السعودية والإمارات + مدن رئيسية */
 export const SEO_AREAS_SERVED = [
