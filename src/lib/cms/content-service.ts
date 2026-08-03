@@ -20,6 +20,7 @@ import type {
 } from "@/types/cms";
 import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
 import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
+import { sanitizePublicImageUrl } from "@/lib/security/image-url";
 
 const READ_MS = getReadTimeoutMs();
 
@@ -98,6 +99,13 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
   }
 }
 
+function sanitizePageSeoImages(page: WithId<CmsPage>): WithId<CmsPage> {
+  return {
+    ...page,
+    ogImage: sanitizePublicImageUrl(page.ogImage) || undefined,
+  };
+}
+
 export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | null> {
   if (!isFirebaseConfigured()) return null;
   try {
@@ -109,7 +117,7 @@ export async function getPageBySlug(slug: string): Promise<WithId<CmsPage> | nul
     );
     const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
     if (snap.empty) return null;
-    return mapDoc<CmsPage>(snap.docs[0]!);
+    return sanitizePageSeoImages(mapDoc<CmsPage>(snap.docs[0]!));
   } catch {
     return null;
   }
@@ -121,21 +129,29 @@ export async function getPageById(id: string): Promise<WithId<CmsPage> | null> {
     const snap = await withFirestoreTimeout(getDoc(doc(getDb(), COLLECTIONS.pages, id)), READ_MS);
     if (!snap.exists()) return null;
     const page = mapDoc<CmsPage>(snap);
-    return isPublicCmsItem(page as unknown as Record<string, unknown>) ? page : null;
+    return isPublicCmsItem(page as unknown as Record<string, unknown>)
+      ? sanitizePageSeoImages(page)
+      : null;
   } catch {
     return null;
   }
 }
 
-export async function getServices(): Promise<WithId<Service>[]> {
-  return safeList(() => getPublished<Service>(COLLECTIONS.services), "services");
+function sanitizeServicePublic(service: WithId<Service>): WithId<Service> {
+  const withImages: WithId<Service> = {
+    ...service,
+    imageUrl: sanitizePublicImageUrl(service.imageUrl) || undefined,
+    ogImage: sanitizePublicImageUrl(service.ogImage) || undefined,
+  };
+  if (!withImages.description || !/<[a-z][\s\S]*>/i.test(withImages.description)) {
+    return withImages;
+  }
+  return { ...withImages, description: sanitizeCmsHtml(withImages.description) };
 }
 
-function sanitizeServiceDescription(service: WithId<Service>): WithId<Service> {
-  if (!service.description || !/<[a-z][\s\S]*>/i.test(service.description)) {
-    return service;
-  }
-  return { ...service, description: sanitizeCmsHtml(service.description) };
+export async function getServices(): Promise<WithId<Service>[]> {
+  const items = await safeList(() => getPublished<Service>(COLLECTIONS.services), "services");
+  return items.map(sanitizeServicePublic);
 }
 
 export async function getServiceBySlug(slug: string): Promise<WithId<Service> | null> {
@@ -148,20 +164,32 @@ export async function getServiceBySlug(slug: string): Promise<WithId<Service> | 
       limit(1),
     );
     const snap = await withFirestoreTimeout(getDocs(q), READ_MS);
-    if (!snap.empty) return sanitizeServiceDescription(mapDoc<Service>(snap.docs[0]!));
+    if (!snap.empty) return sanitizeServicePublic(mapDoc<Service>(snap.docs[0]!));
   } catch {
     // empty
   }
   return null;
 }
 
+function sanitizePortfolioPublic(item: WithId<PortfolioItem>): WithId<PortfolioItem> {
+  return {
+    ...item,
+    imageUrl: sanitizePublicImageUrl(item.imageUrl),
+    ogImage: sanitizePublicImageUrl(item.ogImage) || undefined,
+  };
+}
+
 export async function getPortfolio(): Promise<WithId<PortfolioItem>[]> {
-  return safeList(() => getPublished<PortfolioItem>(COLLECTIONS.portfolio), "portfolio");
+  const items = await safeList(
+    () => getPublished<PortfolioItem>(COLLECTIONS.portfolio),
+    "portfolio",
+  );
+  return items.map(sanitizePortfolioPublic);
 }
 
 function normalizePortfolioItem(docId: string, item: PortfolioItem): WithId<PortfolioItem> {
   const slug = item.slug?.trim() || docId;
-  return { ...item, id: docId, slug };
+  return sanitizePortfolioPublic({ ...item, id: docId, slug });
 }
 
 export async function getPortfolioItemBySlug(slug: string): Promise<WithId<PortfolioItem> | null> {
@@ -199,7 +227,15 @@ export async function getPortfolioItemBySlug(slug: string): Promise<WithId<Portf
 function normalizeBlogPost(docId: string, post: BlogPost): WithId<BlogPost> {
   const slug = post.slug?.trim() || docId;
   const content = post.content ? sanitizeCmsHtml(post.content) : post.content;
-  return { ...post, id: docId, slug, content };
+  return {
+    ...post,
+    id: docId,
+    slug,
+    content,
+    featuredImage: sanitizePublicImageUrl(post.featuredImage) || undefined,
+    ogImage: sanitizePublicImageUrl(post.ogImage) || undefined,
+    authorAvatar: sanitizePublicImageUrl(post.authorAvatar) || undefined,
+  };
 }
 
 function sanitizeFaqItem(item: WithId<FaqItem>): WithId<FaqItem> {

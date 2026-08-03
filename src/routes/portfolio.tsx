@@ -23,7 +23,10 @@ export const Route = createFileRoute("/portfolio")({
 
 function Portfolio() {
   const isDetail = useMatch({ from: "/portfolio/$slug", shouldThrow: false });
-  const { data: items = [] } = usePortfolio();
+  const { portfolio: loaderItems = [] } = Route.useLoaderData();
+  const { data: queryItems = [], isSuccess } = usePortfolio();
+  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
+  const items = isSuccess ? queryItems : loaderItems.length > 0 ? loaderItems : queryItems;
 
   if (isDetail) return <Outlet />;
 

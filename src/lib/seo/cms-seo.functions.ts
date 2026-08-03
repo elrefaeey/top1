@@ -18,9 +18,10 @@ export const loadHomeHeroSettingsFn = createServerFn({ method: "GET", strict: fa
   async (): Promise<{ heroImageUrl: string; heroImageAlt: string }> => {
     try {
       const { getSiteSettings } = await import("@/lib/cms/content-service");
+      const { sanitizePublicImageUrl } = await import("@/lib/security/image-url");
       const settings = await getSiteSettings();
       return {
-        heroImageUrl: settings?.heroImageUrl?.trim() || "",
+        heroImageUrl: sanitizePublicImageUrl(settings?.heroImageUrl),
         heroImageAlt: settings?.heroImageAlt?.trim() || "",
       };
     } catch {
