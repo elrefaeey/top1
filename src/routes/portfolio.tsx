@@ -3,17 +3,24 @@ import { ArrowUpLeft } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
-import { usePortfolio } from "@/hooks/use-cms";
+import { cmsKeys, usePortfolio } from "@/hooks/use-cms";
 import { portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { portfolioPageInternalLinks } from "@/lib/seo/internal-links";
 
 import { SITE_NAME } from "@/lib/site-config";
 
 import { loadPortfolioRouteSeoFn } from "@/lib/seo/cms-seo.functions";
+import { preferListingData } from "@/lib/seo/listing-data";
 import { buildPortfolioListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/portfolio")({
-  loader: () => loadPortfolioRouteSeoFn(),
+  loader: async ({ context }) => {
+    const data = await loadPortfolioRouteSeoFn();
+    if (data.portfolio.length > 0) {
+      context.queryClient.setQueryData(cmsKeys.portfolio(), data.portfolio);
+    }
+    return data;
+  },
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/portfolio/$slug")) return {};
     return buildPortfolioListingHead(loaderData ?? { cms: null, portfolio: [] });
@@ -24,9 +31,9 @@ export const Route = createFileRoute("/portfolio")({
 function Portfolio() {
   const isDetail = useMatch({ from: "/portfolio/$slug", shouldThrow: false });
   const { portfolio: loaderItems = [] } = Route.useLoaderData();
-  const { data: queryItems = [], isSuccess } = usePortfolio();
-  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
-  const items = isSuccess ? queryItems : loaderItems.length > 0 ? loaderItems : queryItems;
+  const { data: queryItems = [] } = usePortfolio();
+  // placeholderData: [] makes isSuccess=true with [] — merge by non-empty length.
+  const items = preferListingData(loaderItems, queryItems);
 
   if (isDetail) return <Outlet />;
 
