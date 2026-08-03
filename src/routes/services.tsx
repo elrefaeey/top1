@@ -24,7 +24,12 @@ export const Route = createFileRoute("/services")({
 
 function Services() {
   const isDetail = useMatch({ from: "/services/$slug", shouldThrow: false });
-  const { data: services = [], isLoading, isError, refetch } = useServices();
+  const loaderData = Route.useLoaderData();
+  const { data: fetched, isLoading, isError, isFetched, refetch } = useServices();
+  // After a successful client fetch, trust it; until then use SSR loader (avoids empty first paint).
+  const services =
+    isFetched && !isError ? (fetched ?? []) : (loaderData?.services ?? fetched ?? []);
+  const showLoading = isLoading && services.length === 0;
 
   if (isDetail) return <Outlet />;
 
@@ -42,15 +47,15 @@ function Services() {
 
       <section className="section">
         <div className="container-page space-y-8">
-          {isLoading && (
+          {showLoading && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل الخدمات…
             </div>
           )}
-          {isError && (
+          {isError && services.length === 0 && (
             <ContentError message="تعذّر تحميل الخدمات." onRetry={() => void refetch()} />
           )}
-          {!isLoading && !isError && services.length === 0 && (
+          {!showLoading && !isError && services.length === 0 && (
             <p className="text-center py-16 text-muted-foreground surface-card">
               لا توجد خدمات منشورة بعد. ستظهر هنا عند إضافتها من لوحة التحكم.
             </p>

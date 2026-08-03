@@ -23,7 +23,10 @@ export const Route = createFileRoute("/portfolio")({
 
 function Portfolio() {
   const isDetail = useMatch({ from: "/portfolio/$slug", shouldThrow: false });
-  const { data: items = [] } = usePortfolio();
+  const loaderData = Route.useLoaderData();
+  const { data: fetched, isError, isFetched } = usePortfolio();
+  const items =
+    isFetched && !isError ? (fetched ?? []) : (loaderData?.portfolio ?? fetched ?? []);
 
   if (isDetail) return <Outlet />;
 

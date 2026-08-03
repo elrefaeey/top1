@@ -7,6 +7,7 @@ import {
   SITE_WHATSAPP_MESSAGE,
   SITE_WHATSAPP_NUMBER,
 } from "@/lib/site-config";
+import { sanitizePublicImageUrl } from "@/lib/security/image-url";
 
 const STALE_PHONE_FRAGMENTS = ["549881368", "0549881368", "966549881368"];
 
@@ -74,6 +75,7 @@ export function normalizePublicSiteSettings(
     ...raw,
     logoUrl: SITE_LOGO_URL,
     faviconUrl: SITE_LOGO_URL,
+    heroImageUrl: sanitizePublicImageUrl(raw.heroImageUrl) || undefined,
     contactPhone: phone,
     whatsappNumber: whatsapp.startsWith("966") ? whatsapp : SITE_WHATSAPP_NUMBER,
     whatsappMessage: raw.whatsappMessage?.trim() || SITE_WHATSAPP_MESSAGE,

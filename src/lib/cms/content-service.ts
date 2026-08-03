@@ -20,11 +20,15 @@ import type {
 } from "@/types/cms";
 import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
 import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
+import { stripDataImagesFromPublicCmsItem } from "@/lib/security/image-url";
 
 const READ_MS = getReadTimeoutMs();
 
 function mapDoc<T>(snap: { id: string; data: () => unknown }): WithId<T> {
-  return { id: snap.id, ...(snap.data() as T) };
+  const raw = { id: snap.id, ...(snap.data() as T) };
+  return stripDataImagesFromPublicCmsItem(
+    raw as unknown as Record<string, unknown>,
+  ) as WithId<T>;
 }
 
 function sortByField<T>(items: WithId<T>[], field: string, direction: "asc" | "desc" = "asc") {

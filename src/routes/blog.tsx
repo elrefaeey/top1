@@ -26,7 +26,11 @@ function Blog() {
   const isPost = useMatch({ from: "/blog/$slug", shouldThrow: false });
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("الكل");
-  const { data: posts = [], isLoading, isError, refetch } = useBlogPosts();
+  const loaderData = Route.useLoaderData();
+  const { data: fetched, isLoading, isError, isFetched, refetch } = useBlogPosts();
+  const posts =
+    isFetched && !isError ? (fetched ?? []) : (loaderData?.posts ?? fetched ?? []);
+  const showLoading = isLoading && posts.length === 0;
 
   const categories = useMemo(() => {
     const cats = [...new Set(posts.map((p) => p.category).filter(Boolean))];
@@ -99,23 +103,23 @@ function Blog() {
             ))}
           </div>
 
-          {isLoading && (
+          {showLoading && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل المقالات…
             </div>
           )}
 
-          {isError && (
+          {isError && posts.length === 0 && (
             <ContentError message="تعذّر تحميل المقالات." onRetry={() => void refetch()} />
           )}
 
-          {!isLoading && !isError && posts.length === 0 && (
+          {!showLoading && !isError && posts.length === 0 && (
             <p className="text-center py-16 text-muted-foreground surface-card">
               لا توجد مقالات منشورة بعد. ستظهر هنا عند إضافتها من لوحة التحكم.
             </p>
           )}
 
-          {!isLoading && trending.length > 0 && cat === "الكل" && q === "" && (
+          {!showLoading && trending.length > 0 && cat === "الكل" && q === "" && (
             <div className="mb-12">
               <div className="flex items-center gap-2 text-sm font-semibold mb-5">
                 <TrendingUp className="h-4 w-4 text-primary" /> الأكثر رواجاً
@@ -192,14 +196,14 @@ function Blog() {
                 </div>
               </Link>
             ))}
-            {!isLoading && filtered.length === 0 && (
+            {!showLoading && filtered.length === 0 && (
               <div className="col-span-full text-center py-20 text-muted-foreground">
                 لا توجد مقالات مطابقة.
               </div>
             )}
           </div>
 
-          {!isLoading && posts.length > 0 ? (
+          {!showLoading && posts.length > 0 ? (
             <InternalLinksBlock
               className="mt-12"
               title="روابط مفيدة"
