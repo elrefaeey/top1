@@ -1,12 +1,14 @@
 import {
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE,
+  SITE_CONTACT_PHONE_SA,
   SITE_LOGO_URL,
   SITE_NAME,
   SITE_PRODUCTION_URL,
   SITE_TWITTER,
   SITE_URL,
   SITE_WHATSAPP_NUMBER,
+  SITE_WHATSAPP_NUMBER_AE,
   resolvePublicSiteUrl,
 } from "@/lib/site-config";
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
@@ -14,13 +16,18 @@ import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
+import { normalizeIntlPhone } from "@/lib/phone";
 
-export const SITE_TAGLINE_EN = "Digital Agency serving Saudi Arabia";
+export const SITE_TAGLINE_EN =
+  "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
-/** مناطق الخدمة — السعودية + المدن المستهدفة */
+/** مناطق الخدمة — السعودية والإمارات + مدن رئيسية */
 export const SEO_AREAS_SERVED = [
   { "@type": "Country", name: "Saudi Arabia" },
+  { "@type": "Country", name: "United Arab Emirates" },
   { "@type": "City", name: "Riyadh" },
+  { "@type": "City", name: "Dubai" },
+  { "@type": "City", name: "Abu Dhabi" },
   { "@type": "AdministrativeArea", name: "Al-Qassim" },
   { "@type": "City", name: "Buraidah" },
 ] as const;
@@ -73,19 +80,19 @@ function resolveCanonicalUrl(path: string, cms?: CmsPageHeadFields | null): stri
 
 export const STATIC_PAGE_SEO = {
   home: {
-    title: "Top1Markting | وكالة رقمية — تصميم مواقع وSEO للسعودية",
+    title: "Top1Markting | وكالة رقمية — السعودية والإمارات",
     description:
-      "Top1Markting وكالة رقمية تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول رقمية احترافية لنمو أعمالك من القصيم وبريدة وفي أنحاء المملكة.",
+      "Top1Markting وكالة رقمية تخدم السعودية والإمارات — تصميم مواقع، متاجر إلكترونية، SEO، UI/UX، وتسويق رقمي. حلول احترافية لنمو أعمالك في الرياض ودبي وأبوظبي والقصيم.",
   },
   about: {
     title: "من نحن | Top1Markting",
     description:
-      "Top1Markting وكالة رقمية ناشئة تخدم السعودية — تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي من الفكرة إلى الإطلاق.",
+      "Top1Markting وكالة رقمية تخدم السعودية والإمارات — تصميم مواقع، متاجر إلكترونية، SEO، وتسويق رقمي من الفكرة إلى الإطلاق.",
   },
   services: {
     title: "خدماتنا | تصميم مواقع ومتاجر إلكترونية وSEO | Top1Markting",
     description:
-      "استكشف خدمات Top1Markting في تصميم المواقع، تطوير المتاجر الإلكترونية، تحسين محركات البحث، تصميم واجهات المستخدم، والحلول الرقمية.",
+      "استكشف خدمات Top1Markting في تصميم المواقع، تطوير المتاجر الإلكترونية، تحسين محركات البحث، تصميم واجهات المستخدم، والحلول الرقمية للشركات في السعودية والإمارات.",
   },
   portfolio: {
     title: "أعمالنا | مشاريع تصميم المواقع والمتاجر الإلكترونية | Top1Markting",
@@ -98,9 +105,9 @@ export const STATIC_PAGE_SEO = {
       "اقرأ أحدث المقالات والنصائح حول تصميم المواقع، تحسين محركات البحث، التجارة الإلكترونية، وتجربة المستخدم.",
   },
   contact: {
-    title: "تواصل مع Top1Markting | بريدة والقصيم — السعودية",
+    title: "تواصل مع Top1Markting | السعودية والإمارات",
     description:
-      "تواصل مع Top1Markting في بريدة والقصيم — استشارة مجانية لتصميم المواقع والمتاجر الإلكترونية وSEO والتسويق الرقمي في السعودية.",
+      "تواصل مع Top1Markting — استشارة مجانية لتصميم المواقع والمتاجر الإلكترونية وSEO والتسويق الرقمي في السعودية والإمارات.",
   },
 } as const;
 
@@ -143,7 +150,7 @@ export function websiteSchema() {
     name: SITE_NAME,
     url: absoluteUrl("/"),
     description: SITE_TAGLINE_EN,
-    inLanguage: "ar-SA",
+    inLanguage: "ar",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -153,14 +160,17 @@ export function websiteSchema() {
 }
 
 export function localBusinessSchema(contactEmail = SITE_CONTACT_EMAIL) {
+  const phoneUae = `+${normalizeIntlPhone(SITE_CONTACT_PHONE, SITE_WHATSAPP_NUMBER_AE)}`;
+  const phoneSa = `+${normalizeIntlPhone(SITE_CONTACT_PHONE_SA, SITE_WHATSAPP_NUMBER)}`;
+
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "ProfessionalService",
     "@id": absoluteUrl("/#localbusiness"),
     name: SITE_NAME,
     url: absoluteUrl("/"),
     description: SITE_TAGLINE_EN,
-    telephone: `+${SITE_WHATSAPP_NUMBER}`,
+    telephone: phoneSa,
     email: contactEmail,
     priceRange: "$$",
     address: {
@@ -175,13 +185,22 @@ export function localBusinessSchema(contactEmail = SITE_CONTACT_EMAIL) {
       latitude: 26.326,
       longitude: 43.975,
     },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: `+${SITE_WHATSAPP_NUMBER}`,
-      contactType: "customer service",
-      areaServed: "SA",
-      availableLanguage: ["Arabic", "ar"],
-    },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: phoneSa,
+        contactType: "customer service",
+        areaServed: "SA",
+        availableLanguage: ["Arabic", "ar"],
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: phoneUae,
+        contactType: "customer service",
+        areaServed: "AE",
+        availableLanguage: ["Arabic", "ar"],
+      },
+    ],
     areaServed: [...SEO_AREAS_SERVED],
     knowsAbout: [...SEO_KNOWS_ABOUT],
     image: absoluteImageUrl(DEFAULT_OG_IMAGE),

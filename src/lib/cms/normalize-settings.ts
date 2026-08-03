@@ -3,6 +3,7 @@ import {
   SITE_ADDRESS,
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE,
+  SITE_CONTACT_PHONE_SA,
   SITE_LOGO_URL,
   SITE_WHATSAPP_MESSAGE,
   SITE_WHATSAPP_NUMBER,
@@ -27,6 +28,28 @@ function isStalePhone(value?: string | null): boolean {
   const d = digitsOnly(value);
   if (!d) return true;
   return STALE_PHONE_FRAGMENTS.some((frag) => d.includes(frag.replace(/\D/g, "")));
+}
+
+function isUaePhone(value?: string | null): boolean {
+  return digitsOnly(value).startsWith("971");
+}
+
+function isSaPhone(value?: string | null): boolean {
+  const d = digitsOnly(value);
+  return d.startsWith("966") || (d.startsWith("05") && d.length === 10);
+}
+
+function isValidGulfWhatsApp(value?: string | null): boolean {
+  const d = digitsOnly(value);
+  return d.startsWith("971") || d.startsWith("966");
+}
+
+/** عنوان قديم يظهر السعودية فقط — نحدّثه لنطاق البلدين */
+function needsDualMarketAddress(address?: string | null): boolean {
+  const a = (address || "").trim();
+  if (!a) return true;
+  if (/الإمارات|دبي|أبوظبي|UAE|Dubai|Abu\s*Dhabi/i.test(a)) return false;
+  return /بريدة|القصيم|Buraidah|Qassim|السعودية فقط/i.test(a);
 }
 
 function ensureCrawlBlocksInRobots(robotsTxt: string): string {
@@ -54,12 +77,28 @@ export function normalizePublicSiteSettings(
 ): SiteSettings | null {
   if (!raw) return null;
 
-  const phone = isStalePhone(raw.contactPhone)
-    ? SITE_CONTACT_PHONE
-    : raw.contactPhone.trim() || SITE_CONTACT_PHONE;
-  const whatsapp = isStalePhone(raw.whatsappNumber)
-    ? SITE_WHATSAPP_NUMBER
-    : raw.whatsappNumber.trim() || SITE_WHATSAPP_NUMBER;
+  const rawPhone = raw.contactPhone?.trim() || "";
+  const rawWa = raw.whatsappNumber?.trim() || "";
+  const rawSa = raw.contactPhoneSa?.trim() || "";
+
+  // واتساب أساسي = السعودية (966) ما لم يكن المخزّن سعودياً صالحاً
+  const whatsappNumber =
+    !isStalePhone(rawWa) && digitsOnly(rawWa).startsWith("966")
+      ? digitsOnly(rawWa)
+      : SITE_WHATSAPP_NUMBER;
+
+  // هاتف العرض الأساسي = الإمارات
+  const contactPhone =
+    !isStalePhone(rawPhone) && isUaePhone(rawPhone) ? rawPhone : SITE_CONTACT_PHONE;
+
+  // هاتف السعودية: من الحقل المخصص، أو من رقم قديم سعودي في contactPhone/whatsapp
+  let contactPhoneSa = rawSa;
+  if (!contactPhoneSa || isStalePhone(contactPhoneSa)) {
+    if (!isStalePhone(rawPhone) && isSaPhone(rawPhone)) contactPhoneSa = rawPhone;
+    else if (!isStalePhone(rawWa) && isSaPhone(rawWa) && isValidGulfWhatsApp(rawWa))
+      contactPhoneSa = rawWa.startsWith("+") ? rawWa : `+${digitsOnly(rawWa)}`;
+    else contactPhoneSa = SITE_CONTACT_PHONE_SA;
+  }
 
   const robotsRaw = raw.robotsTxt?.trim() || "";
   const robotsTxt =
@@ -74,11 +113,12 @@ export function normalizePublicSiteSettings(
     ...raw,
     logoUrl: SITE_LOGO_URL,
     faviconUrl: SITE_LOGO_URL,
-    contactPhone: phone,
-    whatsappNumber: whatsapp.startsWith("966") ? whatsapp : SITE_WHATSAPP_NUMBER,
+    contactPhone,
+    contactPhoneSa,
+    whatsappNumber,
     whatsappMessage: raw.whatsappMessage?.trim() || SITE_WHATSAPP_MESSAGE,
     contactEmail: raw.contactEmail?.trim() || SITE_CONTACT_EMAIL,
-    address: raw.address?.trim() || SITE_ADDRESS,
+    address: needsDualMarketAddress(raw.address) ? SITE_ADDRESS : raw.address.trim(),
     robotsTxt,
   };
 }

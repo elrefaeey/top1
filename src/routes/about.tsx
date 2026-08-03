@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
+import { MarketsServeStrip } from "@/components/site/MarketsContact";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildStaticPageHead } from "@/lib/seo";
@@ -37,7 +38,7 @@ function About() {
       n: "01",
       icon: Eye,
       t: "الرؤية",
-      d: "نبني حضوراً رقمياً واضحاً للشركات في السعودية — مواقع ومتاجر تساعد على تحويل الزوار إلى عملاء.",
+      d: "نبني حضوراً رقمياً واضحاً للشركات في السعودية والإمارات — مواقع ومتاجر تساعد على تحويل الزوار إلى عملاء.",
     },
     {
       n: "02",
@@ -113,13 +114,14 @@ function About() {
               <span className="page-intro-eyebrow">
                 <Sparkles className="h-3 w-3" /> عن {SITE_NAME}
               </span>
+              <MarketsServeStrip className="mt-3 justify-center lg:justify-start" />
               <h1 className="page-intro-title">
-                وكالة رقمية <span className="text-gradient">للسوق السعودي.</span>
+                وكالة رقمية <span className="text-gradient">للسعودية والإمارات.</span>
               </h1>
               <p className="page-intro-desc lg:mx-0">
                 {SITE_NAME} وكالة رقمية ناشئة متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين
-                محركات البحث، والتسويق الرقمي. نساعد الشركات في السعودية على بناء حضور أونلاين
-                احترافي — من الفكرة إلى الإطلاق.
+                محركات البحث، والتسويق الرقمي. نساعد الشركات في السعودية والإمارات على بناء حضور
+                أونلاين احترافي — من الفكرة إلى الإطلاق.
               </p>
               <div className="mt-7 flex flex-wrap justify-center gap-3 lg:justify-start">
                 <Link to="/contact" className="btn-primary">
@@ -241,7 +243,7 @@ function About() {
               بدأنا مؤخراً — ونبني معك من اليوم.
             </h2>
             <p className="page-intro-desc mt-3 !max-w-none">
-              {SITE_NAME} وكالة جديدة تخدم السعودية. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
+              {SITE_NAME} وكالة جديدة تخدم السعودية والإمارات. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
             </p>
           </div>
           <ol className="section-body grid list-none gap-5 p-0 md:grid-cols-3">

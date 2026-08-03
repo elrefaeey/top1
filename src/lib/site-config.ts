@@ -7,20 +7,35 @@ export const SITE_TWITTER = "@Top1Markting";
 /** مسار اللوجو الافتراضي (شفاف — public/logo.png) */
 export const SITE_LOGO_URL = "/logo.png";
 
-/** رقم واتساب السعودي (966 + بدون صفر) */
+/** رقم واتساب الأساسي — السعودية */
 export const SITE_WHATSAPP_NUMBER = "966537309257";
 
-/** الرسالة الافتراضية عند فتح واتساب */
-export const SITE_WHATSAPP_MESSAGE = "مرحباً Top1Markting، أحتاج معلومات عن خدماتكم.";
+/** رقم هاتف/واتساب الإمارات (للعرض والاتصال) */
+export const SITE_WHATSAPP_NUMBER_AE = "971507662114";
 
-/** رقم التواصل المحلي */
-export const SITE_CONTACT_PHONE = "0537309257";
+/** @deprecated استخدم SITE_WHATSAPP_NUMBER — للتوافق مع الاستدعاءات القديمة */
+export const SITE_WHATSAPP_NUMBER_SA = SITE_WHATSAPP_NUMBER;
+
+/** الرسالة الافتراضية عند فتح واتساب */
+export const SITE_WHATSAPP_MESSAGE =
+  "مرحباً Top1Markting، أحتاج معلومات عن خدماتكم في السعودية أو الإمارات.";
+
+/** هاتف الإمارات للعرض والاتصال */
+export const SITE_CONTACT_PHONE = "+971507662114";
+
+/** هاتف السعودية للعرض والاتصال (نفس واتساب) */
+export const SITE_CONTACT_PHONE_SA = "0537309257";
 
 /** البريد الرسمي */
 export const SITE_CONTACT_EMAIL = "top11markting@gmail.com";
 
-/** العنوان الافتراضي */
-export const SITE_ADDRESS = "حي السادة، بريدة، القصيم، المملكة العربية السعودية";
+/** نطاق الخدمة / العنوان الافتراضي */
+export const SITE_ADDRESS =
+  "نخدم الشركات في السعودية والإمارات — الرياض · دبي · أبوظبي · القصيم";
+
+/** شعار الموقع الافتراضي */
+export const SITE_TAGLINE =
+  "وكالة رقمية تخدم السعودية والإمارات — تصميم مواقع · SEO · نمو قابل للقياس";
 
 /** الدومين الإنتاجي المعتمد لـ SEO / Sitemap / Canonical */
 export const SITE_PRODUCTION_URL = "https://www.top1markting.com";

@@ -35,7 +35,7 @@ function PrivacyPage() {
             <h2 className="text-xl font-bold">1. من نحن</h2>
             <p>
               {SITE_NAME} وكالة رقمية تقدّم خدمات تصميم المواقع، المتاجر الإلكترونية، SEO، والتسويق
-              الرقمي للعملاء في المملكة العربية السعودية. للاستفسارات:{" "}
+              الرقمي للعملاء في المملكة العربية السعودية والإمارات العربية المتحدة. للاستفسارات:{" "}
               <a href={`mailto:${SITE_CONTACT_EMAIL}`} dir="ltr" className="text-primary">
                 {SITE_CONTACT_EMAIL}
               </a>

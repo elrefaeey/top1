@@ -1293,6 +1293,201 @@
   opacity: 0.9;
 }
 
+.contact-markets-serve {
+  margin-bottom: 0.125rem;
+}
+
+.contact-phones-li {
+  display: block !important;
+  margin-top: 0.35rem;
+}
+
+/* —— نطاق الخدمة: السعودية + الإمارات —— */
+.markets-serve {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.markets-serve-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: var(--shadow-soft);
+}
+
+.markets-serve-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.markets-serve-item--sa {
+  border-color: rgb(6 95 70 / 0.18);
+  background: linear-gradient(135deg, rgb(236 253 245), rgb(254 252 232 / 0.85));
+  color: #065f46;
+}
+.markets-serve-item--sa .markets-serve-dot {
+  background: linear-gradient(180deg, #006c35 0%, #ffffff 48%, #006c35 52%, #ffffff 100%);
+  box-shadow: inset 0 0 0 1px rgb(0 108 53 / 0.35);
+}
+
+.markets-serve-item--ae {
+  border-color: rgb(153 27 27 / 0.16);
+  background: linear-gradient(135deg, rgb(254 242 242), rgb(255 255 255));
+  color: #7f1d1d;
+}
+.markets-serve-item--ae .markets-serve-dot {
+  background: linear-gradient(90deg, #ce1126 0 28%, #ffffff 28% 52%, #000000 52% 76%, #00732f 76% 100%);
+}
+
+.hero-markets-serve {
+  margin: 0.65rem 0 0.15rem;
+}
+
+@media (max-width: 1023px) {
+  .hero-markets-serve {
+    justify-content: center;
+  }
+}
+
+/* —— بطاقات أرقام الأسواق —— */
+.markets-phones {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.market-phone {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth),
+    border-color 0.2s ease;
+}
+
+.market-phone:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+.market-phone-flag {
+  width: 2.25rem;
+  height: 1.55rem;
+  border-radius: 0.3rem;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.market-phone--sa .market-phone-flag {
+  background: linear-gradient(180deg, #006c35 0%, #ffffff 46%, #006c35 50%, #ffffff 100%);
+}
+.market-phone--ae .market-phone-flag {
+  background: linear-gradient(90deg, #ce1126 0 25%, #ffffff 25% 50%, #000000 50% 75%, #00732f 75% 100%);
+}
+
+.market-phone-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  text-align: start;
+}
+
+.market-phone-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  opacity: 0.75;
+}
+
+.market-phone-num {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--foreground);
+}
+
+.market-phone--sa {
+  border-color: rgb(6 95 70 / 0.2);
+  background: linear-gradient(135deg, rgb(236 253 245 / 0.95), var(--surface));
+}
+.market-phone--sa:hover {
+  border-color: rgb(6 95 70 / 0.35);
+}
+.market-phone--sa .market-phone-label {
+  color: #065f46;
+}
+
+.market-phone--ae {
+  border-color: rgb(153 27 27 / 0.18);
+  background: linear-gradient(135deg, rgb(254 242 242 / 0.95), var(--surface));
+}
+.market-phone--ae:hover {
+  border-color: rgb(153 27 27 / 0.32);
+}
+.market-phone--ae .market-phone-label {
+  color: #991b1b;
+}
+
+.markets-phones--footer {
+  margin-top: 0.35rem;
+  width: 100%;
+  max-width: 16.5rem;
+}
+
+.markets-phones--footer .market-phone {
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow: none;
+}
+
+.markets-phones--footer .market-phone:hover {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.22);
+  box-shadow: none;
+}
+
+.markets-phones--footer .market-phone-label {
+  color: rgb(255 255 255 / 0.55);
+  opacity: 1;
+}
+
+.markets-phones--footer .market-phone-num {
+  color: white;
+  font-size: 0.8125rem;
+}
+
+.markets-phones--footer .market-phone--sa {
+  background: linear-gradient(135deg, rgb(6 95 70 / 0.28), rgb(255 255 255 / 0.04));
+}
+.markets-phones--footer .market-phone--ae {
+  background: linear-gradient(135deg, rgb(153 27 27 / 0.28), rgb(255 255 255 / 0.04));
+}
+
+.footer-phones-li {
+  display: block !important;
+}
+
 .contact-info-card {
   padding: 1.125rem 1.25rem;
 }

@@ -21,7 +21,7 @@ export function WhatsAppButton() {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="تواصل عبر واتساب"
+        aria-label="تواصل عبر واتساب — السعودية"
         onClick={() => {
           void import("@/lib/firebase/analytics").then((m) =>
             m.trackWhatsAppClick("floating_button"),

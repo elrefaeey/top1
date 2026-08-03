@@ -12,6 +12,7 @@ import { siteImages } from "@/lib/site-images";
 import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
 import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
+import { MarketsServeStrip } from "@/components/site/MarketsContact";
 
 const HomeBelowFold = lazy(() =>
   import("@/components/home/HomeBelowFold").then((m) => ({ default: m.HomeBelowFold })),
@@ -54,6 +55,7 @@ export const Route = createFileRoute("/")({
 const MARQUEE_ITEMS = [
   "تصميم مواقع",
   "SEO السعودية",
+  "SEO الإمارات",
   "إعلانات Google",
   "تسويق سوشيال",
   "UI/UX",
@@ -107,11 +109,12 @@ function Hero() {
       <div className="container-page hero-studio-grid">
         <div className="hero-studio-copy">
           <p className="hero-studio-brand animate-hero animate-hero-delay-1">{SITE_NAME}</p>
+          <MarketsServeStrip className="hero-markets-serve animate-hero animate-hero-delay-1" />
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
             تصميم مواقع وSEO
             <span className="hero-studio-title-line">
-              يحوّلان الزوار إلى عملاء في السعودية.
+              يحوّلان الزوار إلى عملاء في السعودية والإمارات.
             </span>
           </h1>
 
@@ -253,10 +256,10 @@ function WhyUs() {
                 لماذا {SITE_NAME}
               </span>
               <h2 className="relative mt-3 text-xl md:text-2xl font-bold text-white leading-snug">
-                شريك تسويق يفهم السوق السعودي
+                شريك تسويق يفهم السعودية والإمارات
               </h2>
               <p className="relative mt-2.5 text-sm text-white/70 leading-relaxed max-w-md">
-                RTL، WhatsApp، google.sa، وسلوك المستخدم المحلي — نبني منتجات digital تناسب جمهورك
+                RTL، WhatsApp، وسلوك المستخدم المحلي في الخليج — نبني منتجات digital تناسب جمهورك
                 وتحقق leads حقيقية.
               </p>
               <Link

@@ -16,9 +16,11 @@ import {
   SITE_LOGO_URL,
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE,
+  SITE_CONTACT_PHONE_SA,
   SITE_WHATSAPP_NUMBER,
   SITE_WHATSAPP_MESSAGE,
   SITE_ADDRESS,
+  SITE_TAGLINE,
 } from "@/lib/site-config";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
@@ -28,11 +30,12 @@ export const Route = createFileRoute("/admin/settings")({
 
 const defaults: SiteSettings = {
   siteName: SITE_NAME,
-  tagline: "",
+  tagline: SITE_TAGLINE,
   logoUrl: SITE_LOGO_URL,
   faviconUrl: SITE_LOGO_URL,
   contactEmail: SITE_CONTACT_EMAIL,
   contactPhone: SITE_CONTACT_PHONE,
+  contactPhoneSa: SITE_CONTACT_PHONE_SA,
   whatsappNumber: SITE_WHATSAPP_NUMBER,
   whatsappMessage: SITE_WHATSAPP_MESSAGE,
   address: SITE_ADDRESS,
@@ -133,7 +136,7 @@ function AdminSettingsPage() {
             </AdminField>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
             <AdminField label="البريد" id="contactEmail">
               <input
                 id="contactEmail"
@@ -144,21 +147,33 @@ function AdminSettingsPage() {
                 className={adminInputClass("text-start")}
               />
             </AdminField>
-            <AdminField label="الهاتف" id="contactPhone">
-              <input
-                id="contactPhone"
-                dir="ltr"
-                value={form.contactPhone}
-                onChange={(e) => patch({ contactPhone: e.target.value })}
-                className={adminInputClass("text-start")}
-              />
-            </AdminField>
-            <AdminField label="WhatsApp (بدون +)" id="whatsapp">
+            <AdminField label="واتساب الأساسي — السعودية (بدون +)" id="whatsapp">
               <input
                 id="whatsapp"
                 dir="ltr"
                 value={form.whatsappNumber}
                 onChange={(e) => patch({ whatsappNumber: e.target.value })}
+                placeholder={SITE_WHATSAPP_NUMBER}
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+            <AdminField label="هاتف الإمارات" id="contactPhone">
+              <input
+                id="contactPhone"
+                dir="ltr"
+                value={form.contactPhone}
+                onChange={(e) => patch({ contactPhone: e.target.value })}
+                placeholder={SITE_CONTACT_PHONE}
+                className={adminInputClass("text-start")}
+              />
+            </AdminField>
+            <AdminField label="هاتف السعودية" id="contactPhoneSa">
+              <input
+                id="contactPhoneSa"
+                dir="ltr"
+                value={form.contactPhoneSa ?? SITE_CONTACT_PHONE_SA}
+                onChange={(e) => patch({ contactPhoneSa: e.target.value })}
+                placeholder={SITE_CONTACT_PHONE_SA}
                 className={adminInputClass("text-start")}
               />
             </AdminField>

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, Check, Clock, Mail, MapPin, Minus, Phone, Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Clock, Mail, MapPin, Minus, Plus, Sparkles } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { SocialLinks } from "@/components/site/SocialLinks";
@@ -7,8 +7,8 @@ import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 import { ContentError, ContentLoading } from "@/components/site/ContentState";
 import { useToast } from "@/components/site/Toast";
 import { useFaqs, useSiteSettings, useSubmitLead } from "@/hooks/use-cms";
-import { SITE_ADDRESS, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE } from "@/lib/site-config";
-import { telHref } from "@/lib/phone";
+import { MarketsPhoneCards, MarketsServeStrip } from "@/components/site/MarketsContact";
+import { SITE_ADDRESS, SITE_CONTACT_EMAIL, SITE_CONTACT_PHONE, SITE_CONTACT_PHONE_SA } from "@/lib/site-config";
 import { whatsAppHref } from "@/lib/whatsapp";
 
 import { buildContactPageHead } from "@/lib/seo/static-page-head";
@@ -28,7 +28,8 @@ function Contact() {
   const toast = useToast();
 
   const email = settings?.contactEmail || SITE_CONTACT_EMAIL;
-  const phone = settings?.contactPhone || SITE_CONTACT_PHONE;
+  const phoneUae = settings?.contactPhone || SITE_CONTACT_PHONE;
+  const phoneSa = settings?.contactPhoneSa || SITE_CONTACT_PHONE_SA;
   const address = settings?.address || SITE_ADDRESS;
   const waHref = whatsAppHref(settings?.whatsappNumber, settings?.whatsappMessage);
 
@@ -76,19 +77,21 @@ function Contact() {
             تواصل معنا لنبني <span className="text-gradient">شيئاً رائعاً.</span>
           </>
         }
-        desc="استشارة مجانية عبر واتساب أو النموذج — نرد خلال 24 ساعة."
+        desc="استشارة مجانية عبر واتساب (السعودية) أو الاتصال المباشر — نخدم السعودية والإمارات ونرد خلال 24 ساعة."
       />
 
       <section className="contact-page section">
         <div className="container-page contact-layout">
           <aside className="contact-aside">
+            <MarketsServeStrip className="contact-markets-serve" />
+
             <a href={waHref} target="_blank" rel="noopener noreferrer" className="contact-wa-card">
               <span className="contact-wa-icon">
                 <WhatsAppIcon className="h-6 w-6" />
               </span>
               <span className="contact-wa-copy">
-                <strong>تواصل واتساب</strong>
-                <span>أسرع طريقة — رد سريع</span>
+                <strong>واتساب السعودية</strong>
+                <span>أسرع طريقة — رقم سعودي · رد سريع</span>
               </span>
               <ArrowLeft className="h-4 w-4 shrink-0 opacity-70 rtl-flip" />
             </a>
@@ -106,11 +109,8 @@ function Contact() {
                     {email}
                   </a>
                 </li>
-                <li className="contact-call-row">
-                  <a href={telHref(phone)} className="contact-call-btn">
-                    <Phone className="h-4 w-4 shrink-0" />
-                    <span>اتصل بنا</span>
-                  </a>
+                <li className="contact-phones-li">
+                  <MarketsPhoneCards phoneUae={phoneUae} phoneSa={phoneSa} />
                 </li>
                 <li>
                   <MapPin className="h-4 w-4 shrink-0 text-primary" />

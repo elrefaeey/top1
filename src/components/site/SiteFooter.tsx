@@ -3,8 +3,8 @@ import { ArrowLeft, Mail, MapPin, Sparkles } from "lucide-react";
 import { SiteLogo } from "@/components/site/SiteLogo";
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { useServices, useSiteSettings } from "@/hooks/use-cms";
-import { SITE_NAME, SITE_CONTACT_PHONE } from "@/lib/site-config";
-import { telHref } from "@/lib/phone";
+import { MarketsPhoneCards } from "@/components/site/MarketsContact";
+import { SITE_NAME, SITE_CONTACT_PHONE, SITE_CONTACT_PHONE_SA, SITE_TAGLINE } from "@/lib/site-config";
 import { FOOTER_SEO_LINKS } from "@/lib/seo/internal-links";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
@@ -30,7 +30,9 @@ export function SiteFooter() {
   const { data: settings } = useSiteSettings();
   const { data: services = [] } = useServices();
   const siteName = settings?.siteName || SITE_NAME;
-  const tagline = settings?.tagline || "تسويق رقمي · تصميم مواقع · SEO · نمو قابل للقياس";
+  const tagline = settings?.tagline || SITE_TAGLINE;
+  const phoneUae = settings?.contactPhone || SITE_CONTACT_PHONE;
+  const phoneSa = settings?.contactPhoneSa || SITE_CONTACT_PHONE_SA;
 
   return (
     <footer className="site-footer mt-0">
@@ -87,15 +89,13 @@ export function SiteFooter() {
                     </a>
                   </li>
                 )}
-                {(settings?.contactPhone || SITE_CONTACT_PHONE) && (
-                  <li>
-                    <a
-                      href={telHref(settings?.contactPhone)}
-                      className="footer-call-btn"
-                      aria-label="اتصل بنا"
-                    >
-                      اتصل بنا
-                    </a>
+                {(phoneUae || phoneSa) && (
+                  <li className="footer-phones-li">
+                    <MarketsPhoneCards
+                      phoneUae={phoneUae}
+                      phoneSa={phoneSa}
+                      variant="footer"
+                    />
                   </li>
                 )}
               </ul>

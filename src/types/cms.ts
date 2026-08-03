@@ -21,7 +21,10 @@ export interface SiteSettings {
   logoUrl: string;
   faviconUrl: string;
   contactEmail: string;
+  /** هاتف أساسي للعرض (الإمارات) */
   contactPhone: string;
+  /** هاتف السعودية (ثانوي) */
+  contactPhoneSa?: string;
   whatsappNumber: string;
   /** الرسالة المسبقة عند فتح واتساب (من الإعدادات / Firebase) */
   whatsappMessage?: string;
