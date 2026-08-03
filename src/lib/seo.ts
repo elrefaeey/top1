@@ -113,7 +113,7 @@ export function absoluteUrl(path: string): string {
 }
 
 export function absoluteImageUrl(src: string): string {
-  if (!src) return absoluteUrl(SITE_LOGO_URL);
+  if (!src || src.startsWith("data:")) return absoluteUrl(SITE_LOGO_URL);
   if (src.startsWith("http://") || src.startsWith("https://")) return src;
   return absoluteUrl(src);
 }

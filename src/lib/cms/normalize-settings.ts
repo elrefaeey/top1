@@ -7,6 +7,7 @@ import {
   SITE_WHATSAPP_MESSAGE,
   SITE_WHATSAPP_NUMBER,
 } from "@/lib/site-config";
+import { sanitizePublicImageUrl } from "@/lib/security/image-url";
 
 const STALE_PHONE_FRAGMENTS = ["549881368", "0549881368", "966549881368"];
 
@@ -80,5 +81,6 @@ export function normalizePublicSiteSettings(
     contactEmail: raw.contactEmail?.trim() || SITE_CONTACT_EMAIL,
     address: raw.address?.trim() || SITE_ADDRESS,
     robotsTxt,
+    heroImageUrl: sanitizePublicImageUrl(raw.heroImageUrl),
   };
 }
