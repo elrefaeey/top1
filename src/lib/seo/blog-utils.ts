@@ -87,15 +87,29 @@ export function listArticleAnchors(html: string): TocEntry[] {
   return entries;
 }
 
+/**
+ * Demote article-body H1 tags to paragraphs so the page template owns the only H1.
+ * AI drafts and CMS HTML must not introduce a second H1.
+ */
+export function demoteArticleH1(html: string): string {
+  return html.replace(/<h1\b([^>]*)>([\s\S]*?)<\/h1>/gi, (_full, attrs: string, inner: string) => {
+    const cleaned = String(attrs || "")
+      .replace(/\bid\s*=\s*(?:["'][^"']*["']|[^\s>]+)/gi, "")
+      .trim();
+    return cleaned ? `<p ${cleaned}>${inner}</p>` : `<p>${inner}</p>`;
+  });
+}
+
 export function injectHeadingIds(html: string): string {
   const used = new Set<string>();
-  for (const m of html.matchAll(/\bid\s*=\s*(?:["']([^"']+)["']|([^\s>]+))/gi)) {
+  const normalized = demoteArticleH1(html);
+  for (const m of normalized.matchAll(/\bid\s*=\s*(?:["']([^"']+)["']|([^\s>]+))/gi)) {
     const id = (m[1] || m[2] || "").trim();
     if (id) used.add(id);
   }
 
   let index = 0;
-  return html.replace(/<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, tag, attrs, inner) => {
+  return normalized.replace(/<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi, (full, tag, attrs, inner) => {
     if (readIdAttr(attrs)) return full;
     const title = stripHtml(inner);
     index += 1;

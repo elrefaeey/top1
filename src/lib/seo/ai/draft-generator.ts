@@ -1,5 +1,6 @@
 import { generateAiText, hasLlmConfigured } from "@/lib/seo/ai/provider";
 import type { AiChatMessage } from "@/lib/seo/ai/types";
+import { demoteArticleH1 } from "@/lib/seo/blog-utils";
 import { SITE_NAME } from "@/lib/site-config";
 import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
@@ -336,7 +337,7 @@ function finalizePrepared(
     slug,
     metaDescription,
     excerpt: (partial.excerpt || metaDescription).slice(0, 180),
-    content: partial.content,
+    content: demoteArticleH1(partial.content),
     keywords,
     imagePrompt,
     faqSchema,
