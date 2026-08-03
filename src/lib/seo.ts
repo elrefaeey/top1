@@ -14,6 +14,7 @@ import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
+import { isDataImageUrl } from "@/lib/security/image-url";
 
 export const SITE_TAGLINE_EN = "Digital Agency serving Saudi Arabia";
 
@@ -33,16 +34,20 @@ export const SEO_KNOWS_ABOUT = [
   "Digital Marketing",
 ] as const;
 
-export const DEFAULT_OG_IMAGE = SITE_LOGO_URL;
+/** Branded 1200×630 social preview — never use Base64/data URIs for OG. */
+export const DEFAULT_OG_IMAGE = "/og-default.jpg";
 
 export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, string> = {
-  home: SITE_LOGO_URL,
-  about: SITE_LOGO_URL,
-  services: SITE_LOGO_URL,
-  portfolio: SITE_LOGO_URL,
-  blog: SITE_LOGO_URL,
-  contact: SITE_LOGO_URL,
+  home: DEFAULT_OG_IMAGE,
+  about: DEFAULT_OG_IMAGE,
+  services: DEFAULT_OG_IMAGE,
+  portfolio: DEFAULT_OG_IMAGE,
+  blog: DEFAULT_OG_IMAGE,
+  contact: DEFAULT_OG_IMAGE,
 };
+
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
 
 export type CmsPageHeadFields = Pick<
   CmsPage,
@@ -112,10 +117,19 @@ export function absoluteUrl(path: string): string {
   return `${base}${normalizedPath}`;
 }
 
+/**
+ * Resolve a public absolute image URL for meta/schema.
+ * Base64 data URIs are rejected — they produce broken og:image values like
+ * `https://www.top1markting.com/data:image/...` and fail social crawlers.
+ */
 export function absoluteImageUrl(src: string): string {
-  if (!src) return absoluteUrl(SITE_LOGO_URL);
-  if (src.startsWith("http://") || src.startsWith("https://")) return src;
-  return absoluteUrl(src);
+  const trimmed = (src || "").trim();
+  if (!trimmed || isDataImageUrl(trimmed) || trimmed.toLowerCase().startsWith("data:")) {
+    return absoluteUrl(DEFAULT_OG_IMAGE);
+  }
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  if (trimmed.startsWith("/")) return absoluteUrl(trimmed);
+  return absoluteUrl(DEFAULT_OG_IMAGE);
 }
 
 export function jsonLdScript(data: unknown) {
@@ -381,6 +395,7 @@ export type PageHeadInput = {
 export function buildPageHead(input: PageHeadInput) {
   const url = input.canonicalUrl ?? absoluteUrl(input.path);
   const image = absoluteImageUrl(input.image ?? DEFAULT_OG_IMAGE);
+  const imageAlt = input.title || SITE_NAME;
   const meta: Array<Record<string, string>> = [
     { title: input.title },
     { name: "description", content: input.description },
@@ -389,6 +404,9 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:url", content: url },
     { property: "og:type", content: input.type ?? "website" },
     { property: "og:image", content: image },
+    { property: "og:image:width", content: String(OG_IMAGE_WIDTH) },
+    { property: "og:image:height", content: String(OG_IMAGE_HEIGHT) },
+    { property: "og:image:alt", content: imageAlt },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:locale", content: "ar_SA" },
     { name: "twitter:card", content: "summary_large_image" },
@@ -396,6 +414,7 @@ export function buildPageHead(input: PageHeadInput) {
     { name: "twitter:title", content: input.title },
     { name: "twitter:description", content: input.description },
     { name: "twitter:image", content: image },
+    { name: "twitter:image:alt", content: imageAlt },
   ];
 
   if (input.noIndex) {
@@ -588,6 +607,7 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
 
 export function buildLandingPageHead(page: LandingPageContent) {
   const areaServed = page.areaServed?.length ? page.areaServed : [...SEO_AREAS_SERVED];
+  const image = page.ogImage?.trim() || DEFAULT_OG_IMAGE;
   const scripts: Array<{ type: string; children: string }> = [
     jsonLdScript(breadcrumbSchema(page.breadcrumbs)),
     jsonLdScript({
@@ -596,6 +616,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
       name: page.title,
       description: page.metaDescription,
       url: absoluteUrl(page.path),
+      image: absoluteImageUrl(image),
       provider: {
         "@type": "Organization",
         name: SITE_NAME,
@@ -621,6 +642,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
     title: page.metaTitle,
     description: page.metaDescription,
     path: page.path,
+    image,
     scripts,
   });
 }

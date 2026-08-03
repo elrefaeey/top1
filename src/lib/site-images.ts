@@ -71,6 +71,24 @@ export const siteImages = {
     build: unsplash("photo-1517694712202-14dd9538aa97", 800),
     grow: unsplash("photo-1551288049-bebda4e38f71", 800),
   },
+  landings: {
+    "web-design": {
+      src: unsplash("photo-1497366216548-37526070297c", 1400),
+      alt: `تصميم مواقع احترافي للشركات السعودية — ${SITE_NAME}`,
+    },
+    seo: {
+      src: unsplash("photo-1460925895917-afe12b2b6d0e", 1400),
+      alt: `تحسين محركات البحث SEO للشركات في السعودية — ${SITE_NAME}`,
+    },
+    ecommerce: {
+      src: unsplash("photo-1556745750-76c05c6fe164", 1400),
+      alt: `تطوير متاجر إلكترونية للسوق السعودي — ${SITE_NAME}`,
+    },
+    "digital-marketing": {
+      src: unsplash("photo-1551288049-bebda4e38f71", 1400),
+      alt: `حملات تسويق رقمي قابلة للقياس في السعودية — ${SITE_NAME}`,
+    },
+  },
 } as const;
 
 export function serviceImage(slug: string) {

@@ -3,6 +3,7 @@ import { ArrowLeft, Check, Sparkles } from "lucide-react";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
+import { SiteImage } from "@/components/site/SiteImage";
 
 type SeoLandingTemplateProps = {
   page: LandingPageContent;
@@ -12,6 +13,21 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
   return (
     <>
       <section className="hero-bg relative overflow-hidden">
+        {page.heroImage ? (
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
+            <SiteImage
+              src={page.heroImage}
+              alt=""
+              width={1400}
+              height={900}
+              loading="eager"
+              fetchPriority="high"
+              wrapperClassName="absolute inset-0 h-full w-full"
+              className="scale-105 object-cover opacity-[0.14]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-background via-background/92 to-background/70" />
+          </div>
+        ) : null}
         <div className="container-page relative pb-16 pt-6">
           <BreadcrumbNav items={page.breadcrumbs} className="mb-6" />
           <div className="max-w-3xl">
@@ -57,6 +73,35 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
           </ul>
         </div>
       </section>
+
+      {page.localAngle ? (
+        <section className="section bg-surface border-y border-border">
+          <div className="container-page max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+              {page.localAngle.title}
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              {page.localAngle.body}
+            </p>
+          </div>
+        </section>
+      ) : null}
+
+      {page.audience ? (
+        <section className="section">
+          <div className="container-page max-w-3xl">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{page.audience.title}</h2>
+            <ul className="mt-8 space-y-3">
+              {page.audience.items.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-muted-foreground">
+                  <Check className="h-4 w-4 mt-1 text-primary shrink-0" aria-hidden />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section bg-surface border-y border-border">
         <div className="container-page">

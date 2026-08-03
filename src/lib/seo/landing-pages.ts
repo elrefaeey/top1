@@ -1,4 +1,5 @@
 import type { BreadcrumbItem } from "@/lib/seo";
+import { enrichLandingPages } from "@/lib/seo/landing-enrichment";
 import type { InternalLink } from "@/lib/seo/internal-links";
 import { LOCATION_LINKS } from "@/lib/seo/internal-links";
 
@@ -24,6 +25,15 @@ export type LandingPageContent = {
   /** Optional city/region targeting for Service JSON-LD */
   areaServed?: LandingAreaServed[];
   relatedLinks?: InternalLink[];
+  /** Hosted 1200×630 social preview (never Base64). */
+  ogImage?: string;
+  /** On-page hero visual for engagement + image SEO */
+  heroImage?: string;
+  heroImageAlt?: string;
+  /** Unique local/market angle — avoids thin doorway duplication */
+  localAngle?: { title: string; body: string };
+  /** Commercial audience/use-cases for topical depth */
+  audience?: { title: string; items: string[] };
 };
 
 const WEB_DESIGN_LOCATION_LINKS: InternalLink[] = [
@@ -44,7 +54,7 @@ const SEO_LOCATION_LINKS: InternalLink[] = [
   { label: "تواصل معنا", href: "/contact" },
 ];
 
-export const SEO_LANDING_PAGES: LandingPageContent[] = [
+const SEO_LANDING_PAGES_BASE: LandingPageContent[] = [
   {
     slug: "web-design-saudi-arabia",
     path: "/web-design-saudi-arabia",
@@ -692,6 +702,8 @@ export const SEO_LANDING_PAGES: LandingPageContent[] = [
     ],
   },
 ];
+
+export const SEO_LANDING_PAGES: LandingPageContent[] = enrichLandingPages(SEO_LANDING_PAGES_BASE);
 
 export function getLandingPageByPath(path: string): LandingPageContent | undefined {
   return SEO_LANDING_PAGES.find((p) => p.path === path);

@@ -136,6 +136,8 @@ export function portfolioPageInternalLinks(): InternalLink[] {
   return [
     ...SERVICE_LINKS.slice(0, 3),
     ...LANDING_LINKS.slice(0, 2),
+    ...LOCATION_LINKS.slice(0, 2),
+    ...SEO_LOCATION_LINKS.slice(0, 2),
     { label: "المدونة", href: "/blog" },
     { label: "تواصل معنا", href: "/contact" },
   ];
@@ -145,6 +147,8 @@ export function blogListingInternalLinks(_posts: BlogPost[]): InternalLink[] {
   return [
     ...SERVICE_LINKS,
     ...LANDING_LINKS.slice(0, 2),
+    ...LOCATION_LINKS.slice(0, 2),
+    ...SEO_LOCATION_LINKS.slice(0, 2),
     { label: "أعمالنا", href: "/portfolio" },
     { label: "تواصل معنا", href: "/contact" },
   ];
