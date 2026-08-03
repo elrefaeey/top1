@@ -119,7 +119,10 @@ export function absoluteUrl(path: string): string {
 }
 
 export function absoluteImageUrl(src: string): string {
-  if (!src || src.startsWith("data:")) return absoluteUrl(SITE_LOGO_URL);
+  // Never prefix data: URIs with the site origin (breaks og:image / JSON-LD).
+  if (!src || src.startsWith("data:") || /data:image\//i.test(src)) {
+    return absoluteUrl(SITE_LOGO_URL);
+  }
   if (src.startsWith("http://") || src.startsWith("https://")) return src;
   return absoluteUrl(src);
 }
