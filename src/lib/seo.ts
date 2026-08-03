@@ -14,6 +14,7 @@ import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
+import { sanitizePublicImageUrl } from "@/lib/security/image-url";
 
 export const SITE_TAGLINE_EN = "Digital Agency serving Saudi Arabia";
 
@@ -113,9 +114,9 @@ export function absoluteUrl(path: string): string {
 }
 
 export function absoluteImageUrl(src: string): string {
-  if (!src) return absoluteUrl(SITE_LOGO_URL);
-  if (src.startsWith("http://") || src.startsWith("https://")) return src;
-  return absoluteUrl(src);
+  const safe = sanitizePublicImageUrl(src) || DEFAULT_OG_IMAGE;
+  if (safe.startsWith("http://") || safe.startsWith("https://")) return safe;
+  return absoluteUrl(safe);
 }
 
 export function jsonLdScript(data: unknown) {

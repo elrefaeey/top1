@@ -18,6 +18,16 @@ export function isHttpImageUrl(value: string): boolean {
   }
 }
 
+/**
+ * Public meta/schema/img src must be a hosted URL.
+ * Base64 data-URIs are rejected (they bloat HTML and break og:image when absolutized).
+ */
+export function sanitizePublicImageUrl(value: string | undefined | null): string {
+  const trimmed = (value ?? "").trim();
+  if (!trimmed || isDataImageUrl(trimmed)) return "";
+  return trimmed;
+}
+
 /** Public/CMS content must use hosted URLs — refuse Base64 data URLs. */
 export function assertPublicImageUrl(value: string, fieldLabel = "الصورة"): string {
   const trimmed = value.trim();
