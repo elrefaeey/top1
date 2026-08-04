@@ -74,18 +74,22 @@ export function blogListingSchemas(posts: BlogPost[]) {
       name: SITE_NAME,
       url: absoluteUrl("/"),
     },
-    blogPost: posts.map((post) => ({
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: post.excerpt || post.metaDescription,
-      url: absoluteUrl(`/blog/${blogPostSlug(post)}`),
-      datePublished: post.publishedAt ?? post.createdAt,
-      dateModified: post.updatedAt,
-      author: {
-        "@type": "Person",
-        name: post.author,
-      },
-    })),
+    blogPost: posts.map((post) => {
+      const authorProfileSlug = post.authorSlug?.trim();
+      return {
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.excerpt || post.metaDescription,
+        url: absoluteUrl(`/blog/${blogPostSlug(post)}`),
+        datePublished: post.publishedAt ?? post.createdAt,
+        dateModified: post.updatedAt,
+        author: {
+          "@type": "Person",
+          name: post.author,
+          ...(authorProfileSlug ? { url: absoluteUrl(`/authors/${authorProfileSlug}`) } : {}),
+        },
+      };
+    }),
   };
 
   const itemList = {
