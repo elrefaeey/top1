@@ -2,7 +2,12 @@ import { blogPostSlug, portfolioItemSlug, authorSlug } from "@/lib/cms/admin-uti
 import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
 import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
-import { absoluteImageUrl, absoluteUrl } from "@/lib/seo";
+import {
+  absoluteImageUrl,
+  absoluteUrl,
+  DEFAULT_OG_IMAGE,
+  resolveLandingOgImage,
+} from "@/lib/seo";
 import type { Author, BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
 export type SitemapImage = {
@@ -41,23 +46,29 @@ export function buildSitemapEntries(input: {
   portfolio: WithId<PortfolioItem>[];
   authors?: WithId<Author>[];
 }): SitemapEntry[] {
-  const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => ({
-    path: p.path,
-    changefreq: "monthly" as const,
-    priority:
-      p.path.includes("riyadh") ||
-      p.path.includes("jeddah") ||
-      p.path.includes("dammam") ||
-      p.path.includes("khobar") ||
-      p.path.includes("dubai") ||
-      p.path.includes("abu-dhabi") ||
-      p.path.includes("sharjah") ||
-      p.path.includes("qassim") ||
-      p.path.includes("buraidah")
-        ? "0.9"
-        : "0.85",
-    lastmod: undefined,
-  }));
+  const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => {
+    const og = resolveLandingOgImage(p.path);
+    return {
+      path: p.path,
+      changefreq: "monthly" as const,
+      priority:
+        p.path.includes("riyadh") ||
+        p.path.includes("jeddah") ||
+        p.path.includes("dammam") ||
+        p.path.includes("khobar") ||
+        p.path.includes("dubai") ||
+        p.path.includes("abu-dhabi") ||
+        p.path.includes("sharjah") ||
+        p.path.includes("qassim") ||
+        p.path.includes("buraidah")
+          ? "0.9"
+          : "0.85",
+      lastmod: undefined,
+      // Thematic OG assets for money landings; skip logo-only fallback.
+      images:
+        og && og !== DEFAULT_OG_IMAGE ? [{ loc: og, title: p.title || p.h1 }] : undefined,
+    };
+  });
 
   const staticPages: SitemapEntry[] = [
     { path: "/", changefreq: "weekly", priority: "1.0" },

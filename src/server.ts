@@ -3,7 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { applySecurityHeaders } from "./lib/security/headers";
-import { PERMANENT_REDIRECTS } from "./lib/seo/permanent-redirects";
+import { resolvePermanentRedirect } from "./lib/seo/permanent-redirects";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -57,8 +57,7 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const url = new URL(request.url);
-      const path = url.pathname.replace(/\/+$/, "") || "/";
-      const redirectTo = PERMANENT_REDIRECTS[path] ?? PERMANENT_REDIRECTS[url.pathname];
+      const redirectTo = resolvePermanentRedirect(url.pathname);
       if (redirectTo) {
         return permanentRedirect(redirectTo);
       }
