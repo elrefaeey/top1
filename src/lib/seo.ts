@@ -349,9 +349,7 @@ export function articleSchema(post: BlogPost, slug: string) {
     author: {
       "@type": "Person",
       name: post.author,
-      ...(authorProfileSlug
-        ? { url: absoluteUrl(`/authors/${authorProfileSlug}`) }
-        : {}),
+      ...(authorProfileSlug ? { url: absoluteUrl(`/authors/${authorProfileSlug}`) } : {}),
     },
     publisher: {
       "@type": "Organization",
