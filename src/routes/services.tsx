@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { ArrowLeft, Check } from "lucide-react";
-import { useServices } from "@/hooks/use-cms";
+import { cmsKeys, useServices } from "@/hooks/use-cms";
 import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
 import { ContentError } from "@/components/site/ContentState";
@@ -9,12 +9,19 @@ import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { serviceImage } from "@/lib/site-images";
 
 import { loadServicesRouteSeoFn } from "@/lib/seo/cms-seo.functions";
+import { preferListingData } from "@/lib/seo/listing-data";
 import { buildServicesListingHead } from "@/lib/seo/static-page-head";
 import { servicesPageInternalLinks } from "@/lib/seo/internal-links";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 
 export const Route = createFileRoute("/services")({
-  loader: () => loadServicesRouteSeoFn(),
+  loader: async ({ context }) => {
+    const data = await loadServicesRouteSeoFn();
+    if (data.services.length > 0) {
+      context.queryClient.setQueryData(cmsKeys.services(), data.services);
+    }
+    return data;
+  },
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/services/$slug")) return {};
     return buildServicesListingHead(loaderData ?? { cms: null, services: [], faqs: [] });
@@ -25,13 +32,10 @@ export const Route = createFileRoute("/services")({
 function Services() {
   const isDetail = useMatch({ from: "/services/$slug", shouldThrow: false });
   const { services: loaderServices = [] } = Route.useLoaderData();
-  const { data: queryServices = [], isLoading, isError, isSuccess, refetch } = useServices();
-  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
-  const services = isSuccess
-    ? queryServices
-    : loaderServices.length > 0
-      ? loaderServices
-      : queryServices;
+  const { data: queryServices = [], isLoading, isError, isFetching, refetch } = useServices();
+  // placeholderData: [] makes isSuccess=true with [] — never gate SSR on isSuccess alone.
+  const services = preferListingData(loaderServices, queryServices);
+  const showLoading = isLoading && isFetching && services.length === 0;
 
   if (isDetail) return <Outlet />;
 
@@ -49,7 +53,7 @@ function Services() {
 
       <section className="section">
         <div className="container-page space-y-8">
-          {isLoading && services.length === 0 && (
+          {showLoading && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل الخدمات…
             </div>
@@ -57,7 +61,7 @@ function Services() {
           {isError && services.length === 0 && (
             <ContentError message="تعذّر تحميل الخدمات." onRetry={() => void refetch()} />
           )}
-          {!isLoading && !isError && services.length === 0 && (
+          {!showLoading && !isError && services.length === 0 && (
             <p className="text-center py-16 text-muted-foreground surface-card">
               لا توجد خدمات منشورة بعد. ستظهر هنا عند إضافتها من لوحة التحكم.
             </p>

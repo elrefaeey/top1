@@ -19,3 +19,21 @@ export const PERMANENT_REDIRECTS: Readonly<Record<string, string>> = {
   "/riyadh-web-development": "/web-design-riyadh",
   "/case-studies": "/portfolio",
 };
+
+/** Prefix redirects for nested legacy paths (mirrored by vercel.json `:path*`). */
+export const PERMANENT_PREFIX_REDIRECTS: ReadonlyArray<{
+  prefix: string;
+  destination: string;
+}> = [{ prefix: "/case-studies/", destination: "/portfolio" }];
+
+export function resolvePermanentRedirect(pathname: string): string | undefined {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  const exact = PERMANENT_REDIRECTS[path] ?? PERMANENT_REDIRECTS[pathname];
+  if (exact) return exact;
+  for (const rule of PERMANENT_PREFIX_REDIRECTS) {
+    if (path.startsWith(rule.prefix) || pathname.startsWith(rule.prefix)) {
+      return rule.destination;
+    }
+  }
+  return undefined;
+}

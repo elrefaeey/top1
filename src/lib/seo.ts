@@ -123,7 +123,10 @@ export function absoluteUrl(path: string): string {
 }
 
 export function absoluteImageUrl(src: string): string {
-  if (!src || src.startsWith("data:")) return absoluteUrl(SITE_LOGO_URL);
+  // Never prefix data: URIs with the site origin (breaks og:image / JSON-LD).
+  if (!src || src.startsWith("data:") || /data:image\//i.test(src)) {
+    return absoluteUrl(SITE_LOGO_URL);
+  }
   if (src.startsWith("http://") || src.startsWith("https://")) return src;
   return absoluteUrl(src);
 }
@@ -247,14 +250,23 @@ const PATH_SEGMENT_LABELS: Record<string, string> = {
   privacy: "سياسة الخصوصية",
   terms: "الشروط والأحكام",
   cookies: "ملفات تعريف الارتباط",
+  authors: "الكتّاب",
   "web-design-saudi-arabia": "تصميم مواقع في السعودية",
   "web-design-riyadh": "تصميم مواقع الرياض",
+  "web-design-jeddah": "تصميم مواقع جدة",
+  "web-design-dammam": "تصميم مواقع الدمام",
+  "web-design-khobar": "تصميم مواقع الخبر",
   "web-design-qassim": "تصميم مواقع القصيم",
   "web-design-buraidah": "تصميم مواقع بريدة",
+  "web-design-dubai": "تصميم مواقع دبي",
+  "web-design-abu-dhabi": "تصميم مواقع أبوظبي",
+  "web-design-sharjah": "تصميم مواقع الشارقة",
   "seo-services": "خدمات SEO",
   "seo-riyadh": "خدمات SEO الرياض",
   "seo-qassim": "خدمات SEO القصيم",
   "seo-buraidah": "خدمات SEO بريدة",
+  "seo-dubai": "خدمات SEO دبي",
+  "seo-abu-dhabi": "خدمات SEO أبوظبي",
   "ecommerce-development": "تطوير متاجر إلكترونية",
   "digital-marketing": "التسويق الرقمي",
 };
@@ -325,6 +337,7 @@ function scriptsHaveSchemaType(
 
 export function articleSchema(post: BlogPost, slug: string) {
   const path = `/blog/${slug}`;
+  const authorProfileSlug = post.authorSlug?.trim();
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -336,6 +349,7 @@ export function articleSchema(post: BlogPost, slug: string) {
     author: {
       "@type": "Person",
       name: post.author,
+      ...(authorProfileSlug ? { url: absoluteUrl(`/authors/${authorProfileSlug}`) } : {}),
     },
     publisher: {
       "@type": "Organization",
