@@ -119,10 +119,7 @@ function Hero() {
   const usableCmsSrc = cmsSrc && !cmsSrc.startsWith("data:") ? cmsSrc : "";
   const [cmsFailed, setCmsFailed] = useState(false);
   const heroSrc = !cmsFailed && usableCmsSrc ? usableCmsSrc : siteImages.hero.main;
-  const heroAlt =
-    settings?.heroImageAlt?.trim() ||
-    hero.heroImageAlt ||
-    siteImages.hero.mainAlt;
+  const heroAlt = settings?.heroImageAlt?.trim() || hero.heroImageAlt || siteImages.hero.mainAlt;
 
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">

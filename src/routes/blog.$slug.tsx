@@ -181,7 +181,12 @@ function Post() {
                 .join("")}
             </span>
             <div>
-              <div className="text-sm font-semibold" itemProp="author" itemScope itemType="https://schema.org/Person">
+              <div
+                className="text-sm font-semibold"
+                itemProp="author"
+                itemScope
+                itemType="https://schema.org/Person"
+              >
                 {post.authorSlug ? (
                   <Link
                     to="/authors/$slug"
