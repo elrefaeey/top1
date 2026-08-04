@@ -71,17 +71,23 @@ export async function loadSitemapEntries(): Promise<{
   portfolio: WithId<PortfolioItem>[];
   authors: WithId<Author>[];
 }> {
-  const [services, blog, portfolio, authors] = await Promise.all([
+  const settled = await Promise.allSettled([
     getServices(),
     getBlogPosts(),
     getPortfolio(),
     getAuthors(),
   ]);
 
-  return {
-    services: services.length > 0 ? services : FALLBACK_SERVICES.map((s) => ({ ...s })),
-    blog: blog.length > 0 ? blog : FALLBACK_BLOG_POSTS.map((p) => ({ ...p })),
-    portfolio,
-    authors,
-  };
+  const services =
+    settled[0].status === "fulfilled" && settled[0].value.length > 0
+      ? settled[0].value
+      : FALLBACK_SERVICES.map((s) => ({ ...s }));
+  const blog =
+    settled[1].status === "fulfilled" && settled[1].value.length > 0
+      ? settled[1].value
+      : FALLBACK_BLOG_POSTS.map((p) => ({ ...p }));
+  const portfolio = settled[2].status === "fulfilled" ? settled[2].value : [];
+  const authors = settled[3].status === "fulfilled" ? settled[3].value : [];
+
+  return { services, blog, portfolio, authors };
 }

@@ -411,6 +411,7 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:url", content: url },
     { property: "og:type", content: input.type ?? "website" },
     { property: "og:image", content: image },
+    { property: "og:image:alt", content: input.title },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:locale", content: "ar_SA" },
     { property: "og:locale:alternate", content: "ar_AE" },
@@ -419,6 +420,7 @@ export function buildPageHead(input: PageHeadInput) {
     { name: "twitter:title", content: input.title },
     { name: "twitter:description", content: input.description },
     { name: "twitter:image", content: image },
+    { name: "twitter:image:alt", content: input.title },
   ];
 
   if (input.noIndex) {
@@ -597,13 +599,27 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
     image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
     url: absoluteUrl(path),
     genre: item.category,
-    keywords: item.tags?.length ? item.tags.join(", ") : undefined,
+    keywords: (() => {
+      const joined = [
+        ...(item.tags ?? []),
+        ...(item.servicesProvided ?? []),
+        ...(item.technologies ?? []),
+      ]
+        .filter(Boolean)
+        .join(", ");
+      return joined || undefined;
+    })(),
     ...(item.client
       ? {
           creator: {
             "@type": "Organization",
             name: item.client,
           },
+        }
+      : {}),
+    ...(item.challenge || item.solution
+      ? {
+          abstract: [item.challenge, item.solution].filter(Boolean).join(" — "),
         }
       : {}),
   };

@@ -92,6 +92,16 @@ export interface PortfolioItem extends SeoFields, Timestamps {
   tags: string[];
   client?: string;
   url?: string;
+  /** Client problem / brief — optional to avoid inventing data */
+  challenge?: string;
+  /** What we delivered */
+  solution?: string;
+  /** Service labels shown on the project page */
+  servicesProvided?: string[];
+  /** Stack / tools used */
+  technologies?: string[];
+  /** Optional outcome note (only when real) */
+  resultsSummary?: string;
   order: number;
   status: PublishStatus;
 }

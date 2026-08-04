@@ -149,6 +149,19 @@ function AdminBlogEdit() {
             folder="blog"
             value={form.featuredImage ?? ""}
             onChange={(featuredImage) => patch({ featuredImage })}
+            onUploaded={async (featuredImage) => {
+              if (isNew) return;
+              await save.mutateAsync({
+                id,
+                data: {
+                  ...form,
+                  featuredImage,
+                  slug: form.slug || slugify(form.title),
+                  tags: commaToArray(tagsText),
+                  updatedAt: nowIso(),
+                },
+              });
+            }}
           />
           <AdminField label="وصف صورة الغلاف (Alt)" id="featuredImageAlt">
             <input

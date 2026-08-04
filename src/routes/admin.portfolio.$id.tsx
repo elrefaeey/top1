@@ -120,6 +120,78 @@ function AdminPortfolioEdit() {
               className={adminInputClass()}
             />
           </AdminField>
+          <AdminField label="العميل (اختياري)" id="client">
+            <input
+              id="client"
+              value={form.client ?? ""}
+              onChange={(e) => patch({ client: e.target.value || undefined })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminField
+            label="التحدي / المشكلة"
+            id="challenge"
+            hint="اتركه فارغاً إن لم تتوفر بيانات حقيقية — لا تخترع نتائج."
+          >
+            <textarea
+              id="challenge"
+              rows={3}
+              value={form.challenge ?? ""}
+              onChange={(e) => patch({ challenge: e.target.value || undefined })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminField label="الحل" id="solution">
+            <textarea
+              id="solution"
+              rows={3}
+              value={form.solution ?? ""}
+              onChange={(e) => patch({ solution: e.target.value || undefined })}
+              className={adminInputClass()}
+            />
+          </AdminField>
+          <AdminField label="الخدمات المقدَّمة (مفصولة بفاصلة)" id="servicesProvided">
+            <input
+              id="servicesProvided"
+              value={(form.servicesProvided ?? []).join(", ")}
+              onChange={(e) =>
+                patch({
+                  servicesProvided: e.target.value
+                    .split(",")
+                    .map((x) => x.trim())
+                    .filter(Boolean),
+                })
+              }
+              className={adminInputClass()}
+              placeholder="تصميم مواقع, SEO"
+            />
+          </AdminField>
+          <AdminField label="التقنيات (مفصولة بفاصلة)" id="technologies">
+            <input
+              id="technologies"
+              dir="ltr"
+              value={(form.technologies ?? []).join(", ")}
+              onChange={(e) =>
+                patch({
+                  technologies: e.target.value
+                    .split(",")
+                    .map((x) => x.trim())
+                    .filter(Boolean),
+                })
+              }
+              className={adminInputClass("text-start")}
+              placeholder="React, Vite, GA4"
+            />
+          </AdminField>
+          <AdminField label="ملخص النتيجة (اختياري — بيانات حقيقية فقط)" id="resultsSummary">
+            <textarea
+              id="resultsSummary"
+              rows={2}
+              value={form.resultsSummary ?? ""}
+              onChange={(e) => patch({ resultsSummary: e.target.value || undefined })}
+              className={adminInputClass()}
+            />
+          </AdminField>
           <AdminField
             label="رابط المشروع"
             id="url"
@@ -140,6 +212,19 @@ function AdminPortfolioEdit() {
             folder="portfolio"
             value={form.imageUrl}
             onChange={(imageUrl) => patch({ imageUrl })}
+            onUploaded={async (imageUrl) => {
+              if (isNew) return;
+              await save.mutateAsync({
+                id,
+                data: {
+                  ...form,
+                  imageUrl,
+                  slug: form.slug || slugify(form.title),
+                  tags: commaToArray(tagsText),
+                  updatedAt: nowIso(),
+                },
+              });
+            }}
             required
           />
           <AdminField label="الوسوم" id="tags">

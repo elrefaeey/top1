@@ -221,6 +221,9 @@ function About() {
               كل الخدمات
               <ArrowRight className="h-4 w-4 rtl-flip" />
             </Link>
+            <Link to="/portfolio" className="btn-ghost">
+              أعمالنا
+            </Link>
             <Link to="/contact" className="btn-ghost">
               تواصل معنا
             </Link>

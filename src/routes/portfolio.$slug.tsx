@@ -130,6 +130,72 @@ function PortfolioDetail() {
         </div>
       </section>
 
+      {(item.challenge ||
+        item.solution ||
+        (item.servicesProvided && item.servicesProvided.length > 0) ||
+        (item.technologies && item.technologies.length > 0) ||
+        item.resultsSummary ||
+        item.client) && (
+        <section className="section border-y border-border bg-surface">
+          <div className="container-page max-w-3xl space-y-8">
+            {item.client ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">العميل</h2>
+                <p className="mt-2 text-muted-foreground leading-relaxed">{item.client}</p>
+              </div>
+            ) : null}
+            {item.challenge ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">التحدي</h2>
+                <p className="mt-2 text-muted-foreground leading-relaxed">{item.challenge}</p>
+              </div>
+            ) : null}
+            {item.solution ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">الحل</h2>
+                <p className="mt-2 text-muted-foreground leading-relaxed">{item.solution}</p>
+              </div>
+            ) : null}
+            {item.servicesProvided && item.servicesProvided.length > 0 ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">الخدمات المقدَّمة</h2>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {item.servicesProvided.map((s) => (
+                    <li
+                      key={s}
+                      className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {item.technologies && item.technologies.length > 0 ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">التقنيات</h2>
+                <ul className="mt-3 flex flex-wrap gap-2">
+                  {item.technologies.map((t) => (
+                    <li
+                      key={t}
+                      className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {item.resultsSummary ? (
+              <div>
+                <h2 className="text-xl font-bold tracking-tight">النتيجة</h2>
+                <p className="mt-2 text-muted-foreground leading-relaxed">{item.resultsSummary}</p>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      )}
+
       {serviceLinks.length > 0 ? (
         <section className="section">
           <div className="container-page max-w-3xl">

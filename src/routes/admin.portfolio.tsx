@@ -52,10 +52,11 @@ function AdminPortfolioList() {
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[40%]">العنوان</TableHead>
-                <TableHead className="w-[25%]">التصنيف</TableHead>
+                <TableHead className="w-[35%]">العنوان</TableHead>
+                <TableHead className="w-[20%]">التصنيف</TableHead>
+                <TableHead className="w-[15%]">الصورة</TableHead>
                 <TableHead className="w-[15%]">الحالة</TableHead>
-                <TableHead className="w-[20%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[15%] text-end">إجراءات</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -63,6 +64,13 @@ function AdminPortfolioList() {
                 <TableRow key={p.id}>
                   <TableCell className="font-medium">{p.title}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{p.category}</TableCell>
+                  <TableCell>
+                    {p.imageUrl ? (
+                      <span className="text-xs text-emerald-700">مربوطة</span>
+                    ) : (
+                      <span className="text-xs text-amber-700">ناقصة</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <AdminStatusBadge status={p.status} />
                   </TableCell>

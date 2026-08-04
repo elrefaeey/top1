@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImagePlus, Loader2, Link2 } from "lucide-react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
@@ -10,6 +10,8 @@ type ImageUploadFieldProps = {
   label?: string;
   value: string;
   onChange: (url: string) => void;
+  /** Called after a successful file upload (not for manual URL paste). */
+  onUploaded?: (url: string) => void | Promise<void>;
   folder: string;
   hint?: string;
   required?: boolean;
@@ -25,6 +27,7 @@ export function ImageUploadField({
   label = "الصورة",
   value,
   onChange,
+  onUploaded,
   folder,
   hint,
   required,
@@ -34,7 +37,11 @@ export function ImageUploadField({
   const [stage, setStage] = useState<UploadStage>("upload");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [showUrl, setShowUrl] = useState(false);
+  const [showUrl, setShowUrl] = useState(Boolean(value));
+
+  useEffect(() => {
+    if (value) setShowUrl(true);
+  }, [value]);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
@@ -45,7 +52,19 @@ export function ImageUploadField({
     try {
       const url = await uploadMediaImage(folder, file, setStage);
       onChange(url);
-      setNotice("تم رفع الصورة بنجاح");
+      setShowUrl(true);
+      setNotice("تم رفع الصورة بنجاح — جاري ربطها بالمشروع…");
+      try {
+        await onUploaded?.(url);
+        setNotice(
+          onUploaded
+            ? "تم رفع الصورة وحفظ الرابط. حدّث الصفحة الرئيسية إن لم تظهر فوراً."
+            : "تم رفع الصورة — اضغط «حفظ» أسفل الصفحة حتى تظهر في الموقع.",
+        );
+      } catch (persistErr) {
+        setNotice("تم الرفع، لكن الحفظ التلقائي فشل — اضغط «حفظ» أسفل الصفحة.");
+        setError(persistErr instanceof Error ? persistErr.message : "فشل حفظ رابط الصورة");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "فشل رفع الصورة");
     } finally {
@@ -72,7 +91,10 @@ export function ImageUploadField({
     <AdminField
       id={id}
       label={label}
-      hint={hint ?? "ارفع JPG/PNG/WebP من جهازك — تُحفظ في Firebase تلقائياً."}
+      hint={
+        hint ??
+        "ارفع JPG/PNG/WebP — تُحفظ في Firebase Storage. يجب أن يظهر الرابط https://firebasestorage… ثم اضغط حفظ إن لم يُحفظ تلقائياً."
+      }
     >
       <div className="space-y-3">
         {value && (
@@ -124,9 +146,19 @@ export function ImageUploadField({
             required={required && !value}
             value={value}
             onChange={(e) => handleUrlChange(e.target.value)}
-            placeholder="https://…"
+            placeholder="https://firebasestorage.googleapis.com/…"
             className={adminInputClass("text-start")}
           />
+        )}
+
+        {value ? (
+          <p className="text-[11px] text-muted-foreground break-all" dir="ltr">
+            {value.startsWith("http") ? "رابط الصورة مربوط ✓" : "تحذير: الرابط غير صالح"}
+          </p>
+        ) : (
+          <p className="text-[11px] text-amber-700 leading-relaxed rounded-lg bg-amber-500/10 px-3 py-2">
+            لا يوجد رابط صورة محفوظ لهذا العنصر — ارفع صورة من الزر أعلاه (رفع من Storage Console وحده لا يكفي).
+          </p>
         )}
 
         {notice && !error && (

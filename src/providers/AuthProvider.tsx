@@ -61,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     setLoading(true);
     try {
+      await firebaseUser.getIdToken(true);
       setUser(await toAppUser(firebaseUser));
     } finally {
       setLoading(false);

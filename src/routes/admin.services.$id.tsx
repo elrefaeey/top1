@@ -165,6 +165,20 @@ function AdminServiceEdit() {
             folder="services"
             value={form.imageUrl ?? ""}
             onChange={(imageUrl) => patch({ imageUrl })}
+            onUploaded={async (imageUrl) => {
+              if (isNew) return;
+              await save.mutateAsync({
+                id,
+                data: {
+                  ...form,
+                  imageUrl,
+                  slug: form.slug || slugify(form.title),
+                  features: linesToArray(featuresText),
+                  deliverables: linesToArray(deliverablesText),
+                  updatedAt: nowIso(),
+                },
+              });
+            }}
           />
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="الأيقونة" id="icon">

@@ -68,19 +68,44 @@ export function subscribeToAuth(callback: (user: User | null) => void) {
   return onAuthStateChanged(getAuthInstance(), callback);
 }
 
+function parseRole(value: unknown): UserRole | null {
+  return value === "admin" || value === "editor" ? value : null;
+}
+
+/** Fallback when the Firestore WebChannel SDK stalls or fails. */
+async function getUserRoleViaRest(uid: string): Promise<UserRole | null> {
+  try {
+    const user = getAuthInstance().currentUser;
+    if (!user || user.uid !== uid) return null;
+    const token = await user.getIdToken();
+    const { getFirebaseConfig } = await import("./config");
+    const projectId = getFirebaseConfig().projectId;
+    if (!projectId) return null;
+    const url =
+      `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(projectId)}` +
+      `/databases/(default)/documents/users/${encodeURIComponent(uid)}`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { fields?: { role?: { stringValue?: string } } };
+    return parseRole(json.fields?.role?.stringValue);
+  } catch {
+    return null;
+  }
+}
+
 export async function getUserRole(uid: string): Promise<UserRole | null> {
   try {
     const { doc, getDoc } = await import("firebase/firestore");
     const { getDb, withFirestoreTimeout } = await import("./firestore");
-    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), "users", uid)), 5000);
+    const snap = await withFirestoreTimeout(getDoc(doc(getDb(), "users", uid)), 8000);
     if (snap.exists()) {
-      const role = snap.data().role as UserRole | undefined;
-      if (role === "admin" || role === "editor") return role;
+      const role = parseRole(snap.data().role);
+      if (role) return role;
     }
   } catch {
-    // ignore
+    // Fall through to REST — common when WebChannel/long-polling times out.
   }
-  return null;
+  return getUserRoleViaRest(uid);
 }
 
 export async function toAppUser(user: User): Promise<AppUser> {
