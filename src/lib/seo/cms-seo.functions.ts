@@ -38,6 +38,18 @@ export const loadHomeHeroSettingsFn = createServerFn({ method: "GET", strict: fa
   },
 );
 
+/** Homepage FAQs for SSR body + FAQPage JSON-LD (avoid client-only accordion HTML). */
+export const loadHomeFaqsFn = createServerFn({ method: "GET", strict: false }).handler(
+  async (): Promise<WithId<FaqItem>[]> => {
+    try {
+      const { getFaqs } = await import("@/lib/cms/content-service");
+      return await getFaqs();
+    } catch {
+      return [];
+    }
+  },
+);
+
 export const loadServicesRouteSeoFn = createServerFn({ method: "GET", strict: false }).handler(
   async (): Promise<{
     cms: WithId<CmsPage> | null;
