@@ -17,6 +17,7 @@ import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
+import { serviceImage } from "@/lib/site-images";
 
 export const SITE_TAGLINE_EN = "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
@@ -64,6 +65,16 @@ export function resolveStaticPageOgImage(
   cms?: CmsPageHeadFields | null,
 ): string {
   return cms?.ogImage?.trim() || STATIC_PAGE_OG_FALLBACK[page] || DEFAULT_OG_IMAGE;
+}
+
+/** Thematic OG/Twitter image for money landings (avoids logo-only social cards). */
+export function resolveLandingOgImage(path: string): string {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  if (p.includes("seo")) return serviceImage("seo");
+  if (p.includes("ecommerce")) return serviceImage("web-apps");
+  if (p.includes("digital-marketing")) return serviceImage("digital-solutions");
+  if (p.includes("web-design") || p.includes("ui-ux")) return serviceImage("web-design");
+  return DEFAULT_OG_IMAGE;
 }
 
 function resolveCanonicalUrl(path: string, cms?: CmsPageHeadFields | null): string {
@@ -521,7 +532,7 @@ export function buildBlogPostHead(post: BlogPost, slugParam: string) {
     description,
     path,
     type: "article",
-    image: post.featuredImage ?? DEFAULT_OG_IMAGE,
+    image: post.ogImage?.trim() || post.featuredImage || DEFAULT_OG_IMAGE,
     scripts: [
       jsonLdScript(articleSchema(post, slug)),
       jsonLdScript(
@@ -573,7 +584,7 @@ export function buildServiceHead(
     description,
     path,
     type: "website",
-    image: service.imageUrl ?? DEFAULT_OG_IMAGE,
+    image: service.ogImage?.trim() || service.imageUrl || DEFAULT_OG_IMAGE,
     scripts,
   });
 }
@@ -588,7 +599,7 @@ export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
     description,
     path,
     type: "website",
-    image: item.imageUrl || DEFAULT_OG_IMAGE,
+    image: item.ogImage?.trim() || item.imageUrl || DEFAULT_OG_IMAGE,
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",
@@ -641,6 +652,7 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
 
 export function buildLandingPageHead(page: LandingPageContent) {
   const areaServed = page.areaServed?.length ? page.areaServed : [...SEO_AREAS_SERVED];
+  const image = resolveLandingOgImage(page.path);
   const scripts: Array<{ type: string; children: string }> = [
     jsonLdScript(breadcrumbSchema(page.breadcrumbs)),
     jsonLdScript({
@@ -649,6 +661,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
       name: page.title,
       description: page.metaDescription,
       url: absoluteUrl(page.path),
+      image: absoluteImageUrl(image),
       provider: {
         "@type": "Organization",
         name: SITE_NAME,
@@ -690,6 +703,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
     title: page.metaTitle,
     description: page.metaDescription,
     path: page.path,
+    image,
     scripts,
   });
 }

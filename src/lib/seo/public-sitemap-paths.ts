@@ -35,12 +35,15 @@ export function routeFileToPublicPath(filePath: string): string | null {
 
   let rel = normalized.slice(idx + marker.length);
   rel = rel.replace(/\.(ts|tsx)$/, "");
-  rel = rel.replace(/\[\.\]/g, ".");
 
   if (rel === "__root") return null;
   if (rel === "index") return "/";
 
-  const path = "/" + rel.split(".").join("/");
+  // TanStack `[.]` = literal `.` in the URL (sitemap[.]xml → /sitemap.xml).
+  // Protect those dots before splitting route groups on `.`.
+  const LITERAL_DOT = "\0";
+  const withLiteralDots = rel.replace(/\[\.\]/g, LITERAL_DOT);
+  const path = "/" + withLiteralDots.split(".").join("/").split(LITERAL_DOT).join(".");
 
   if (path.includes("$")) return null;
   if (EXCLUDE_EXACT.has(path)) return null;
