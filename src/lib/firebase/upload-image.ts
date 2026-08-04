@@ -1,5 +1,4 @@
 import { compressImage } from "./upload-image-compress";
-import { uploadFile, mapStorageError } from "./storage";
 import { withTimeout } from "@/lib/with-timeout";
 import { getFirebaseApp } from "./config";
 
@@ -7,21 +6,7 @@ const MAX_INPUT_MB = 12;
 
 export type UploadStage = "compress" | "upload";
 
-function safePathName(name: string) {
-  return name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80) || "image.jpg";
-}
-
-/** رفع مباشر من المتصفح → Firebase Storage (مجاني ضمن الحصة). */
-async function uploadViaClientStorage(folder: string, file: File): Promise<string> {
-  const path = `media/${folder}/${Date.now()}-${safePathName(file.name)}`;
-  try {
-    return await uploadFile(path, file);
-  } catch (err) {
-    throw mapStorageError(err);
-  }
-}
-
-/** رفع عبر السيرفر — Storage ثم بديل Firestore media. */
+/** رفع عبر السيرفر — Storage إن وُجد، وإلا Firestore media (/media/:id). */
 async function uploadViaServer(folder: string, file: File): Promise<string> {
   const app = getFirebaseApp();
   if (!app) {
@@ -58,7 +43,11 @@ async function uploadViaServer(folder: string, file: File): Promise<string> {
   return json.url;
 }
 
-/** رفع صورة من الجهاز — ضغط ثم Firebase Storage، مع بديل مجاني عند الحاجة. */
+/**
+ * رفع صورة من الجهاز — ضغط ثم مسار السيرفر.
+ * لا نرفع من المتصفح مباشرة إلى Storage: المشروع يحتاج تفعيل Storage أولاً،
+ * والرفع المباشر يفشل بـ CORS على localhost بدون bucket مُعدّ.
+ */
 export async function uploadMediaImage(
   folder: string,
   file: File,
@@ -87,13 +76,7 @@ export async function uploadMediaImage(
   }
 
   onStage?.("upload");
-
-  try {
-    return await uploadViaClientStorage(folder, prepared);
-  } catch {
-    // Storage غير جاهز / CORS / صلاحيات → مسار السيرفر (Storage أو Firestore)
-    return uploadViaServer(folder, prepared);
-  }
+  return uploadViaServer(folder, prepared);
 }
 
 export { compressImage };

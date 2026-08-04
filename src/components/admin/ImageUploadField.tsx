@@ -93,7 +93,7 @@ export function ImageUploadField({
       label={label}
       hint={
         hint ??
-        "ارفع JPG/PNG/WebP — تُحفظ في Firebase Storage. يجب أن يظهر الرابط https://firebasestorage… ثم اضغط حفظ إن لم يُحفظ تلقائياً."
+        "ارفع JPG/PNG/WebP. يتم الرفع عبر السيرفر (Storage إن وُجد، وإلا حفظ داخل Firebase ويعرض عبر /media/…). ثم احفظ إن لم يُحفظ تلقائياً."
       }
     >
       <div className="space-y-3">
