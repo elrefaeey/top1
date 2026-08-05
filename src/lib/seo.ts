@@ -354,9 +354,9 @@ export function articleSchema(post: BlogPost, slug: string) {
     "@type": "BlogPosting",
     headline: post.title,
     description: post.metaDescription || post.excerpt,
-    image: post.featuredImage
-      ? absoluteImageUrl(post.featuredImage)
-      : absoluteImageUrl(DEFAULT_OG_IMAGE),
+    image: absoluteImageUrl(
+      post.ogImage?.trim() || post.featuredImage || DEFAULT_OG_IMAGE,
+    ),
     author: {
       "@type": "Person",
       name: post.author,
