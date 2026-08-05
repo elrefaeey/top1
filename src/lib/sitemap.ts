@@ -1,8 +1,13 @@
 import { blogPostSlug, portfolioItemSlug, authorSlug } from "@/lib/cms/admin-utils";
 import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
 import { getPublicStaticSitemapPaths } from "@/lib/seo/public-sitemap-paths";
+import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
-import { absoluteImageUrl } from "@/lib/seo";
+import {
+  absoluteImageUrl,
+  DEFAULT_OG_IMAGE,
+  resolveLandingOgImage,
+} from "@/lib/seo";
 import { SITE_PRODUCTION_URL } from "@/lib/site-config";
 import type { Author, BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
@@ -64,11 +69,22 @@ export function buildSitemapEntries(input: {
   portfolio: WithId<PortfolioItem>[];
   authors?: WithId<Author>[];
 }): SitemapEntry[] {
-  const staticPages: SitemapEntry[] = getPublicStaticSitemapPaths().map((p) => ({
-    path: p.path,
-    changefreq: p.changefreq,
-    priority: p.priority,
-  }));
+  const landingByPath = new Map(SEO_LANDING_PAGES.map((p) => [p.path, p]));
+
+  const staticPages: SitemapEntry[] = getPublicStaticSitemapPaths().map((p) => {
+    const landing = landingByPath.get(p.path);
+    const og = resolveLandingOgImage(p.path);
+    return {
+      path: p.path,
+      changefreq: p.changefreq,
+      priority: p.priority,
+      // Thematic OG assets for money landings; skip logo-only fallback.
+      images:
+        landing && og && og !== DEFAULT_OG_IMAGE
+          ? [{ loc: og, title: landing.title || landing.h1 }]
+          : undefined,
+    };
+  });
 
   const servicePages: SitemapEntry[] = input.services.map((service) => ({
     path: `/services/${preferredServiceSlug(service.slug || service.id)}`,

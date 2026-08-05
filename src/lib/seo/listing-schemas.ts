@@ -1,54 +1,33 @@
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
-import {
-  absoluteImageUrl,
-  absoluteUrl,
-  DEFAULT_OG_IMAGE,
-  faqPageSchema,
-  serviceSchema,
-  STATIC_PAGE_SEO,
-} from "@/lib/seo";
+import { absoluteUrl, faqPageSchema, STATIC_PAGE_SEO } from "@/lib/seo";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { SITE_NAME } from "@/lib/site-config";
 import type { BlogPost, FaqItem, PortfolioItem, Service } from "@/types/cms";
 
-export function creativeWorkSchema(item: PortfolioItem) {
-  const path = `/portfolio/${portfolioItemSlug(item)}`;
-  return {
-    "@type": "CreativeWork",
-    name: item.title,
-    description: item.description || item.metaDescription || item.category,
-    image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
-    url: absoluteUrl(path),
-    genre: item.category,
-    keywords: item.tags?.length ? item.tags.join(", ") : undefined,
-    ...(item.client
-      ? {
-          creator: {
-            "@type": "Organization",
-            name: item.client,
-          },
-        }
-      : {}),
-  };
-}
-
+/**
+ * Listing pages only need lightweight ItemList / Blog graphs.
+ * Full Service / CreativeWork / image payloads belong on detail routes —
+ * embedding them here duplicated schema and previously ballooned HTML when
+ * CMS images were Base64.
+ */
 export function portfolioListingSchemas(items: PortfolioItem[]) {
   if (items.length === 0) return [];
 
-  const itemList = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: `معرض أعمال ${SITE_NAME}`,
-    url: absoluteUrl("/portfolio"),
-    numberOfItems: items.length,
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: creativeWorkSchema(item),
-    })),
-  };
-
-  return [itemList];
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: `معرض أعمال ${SITE_NAME}`,
+      url: absoluteUrl("/portfolio"),
+      numberOfItems: items.length,
+      itemListElement: items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.title,
+        url: absoluteUrl(`/portfolio/${portfolioItemSlug(item)}`),
+      })),
+    },
+  ];
 }
 
 export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
@@ -61,16 +40,16 @@ export function servicesListingSchemas(services: Service[], faqs: FaqItem[]) {
       name: `خدمات ${SITE_NAME}`,
       url: absoluteUrl("/services"),
       numberOfItems: services.length,
-      itemListElement: services.map((service, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: serviceSchema(service, preferredServiceSlug(service.slug)),
-      })),
+      itemListElement: services.map((service, index) => {
+        const slug = preferredServiceSlug(service.slug);
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          name: service.title,
+          url: absoluteUrl(`/services/${slug}`),
+        };
+      }),
     });
-
-    for (const service of services) {
-      schemas.push(serviceSchema(service, preferredServiceSlug(service.slug)));
-    }
   }
 
   if (faqs.length > 0) {
@@ -95,21 +74,22 @@ export function blogListingSchemas(posts: BlogPost[]) {
       name: SITE_NAME,
       url: absoluteUrl("/"),
     },
-    blogPost: posts.map((post) => ({
-      "@type": "BlogPosting",
-      headline: post.title,
-      description: post.excerpt || post.metaDescription,
-      url: absoluteUrl(`/blog/${blogPostSlug(post)}`),
-      datePublished: post.publishedAt ?? post.createdAt,
-      dateModified: post.updatedAt,
-      image: post.featuredImage
-        ? absoluteImageUrl(post.featuredImage)
-        : absoluteImageUrl(DEFAULT_OG_IMAGE),
-      author: {
-        "@type": "Person",
-        name: post.author,
-      },
-    })),
+    blogPost: posts.map((post) => {
+      const authorProfileSlug = post.authorSlug?.trim();
+      return {
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.excerpt || post.metaDescription,
+        url: absoluteUrl(`/blog/${blogPostSlug(post)}`),
+        datePublished: post.publishedAt ?? post.createdAt,
+        dateModified: post.updatedAt,
+        author: {
+          "@type": "Person",
+          name: post.author,
+          ...(authorProfileSlug ? { url: absoluteUrl(`/authors/${authorProfileSlug}`) } : {}),
+        },
+      };
+    }),
   };
 
   const itemList = {
