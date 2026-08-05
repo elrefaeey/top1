@@ -1,8 +1,9 @@
 import { blogPostSlug, portfolioItemSlug, authorSlug } from "@/lib/cms/admin-utils";
-import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
 import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
+import { getPublicStaticSitemapPaths } from "@/lib/seo/public-sitemap-paths";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
-import { absoluteImageUrl, absoluteUrl } from "@/lib/seo";
+import { absoluteImageUrl } from "@/lib/seo";
+import { SITE_PRODUCTION_URL } from "@/lib/site-config";
 import type { Author, BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
 export type SitemapImage = {
@@ -18,6 +19,20 @@ export type SitemapEntry = {
   lastmod?: string;
   images?: SitemapImage[];
 };
+
+/** Sitemap locs always use the official production host — never localhost/vercel previews. */
+export function absoluteSitemapUrl(path: string): string {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${SITE_PRODUCTION_URL.replace(/\/$/, "")}${normalizedPath}`;
+}
+
+/** Image URLs in sitemap must be absolute and production-safe. */
+function sitemapImageLoc(src: string): string {
+  const absolute = absoluteImageUrl(src);
+  return absolute
+    .replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i, SITE_PRODUCTION_URL.replace(/\/$/, ""))
+    .replace(/^https?:\/\/[^/]*vercel\.app/i, SITE_PRODUCTION_URL.replace(/\/$/, ""));
+}
 
 function toLastmod(value?: string): string | undefined {
   if (!value) return undefined;
@@ -35,43 +50,25 @@ function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function isExcludedDynamicPath(path: string): boolean {
+  if (path.startsWith("/admin") || path.startsWith("/api") || path.startsWith("/media")) {
+    return true;
+  }
+  if (PERMANENT_REDIRECTS[path]) return true;
+  return false;
+}
+
 export function buildSitemapEntries(input: {
   services: WithId<Service>[];
   blog: WithId<BlogPost>[];
   portfolio: WithId<PortfolioItem>[];
   authors?: WithId<Author>[];
 }): SitemapEntry[] {
-  const landingPages: SitemapEntry[] = SEO_LANDING_PAGES.map((p) => ({
+  const staticPages: SitemapEntry[] = getPublicStaticSitemapPaths().map((p) => ({
     path: p.path,
-    changefreq: "monthly" as const,
-    priority:
-      p.path.includes("riyadh") ||
-      p.path.includes("jeddah") ||
-      p.path.includes("dammam") ||
-      p.path.includes("khobar") ||
-      p.path.includes("dubai") ||
-      p.path.includes("abu-dhabi") ||
-      p.path.includes("sharjah") ||
-      p.path.includes("qassim") ||
-      p.path.includes("buraidah")
-        ? "0.9"
-        : "0.85",
-    lastmod: undefined,
+    changefreq: p.changefreq,
+    priority: p.priority,
   }));
-
-  const staticPages: SitemapEntry[] = [
-    { path: "/", changefreq: "weekly", priority: "1.0" },
-    { path: "/about", changefreq: "monthly", priority: "0.8" },
-    { path: "/services", changefreq: "weekly", priority: "0.9" },
-    { path: "/portfolio", changefreq: "weekly", priority: "0.8" },
-    { path: "/blog", changefreq: "weekly", priority: "0.8" },
-    { path: "/pricing", changefreq: "monthly", priority: "0.75" },
-    { path: "/contact", changefreq: "monthly", priority: "0.7" },
-    { path: "/privacy", changefreq: "yearly", priority: "0.3" },
-    { path: "/terms", changefreq: "yearly", priority: "0.3" },
-    { path: "/cookies", changefreq: "yearly", priority: "0.3" },
-    ...landingPages,
-  ];
 
   const servicePages: SitemapEntry[] = input.services.map((service) => ({
     path: `/services/${preferredServiceSlug(service.slug || service.id)}`,
@@ -117,18 +114,14 @@ export function buildSitemapEntries(input: {
   }));
 
   const seen = new Set<string>();
-  return [
-    ...staticPages,
-    ...servicePages,
-    ...blogPages,
-    ...portfolioPages,
-    ...authorPages,
-  ].filter((entry) => {
-    if (seen.has(entry.path)) return false;
-    if (PERMANENT_REDIRECTS[entry.path]) return false;
-    seen.add(entry.path);
-    return true;
-  });
+  return [...staticPages, ...servicePages, ...blogPages, ...portfolioPages, ...authorPages].filter(
+    (entry) => {
+      if (seen.has(entry.path)) return false;
+      if (isExcludedDynamicPath(entry.path)) return false;
+      seen.add(entry.path);
+      return true;
+    },
+  );
 }
 
 export function renderSitemapXml(entries: SitemapEntry[]): string {
@@ -139,7 +132,7 @@ export function renderSitemapXml(entries: SitemapEntry[]): string {
         entry.images
           ?.filter((img) => Boolean(img.loc))
           .map((img) => {
-            const loc = escapeXml(absoluteImageUrl(img.loc));
+            const loc = escapeXml(sitemapImageLoc(img.loc));
             const title = img.title ? `\n      <image:title>${escapeXml(img.title)}</image:title>` : "";
             const caption = img.caption
               ? `\n      <image:caption>${escapeXml(img.caption.slice(0, 200))}</image:caption>`
@@ -148,7 +141,7 @@ export function renderSitemapXml(entries: SitemapEntry[]): string {
           })
           .join("") ?? "";
       return `  <url>
-    <loc>${escapeXml(absoluteUrl(entry.path))}</loc>${lastmod}
+    <loc>${escapeXml(absoluteSitemapUrl(entry.path))}</loc>${lastmod}
     <changefreq>${entry.changefreq}</changefreq>
     <priority>${entry.priority}</priority>${images}
   </url>`;

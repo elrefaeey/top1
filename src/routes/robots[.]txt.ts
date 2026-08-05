@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteSitemapUrl } from "@/lib/sitemap";
 
 export const Route = createFileRoute("/robots.txt")({
   server: {
@@ -14,7 +14,7 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /api
 
-Sitemap: ${absoluteUrl("/sitemap.xml")}
+Sitemap: ${absoluteSitemapUrl("/sitemap.xml")}
 `;
         return new Response(body, {
           headers: {
