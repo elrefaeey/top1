@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { Search, ArrowUpLeft, TrendingUp } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useBlogPosts } from "@/hooks/use-cms";
+import { cmsKeys, useBlogPosts } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
 import { SiteImage } from "@/components/site/SiteImage";
@@ -11,10 +11,18 @@ import { siteImages } from "@/lib/site-images";
 
 import { blogListingInternalLinks } from "@/lib/seo/internal-links";
 import { loadBlogRouteSeoFn } from "@/lib/seo/cms-seo.functions";
+import { preferListingData } from "@/lib/seo/listing-data";
 import { buildBlogListingHead } from "@/lib/seo/static-page-head";
 
 export const Route = createFileRoute("/blog")({
-  loader: () => loadBlogRouteSeoFn(),
+  loader: async ({ context }) => {
+    const data = await loadBlogRouteSeoFn();
+    if (data.posts.length > 0) {
+      // useBlogPosts() keys as [...cmsKeys.blog(), max] with max=undefined
+      context.queryClient.setQueryData([...cmsKeys.blog(), undefined], data.posts);
+    }
+    return data;
+  },
   head: ({ loaderData, matches }) => {
     if (matches.some((m) => (m.routeId as string) === "/blog/$slug")) return {};
     return buildBlogListingHead(loaderData ?? { cms: null, posts: [] });
@@ -27,9 +35,10 @@ function Blog() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("الكل");
   const { posts: loaderPosts = [] } = Route.useLoaderData();
-  const { data: queryPosts = [], isLoading, isError, isSuccess, refetch } = useBlogPosts();
-  // Prefer live query after fetch; fall back to SSR loader so listings are in initial HTML.
-  const posts = isSuccess ? queryPosts : loaderPosts.length > 0 ? loaderPosts : queryPosts;
+  const { data: queryPosts = [], isLoading, isError, isFetching, refetch } = useBlogPosts();
+  // placeholderData: [] makes isSuccess=true with [] — merge by non-empty length.
+  const posts = preferListingData(loaderPosts, queryPosts);
+  const showLoading = isLoading && isFetching && posts.length === 0;
 
   const categories = useMemo(() => {
     const cats = [...new Set(posts.map((p) => p.category).filter(Boolean))];
@@ -103,7 +112,7 @@ function Blog() {
             ))}
           </div>
 
-          {isLoading && posts.length === 0 && (
+          {showLoading && (
             <div className="text-center py-12 text-muted-foreground text-sm">
               جاري تحميل المقالات…
             </div>
@@ -113,7 +122,7 @@ function Blog() {
             <ContentError message="تعذّر تحميل المقالات." onRetry={() => void refetch()} />
           )}
 
-          {!isLoading && !isError && posts.length === 0 && (
+          {!showLoading && !isError && posts.length === 0 && (
             <p className="text-center py-16 text-muted-foreground surface-card">
               لا توجد مقالات منشورة بعد. ستظهر هنا عند إضافتها من لوحة التحكم.
             </p>
@@ -196,14 +205,14 @@ function Blog() {
                 </div>
               </Link>
             ))}
-            {!isLoading && filtered.length === 0 && (
+            {!showLoading && filtered.length === 0 && (
               <div className="col-span-full text-center py-20 text-muted-foreground">
                 لا توجد مقالات مطابقة.
               </div>
             )}
           </div>
 
-          {!isLoading && posts.length > 0 ? (
+          {!showLoading && posts.length > 0 ? (
             <InternalLinksBlock
               className="mt-12"
               title="روابط مفيدة"

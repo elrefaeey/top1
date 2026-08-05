@@ -17,6 +17,7 @@ import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types
 import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
+import { serviceImage, siteImages } from "@/lib/site-images";
 
 export const SITE_TAGLINE_EN = "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
@@ -45,13 +46,14 @@ export const SEO_KNOWS_ABOUT = [
 
 export const DEFAULT_OG_IMAGE = SITE_LOGO_URL;
 
+/** Prefer contextual page imagery over the logo so social previews match page intent. */
 export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, string> = {
-  home: SITE_LOGO_URL,
-  about: SITE_LOGO_URL,
-  services: SITE_LOGO_URL,
-  portfolio: SITE_LOGO_URL,
-  blog: SITE_LOGO_URL,
-  contact: SITE_LOGO_URL,
+  home: siteImages.hero.main,
+  about: siteImages.about.studio,
+  services: siteImages.services.default,
+  portfolio: siteImages.portfolio.nimbus,
+  blog: siteImages.blog.default,
+  contact: siteImages.contact.side,
 };
 
 export type CmsPageHeadFields = Pick<
@@ -676,6 +678,7 @@ export function buildLandingPageHead(page: LandingPageContent) {
     title: page.metaTitle,
     description: page.metaDescription,
     path: page.path,
+    image: serviceImage(page.relatedServiceSlug),
     scripts,
   });
 }
