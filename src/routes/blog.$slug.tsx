@@ -86,7 +86,22 @@ function Post() {
                 {dateLabel}
               </time>
             )}
-            ·<span itemProp="author">{post.author}</span>·
+            ·
+            <span itemProp="author" itemScope itemType="https://schema.org/Person">
+              {post.authorSlug ? (
+                <Link
+                  to="/authors/$slug"
+                  params={{ slug: post.authorSlug }}
+                  className="hover:text-primary transition-colors"
+                  itemProp="url"
+                >
+                  <span itemProp="name">{post.author}</span>
+                </Link>
+              ) : (
+                <span itemProp="name">{post.author}</span>
+              )}
+            </span>
+            ·
             <span>
               {readTime} دقائق قراءة
               <meta itemProp="timeRequired" content={`PT${readTime}M`} />
@@ -166,8 +181,19 @@ function Post() {
                 .join("")}
             </span>
             <div>
-              <div className="text-sm font-semibold" itemProp="author">
-                {post.author}
+              <div className="text-sm font-semibold" itemProp="author" itemScope itemType="https://schema.org/Person">
+                {post.authorSlug ? (
+                  <Link
+                    to="/authors/$slug"
+                    params={{ slug: post.authorSlug }}
+                    className="hover:text-primary transition-colors"
+                    itemProp="url"
+                  >
+                    <span itemProp="name">{post.author}</span>
+                  </Link>
+                ) : (
+                  <span itemProp="name">{post.author}</span>
+                )}
               </div>
               <div className="text-xs text-muted-foreground">فريق الاستوديو · {SITE_NAME}</div>
             </div>

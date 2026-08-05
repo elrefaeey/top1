@@ -30,10 +30,16 @@ for (const [src, dest] of fromTs) {
   else if (hit[1] !== dest)
     errors.push(`vercel.json mismatch for ${src}: got ${hit[1]}, expected ${dest}`);
 }
+const prefixRedirects = [
+  ...redirectsMod.matchAll(/prefix:\s*"(\/[^"]+)"\s*,\s*destination:\s*"(\/[^"]+)"/g),
+].map((m) => [m[1], m[2]]);
+
 for (const [src] of fromVercel) {
-  if (!fromTs.find((r) => r[0] === src)) {
-    warnings.push(`vercel.json has extra redirect not in permanent-redirects.ts: ${src}`);
-  }
+  if (fromTs.find((r) => r[0] === src)) continue;
+  // vercel `/case-studies/:path*` ↔ TS prefix `/case-studies/`
+  const asPrefix = src.replace(/\/:path\*$/, "/");
+  if (prefixRedirects.find((r) => r[0] === asPrefix || r[0] === src)) continue;
+  warnings.push(`vercel.json has extra redirect not in permanent-redirects.ts: ${src}`);
 }
 
 // 2) robots route must disallow /api and /admin
