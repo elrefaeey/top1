@@ -10,6 +10,7 @@ import {
   AdminPublishSelect,
   adminInputClass,
 } from "@/components/admin/AdminUi";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { nowIso } from "@/lib/cms/admin-utils";
 import {
   useAdminAuthor,
@@ -103,6 +104,26 @@ function AdminAuthorEdit() {
               className={adminInputClass()}
             />
           </AdminField>
+          <ImageUploadField
+            id="avatarUrl"
+            label="الصورة الشخصية"
+            folder="authors"
+            value={form.avatarUrl ?? ""}
+            onChange={(avatarUrl) => patch({ avatarUrl: avatarUrl || undefined })}
+            onUploaded={async (avatarUrl) => {
+              if (isNew) return;
+              await save.mutateAsync({
+                id,
+                data: {
+                  ...form,
+                  avatarUrl,
+                  slug: form.slug || id,
+                  updatedAt: nowIso(),
+                },
+              });
+            }}
+            hint="صورة مربعة أو دائرية تظهر في صفحة المؤلف وOG."
+          />
           <AdminField label="Slug" id="slug">
             <input
               id="slug"

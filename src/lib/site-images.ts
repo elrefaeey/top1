@@ -16,10 +16,10 @@ export const siteImages = {
     workspaceAlt: "مساحة عمل حديثة في استوديو رقمي",
   },
   about: {
-    studio: unsplash("photo-1497366754035-f200968a6e72", 1200),
-    studioAlt: `استوديو تصميم رقمي — ${SITE_NAME}`,
-    team: unsplash("photo-1600880292203-757bb62b4baf", 1200),
-    teamAlt: `اجتماع فريق ${SITE_NAME}`,
+    studio: "/about-team.png",
+    studioAlt: `فريق ${SITE_NAME} يعمل على المشاريع`,
+    team: "/about-team.png",
+    teamAlt: `فريق ${SITE_NAME} يعمل على المشاريع`,
   },
   contact: {
     side: unsplash("photo-1423666639045-f560002c9368", 1000),

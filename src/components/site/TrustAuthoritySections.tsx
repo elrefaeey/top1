@@ -39,10 +39,27 @@ export function TrustAuthoritySections() {
                     params={{ slug: authorSlug(author) }}
                     className="about-offer-card group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-colors hover:border-primary/30 hover:bg-accent/40"
                   >
-                    <span className="font-semibold tracking-tight group-hover:text-primary">
-                      {author.name}
-                    </span>
-                    <span className="text-sm text-primary">{author.role}</span>
+                    <div className="flex items-center gap-3">
+                      {author.avatarUrl && !author.avatarUrl.startsWith("data:") ? (
+                        <img
+                          src={author.avatarUrl}
+                          alt=""
+                          width={48}
+                          height={48}
+                          className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/15"
+                        />
+                      ) : (
+                        <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                          {author.name.trim().slice(0, 1)}
+                        </span>
+                      )}
+                      <div className="min-w-0">
+                        <span className="block font-semibold tracking-tight group-hover:text-primary">
+                          {author.name}
+                        </span>
+                        <span className="text-sm text-primary">{author.role}</span>
+                      </div>
+                    </div>
                     <span className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                       {author.bio}
                     </span>

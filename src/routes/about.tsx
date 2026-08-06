@@ -12,7 +12,6 @@ import {
   Megaphone,
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { SiteImage } from "@/components/site/SiteImage";
 import { MarketsServeStrip } from "@/components/site/MarketsContact";
 import { TrustAuthoritySections } from "@/components/site/TrustAuthoritySections";
 import { siteImages } from "@/lib/site-images";
@@ -130,16 +129,18 @@ function About() {
                 </Link>
               </div>
             </div>
-            <SiteImage
-              src={siteImages.about.studio}
-              alt={siteImages.about.studioAlt}
-              loading="eager"
-              fetchPriority="high"
-              width={960}
-              height={720}
-              sizes="(max-width: 1024px) 100vw, 560px"
-              wrapperClassName="order-first aspect-[16/10] w-full overflow-hidden rounded-2xl shadow-[var(--shadow-card-hover)] lg:order-2 lg:aspect-[4/3]"
-            />
+            <figure className="about-hero-figure order-first lg:order-2">
+              <img
+                src={siteImages.about.studio}
+                alt={siteImages.about.studioAlt}
+                width={1200}
+                height={900}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                className="about-hero-img"
+              />
+            </figure>
           </div>
         </div>
       </section>
