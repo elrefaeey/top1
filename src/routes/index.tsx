@@ -247,7 +247,7 @@ function WhyUs() {
   ];
 
   return (
-    <section className="section bg-surface/50">
+    <section className="section tone-tinted">
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
           <Reveal>
@@ -354,7 +354,7 @@ function Stats() {
   if (items.length === 0) return null;
 
   return (
-    <section className="section section-compact-top">
+    <section className="section tone-deep">
       <div className="container-page">
         <div className="stats-band">
           <div className="stats-band-grid">

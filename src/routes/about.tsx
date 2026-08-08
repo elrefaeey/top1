@@ -182,7 +182,7 @@ function About() {
       </section>
 
       {/* Offers */}
-      <section className="section border-y border-border bg-surface" aria-labelledby="about-offers-heading">
+      <section className="section tone-tinted" aria-labelledby="about-offers-heading">
         <div className="container-page">
           <div className="page-intro-block me-auto w-full text-start">
             <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
@@ -235,7 +235,7 @@ function About() {
       <TrustAuthoritySections />
 
       {/* How we work — right aligned intro + process */}
-      <section className="section" aria-labelledby="about-steps-heading">
+      <section className="section tone-tinted" aria-labelledby="about-steps-heading">
         <div className="container-page">
           <div className="page-intro-block me-auto w-full text-start">
             <span className="page-intro-eyebrow">

@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_MEASUREMENT_ID: string;
   readonly VITE_SITE_URL: string;
   readonly VITE_GTM_ID?: string;
+  readonly VITE_GA_MEASUREMENT_ID?: string;
   readonly VITE_GSC_VERIFICATION?: string;
 }
 

@@ -75,7 +75,7 @@ function PricingPage() {
         desc="لا نضع أسعاراً ثابتة مبالغاً فيها أو غير دقيقة. بعد فهم نطاق العمل نرسل عرض سعر مخصص (ريال سعودي أو درهم إماراتي حسب السوق)."
       />
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page">
           <div className="grid gap-5 md:grid-cols-3">
             {PACKAGES.map((p) => (

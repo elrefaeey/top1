@@ -26,6 +26,13 @@ const ROUTE_MODULES: Record<string, unknown> = import.meta.glob("../../routes/**
   eager: false,
 });
 
+/**
+ * Placeholder for a literal dot written as `[.]` in a route file name.
+ * It must survive the flat-route `.` → `/` split, otherwise `robots[.]txt`
+ * becomes `/robots/txt` (a 404) instead of `/robots.txt`.
+ */
+const LITERAL_DOT = "\u0000";
+
 /** File name → URL path. Returns null when the file is not a public static page. */
 export function routeFileToPublicPath(filePath: string): string | null {
   const normalized = filePath.replace(/\\/g, "/");
@@ -35,12 +42,12 @@ export function routeFileToPublicPath(filePath: string): string | null {
 
   let rel = normalized.slice(idx + marker.length);
   rel = rel.replace(/\.(ts|tsx)$/, "");
-  rel = rel.replace(/\[\.\]/g, ".");
+  rel = rel.replace(/\[\.\]/g, LITERAL_DOT);
 
   if (rel === "__root") return null;
   if (rel === "index") return "/";
 
-  const path = "/" + rel.split(".").join("/");
+  const path = ("/" + rel.split(".").join("/")).split(LITERAL_DOT).join(".");
 
   if (path.includes("$")) return null;
   if (EXCLUDE_EXACT.has(path)) return null;

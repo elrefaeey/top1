@@ -155,7 +155,7 @@ function ServiceDetail() {
         </section>
       ) : null}
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page grid gap-10 md:grid-cols-[1fr_1.4fr]">
           <div>
             <span className="service-card-icon" aria-hidden>
@@ -174,7 +174,7 @@ function ServiceDetail() {
       </section>
 
       {seoBlock && (
-        <section className="section bg-surface border-y border-border">
+        <section className="section">
           <div className="container-page">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
               لماذا تختار Top1Markting؟
@@ -210,7 +210,7 @@ function ServiceDetail() {
       )}
 
       {seoBlock && seoBlock.faqs.length > 0 && (
-        <section className="section bg-surface border-y border-border">
+        <section className="section tone-tinted">
           <div className="container-page max-w-3xl">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">أسئلة شائعة</h2>
             <div className="mt-8 space-y-4">

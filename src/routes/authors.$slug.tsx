@@ -125,7 +125,7 @@ function AuthorProfile() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page author-profile-body">
           {author.expertise.length > 0 ? (
             <div className="author-profile-expertise">

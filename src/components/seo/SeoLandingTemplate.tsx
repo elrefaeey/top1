@@ -58,7 +58,7 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
         </div>
       </section>
 
-      <section className="section bg-surface border-y border-border">
+        <section className="section tone-tinted">
         <div className="container-page">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">كيف نعمل</h2>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -100,14 +100,14 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
       )}
 
       {page.relatedLinks && page.relatedLinks.length > 0 && (
-        <section className="section bg-surface border-t border-border">
+        <section className="section tone-tinted">
           <div className="container-page">
             <InternalLinksBlock title="صفحات ذات صلة" links={page.relatedLinks} />
           </div>
         </section>
       )}
 
-      <section className="section bg-surface border-t border-border">
+      <section className="section">
         <div className="container-page text-center max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">جاهز للبدء؟</h2>
           <p className="mt-3 text-muted-foreground">

@@ -131,11 +131,11 @@
   --font-sans: "Tajawal", "Tahoma", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Tajawal", "Tahoma", ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-soft: 0 1px 2px rgb(26 26 46 / 0.04);
-  --shadow-card: 0 2px 16px -4px rgb(26 26 46 / 0.06), 0 0 0 1px rgb(26 26 46 / 0.03);
-  --shadow-card-hover: 0 8px 32px -8px rgb(79 70 229 / 0.12), 0 0 0 1px rgb(79 70 229 / 0.08);
-  --shadow-elevated: 0 16px 48px -12px rgb(79 70 229 / 0.18);
-  --shadow-glow: 0 0 48px -8px rgb(79 70 229 / 0.28);
+  --shadow-soft: 0 1px 2px rgb(17 28 54 / 0.04);
+  --shadow-card: 0 2px 16px -4px rgb(17 28 54 / 0.06), 0 0 0 1px rgb(17 28 54 / 0.03);
+  --shadow-card-hover: 0 8px 32px -8px rgb(17 73 176 / 0.12), 0 0 0 1px rgb(17 73 176 / 0.08);
+  --shadow-elevated: 0 16px 48px -12px rgb(17 73 176 / 0.18);
+  --shadow-glow: 0 0 48px -8px rgb(17 73 176 / 0.28);
 
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 200ms;
@@ -143,13 +143,13 @@
   --duration-slow: 600ms;
 
   --gradient-hero:
-    radial-gradient(ellipse 80% 60% at 100% -20%, rgb(79 70 229 / 0.09), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 0% 100%, rgb(99 102 241 / 0.06), transparent 50%),
+    radial-gradient(ellipse 80% 60% at 100% -20%, rgb(17 73 176 / 0.09), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgb(30 99 224 / 0.06), transparent 50%),
     linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--background) 92%, var(--primary)) 100%);
-  --gradient-primary: linear-gradient(135deg, #6366F1 0%, #4F46E5 50%, #4338CA 100%);
-  --gradient-text: linear-gradient(135deg, #312E81 0%, #4F46E5 100%);
-  --gradient-mesh: radial-gradient(at 40% 20%, rgb(99 102 241 / 0.08) 0, transparent 50%),
-                  radial-gradient(at 80% 0%, rgb(79 70 229 / 0.06) 0, transparent 40%);
+  --gradient-primary: linear-gradient(135deg, #1E63E0 0%, #1149B0 50%, #0B398E 100%);
+  --gradient-text: linear-gradient(135deg, #072969 0%, #1149B0 100%);
+  --gradient-mesh: radial-gradient(at 40% 20%, rgb(30 99 224 / 0.08) 0, transparent 50%),
+                  radial-gradient(at 80% 0%, rgb(17 73 176 / 0.06) 0, transparent 40%);
 }
 
 :root {
@@ -157,33 +157,33 @@
 
   --background: #F7F6F3;
   --surface: #FEFDFB;
-  --foreground: #1A1A2E;
+  --foreground: #111C36;
 
   --card: #FEFDFB;
-  --card-foreground: #1A1A2E;
+  --card-foreground: #111C36;
 
   --popover: #FEFDFB;
-  --popover-foreground: #1A1A2E;
+  --popover-foreground: #111C36;
 
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
+  --primary: #1149B0;
+  --primary-hover: #0B398E;
   --primary-foreground: #FFFFFF;
 
   --secondary: #F0EEE8;
-  --secondary-foreground: #1A1A2E;
+  --secondary-foreground: #111C36;
 
   --muted: #F0EEE8;
-  --muted-foreground: #64648C;
+  --muted-foreground: #5C6785;
 
-  --accent: #EEEDFE;
-  --accent-foreground: #312E81;
+  --accent: #E5ECFA;
+  --accent-foreground: #072969;
 
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
 
   --border: #E8E6DF;
   --input: #E8E6DF;
-  --ring: #4F46E5;
+  --ring: #1149B0;
 }
 
 @layer base {
@@ -239,8 +239,8 @@
   }
 
   ::selection {
-    background-color: rgb(79 70 229 / 0.15);
-    color: #1A1A2E;
+    background-color: rgb(17 73 176 / 0.15);
+    color: #111C36;
   }
 
   :focus-visible {
@@ -362,6 +362,75 @@
   padding-top: clamp(1.25rem, 3vw, 2rem);
 }
 
+/* ─── Section tones — إيقاع خلفيات السكاشن ───
+   كل نغمة تعيد تعريف التوكنز محلياً، فالكروت والنصوص والحدود جوّاها تتكيّف تلقائياً.
+   يجب إعادة تعريف الاسمين (--x و --color-x): الأدوات تستخدم الأول، وطبقة base تستخدم الثاني.
+   القاعدة: لا نغمتين متطابقتين متجاورتين، وسكشن غامق واحد أو اثنان بالكثير في الصفحة. */
+
+.tone-tinted {
+  --surface: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --card: #FFFFFF;
+  --card-foreground: var(--foreground);
+  background:
+    radial-gradient(
+      ellipse 75% 60% at 100% 0%,
+      color-mix(in srgb, var(--primary) 6%, transparent),
+      transparent 60%
+    ),
+    color-mix(in srgb, var(--primary) 5%, var(--background));
+  border-block: 1px solid color-mix(in srgb, var(--primary) 10%, var(--border));
+}
+
+.tone-deep {
+  --background: #021C4D;
+  --color-background: #021C4D;
+  --surface: #0A2559;
+  --color-surface: #0A2559;
+  --card: #0A2559;
+  --card-foreground: #FFFFFF;
+  --foreground: #FFFFFF;
+  --color-foreground: #FFFFFF;
+  --muted-foreground: #AFC0DE;
+  --color-muted-foreground: #AFC0DE;
+  --muted: #0E2E63;
+  --border: #1B3D74;
+  --color-border: #1B3D74;
+  --input: #1B3D74;
+  --accent: #0E2E63;
+  --color-accent: #0E2E63;
+  --accent-foreground: #DCE7F9;
+  --secondary: #0E2E63;
+  --secondary-foreground: #FFFFFF;
+  --primary: #86AEF9;
+  --color-primary: #86AEF9;
+  --primary-hover: #B3CCFB;
+  --ring: #86AEF9;
+  --color-ring: #86AEF9;
+  color: var(--foreground);
+  background:
+    radial-gradient(ellipse 70% 60% at 100% 0%, rgb(30 99 224 / 0.30), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgb(63 126 243 / 0.14), transparent 50%),
+    linear-gradient(165deg, #02163C 0%, #04214F 55%, #072969 100%);
+  border-block: 1px solid #0E2E63;
+}
+
+/* .stats-band يفترض خلفية فاتحة — يتحوّل إلى لوح شبه شفاف داخل النغمة الغامقة. */
+.tone-deep .stats-band {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.08) 0%, rgb(255 255 255 / 0.03) 100%);
+  border-color: rgb(255 255 255 / 0.14);
+}
+.tone-deep .stats-band::before {
+  background-image:
+    radial-gradient(circle at 15% 50%, rgb(63 126 243 / 0.22), transparent 45%),
+    radial-gradient(circle at 85% 50%, rgb(134 174 249 / 0.14), transparent 45%);
+}
+@media (min-width: 768px) {
+  .tone-deep .stats-band-item:not(:last-child) {
+    border-inline-end-color: rgb(255 255 255 / 0.14);
+  }
+}
+
 @utility eyebrow {
   display: inline-flex;
   align-items: center;
@@ -387,8 +456,8 @@
 
 @utility grid-fade {
   background-image:
-    linear-gradient(to left, rgb(26 26 46 / 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(26 26 46 / 0.035) 1px, transparent 1px);
+    linear-gradient(to left, rgb(17 28 54 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(17 28 54 / 0.035) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 25%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, black 25%, transparent 70%);
@@ -608,8 +677,8 @@
   overflow: hidden;
   padding-block: clamp(3rem, 8vw, 5.5rem);
   background:
-    radial-gradient(ellipse 90% 70% at 50% -30%, rgb(79 70 229 / 0.14), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 50%, rgb(99 102 241 / 0.08), transparent 50%),
+    radial-gradient(ellipse 90% 70% at 50% -30%, rgb(17 73 176 / 0.14), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 50%, rgb(30 99 224 / 0.08), transparent 50%),
     var(--background);
 }
 
@@ -624,14 +693,14 @@
   height: 420px;
   top: -120px;
   inset-inline-start: -80px;
-  background: rgb(79 70 229 / 0.12);
+  background: rgb(17 73 176 / 0.12);
 }
 .home-hero-orb--2 {
   width: 320px;
   height: 320px;
   bottom: -60px;
   inset-inline-end: -40px;
-  background: rgb(129 140 248 / 0.1);
+  background: rgb(63 126 243 / 0.1);
 }
 
 .home-hero-grid {
@@ -1033,7 +1102,7 @@
 }
 
 .why-panel {
-  background: linear-gradient(165deg, #1A1A2E 0%, #252347 50%, #1e1b4b 100%);
+  background: linear-gradient(165deg, #021C4D 0%, #072969 50%, #0B398E 100%);
   color: white;
   border-radius: var(--radius-2xl);
   padding: clamp(2rem, 5vw, 3rem);
@@ -1044,7 +1113,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 100% 0%, rgb(99 102 241 / 0.25), transparent 50%);
+  background: radial-gradient(circle at 100% 0%, rgb(30 99 224 / 0.25), transparent 50%);
   pointer-events: none;
 }
 
@@ -1085,8 +1154,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 15% 50%, rgb(99 102 241 / 0.1), transparent 45%),
-    radial-gradient(circle at 85% 50%, rgb(129 140 248 / 0.08), transparent 45%);
+    radial-gradient(circle at 15% 50%, rgb(30 99 224 / 0.1), transparent 45%),
+    radial-gradient(circle at 85% 50%, rgb(63 126 243 / 0.08), transparent 45%);
   pointer-events: none;
 }
 
@@ -1198,7 +1267,7 @@
   border-radius: var(--radius-2xl);
   padding: clamp(2.5rem, 6vw, 4rem);
   text-align: center;
-  background: linear-gradient(135deg, #4F46E5 0%, #6366F1 40%, #818CF8 100%);
+  background: linear-gradient(135deg, #0B398E 0%, #1149B0 40%, #1E63E0 100%);
   color: white;
   box-shadow: var(--shadow-glow), var(--shadow-elevated);
 }
@@ -1737,7 +1806,7 @@
 .contact-input:focus,
 .contact-textarea:focus {
   border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
-  box-shadow: 0 0 0 3px rgb(79 70 229 / 0.12);
+  box-shadow: 0 0 0 3px rgb(17 73 176 / 0.12);
 }
 
 .contact-submit {
@@ -1800,7 +1869,7 @@
 }
 
 .footer-cta-band {
-  background: linear-gradient(135deg, #EEEDFE 0%, #E0E7FF 50%, #EDE9FE 100%);
+  background: linear-gradient(135deg, #E5ECFA 0%, #D7E3F8 50%, #E9F0FB 100%);
   border-top: 1px solid var(--border);
   padding-block: clamp(1.5rem, 3vw, 2.25rem);
 }
@@ -1856,8 +1925,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 55% 45% at 88% 8%, rgb(165 180 252 / 0.12), transparent 65%),
-    radial-gradient(ellipse 45% 35% at 50% 0%, rgb(129 140 248 / 0.1), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 88% 8%, rgb(134 174 249 / 0.12), transparent 65%),
+    radial-gradient(ellipse 45% 35% at 50% 0%, rgb(63 126 243 / 0.1), transparent 62%),
     radial-gradient(ellipse 60% 50% at 50% 100%, rgb(0 0 0 / 0.28), transparent 68%);
 }
 
@@ -1975,15 +2044,15 @@
   font-size: 0.8125rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, rgb(99 102 241 / 0.35), rgb(129 140 248 / 0.2));
-  border: 1px solid rgb(129 140 248 / 0.45);
-  box-shadow: 0 4px 14px -4px rgb(99 102 241 / 0.45);
+  background: linear-gradient(135deg, rgb(30 99 224 / 0.35), rgb(63 126 243 / 0.2));
+  border: 1px solid rgb(63 126 243 / 0.45);
+  box-shadow: 0 4px 14px -4px rgb(30 99 224 / 0.45);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .footer-call-btn:hover {
   transform: translateY(-1px);
-  border-color: rgb(165 180 252 / 0.65);
-  box-shadow: 0 6px 18px -4px rgb(99 102 241 / 0.55);
+  border-color: rgb(134 174 249 / 0.65);
+  box-shadow: 0 6px 18px -4px rgb(30 99 224 / 0.55);
   color: white;
 }
 
@@ -2110,7 +2179,7 @@
   color: white;
   background: var(--gradient-primary);
   border-radius: 0.75rem;
-  box-shadow: 0 6px 20px -6px rgb(79 70 229 / 0.45);
+  box-shadow: 0 6px 20px -6px rgb(17 73 176 / 0.45);
 }
 
 .footer-mobile-cta:hover {

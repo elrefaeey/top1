@@ -72,7 +72,7 @@ function Testimonials() {
   const showSkeleton = !showItems && (!mounted || isLoading);
 
   return (
-    <section className="section">
+    <section className="section tone-tinted">
       <div className="container-page">
         <SectionIntro eyebrow="آراء العملاء" title="يثق بنا شركاء النجاح." centered />
         {showSkeleton ? (
@@ -131,7 +131,7 @@ function BlogPreview() {
   const posts = (home?.blog ?? []).slice(0, 3);
   if (!mounted || posts.length === 0) return null;
   return (
-    <section className="section bg-surface/50">
+    <section className="section">
       <div className="container-page">
         <SectionIntro
           eyebrow="المدونة"
@@ -187,7 +187,7 @@ function FAQ() {
   const showSkeleton = !showFaqs && (!mounted || isLoading);
 
   return (
-    <section className="section">
+    <section className="section tone-tinted">
       <div className="container-page max-w-3xl">
         <SectionIntro eyebrow="أسئلة شائعة" title="إجابات سريعة." centered />
         {showSkeleton ? <ContentLoadingFallback /> : null}

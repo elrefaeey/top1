@@ -47,7 +47,7 @@ function Services() {
         desc="فريق محترف واحد. مسؤولية كاملة. من أول sketch لآخر dashboard تحليلات."
       />
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page space-y-8">
           {isLoading && services.length === 0 && (
             <div className="text-center py-12 text-muted-foreground text-sm">

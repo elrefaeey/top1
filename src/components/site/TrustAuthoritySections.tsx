@@ -18,7 +18,7 @@ export function TrustAuthoritySections() {
   return (
     <>
       {team.length > 0 && (
-        <section className="section border-y border-border bg-surface" aria-labelledby="eeat-team">
+        <section className="section" aria-labelledby="eeat-team">
           <div className="container-page">
             <div className="page-intro-block me-auto w-full text-start">
               <span className="page-intro-eyebrow">
@@ -72,7 +72,7 @@ export function TrustAuthoritySections() {
       )}
 
       {proofStats.length > 0 && (
-        <section className="section" aria-labelledby="eeat-stats">
+        <section className="section tone-deep" aria-labelledby="eeat-stats">
           <div className="container-page">
             <div className="page-intro-block me-auto mb-8 w-full text-start">
               <span className="page-intro-eyebrow">

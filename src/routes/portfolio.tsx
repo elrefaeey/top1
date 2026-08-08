@@ -42,7 +42,7 @@ function Portfolio() {
         desc="مشاريع حديثة مع علامات وفرق نحب العمل معهم — مواقع، متاجر، وتجربة مستخدم."
       />
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page">
           {items.length === 0 && (
             <p className="text-center text-muted-foreground py-16 surface-card">

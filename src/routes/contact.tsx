@@ -241,7 +241,7 @@ function ContactFaq() {
   const items = faqs.slice(0, 4);
 
   return (
-    <section className="contact-faq section">
+      <section className="contact-faq section tone-tinted">
       <div className="container-page contact-faq-inner">
         <div className="contact-faq-head">
           <span className="page-intro-eyebrow">

@@ -136,7 +136,7 @@ function PortfolioDetail() {
         (item.technologies && item.technologies.length > 0) ||
         item.resultsSummary ||
         item.client) && (
-        <section className="section border-y border-border bg-surface">
+        <section className="section tone-tinted">
           <div className="container-page max-w-3xl space-y-8">
             {item.client ? (
               <div>

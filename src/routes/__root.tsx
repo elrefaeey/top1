@@ -17,6 +17,7 @@ import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
 import { MobileStickyCta } from "../components/site/MobileStickyCta";
 import { DeferredFirebaseAnalytics } from "../components/site/DeferredFirebaseAnalytics";
+import { GoogleAnalytics } from "../components/site/GoogleAnalytics";
 import { GoogleTagManager } from "../components/site/GoogleTagManager";
 import { ToastProvider } from "../components/site/Toast";
 import { SITE_NAME } from "@/lib/site-config";
@@ -88,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: SITE_NAME },
-      { name: "theme-color", content: "#4F46E5" },
+      { name: "theme-color", content: "#1149B0" },
       { name: "geo.region", content: "SA;AE" },
       { name: "geo.placename", content: "Saudi Arabia, United Arab Emirates" },
       {
@@ -144,6 +145,7 @@ function RootComponent() {
       <ToastProvider>
         {/* Auth + Firestore stay out of the public shell — see AdminProviders under /admin */}
         {!isAdminRoute ? <DeferredFirebaseAnalytics /> : null}
+        {!isAdminRoute ? <GoogleAnalytics /> : null}
         <GoogleTagManager />
         {isAdminRoute ? (
           <Outlet />

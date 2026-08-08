@@ -85,7 +85,7 @@ function Blog() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section tone-tinted">
         <div className="container-page">
           <div className="flex flex-wrap gap-2 mb-12">
             {categories.map((c) => (
