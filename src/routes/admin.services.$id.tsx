@@ -1,8 +1,8 @@
-﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { PublishStatus, Service } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -91,12 +91,23 @@ function AdminServiceEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "خدمة جديدة" : "تعديل خدمة"} backTo="/admin/services" />
+      <AdminPageHeader
+        title={isNew ? "خدمة جديدة" : "تعديل خدمة"}
+        description={
+          isNew
+            ? "أضف عنوان الخدمة والوصف والميزات، ثم احفظ كمسودة أو انشر."
+            : "عدّل بيانات الخدمة ثم احفظ التغييرات."
+        }
+        backTo="/admin/services"
+      />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات الخدمة"
+          description="العنوان والرابط والوصف المختصر يظهرون في قائمة الخدمات."
+        >
           <AdminField label="العنوان" id="title">
             <input
               id="title"
@@ -107,9 +118,10 @@ function AdminServiceEdit() {
                 patch({ title, slug: isNew ? slugify(title) : form.slug });
               }}
               className={adminInputClass()}
+              placeholder="مثال: تصميم مواقع"
             />
           </AdminField>
-          <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط">
+          <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط — بالإنجليزية.">
             <input
               id="slug"
               dir="ltr"
@@ -117,6 +129,7 @@ function AdminServiceEdit() {
               value={form.slug}
               onChange={(e) => patch({ slug: e.target.value })}
               className={adminInputClass("text-start")}
+              placeholder="web-design"
             />
           </AdminField>
           <AdminField label="الوصف المختصر" id="shortDescription">
@@ -126,6 +139,7 @@ function AdminServiceEdit() {
               value={form.shortDescription}
               onChange={(e) => patch({ shortDescription: e.target.value })}
               className={adminInputClass()}
+              placeholder="جملة قصيرة تظهر في بطاقة الخدمة"
             />
           </AdminField>
           <AdminField label="الوصف الكامل" id="description">
@@ -137,6 +151,12 @@ function AdminServiceEdit() {
               className={adminInputClass()}
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="الميزات والتسليمات"
+          description="سطر واحد لكل بند — يظهر في صفحة تفاصيل الخدمة."
+        >
           <AdminField label="الميزات (سطر لكل ميزة)" id="features">
             <textarea
               id="features"
@@ -149,7 +169,7 @@ function AdminServiceEdit() {
           <AdminField
             label="ماذا ستحصل عليه (سطر لكل بند)"
             id="deliverables"
-            hint="يظهر في صفحة تفاصيل الخدمة تحت عنوان «ما ستحصل عليه»"
+            hint="يظهر تحت عنوان «ما ستحصل عليه»"
           >
             <textarea
               id="deliverables"
@@ -159,6 +179,9 @@ function AdminServiceEdit() {
               className={adminInputClass()}
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection title="الصورة والإعدادات">
           <ImageUploadField
             id="imageUrl"
             label="صورة الخدمة"
@@ -205,7 +228,7 @@ function AdminServiceEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
 
         <AdminSeoSection
           slug={form.slug}
@@ -214,6 +237,7 @@ function AdminServiceEdit() {
           onSlug={(slug) => patch({ slug })}
           onMetaTitle={(metaTitle) => patch({ metaTitle })}
           onMetaDescription={(metaDescription) => patch({ metaDescription })}
+          showSlug={false}
         />
 
         <AdminFormActions saving={save.isPending} onDelete={isNew ? undefined : handleDelete} />

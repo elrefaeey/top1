@@ -1,4 +1,4 @@
-import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, flattenTitle, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import {
   absoluteImageUrl,
   absoluteUrl,
@@ -15,7 +15,7 @@ export function creativeWorkSchema(item: PortfolioItem) {
   const path = `/portfolio/${portfolioItemSlug(item)}`;
   return {
     "@type": "CreativeWork",
-    name: item.title,
+    name: flattenTitle(item.title),
     description: item.description || item.metaDescription || item.category,
     image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
     url: absoluteUrl(path),

@@ -4,6 +4,7 @@ import { loginWithEmail } from "@/lib/firebase/auth";
 import { getAuthErrorMessage } from "@/lib/firebase/auth-errors";
 import { SITE_NAME } from "@/lib/site-config";
 import { useAuth } from "@/providers/AuthProvider";
+import { adminInputClass } from "@/components/admin/AdminUi";
 
 export const Route = createFileRoute("/admin/login")({
   component: AdminLogin,
@@ -39,39 +40,39 @@ function AdminLogin() {
 
   if (authLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">جاري التحميل…</div>
+      <div className="admin-login-page">
+        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
       </div>
     );
   }
 
   if (user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">جاري الدخول للوحة التحكم…</div>
+      <div className="admin-login-page">
+        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري الدخول للوحة التحكم…</div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="admin-login-page">
       <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold tracking-tight" dir="ltr">
-            {SITE_NAME} <span className="text-primary">Admin</span>
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--admin-text,#152238)]" dir="ltr">
+            {SITE_NAME} <span className="text-[var(--admin-primary,#1149b0)]">Admin</span>
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">سجّل الدخول لإدارة موقعك</p>
+          <p className="mt-2 text-sm text-[var(--admin-muted,#5b6b82)]">سجّل الدخول لإدارة موقعك</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="surface-card p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="admin-card space-y-4 p-6 sm:p-7">
           {error && (
-            <div className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive leading-relaxed">
+            <div className="rounded-[var(--admin-radius,0.625rem)] bg-destructive/10 px-3 py-2 text-sm leading-relaxed text-destructive">
               {error}
             </div>
           )}
 
           <div>
-            <label htmlFor="email" className="text-sm font-medium">
+            <label htmlFor="email" className="text-sm font-semibold">
               البريد الإلكتروني
             </label>
             <input
@@ -82,12 +83,12 @@ function AdminLogin() {
               dir="ltr"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-start"
+              className={adminInputClass("mt-1.5 text-start")}
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="text-sm font-medium">
+            <label htmlFor="password" className="text-sm font-semibold">
               كلمة المرور
             </label>
             <input
@@ -98,20 +99,16 @@ function AdminLogin() {
               dir="ltr"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 text-start"
+              className={adminInputClass("mt-1.5 text-start")}
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary w-full justify-center disabled:opacity-60"
-          >
+          <button type="submit" disabled={loading} className="admin-btn admin-btn-primary w-full">
             {loading ? "جاري التحقق…" : "تسجيل الدخول"}
           </button>
 
-          <p className="text-center text-xs text-muted-foreground pt-2">
-            <Link to="/" className="hover:text-primary">
+          <p className="pt-1 text-center text-xs text-[var(--admin-muted,#5b6b82)]">
+            <Link to="/" className="hover:text-[var(--admin-primary,#1149b0)]">
               ← العودة للموقع
             </Link>
           </p>

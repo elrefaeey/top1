@@ -6,7 +6,6 @@ import type {
   CmsPage,
   FaqItem,
   PortfolioItem,
-  PricingPlan,
   Service,
   SiteSettings,
   SiteStat,
@@ -28,7 +27,6 @@ export const cmsKeys = {
   testimonials: () => [...cmsKeys.all, "testimonials"] as const,
   authors: () => [...cmsKeys.all, "authors"] as const,
   author: (slug: string) => [...cmsKeys.all, "author", slug] as const,
-  pricing: () => [...cmsKeys.all, "pricing"] as const,
   faqs: () => [...cmsKeys.all, "faqs"] as const,
   stats: () => [...cmsKeys.all, "stats"] as const,
   page: (slug: string) => [...cmsKeys.all, "page", slug] as const,
@@ -184,15 +182,6 @@ export function useAuthor(slug: string) {
     queryKey: cmsKeys.author(slug),
     queryFn: () => cmsClient.getAuthorBySlug(slug) as Promise<WithId<Author> | null>,
     enabled: !!slug,
-    ...cmsQuery,
-  });
-}
-
-export function usePricingPlans() {
-  return useQuery({
-    queryKey: cmsKeys.pricing(),
-    queryFn: () => cmsClient.getPricingPlans() as Promise<WithId<PricingPlan>[]>,
-    placeholderData: [],
     ...cmsQuery,
   });
 }

@@ -63,6 +63,16 @@
       "source": "/case-studies/:path*",
       "destination": "/portfolio",
       "permanent": true
+    },
+    {
+      "source": "/cookies",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/pricing",
+      "destination": "/contact",
+      "permanent": true
     }
   ],
   "headers": [

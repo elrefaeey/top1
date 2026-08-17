@@ -124,7 +124,7 @@ export function CmsExternalLinkTool({
         </AdminField>
       </div>
 
-      <button type="button" onClick={insertExternalLink} className="btn-primary !py-2 !px-4 !text-sm">
+      <button type="button" onClick={insertExternalLink} className="admin-btn admin-btn-primary admin-btn-sm">
         <Link2 className="h-4 w-4" /> إدراج رابط خارجي
       </button>
     </div>

@@ -4,7 +4,6 @@ import {
   deleteAdminAuthor,
   deleteAdminFaq,
   deleteAdminPortfolioItem,
-  deleteAdminPricingPlan,
   deleteAdminService,
   deleteAdminSiteStat,
   deleteAdminTestimonial,
@@ -13,7 +12,6 @@ import {
   getAdminFaq,
   getAdminPage,
   getAdminPortfolioItem,
-  getAdminPricingPlan,
   getAdminService,
   getAdminSiteSettings,
   getAdminSiteStat,
@@ -24,7 +22,6 @@ import {
   listAdminLeads,
   listAdminPages,
   listAdminPortfolio,
-  listAdminPricing,
   listAdminServices,
   listAdminSiteStats,
   listAdminTestimonials,
@@ -33,7 +30,6 @@ import {
   saveAdminFaq,
   saveAdminPage,
   saveAdminPortfolioItem,
-  saveAdminPricingPlan,
   saveAdminService,
   saveAdminSiteSettings,
   saveAdminSiteStat,
@@ -46,7 +42,6 @@ import type {
   CmsPage,
   FaqItem,
   PortfolioItem,
-  PricingPlan,
   Service,
   SiteSettings,
   SiteStat,
@@ -61,8 +56,6 @@ export const adminKeys = {
   blogPost: (id: string) => [...adminKeys.all, "blog", id] as const,
   portfolio: () => [...adminKeys.all, "portfolio"] as const,
   portfolioItem: (id: string) => [...adminKeys.all, "portfolio", id] as const,
-  pricing: () => [...adminKeys.all, "pricing"] as const,
-  pricingPlan: (id: string) => [...adminKeys.all, "pricing", id] as const,
   testimonials: () => [...adminKeys.all, "testimonials"] as const,
   testimonial: (id: string) => [...adminKeys.all, "testimonial", id] as const,
   authors: () => [...adminKeys.all, "authors"] as const,
@@ -201,45 +194,6 @@ export function useDeletePortfolioItem() {
     mutationFn: deleteAdminPortfolioItem,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: adminKeys.portfolio() });
-      await invalidatePublic(qc);
-    },
-  });
-}
-
-// Pricing
-export function useAdminPricing() {
-  return useQuery({
-    queryKey: adminKeys.pricing(),
-    queryFn: listAdminPricing,
-    placeholderData: [],
-    ...adminQueryOptions,
-  });
-}
-export function useAdminPricingPlan(id: string, enabled = true) {
-  return useQuery({
-    queryKey: adminKeys.pricingPlan(id),
-    queryFn: () => getAdminPricingPlan(id),
-    enabled: enabled && id !== "new",
-    ...adminQueryOptions,
-  });
-}
-export function useSavePricingPlan() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Omit<PricingPlan, "id"> }) =>
-      saveAdminPricingPlan(id, data),
-    onSuccess: async () => {
-      await qc.invalidateQueries({ queryKey: adminKeys.pricing() });
-      await invalidatePublic(qc);
-    },
-  });
-}
-export function useDeletePricingPlan() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: deleteAdminPricingPlan,
-    onSuccess: async () => {
-      await qc.invalidateQueries({ queryKey: adminKeys.pricing() });
       await invalidatePublic(qc);
     },
   });

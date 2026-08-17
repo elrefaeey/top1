@@ -9,6 +9,7 @@ import {
   type FirestoreDocumentData,
 } from "@/lib/server/firebase-admin";
 import { SITE_NAME } from "@/lib/site-config";
+import { DEFAULT_BLOG_CATEGORY, normalizeBlogCategory } from "@/lib/cms/blog-categories";
 import type { AiBlogDraftInput, AiLog, GscSnapshot, SeoInsight } from "@/types/seo-automation";
 import type { BlogPost } from "@/types/cms";
 
@@ -59,7 +60,7 @@ export function buildAiBlogDraftPayload(
   // Prefer English ASCII slug when provided by AI SEO generator.
   const slug = requireNonEmpty(slugRaw, "slug");
   const excerpt = String(input.excerpt ?? "").trim() || content.replace(/<[^>]+>/g, " ").slice(0, 180).trim();
-  const category = String(input.category ?? "").trim() || "تصميم";
+  const category = normalizeBlogCategory(String(input.category ?? "").trim() || DEFAULT_BLOG_CATEGORY);
   const author = String(input.author ?? "").trim() || SITE_NAME;
   const keywords = Array.isArray(input.keywords)
     ? input.keywords.map((t) => String(t).trim()).filter(Boolean)

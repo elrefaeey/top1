@@ -1,6 +1,14 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Minus, Plus, Sparkles, Star, MessageSquareQuote } from "lucide-react";
+import {
+  ArrowRight,
+  HelpCircle,
+  Sparkles,
+  Star,
+  MessageSquareQuote,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { SectionIntro } from "@/components/site/SectionIntro";
 import { ContentError, Skeleton } from "@/components/site/ContentState";
@@ -18,6 +26,14 @@ function useHasMounted() {
     setMounted(true);
   }, []);
   return mounted;
+}
+
+/** First letter of the personal name, skipping Arabic honorifics. */
+function testimonialInitial(name: string) {
+  const cleaned = name
+    .replace(/^(الأستاذة|الاستاذة|الأستاذ|الاستاذ|المهندسة|المهندس|الكابتن|كابتن)\s+/u, "")
+    .trim();
+  return cleaned.charAt(0) || name.trim().charAt(0) || "?";
 }
 
 /** Below-the-fold home sections — code-split to shrink the initial home JS parse. */
@@ -66,58 +82,140 @@ function Process() {
 function Testimonials() {
   const mounted = useHasMounted();
   const { data: home, isLoading, isError, refetch } = useHomeBundle();
-  const items = home?.testimonials ?? [];
-  // Server + first client paint: skeleton only. Content only after mount.
+  const items = [...(home?.testimonials ?? [])].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  );
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const showItems = mounted && !isError && items.length > 0;
   const showSkeleton = !showItems && (!mounted || isLoading);
+  const total = items.length;
+
+  useEffect(() => {
+    if (total === 0) {
+      setIndex(0);
+      return;
+    }
+    setIndex((i) => ((i % total) + total) % total);
+  }, [total]);
+
+  const active = total > 0 ? ((index % total) + total) % total : 0;
+  const current = items[active];
+  const stars = current ? Math.max(1, Math.min(5, Math.round(Number(current.rating) || 5))) : 5;
+
+  const go = useCallback(
+    (delta: number) => {
+      if (total < 2) return;
+      setIndex((i) => {
+        const base = ((i % total) + total) % total;
+        return (base + delta + total) % total;
+      });
+    },
+    [total],
+  );
+
+  useEffect(() => {
+    if (!showItems || total < 2 || paused) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    const id = window.setInterval(() => go(1), 6500);
+    return () => window.clearInterval(id);
+  }, [showItems, total, paused, go]);
 
   return (
     <section className="section tone-tinted">
-      <div className="container-page">
+      <div className="container-page max-w-3xl">
         <SectionIntro eyebrow="آراء العملاء" title="يثق بنا شركاء النجاح." centered />
         {showSkeleton ? (
-          <div className="section-body grid gap-5 md:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="testimonial-card-new">
-                <Skeleton className="h-6 w-6 rounded-md" />
-                <Skeleton className="mt-4 h-20 w-full" />
-                <Skeleton className="mt-6 h-10 w-2/3" />
-              </div>
-            ))}
+          <div className="section-body" aria-busy="true">
+            <Skeleton className="h-56 w-full rounded-2xl" />
+            <div className="mt-4 flex justify-center gap-2">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <Skeleton className="h-3 w-24 self-center rounded-full" />
+              <Skeleton className="h-10 w-10 rounded-full" />
+            </div>
           </div>
         ) : null}
         {mounted && isError ? (
           <ContentError message="تعذّر تحميل آراء العملاء." onRetry={() => void refetch()} />
         ) : null}
-        {showItems ? (
-          <div className="section-body grid gap-5 md:grid-cols-3">
-            {items.map((t) => (
-              <div key={t.id} className="testimonial-card-new">
-                <MessageSquareQuote className="h-6 w-6 shrink-0 text-primary" aria-hidden />
-                <p className="mt-4 flex-1 break-words text-[15px] leading-relaxed">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-6 flex min-w-0 items-center gap-3 border-t border-border pt-5">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 font-semibold text-primary">
-                    {t.name[0]}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-semibold">{t.name}</div>
-                    <div className="truncate text-xs text-muted-foreground">
-                      {t.role}, {t.company}
-                    </div>
-                  </div>
-                  <div
-                    className="ms-auto flex shrink-0 text-primary"
-                    aria-label={`تقييم ${t.rating} من 5`}
-                  >
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden />
-                    ))}
-                  </div>
+        {showItems && current ? (
+          <div
+            className="section-body faq-slider"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false);
+            }}
+          >
+            <article
+              key={current.id}
+              className="testimonial-slider-card"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-roledescription="شريحة"
+              aria-label={`رأي ${active + 1} من ${total}`}
+            >
+              <MessageSquareQuote className="testimonial-slider-mark" aria-hidden />
+              <div className="testimonial-slider-top">
+                <div className="testimonial-slider-stars testimonial-stars-gold" aria-label={`تقييم ${stars} من 5`}>
+                  {Array.from({ length: stars }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden />
+                  ))}
                 </div>
               </div>
-            ))}
+              <blockquote className="testimonial-slider-quote">{current.quote}</blockquote>
+              <footer className="testimonial-slider-footer">
+                <span className="testimonial-slider-avatar" aria-hidden>
+                  {testimonialInitial(current.name)}
+                </span>
+                <div className="testimonial-slider-person min-w-0 flex-1">
+                  <cite className="testimonial-slider-name">{current.name}</cite>
+                  <p className="testimonial-slider-meta">
+                    {[current.role, current.company].filter(Boolean).join("، ")}
+                    {current.city ? ` — ${current.city}` : ""}
+                  </p>
+                </div>
+              </footer>
+            </article>
+
+            {total > 1 ? (
+              <div className="faq-slider-controls">
+                <button
+                  type="button"
+                  className="faq-slider-nav"
+                  onClick={() => go(-1)}
+                  aria-label="الرأي السابق"
+                >
+                  <ChevronRight className="h-5 w-5" aria-hidden />
+                </button>
+                <div className="faq-slider-dots" role="tablist" aria-label="اختيار رأي">
+                  {items.map((t, i) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={i === active}
+                      aria-label={`الرأي ${i + 1}`}
+                      className="faq-slider-dot"
+                      data-active={i === active}
+                      onClick={() => setIndex(i)}
+                    />
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="faq-slider-nav"
+                  onClick={() => go(1)}
+                  aria-label="الرأي التالي"
+                >
+                  <ChevronLeft className="h-5 w-5" aria-hidden />
+                </button>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -182,9 +280,35 @@ function FAQ() {
   const mounted = useHasMounted();
   const { data: home, isLoading, isError, refetch } = useHomeBundle();
   const faqs = home?.faqs ?? [];
-  const [open, setOpen] = useState<number | null>(0);
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const showFaqs = mounted && !isError && faqs.length > 0;
   const showSkeleton = !showFaqs && (!mounted || isLoading);
+  const total = faqs.length;
+  const active = total > 0 ? ((index % total) + total) % total : 0;
+  const current = faqs[active];
+
+  const go = useCallback(
+    (delta: number) => {
+      if (total < 2) return;
+      setIndex((i) => (i + delta + total) % total);
+    },
+    [total],
+  );
+
+  useEffect(() => {
+    if (!showFaqs || total < 2 || paused) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+    const id = window.setInterval(() => go(1), 6500);
+    return () => window.clearInterval(id);
+  }, [showFaqs, total, paused, go]);
+
+  useEffect(() => {
+    if (active >= total && total > 0) setIndex(0);
+  }, [active, total]);
 
   return (
     <section className="section tone-tinted">
@@ -194,39 +318,80 @@ function FAQ() {
         {mounted && isError ? (
           <ContentError message="تعذّر تحميل الأسئلة الشائعة." onRetry={() => void refetch()} />
         ) : null}
-        {showFaqs ? (
-          <div className="section-body flex flex-col gap-3">
-            {faqs.map((f, i) => {
-              const isOpen = open === i;
-              const panelId = `home-faq-panel-${f.id}`;
-              return (
-                <div key={f.id} className="faq-item-new" data-open={isOpen}>
-                  <button
-                    type="button"
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    className="faq-trigger"
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                  >
-                    <span className="min-w-0 font-medium text-[0.9375rem]">{f.question}</span>
-                    <span className="faq-trigger-icon" aria-hidden>
-                      {isOpen ? (
-                        <Minus className="h-3.5 w-3.5" />
-                      ) : (
-                        <Plus className="h-3.5 w-3.5" />
-                      )}
-                    </span>
-                  </button>
-                  {isOpen && (
-                    <div
-                      id={panelId}
-                      className="prose prose-sm max-w-none break-words px-5 pb-5 text-sm leading-relaxed text-muted-foreground"
-                      dangerouslySetInnerHTML={{ __html: f.answer }}
+        {showFaqs && current ? (
+          <div
+            className="section-body faq-slider"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false);
+            }}
+          >
+            <div
+              key={current.id}
+              className="faq-slider-card"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-roledescription="شريحة"
+              aria-label={`سؤال ${active + 1} من ${total}`}
+            >
+              <div className="faq-slider-meta">
+                <span className="faq-slider-badge" aria-hidden>
+                  <HelpCircle className="h-4 w-4" />
+                </span>
+              </div>
+              <h3 className="faq-slider-q">{current.question}</h3>
+              <div
+                className="faq-slider-a prose prose-sm max-w-none break-words"
+                dangerouslySetInnerHTML={{ __html: current.answer }}
+              />
+            </div>
+
+            {total > 1 ? (
+              <div className="faq-slider-controls">
+                <button
+                  type="button"
+                  className="faq-slider-nav"
+                  onClick={() => go(-1)}
+                  aria-label="السؤال السابق"
+                >
+                  <ChevronRight className="h-5 w-5" aria-hidden />
+                </button>
+                <div className="faq-slider-dots" role="tablist" aria-label="اختيار سؤال">
+                  {faqs.map((f, i) => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={i === active}
+                      aria-label={`السؤال ${i + 1}`}
+                      className="faq-slider-dot"
+                      data-active={i === active}
+                      onClick={() => setIndex(i)}
                     />
-                  )}
+                  ))}
                 </div>
-              );
-            })}
+                <button
+                  type="button"
+                  className="faq-slider-nav"
+                  onClick={() => go(1)}
+                  aria-label="السؤال التالي"
+                >
+                  <ChevronLeft className="h-5 w-5" aria-hidden />
+                </button>
+              </div>
+            ) : null}
+
+            {/* Keep full FAQ text in DOM for crawlers / schema consumers */}
+            <div className="sr-only">
+              {faqs.map((f) => (
+                <div key={`seo-${f.id}`}>
+                  <h3>{f.question}</h3>
+                  <div dangerouslySetInnerHTML={{ __html: f.answer }} />
+                </div>
+              ))}
+            </div>
           </div>
         ) : null}
       </div>
@@ -236,10 +401,13 @@ function FAQ() {
 
 function ContentLoadingFallback() {
   return (
-    <div className="section-body flex flex-col gap-3" aria-busy="true">
-      {[0, 1, 2].map((i) => (
-        <Skeleton key={i} className="h-14 w-full rounded-xl" />
-      ))}
+    <div className="section-body" aria-busy="true">
+      <Skeleton className="h-52 w-full rounded-2xl" />
+      <div className="mt-4 flex justify-center gap-2">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <Skeleton className="h-3 w-24 rounded-full self-center" />
+        <Skeleton className="h-10 w-10 rounded-full" />
+      </div>
     </div>
   );
 }

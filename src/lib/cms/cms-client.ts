@@ -38,7 +38,6 @@ export const cmsClient = {
   getTestimonials: () => fetchCmsApi("testimonials"),
   getAuthors: () => fetchCmsApi("authors"),
   getAuthorBySlug: (slug: string) => fetchCmsApi("author", { slug }),
-  getPricingPlans: () => fetchCmsApi("pricing"),
   getFaqs: () => fetchCmsApi("faqs"),
   getSiteStats: () => fetchCmsApi("stats"),
   getPageBySlug: (slug: string) => fetchCmsApi("page", { slug }),

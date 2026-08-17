@@ -31,7 +31,7 @@ function AdminServicesList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="الخدمات"
         description="إدارة خدمات الموقع — العنوان، SEO، والترتيب."

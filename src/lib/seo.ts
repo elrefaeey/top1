@@ -14,7 +14,7 @@ import {
 import { SITE_SOCIAL_SAME_AS } from "@/lib/site-social";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types/cms";
-import { blogPostSlug, portfolioItemSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, flattenTitle, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
 
@@ -50,7 +50,7 @@ export const STATIC_PAGE_OG_FALLBACK: Record<keyof typeof STATIC_PAGE_SEO, strin
   about: SITE_LOGO_URL,
   services: SITE_LOGO_URL,
   portfolio: SITE_LOGO_URL,
-  blog: SITE_LOGO_URL,
+  blog: "/blog-cover.png",
   contact: SITE_LOGO_URL,
 };
 
@@ -243,10 +243,8 @@ const PATH_SEGMENT_LABELS: Record<string, string> = {
   portfolio: "أعمالنا",
   blog: "المدونة",
   contact: "تواصل معنا",
-  pricing: "الأسعار",
   privacy: "سياسة الخصوصية",
   terms: "الشروط والأحكام",
-  cookies: "ملفات تعريف الارتباط",
   "web-design-saudi-arabia": "تصميم مواقع في السعودية",
   "web-design-riyadh": "تصميم مواقع الرياض",
   "web-design-qassim": "تصميم مواقع القصيم",
@@ -567,7 +565,8 @@ export function buildServiceHead(
 export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
   const slug = portfolioItemSlug({ slug: item.slug, id: slugParam });
   const path = `/portfolio/${slug}`;
-  const title = item.metaTitle?.trim() || `${item.title} | ${SITE_NAME}`;
+  const displayName = flattenTitle(item.title);
+  const title = item.metaTitle?.trim() || `${displayName} | ${SITE_NAME}`;
   const description = item.metaDescription?.trim() || item.description || item.category;
   return buildPageHead({
     title,
@@ -584,7 +583,7 @@ export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
         breadcrumbSchema([
           { name: "الرئيسية", path: "/" },
           { name: "أعمالنا", path: "/portfolio" },
-          { name: item.title, path },
+          { name: displayName, path },
         ]),
       ),
     ],
@@ -594,7 +593,7 @@ export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
 function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
   return {
     "@type": "CreativeWork",
-    name: item.title,
+    name: flattenTitle(item.title),
     description: item.description || item.metaDescription || item.category,
     image: item.imageUrl ? absoluteImageUrl(item.imageUrl) : absoluteImageUrl(DEFAULT_OG_IMAGE),
     url: absoluteUrl(path),

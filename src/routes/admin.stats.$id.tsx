@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import type { PublishStatus, SiteStat } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -65,16 +65,27 @@ function AdminStatEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "إحصائية جديدة" : "تعديل إحصائية"} backTo="/admin/stats" />
+      <AdminPageHeader
+        title={isNew ? "إحصائية جديدة" : "تعديل إحصائية"}
+        description={
+          isNew
+            ? "أضف القيمة والوصف والأيقونة، ثم احفظ كمسودة أو انشر."
+            : "عدّل بيانات الإحصائية ثم احفظ التغييرات."
+        }
+        backTo="/admin/stats"
+      />
       {saveError && (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {saveError}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات الإحصائية"
+          description="الرقم والوصف والأيقونة يظهرون في شريط الإحصائيات."
+        >
           <AdminField label="الرقم / القيمة" id="value">
             <input
               id="value"
@@ -110,6 +121,9 @@ function AdminStatEdit() {
               ))}
             </select>
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection title="نشر" description="ترتيب الظهور وحالة النشر.">
           <AdminField label="الترتيب" id="order">
             <input
               id="order"
@@ -123,7 +137,8 @@ function AdminStatEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminFormActions
           saving={save.isPending}
           onDelete={

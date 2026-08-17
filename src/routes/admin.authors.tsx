@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -30,7 +30,7 @@ function AdminAuthorsList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="الكتّاب والفريق"
         description="ملفات E-E-A-T للكتّاب والخبراء المعروضة في الموقع."

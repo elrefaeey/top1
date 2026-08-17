@@ -35,7 +35,7 @@ function AdminLeadsList() {
   const { data = [], isFetching } = useAdminLeads();
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="الرسائل"
         description="استفسارات الزوار من نموذج التواصل — الاسم ورقم الجوال والرسالة."
@@ -47,7 +47,7 @@ function AdminLeadsList() {
       )}
 
       {data.length > 0 && (
-        <div className="surface-card overflow-hidden">
+        <div className="admin-table-wrap">
           <Table>
             <TableHeader>
               <TableRow>

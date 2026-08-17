@@ -10,7 +10,6 @@ export const COLLECTIONS = {
   blogTags: "blog_tags",
   testimonials: "testimonials",
   authors: "authors",
-  pricingPlans: "pricing_plans",
   faqs: "faqs",
   siteStats: "site_stats",
   leads: "leads",

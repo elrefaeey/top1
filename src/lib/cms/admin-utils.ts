@@ -1,11 +1,27 @@
 export function slugify(text: string): string {
-  return text
-    .trim()
+  return flattenTitle(text)
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s-]/gu, "")
     .replace(/[\s_]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+/** Collapse line breaks for SEO, alt text, and browser tabs. */
+export function flattenTitle(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+/** Split "Brand\\nSpecialty" titles used on portfolio pages. */
+export function splitDisplayTitle(title: string): { name: string; specialty: string } {
+  const parts = title
+    .split(/\n+/u)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return {
+    name: parts[0] || title.trim(),
+    specialty: parts.slice(1).join(" "),
+  };
 }
 
 /** Slug used in public blog URLs — falls back to document id when slug is missing. */

@@ -229,7 +229,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
           <button
             type="button"
             onClick={insertSectionLink}
-            className="btn-ghost !py-2 !px-4 !text-sm"
+            className="admin-btn admin-btn-ghost admin-btn-sm"
           >
             <Link2 className="h-4 w-4" /> إدراج رابط إلى القسم
           </button>
@@ -279,7 +279,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
             type="button"
             disabled={uploading}
             onClick={() => triggerUpload("cursor")}
-            className={cn("btn-primary !py-2 !px-4 !text-sm", uploading && "opacity-60")}
+            className={cn("admin-btn admin-btn-primary admin-btn-sm", uploading && "opacity-60")}
           >
             {uploading && pendingMode === "cursor" ? (
               <>
@@ -295,7 +295,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
             type="button"
             disabled={uploading}
             onClick={() => triggerUpload("end")}
-            className={cn("btn-ghost !py-2 !px-4 !text-sm", uploading && "opacity-60")}
+            className={cn("admin-btn admin-btn-ghost admin-btn-sm", uploading && "opacity-60")}
           >
             {uploading && pendingMode === "end" ? (
               <>

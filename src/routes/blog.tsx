@@ -56,7 +56,7 @@ function Blog() {
           <div className="grid items-center gap-5 lg:grid-cols-2 lg:gap-12">
             <SiteImage
               src={siteImages.blog.default}
-              alt="مقالات تصميم مواقع وSEO"
+              alt={siteImages.blog.defaultAlt}
               width={1280}
               height={800}
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -87,15 +87,16 @@ function Blog() {
 
       <section className="section tone-tinted">
         <div className="container-page">
-          <div className="flex flex-wrap gap-2 mb-12">
+          <div className="mb-12 flex flex-wrap items-center justify-center gap-2.5">
             {categories.map((c) => (
               <button
                 key={c}
+                type="button"
                 onClick={() => setCat(c)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+                className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${
                   cat === c
-                    ? "bg-[var(--gradient-primary)] text-white border-transparent"
-                    : "border-border bg-surface text-muted-foreground hover:text-foreground hover:border-primary/30"
+                    ? "border-primary bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
+                    : "border-border/80 bg-surface text-foreground shadow-sm hover:border-primary/40 hover:text-primary"
                 }`}
               >
                 {c}

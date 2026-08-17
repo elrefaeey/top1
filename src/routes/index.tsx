@@ -5,8 +5,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
 import { useHomeBundle } from "@/hooks/use-cms";
 import { statIcon } from "@/lib/stat-icons";
-import { portfolioItemSlug } from "@/lib/cms/admin-utils";
-import { serviceIcon } from "@/lib/service-icons";
+import { flattenTitle, portfolioItemSlug, splitDisplayTitle } from "@/lib/cms/admin-utils";
+import { serviceIcon } from "@/lib/cms/icons";
 import { SITE_NAME } from "@/lib/site-config";
 import { siteImages } from "@/lib/site-images";
 import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
@@ -309,7 +309,9 @@ function Portfolio() {
           }
         />
         <div className="section-body portfolio-home-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {preview.map((p, i) => (
+          {preview.map((p, i) => {
+            const { name, specialty } = splitDisplayTitle(p.title);
+            return (
             <Reveal key={p.id} delay={i * 100} className="h-full min-w-0 w-full">
               <Link
                 to="/portfolio/$slug"
@@ -319,7 +321,7 @@ function Portfolio() {
                 {p.imageUrl ? (
                   <SiteImage
                     src={p.imageUrl}
-                    alt={p.title}
+                    alt={flattenTitle(p.title)}
                     overlay
                     width={640}
                     height={480}
@@ -332,16 +334,22 @@ function Portfolio() {
                 )}
                 <div className="portfolio-home-card-body p-5 flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-[0.9375rem] group-hover:text-primary transition-colors line-clamp-2">
-                      {p.title}
+                    <h3 className="font-semibold text-[0.9375rem] group-hover:text-primary transition-colors">
+                      {name}
                     </h3>
+                    {specialty ? (
+                      <p className="mt-0.5 text-sm font-medium text-foreground/80 line-clamp-1">
+                        {specialty}
+                      </p>
+                    ) : null}
                     <p className="text-sm text-muted-foreground mt-0.5 truncate">{p.category}</p>
                   </div>
                   <ArrowUpRight className="h-4 w-4 rtl-flip text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                 </div>
               </Link>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

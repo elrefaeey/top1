@@ -1,8 +1,8 @@
-﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { PortfolioItem, PublishStatus } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -77,23 +77,40 @@ function AdminPortfolioEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "مشروع جديد" : "تعديل مشروع"} backTo="/admin/portfolio" />
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
-          <AdminField label="العنوان" id="title">
-            <input
+      <AdminPageHeader
+        title={isNew ? "مشروع جديد" : "تعديل مشروع"}
+        description={
+          isNew
+            ? "أضف عنوان المشروع والوصف والصورة، ثم احفظ كمسودة أو انشر."
+            : "عدّل بيانات المشروع ثم احفظ التغييرات."
+        }
+        backTo="/admin/portfolio"
+      />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات المشروع"
+          description="العنوان والرابط والتصنيف يظهرون في قائمة الأعمال."
+        >
+          <AdminField
+            label="العنوان"
+            id="title"
+            hint="اضغط Enter لتنزيل سطر جديد. يظهر بنفس التقسيم في صفحة المشروع."
+          >
+            <textarea
               id="title"
               required
+              rows={2}
               value={form.title}
               onChange={(e) =>
                 patch({ title: e.target.value, slug: isNew ? slugify(e.target.value) : form.slug })
               }
-              className={adminInputClass()}
+              className={adminInputClass("min-h-[4.5rem] resize-y")}
+              placeholder={"مثال:\nVEE\nمتجر أزياء نسائية عصرية"}
             />
           </AdminField>
-          <AdminField label="Slug" id="slug">
+          <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط — بالإنجليزية.">
             <input
               id="slug"
               dir="ltr"
@@ -101,6 +118,7 @@ function AdminPortfolioEdit() {
               value={form.slug}
               onChange={(e) => patch({ slug: e.target.value })}
               className={adminInputClass("text-start")}
+              placeholder="fashion-store"
             />
           </AdminField>
           <AdminField label="التصنيف" id="category">
@@ -109,6 +127,7 @@ function AdminPortfolioEdit() {
               value={form.category}
               onChange={(e) => patch({ category: e.target.value })}
               className={adminInputClass()}
+              placeholder="تصميم مواقع"
             />
           </AdminField>
           <AdminField label="الوصف" id="description">
@@ -118,14 +137,22 @@ function AdminPortfolioEdit() {
               value={form.description}
               onChange={(e) => patch({ description: e.target.value })}
               className={adminInputClass()}
+              placeholder="وصف مختصر للمشروع يظهر في البطاقة وصفحة التفاصيل"
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="تفاصيل المشروع"
+          description="معلومات إضافية اختيارية — اترك الحقول فارغة إن لم تتوفر بيانات حقيقية."
+        >
           <AdminField label="العميل (اختياري)" id="client">
             <input
               id="client"
               value={form.client ?? ""}
               onChange={(e) => patch({ client: e.target.value || undefined })}
               className={adminInputClass()}
+              placeholder="اسم العميل أو الشركة"
             />
           </AdminField>
           <AdminField
@@ -207,6 +234,12 @@ function AdminPortfolioEdit() {
               className={adminInputClass("text-start")}
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="صورة وإعدادات"
+          description="صورة المشروع والترتيب وحالة النشر."
+        >
           <ImageUploadField
             id="imageUrl"
             folder="portfolio"
@@ -234,6 +267,7 @@ function AdminPortfolioEdit() {
               value={tagsText}
               onChange={(e) => setTagsText(e.target.value)}
               className={adminInputClass("text-start")}
+              placeholder="ecommerce, redesign"
             />
           </AdminField>
           <AdminField label="الترتيب" id="order">
@@ -249,7 +283,8 @@ function AdminPortfolioEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminSeoSection
           slug={form.slug}
           metaTitle={form.metaTitle}
@@ -257,6 +292,7 @@ function AdminPortfolioEdit() {
           onSlug={(slug) => patch({ slug })}
           onMetaTitle={(v) => patch({ metaTitle: v })}
           onMetaDescription={(v) => patch({ metaDescription: v })}
+          showSlug={false}
         />
         <AdminFormActions
           saving={save.isPending}

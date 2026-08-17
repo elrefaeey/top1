@@ -1,6 +1,18 @@
 import type { ReactNode } from "react";
 import { Link, useMatch } from "@tanstack/react-router";
-import { ArrowRight, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
+import {
+  ArrowRight,
+  FileText,
+  Image as ImageIcon,
+  LayoutList,
+  Pencil,
+  Plus,
+  Search,
+  Settings2,
+  Sparkles,
+  Trash2,
+  type LucideIcon,
+} from "lucide-react";
 import type { PublishStatus } from "@/types/cms";
 import { cn } from "@/lib/utils";
 import {
@@ -12,6 +24,28 @@ import {
 
 /* Shared admin UI co-exports hooks/helpers for DX — refresh boundary lives at route level. */
 /* eslint-disable react-refresh/only-export-components */
+
+export type AdminSectionTone = "blue" | "teal" | "violet" | "amber" | "emerald" | "rose" | "sky" | "slate";
+
+function inferSectionTone(title: string): AdminSectionTone {
+  const t = title.toLowerCase();
+  if (/seo|سيو|meta/.test(t)) return "emerald";
+  if (/صورة|غلاف|وسائط|avatar|ميديا/.test(t)) return "violet";
+  if (/تصنيف|نشر|إعداد|ترتيب|حالة/.test(t)) return "amber";
+  if (/محتوى|وصف|سيرة|اقتباس|سؤال|إجابة|ميزات|تفاصيل|تسليم/.test(t)) return "teal";
+  if (/أساسي|عنوان|خدمة|كاتب|اسم|باقة|مشروع|رأي|إحصائ/.test(t)) return "blue";
+  if (/زر|cta|رابط/.test(t)) return "sky";
+  return "slate";
+}
+
+function inferSectionIcon(title: string, tone: AdminSectionTone): LucideIcon {
+  if (/seo|سيو|meta/.test(title.toLowerCase())) return Search;
+  if (/صورة|غلاف|وسائط|avatar/.test(title)) return ImageIcon;
+  if (/تصنيف|نشر|إعداد|ترتيب|حالة/.test(title)) return Settings2;
+  if (/محتوى|وصف|سيرة|اقتباس|سؤال|ميزات|تفاصيل/.test(title)) return FileText;
+  if (tone === "blue") return Sparkles;
+  return LayoutList;
+}
 
 export function AdminPageHeader({
   title,
@@ -31,26 +65,30 @@ export function AdminPageHeader({
   actionLabel?: string;
 }) {
   return (
-    <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
+    <div className="admin-page-hero mb-6 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
       <div className="min-w-0">
         {backTo && (
           <Link
             to={backTo}
-            className="mb-2 inline-flex min-h-11 items-center gap-1 text-sm text-muted-foreground hover:text-primary"
+            className="mb-2 inline-flex min-h-10 items-center gap-1.5 text-sm text-[var(--admin-muted,#5b6b82)] hover:text-[var(--admin-primary,#1149b0)]"
           >
             <ArrowRight className="h-3.5 w-3.5 rtl-flip" /> {backLabel}
           </Link>
         )}
-        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
+        <h1 className="text-xl font-bold tracking-tight text-[var(--admin-text,#152238)] sm:text-2xl">
+          {title}
+        </h1>
         {description && (
-          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[var(--admin-muted,#5b6b82)]">
+            {description}
+          </p>
         )}
       </div>
       {actionTo && actionLabel && (
         <Link
           to={actionTo}
           params={actionParams}
-          className="btn-primary inline-flex w-full justify-center !py-2.5 !px-4 !text-sm sm:w-auto"
+          className="admin-btn admin-btn-primary w-full sm:w-auto"
         >
           <Plus className="h-4 w-4" /> {actionLabel}
         </Link>
@@ -66,15 +104,15 @@ export function useAdminChildRoute(from: string) {
 
 export function AdminStatusBadge({ status }: { status: PublishStatus | string }) {
   const map: Record<string, string> = {
-    published: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
-    draft: "bg-amber-500/10 text-amber-700 border-amber-500/20",
-    scheduled: "bg-blue-500/10 text-blue-700 border-blue-500/20",
-    new: "bg-primary/10 text-primary border-primary/20",
-    contacted: "bg-amber-500/10 text-amber-700 border-amber-500/20",
-    closed: "bg-muted text-muted-foreground border-border",
-    pending: "bg-amber-500/10 text-amber-700 border-amber-500/20",
-    reviewed: "bg-blue-500/10 text-blue-700 border-blue-500/20",
-    completed: "bg-emerald-500/10 text-emerald-700 border-emerald-500/20",
+    published: "bg-emerald-500/12 text-emerald-800 border-emerald-500/25",
+    draft: "bg-amber-500/12 text-amber-800 border-amber-500/25",
+    scheduled: "bg-sky-500/12 text-sky-800 border-sky-500/25",
+    new: "bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_12%,white)] text-[var(--admin-primary,#1149b0)] border-[color-mix(in_srgb,var(--admin-primary,#1149b0)_25%,transparent)]",
+    contacted: "bg-amber-500/12 text-amber-800 border-amber-500/25",
+    closed: "bg-[var(--admin-surface-muted,#eef1f6)] text-[var(--admin-muted,#5b6b82)] border-[var(--admin-border,#dde3ec)]",
+    pending: "bg-amber-500/12 text-amber-800 border-amber-500/25",
+    reviewed: "bg-sky-500/12 text-sky-800 border-sky-500/25",
+    completed: "bg-emerald-500/12 text-emerald-800 border-emerald-500/25",
   };
   const labels: Record<string, string> = {
     published: "منشور",
@@ -90,7 +128,7 @@ export function AdminStatusBadge({ status }: { status: PublishStatus | string })
   return (
     <span
       className={cn(
-        "inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex rounded-md border px-2.5 py-0.5 text-xs font-semibold",
         map[status] ?? map.draft,
       )}
     >
@@ -112,36 +150,74 @@ export function AdminField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-medium">
+      <label htmlFor={id} className="text-sm font-semibold text-[var(--admin-text,#152238)]">
         {label}
       </label>
       <div className="mt-1.5">{children}</div>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="mt-1.5 text-xs leading-relaxed text-[var(--admin-muted,#5b6b82)]">{hint}</p>}
     </div>
   );
 }
 
 export function adminInputClass(extra = "") {
-  return cn(
-    "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30",
-    extra,
-  );
+  return cn("admin-input", extra);
 }
 
 export function AdminCard({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("surface-card p-4 sm:p-5 md:p-6", className)}>{children}</div>;
+  return <div className={cn("admin-card p-4 sm:p-5 md:p-6", className)}>{children}</div>;
+}
+
+/** بطاقة نموذج ملوّنة بأيقونة — لنماذج الإضافة/التعديل */
+export function AdminCardSection({
+  title,
+  description,
+  children,
+  className,
+  tone,
+  icon: IconProp,
+}: {
+  title: string;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+  tone?: AdminSectionTone;
+  icon?: LucideIcon;
+}) {
+  const resolvedTone = tone ?? inferSectionTone(title);
+  const Icon = IconProp ?? inferSectionIcon(title, resolvedTone);
+
+  return (
+    <div className={cn("admin-card admin-card-section", className)} data-tone={resolvedTone}>
+      <div className="admin-card-section-head">
+        <span className="admin-card-section-icon" aria-hidden>
+          <Icon className="h-4 w-4" />
+        </span>
+        <div className="min-w-0 pt-0.5">
+          <h2 className="text-sm font-bold text-[var(--admin-text,#152238)]">{title}</h2>
+          {description && (
+            <p className="mt-0.5 text-xs leading-relaxed text-[var(--admin-muted,#5b6b82)]">
+              {description}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="admin-card-section-body">{children}</div>
+    </div>
+  );
 }
 
 export function AdminLoading() {
-  return <div className="p-8 text-center text-sm text-muted-foreground">جاري التحميل…</div>;
+  return (
+    <div className="p-10 text-center text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
+  );
 }
 
 /** شريط تحميل خفيف — لا يحجب الصفحة */
 export function AdminFetchingBar({ show }: { show?: boolean }) {
   if (!show) return null;
   return (
-    <div className="mb-4 h-0.5 overflow-hidden rounded-full bg-primary/15">
-      <div className="h-full w-1/3 animate-pulse rounded-full bg-primary" />
+    <div className="mb-4 h-1 overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_12%,transparent)]">
+      <div className="h-full w-1/3 animate-pulse rounded-full bg-[var(--admin-primary,#1149b0)]" />
     </div>
   );
 }
@@ -158,10 +234,10 @@ export function AdminEmpty({
   actionLabel?: string;
 }) {
   return (
-    <div className="surface-card p-10 text-center">
-      <p className="text-muted-foreground text-sm">{message}</p>
+    <div className="admin-card p-10 text-center sm:p-12">
+      <p className="text-sm text-[var(--admin-muted,#5b6b82)]">{message}</p>
       {actionTo && actionLabel && (
-        <Link to={actionTo} params={actionParams} className="btn-primary mt-4 inline-flex !text-sm">
+        <Link to={actionTo} params={actionParams} className="admin-btn admin-btn-primary mt-5">
           <Plus className="h-4 w-4" /> {actionLabel}
         </Link>
       )}
@@ -179,19 +255,18 @@ export function AdminFormActions({
   deleteLabel?: string;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border">
-      <button type="submit" disabled={saving} className="btn-primary disabled:opacity-60">
+    <div className="admin-form-actions-bar">
+      <button type="submit" disabled={saving} className="admin-btn admin-btn-primary min-w-[7.5rem]">
         {saving ? "جاري الحفظ…" : "حفظ"}
       </button>
       {onDelete && (
-        <button
-          type="button"
-          onClick={onDelete}
-          className="btn-ghost !text-destructive hover:!border-destructive/30"
-        >
+        <button type="button" onClick={onDelete} className="admin-btn admin-btn-danger">
           {deleteLabel}
         </button>
       )}
+      <p className="ms-auto hidden text-xs text-[var(--admin-muted,#5b6b82)] sm:block">
+        احفظ التغييرات قبل مغادرة الصفحة
+      </p>
     </div>
   );
 }
@@ -229,13 +304,12 @@ export function AdminSeoSection({
         : `${descLen} حرف — المثالي 120–160`;
 
   return (
-    <AdminCard className="space-y-4">
-      <div>
-        <h2 className="font-semibold">SEO</h2>
-        <p className="mt-1 text-xs text-muted-foreground">
-          العناوين والوصف تظهر في Google ومشاركات السوشيال ميديا.
-        </p>
-      </div>
+    <AdminCardSection
+      title="SEO"
+      description="العناوين والوصف تظهر في Google ومشاركات السوشيال ميديا."
+      tone="emerald"
+      icon={Search}
+    >
       {showSlug && (
         <AdminField label="Slug" id="slug" hint="معرّف الصفحة في الرابط — بالإنجليزية.">
           <input
@@ -266,7 +340,7 @@ export function AdminSeoSection({
           placeholder="وصف مختصر يشجّع على النقر"
         />
       </AdminField>
-    </AdminCard>
+    </AdminCardSection>
   );
 }
 
@@ -307,9 +381,11 @@ export function AdminSection({
 }) {
   return (
     <section className={cn("mb-8", className)}>
-      <div className="mb-3">
-        <h2 className="text-base font-semibold">{title}</h2>
-        {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
+      <div className="mb-3.5">
+        <h2 className="text-base font-semibold text-[var(--admin-text,#152238)]">{title}</h2>
+        {description && (
+          <p className="mt-0.5 text-sm text-[var(--admin-muted,#5b6b82)]">{description}</p>
+        )}
       </div>
       {children}
     </section>
@@ -324,16 +400,7 @@ export function AdminTableCard({
   children: ReactNode;
   className?: string;
 }) {
-  return (
-    <div
-      className={cn(
-        "surface-card max-w-full overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn("admin-table-wrap", className)}>{children}</div>;
 }
 
 export function AdminActionLink({
@@ -350,7 +417,7 @@ export function AdminActionLink({
   icon?: typeof Pencil;
 }) {
   const className =
-    "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors";
+    "inline-flex items-center gap-1.5 rounded-[var(--admin-radius,0.625rem)] px-2.5 py-1.5 text-xs font-semibold text-[var(--admin-primary,#1149b0)] hover:bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] transition-colors";
 
   if (href) {
     return (
@@ -387,7 +454,7 @@ export function AdminRowActions({
       <Link
         to={editTo}
         params={editParams}
-        className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] text-[var(--admin-muted,#5b6b82)] transition-colors hover:bg-[var(--admin-surface-muted,#eef1f6)] hover:text-[var(--admin-text,#152238)]"
         title="تحرير"
         aria-label="تحرير"
       >
@@ -397,7 +464,7 @@ export function AdminRowActions({
         <button
           type="button"
           onClick={onDelete}
-          className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+          className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] text-[var(--admin-muted,#5b6b82)] transition-colors hover:bg-destructive/10 hover:text-destructive"
           title={deleteLabel}
           aria-label={deleteLabel}
         >
@@ -432,12 +499,12 @@ export function AdminSeoScorePanel({
   const items = getSummaryChecks(result.checks).slice(0, 5);
 
   return (
-    <div className="surface-card flex h-full flex-col p-4 md:p-5">
+    <div className="admin-card flex h-full flex-col p-4 md:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="font-semibold truncate">{title}</h3>
+          <h3 className="truncate font-semibold text-[var(--admin-text,#152238)]">{title}</h3>
           {subtitle && (
-            <p className="mt-0.5 text-xs text-muted-foreground truncate" dir="ltr">
+            <p className="mt-0.5 truncate text-xs text-[var(--admin-muted,#5b6b82)]" dir="ltr">
               {subtitle}
             </p>
           )}
@@ -446,7 +513,7 @@ export function AdminSeoScorePanel({
           <div className="text-2xl font-bold tabular-nums leading-none" dir="ltr">
             {result.score}
           </div>
-          <div className="text-[10px] text-muted-foreground" dir="ltr">
+          <div className="text-[10px] text-[var(--admin-muted,#5b6b82)]" dir="ltr">
             / 100
           </div>
           <div className={cn("mt-1 text-xs font-medium", result.labelClassName)}>
@@ -455,7 +522,7 @@ export function AdminSeoScorePanel({
         </div>
       </div>
 
-      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-muted">
+      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef1f6)]">
         <div
           className={cn("h-full rounded-full transition-all", scoreBarColor(result.score))}
           style={{ width: `${result.score}%` }}
@@ -466,7 +533,13 @@ export function AdminSeoScorePanel({
         {items.map((item) => (
           <li key={item.id} className="flex items-start gap-2 text-xs leading-snug">
             <span className="shrink-0">{checkIcon(item.status)}</span>
-            <span className={item.status === "pass" ? "text-foreground" : "text-muted-foreground"}>
+            <span
+              className={
+                item.status === "pass"
+                  ? "text-[var(--admin-text,#152238)]"
+                  : "text-[var(--admin-muted,#5b6b82)]"
+              }
+            >
               {item.label}
             </span>
           </li>
@@ -474,7 +547,7 @@ export function AdminSeoScorePanel({
       </ul>
 
       {editTo && (
-        <div className="mt-4 pt-3 border-t border-border">
+        <div className="mt-4 border-t border-[var(--admin-border,#dde3ec)] pt-3">
           <AdminActionLink to={editTo} params={editParams} label="تحرير SEO" />
         </div>
       )}
@@ -496,7 +569,7 @@ export function AdminMetaPreview({
     <p
       className={cn(
         "text-xs leading-relaxed line-clamp-2 [unicode-bidi:plaintext]",
-        isDefault ? "text-muted-foreground italic" : "text-foreground/80",
+        isDefault ? "italic text-[var(--admin-muted,#5b6b82)]" : "text-[var(--admin-text,#152238)]/80",
       )}
       dir="auto"
       title={value}
@@ -519,7 +592,7 @@ export function AdminSeoScoreBadge(input: AdminSeoScoreInput) {
       <div className="flex items-center gap-2">
         <span
           className={cn(
-            "inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-bold tabular-nums",
+            "inline-flex h-9 min-w-9 items-center justify-center rounded-[var(--admin-radius,0.625rem)] px-2 text-sm font-bold tabular-nums",
             result.score >= 90 && "bg-emerald-500/15 text-emerald-700",
             result.score >= 70 && result.score < 90 && "bg-emerald-500/10 text-emerald-600",
             result.score >= 50 && result.score < 70 && "bg-amber-500/15 text-amber-700",
@@ -531,7 +604,7 @@ export function AdminSeoScoreBadge(input: AdminSeoScoreInput) {
         </span>
         <span className={cn("text-xs font-medium", result.labelClassName)}>{result.label}</span>
       </div>
-      <div className="h-1 w-full max-w-[5.5rem] overflow-hidden rounded-full bg-muted">
+      <div className="h-1 w-full max-w-[5.5rem] overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef1f6)]">
         <div
           className={cn("h-full rounded-full", scoreBarColor(result.score))}
           style={{ width: `${result.score}%` }}

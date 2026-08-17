@@ -28,23 +28,23 @@ export function AdminFirestoreBanner() {
   }
 
   return (
-    <div className="mx-6 mt-4 md:mx-8 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-900">
-      <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+    <div className="mx-4 mt-4 flex items-start gap-3 rounded-[var(--admin-radius,0.625rem)] border border-amber-500/25 bg-amber-50 px-4 py-3 text-sm text-amber-950 md:mx-0">
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
       <div className="flex-1">
-        <p className="font-medium">تعذّر الاتصال بـ Firestore</p>
+        <p className="font-semibold">تعذّر الاتصال بـ Firestore</p>
         <p className="mt-0.5 text-xs opacity-90">
           {kind === "permission" ? (
             <>
               حسابك مسجّل لكن Firestore يرفض الطلب. أنشئ مستند{" "}
-              <code className="text-[0.7rem] bg-amber-500/10 px-1 rounded" dir="ltr">
+              <code className="rounded bg-amber-500/10 px-1 text-[0.7rem]" dir="ltr">
                 users/UID
               </code>{" "}
-              مع <code className="text-[0.7rem] bg-amber-500/10 px-1 rounded">role: admin</code>، ثم{" "}
+              مع <code className="rounded bg-amber-500/10 px-1 text-[0.7rem]">role: admin</code>، ثم{" "}
               <a
                 href="https://console.firebase.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline font-medium hover:text-primary"
+                className="font-medium underline hover:text-[var(--admin-primary,#1149b0)]"
               >
                 انشر firestore.rules
               </a>
@@ -53,7 +53,7 @@ export function AdminFirestoreBanner() {
           ) : (
             <>
               فعّل Firestore في Firebase Console، انشر قواعد الأمان، ثم{" "}
-              <Link to="/admin" className="underline font-medium hover:text-primary">
+              <Link to="/admin" className="font-medium underline hover:text-[var(--admin-primary,#1149b0)]">
                 استورد المحتوى
               </Link>{" "}
               من لوحة التحكم.
@@ -64,7 +64,7 @@ export function AdminFirestoreBanner() {
           type="button"
           disabled={retrying}
           onClick={() => void handleRetry()}
-          className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium underline hover:text-primary disabled:opacity-60"
+          className="admin-btn admin-btn-sm admin-btn-ghost mt-2 !min-h-8"
         >
           <RefreshCw className={`h-3 w-3 ${retrying ? "animate-spin" : ""}`} />
           {retrying ? "جاري إعادة المحاولة…" : "إعادة المحاولة"}

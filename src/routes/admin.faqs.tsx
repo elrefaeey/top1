@@ -29,7 +29,7 @@ function AdminFaqsList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="الأسئلة الشائعة"
         description="FAQ في الصفحة الرئيسية."
@@ -47,7 +47,7 @@ function AdminFaqsList() {
         />
       )}
       {data.length > 0 && (
-        <div className="surface-card overflow-hidden">
+        <div className="admin-table-wrap">
           <Table>
             <TableHeader>
               <TableRow>

@@ -42,13 +42,17 @@ function AdminGate() {
   }, [user, loading, isLoginPage, navigate]);
 
   if (isLoginPage) {
-    return <Outlet />;
+    return (
+      <div className="admin-shell min-h-dvh">
+        <Outlet />
+      </div>
+    );
   }
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">جاري التحميل…</div>
+      <div className="admin-shell flex min-h-screen items-center justify-center">
+        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
       </div>
     );
   }
@@ -66,21 +70,23 @@ function AdminGate() {
     }
 
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background p-6">
-        <div className="surface-card max-w-md p-8 text-center">
+      <div className="admin-shell flex min-h-screen items-center justify-center p-6">
+        <div className="admin-card max-w-md p-8 text-center">
           <h1 className="text-xl font-bold">لا تملك صلاحية الدخول</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-[var(--admin-muted,#5b6b82)]">
             حسابك مسجّل في Firebase Auth لكن بدون دور في Firestore. اطلب من مدير النظام إنشاء مستند{" "}
-            <code className="bg-accent px-1 rounded">users/{"{uid}"}</code> مع الحقل{" "}
-            <code className="bg-accent px-1 rounded">role: admin</code> أو{" "}
-            <code className="bg-accent px-1 rounded">editor</code>.
+            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">users/{"{uid}"}</code>{" "}
+            مع الحقل{" "}
+            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">role: admin</code> أو{" "}
+            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">editor</code>.
           </p>
-          <p className="mt-3 text-xs text-muted-foreground">
-            إذا استمرت المشكلة: انشر <code className="bg-accent px-1 rounded">firestore.rules</code>{" "}
-            من Firebase Console.
+          <p className="mt-3 text-xs text-[var(--admin-muted,#5b6b82)]">
+            إذا استمرت المشكلة: انشر{" "}
+            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">firestore.rules</code> من
+            Firebase Console.
           </p>
           {user && (
-            <p className="mt-3 text-xs text-muted-foreground break-all" dir="ltr">
+            <p className="mt-3 break-all text-xs text-[var(--admin-muted,#5b6b82)]" dir="ltr">
               UID: {user.uid}
             </p>
           )}
@@ -89,11 +95,11 @@ function AdminGate() {
               type="button"
               disabled={retrying}
               onClick={() => void handleRetry()}
-              className="btn-primary disabled:opacity-60"
+              className="admin-btn admin-btn-primary"
             >
               {retrying ? "جاري التحقق…" : "إعادة التحقق من الصلاحية"}
             </button>
-            <button type="button" onClick={() => navigate({ to: "/" })} className="btn-ghost">
+            <button type="button" onClick={() => navigate({ to: "/" })} className="admin-btn admin-btn-ghost">
               العودة للموقع
             </button>
           </div>
@@ -103,13 +109,13 @@ function AdminGate() {
   }
 
   return (
-    <div className="flex min-h-dvh bg-background">
+    <div className="admin-shell flex min-h-dvh">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-muted/30">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/95 px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
+      <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-[var(--admin-bg,#f3f5f8)]">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--admin-border,#dde3ec)] bg-[color-mix(in_srgb,var(--admin-surface,#fff)_92%,transparent)] px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-lg border border-border text-foreground hover:bg-accent/60"
+            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] border border-[var(--admin-border,#dde3ec)] bg-[var(--admin-surface,#fff)] text-[var(--admin-text,#152238)] hover:bg-[var(--admin-surface-muted,#eef1f6)]"
             aria-label="فتح القائمة"
             aria-expanded={sidebarOpen}
             onClick={() => setSidebarOpen(true)}
@@ -118,12 +124,12 @@ function AdminGate() {
           </button>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold tracking-tight" dir="ltr">
-              {SITE_NAME} <span className="text-primary">Admin</span>
+              {SITE_NAME} <span className="text-[var(--admin-primary,#1149b0)]">Admin</span>
             </p>
           </div>
         </header>
         <AdminFirestoreBanner />
-        <div className="mx-auto w-full min-w-0 max-w-6xl pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="admin-content mx-auto w-full min-w-0 max-w-6xl">
           <Outlet />
         </div>
       </main>

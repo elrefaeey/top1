@@ -1,4 +1,4 @@
-import { blogPostSlug, portfolioItemSlug, authorSlug } from "@/lib/cms/admin-utils";
+import { blogPostSlug, flattenTitle, portfolioItemSlug, authorSlug } from "@/lib/cms/admin-utils";
 import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
 import { getPublicStaticSitemapPaths } from "@/lib/seo/public-sitemap-paths";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
@@ -102,7 +102,7 @@ export function buildSitemapEntries(input: {
     priority: "0.6",
     lastmod: toLastmod(item.updatedAt),
     images: item.imageUrl
-      ? [{ loc: item.imageUrl, title: item.title, caption: item.description }]
+      ? [{ loc: item.imageUrl, title: flattenTitle(item.title), caption: item.description }]
       : undefined,
   }));
 

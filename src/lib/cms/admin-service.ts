@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/fi
 import { getDb, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { isDataImageUrl } from "@/lib/security/image-url";
 import { nowIso } from "./admin-utils";
+import { normalizeBlogCategory } from "./blog-categories";
 import type {
   Author,
   BlogPost,
@@ -9,7 +10,6 @@ import type {
   FaqItem,
   Lead,
   PortfolioItem,
-  PricingPlan,
   Service,
   SiteSettings,
   SiteStat,
@@ -228,11 +228,33 @@ export const saveAdminService = (id: string, data: Omit<Service, "id">) =>
 export const deleteAdminService = (id: string) => deleteAdminDoc(COLLECTIONS.services, id);
 
 // ── Blog ──
-export const listAdminBlogPosts = () =>
-  listCollection<BlogPost>(COLLECTIONS.blogPosts, "publishedAt", "desc");
-export const getAdminBlogPost = (id: string) => getAdminDoc<BlogPost>(COLLECTIONS.blogPosts, id);
+export const listAdminBlogPosts = async () => {
+  const posts = await listCollection<BlogPost>(COLLECTIONS.blogPosts, "publishedAt", "desc");
+  const normalized: WithId<BlogPost>[] = [];
+  for (const post of posts) {
+    const category = normalizeBlogCategory(post.category);
+    if (post.category !== category) {
+      const { id, ...rest } = post;
+      await saveAdminDoc(COLLECTIONS.blogPosts, id, {
+        ...rest,
+        category,
+        updatedAt: nowIso(),
+      });
+    }
+    normalized.push({ ...post, category });
+  }
+  return normalized;
+};
+export const getAdminBlogPost = async (id: string) => {
+  const post = await getAdminDoc<BlogPost>(COLLECTIONS.blogPosts, id);
+  if (!post) return null;
+  return { ...post, category: normalizeBlogCategory(post.category) };
+};
 export const saveAdminBlogPost = (id: string, data: Omit<BlogPost, "id">) =>
-  saveAdminDoc(COLLECTIONS.blogPosts, id, data);
+  saveAdminDoc(COLLECTIONS.blogPosts, id, {
+    ...data,
+    category: normalizeBlogCategory(data.category),
+  });
 export const deleteAdminBlogPost = (id: string) => deleteAdminDoc(COLLECTIONS.blogPosts, id);
 
 // ── Portfolio ──
@@ -243,15 +265,6 @@ export const getAdminPortfolioItem = (id: string) =>
 export const saveAdminPortfolioItem = (id: string, data: Omit<PortfolioItem, "id">) =>
   saveAdminDoc(COLLECTIONS.portfolio, id, data);
 export const deleteAdminPortfolioItem = (id: string) => deleteAdminDoc(COLLECTIONS.portfolio, id);
-
-// ── Pricing ──
-export const listAdminPricing = () =>
-  listCollection<PricingPlan>(COLLECTIONS.pricingPlans, "order");
-export const getAdminPricingPlan = (id: string) =>
-  getAdminDoc<PricingPlan>(COLLECTIONS.pricingPlans, id);
-export const saveAdminPricingPlan = (id: string, data: Omit<PricingPlan, "id">) =>
-  saveAdminDoc(COLLECTIONS.pricingPlans, id, data);
-export const deleteAdminPricingPlan = (id: string) => deleteAdminDoc(COLLECTIONS.pricingPlans, id);
 
 // ── Testimonials ──
 export const listAdminTestimonials = () =>

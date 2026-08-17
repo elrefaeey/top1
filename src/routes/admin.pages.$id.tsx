@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CmsPage, PublishStatus } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -82,16 +82,31 @@ function AdminPageEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={`SEO — ${form.title}`} backTo="/admin/pages" />
+      <AdminPageHeader
+        title={isNew ? "صفحة جديدة" : `SEO — ${form.title}`}
+        description={
+          isNew
+            ? "أضف عنوان الصفحة والرابط وبيانات SEO، ثم احفظ."
+            : "عدّل بيانات SEO لهذه الصفحة ثم احفظ التغييرات. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع."
+        }
+        backTo="/admin/pages"
+      />
       {saveError && (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {saveError}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات الصفحة"
+          description={
+            isNew
+              ? "العنوان والرابط يحددان هوية الصفحة في لوحة التحكم."
+              : "حالة النشر لهذه الصفحة."
+          }
+        >
           {isNew && (
             <>
               <AdminField label="العنوان" id="title">
@@ -101,9 +116,10 @@ function AdminPageEdit() {
                   value={form.title}
                   onChange={(e) => patch({ title: e.target.value })}
                   className={adminInputClass()}
+                  placeholder="مثال: من نحن"
                 />
               </AdminField>
-              <AdminField label="Slug" id="slug">
+              <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط — بالإنجليزية.">
                 <input
                   id="slug"
                   dir="ltr"
@@ -111,12 +127,13 @@ function AdminPageEdit() {
                   value={form.slug}
                   onChange={(e) => patch({ slug: e.target.value })}
                   className={adminInputClass("text-start")}
+                  placeholder="about"
                 />
               </AdminField>
             </>
           )}
           {!isNew && PAGE_TITLES[id] && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[var(--admin-muted,#5b6b82)]">
               تحرير بيانات SEO لهذه الصفحة. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع.
             </p>
           )}
@@ -124,7 +141,8 @@ function AdminPageEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminSeoSection
           slug={form.slug || id}
           metaTitle={form.metaTitle}
@@ -132,6 +150,7 @@ function AdminPageEdit() {
           onSlug={(slug) => patch({ slug })}
           onMetaTitle={(metaTitle) => patch({ metaTitle })}
           onMetaDescription={(metaDescription) => patch({ metaDescription })}
+          showSlug={!isNew}
         />
         <AdminFormActions saving={save.isPending} />
       </form>

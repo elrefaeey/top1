@@ -1,8 +1,8 @@
-﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { PublishStatus, Testimonial } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -11,6 +11,7 @@ import {
   adminInputClass,
 } from "@/components/admin/AdminUi";
 import { nowIso } from "@/lib/cms/admin-utils";
+import { TESTIMONIAL_ROLES, normalizeTestimonialRole } from "@/lib/cms/testimonial-roles";
 import {
   useAdminTestimonial,
   useSaveTestimonial,
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/admin/testimonials/$id")({
 
 const empty = (): Omit<Testimonial, "id"> => ({
   name: "",
-  role: "",
+  role: TESTIMONIAL_ROLES[0],
   company: "",
   quote: "",
   rating: 5,
@@ -46,23 +47,42 @@ function AdminTestimonialEdit() {
   const [form, setForm] = useState(empty());
   useApplyNextOrder(isNew, allItems, setForm);
   useEffect(() => {
-    if (data) setForm({ ...data });
+    if (data) setForm({ ...data, role: normalizeTestimonialRole(data.role) });
   }, [data]);
   const patch = (p: Partial<Omit<Testimonial, "id">>) => setForm((f) => ({ ...f, ...p }));
+
+  const roleOptions =
+    form.role && !(TESTIMONIAL_ROLES as readonly string[]).includes(form.role)
+      ? [form.role, ...TESTIMONIAL_ROLES]
+      : [...TESTIMONIAL_ROLES];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const docId = isNew ? form.name.toLowerCase().replace(/\s+/g, "-") || "testimonial" : id;
-    await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
+    await save.mutateAsync({
+      id: docId,
+      data: { ...form, role: normalizeTestimonialRole(form.role), updatedAt: nowIso() },
+    });
     navigate({ to: "/admin/testimonials" });
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "رأي جديد" : "تعديل رأي"} backTo="/admin/testimonials" />
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <AdminPageHeader
+        title={isNew ? "رأي جديد" : "تعديل رأي"}
+        description={
+          isNew
+            ? "أضف اسم العميل والاقتباس والتقييم، ثم احفظ كمسودة أو انشر."
+            : "عدّل رأي العميل ثم احفظ التغييرات."
+        }
+        backTo="/admin/testimonials"
+      />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات الرأي"
+          description="الاسم والاقتباس يظهران في قسم آراء العملاء."
+        >
           <AdminField label="الاسم" id="name">
             <input
               id="name"
@@ -70,16 +90,24 @@ function AdminTestimonialEdit() {
               value={form.name}
               onChange={(e) => patch({ name: e.target.value })}
               className={adminInputClass()}
+              placeholder="مثال: محمد العتيبي"
             />
           </AdminField>
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="المنصب" id="role">
-              <input
+              <select
                 id="role"
+                required
                 value={form.role}
                 onChange={(e) => patch({ role: e.target.value })}
                 className={adminInputClass()}
-              />
+              >
+                {roleOptions.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
             </AdminField>
             <AdminField label="الشركة" id="company">
               <input
@@ -87,6 +115,7 @@ function AdminTestimonialEdit() {
                 value={form.company}
                 onChange={(e) => patch({ company: e.target.value })}
                 className={adminInputClass()}
+                placeholder="اسم الشركة"
               />
             </AdminField>
           </div>
@@ -98,8 +127,15 @@ function AdminTestimonialEdit() {
               value={form.quote}
               onChange={(e) => patch({ quote: e.target.value })}
               className={adminInputClass()}
+              placeholder="نص شهادة العميل…"
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="إعدادات ونشر"
+          description="التقييم والترتيب والربط بخدمة وحالة النشر."
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="التقييم (1-5)" id="rating">
               <input
@@ -129,6 +165,7 @@ function AdminTestimonialEdit() {
                 value={form.city ?? ""}
                 onChange={(e) => patch({ city: e.target.value || undefined })}
                 className={adminInputClass()}
+                placeholder="الرياض"
               />
             </AdminField>
             <AdminField label="خدمة مرتبطة (slug)" id="serviceSlug">
@@ -137,7 +174,7 @@ function AdminTestimonialEdit() {
                 dir="ltr"
                 value={form.serviceSlug ?? ""}
                 onChange={(e) => patch({ serviceSlug: e.target.value || undefined })}
-                className={adminInputClass()}
+                className={adminInputClass("text-start")}
                 placeholder="web-design"
               />
             </AdminField>
@@ -146,7 +183,8 @@ function AdminTestimonialEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminFormActions
           saving={save.isPending}
           onDelete={

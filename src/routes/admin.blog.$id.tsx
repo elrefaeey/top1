@@ -1,8 +1,8 @@
-﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { BlogPost, PublishStatus } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -11,11 +11,17 @@ import {
   AdminSeoSection,
   adminInputClass,
 } from "@/components/admin/AdminUi";
-import { arrayToComma, commaToArray, nowIso, slugify } from "@/lib/cms/admin-utils";
+import { arrayToComma, commaToArray, nowIso, slugify, authorSlug } from "@/lib/cms/admin-utils";
 import { useAdminBlogPost, useSaveBlogPost, useDeleteBlogPost } from "@/hooks/use-admin-cms";
+import { useAuthors } from "@/hooks/use-cms";
 import { SITE_NAME } from "@/lib/site-config";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
 import { BlogContentEditor } from "@/components/admin/BlogContentEditor";
+import {
+  BLOG_CATEGORIES,
+  DEFAULT_BLOG_CATEGORY,
+  normalizeBlogCategory,
+} from "@/lib/cms/blog-categories";
 
 export const Route = createFileRoute("/admin/blog/$id")({
   component: AdminBlogEdit,
@@ -26,7 +32,7 @@ const empty = (): Omit<BlogPost, "id"> => ({
   title: "",
   excerpt: "",
   content: "<p></p>",
-  category: "تصميم",
+  category: DEFAULT_BLOG_CATEGORY,
   tags: [],
   author: SITE_NAME,
   readTime: 5,
@@ -44,6 +50,7 @@ function AdminBlogEdit() {
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminBlogPost(id, !isNew);
+  const { data: authors = [] } = useAuthors();
   const save = useSaveBlogPost();
   const remove = useDeleteBlogPost();
   const [form, setForm] = useState(empty());
@@ -51,7 +58,7 @@ function AdminBlogEdit() {
 
   useEffect(() => {
     if (data) {
-      setForm({ ...data });
+      setForm({ ...data, category: normalizeBlogCategory(data.category) });
       setTagsText(arrayToComma(data.tags));
     }
   }, [data]);
@@ -69,6 +76,7 @@ function AdminBlogEdit() {
       data: {
         ...form,
         slug,
+        category: normalizeBlogCategory(form.category),
         tags: commaToArray(tagsText),
         updatedAt: nowIso(),
         publishedAt:
@@ -79,11 +87,23 @@ function AdminBlogEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "مقال جديد" : "تعديل مقال"} backTo="/admin/blog" />
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <AdminPageHeader
+        title={isNew ? "مقال جديد" : "تعديل مقال"}
+        description={
+          isNew
+            ? "أضف عنواناً واضحاً، محتوى المقال، غلاف، وتصنيف — ثم احفظ كمسودة أو انشر."
+            : "عدّل المحتوى والإعدادات ثم احفظ التغييرات."
+        }
+        backTo="/admin/blog"
+      />
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="أساسيات المقال"
+          description="العنوان والرابط والمقتطف يظهرون في قائمة المدونة ونتائج البحث."
+        >
           <AdminField label="العنوان" id="title">
             <input
               id="title"
@@ -94,9 +114,10 @@ function AdminBlogEdit() {
                 patch({ title, slug: isNew ? slugify(title) : form.slug });
               }}
               className={adminInputClass()}
+              placeholder="مثال: دليل تحسين محركات البحث للمتاجر"
             />
           </AdminField>
-          <AdminField label="Slug" id="slug">
+          <AdminField label="Slug" id="slug" hint="بالإنجليزية — جزء من رابط المقال.">
             <input
               id="slug"
               dir="ltr"
@@ -104,34 +125,68 @@ function AdminBlogEdit() {
               value={form.slug}
               onChange={(e) => patch({ slug: e.target.value })}
               className={adminInputClass("text-start")}
+              placeholder="seo-guide-ecommerce"
             />
           </AdminField>
           <AdminField label="المقتطف" id="excerpt">
             <textarea
               id="excerpt"
-              rows={2}
+              rows={3}
               value={form.excerpt}
               onChange={(e) => patch({ excerpt: e.target.value })}
               className={adminInputClass()}
+              placeholder="ملخص قصير يظهر تحت العنوان في قائمة المدونة"
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="المحتوى"
+          description="اكتب المحتوى بصيغة HTML، ويمكنك إدراج صور وروابط داخل النص."
+        >
           <BlogContentEditor value={form.content} onChange={(content) => patch({ content })} />
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="التصنيف والنشر"
+          description="التصنيف متاح بقيمتين فقط: تصميم مواقع أو SEO."
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <AdminField label="التصنيف" id="category">
-              <input
+              <select
                 id="category"
-                value={form.category}
-                onChange={(e) => patch({ category: e.target.value })}
+                value={normalizeBlogCategory(form.category)}
+                onChange={(e) => patch({ category: normalizeBlogCategory(e.target.value) })}
                 className={adminInputClass()}
-              />
+              >
+                {BLOG_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
             </AdminField>
             <AdminField label="الكاتب" id="author">
-              <input
+              <select
                 id="author"
-                value={form.author}
-                onChange={(e) => patch({ author: e.target.value })}
+                value={form.authorSlug ?? ""}
+                onChange={(e) => {
+                  const selectedSlug = e.target.value;
+                  const selectedAuthor = authors.find((a) => authorSlug(a) === selectedSlug);
+                  patch({
+                    authorSlug: selectedSlug || undefined,
+                    author: selectedAuthor?.name || form.author,
+                  });
+                }}
                 className={adminInputClass()}
-              />
+              >
+                <option value="">بدون كاتب محدد</option>
+                {authors.map((a) => (
+                  <option key={a.id} value={authorSlug(a)}>
+                    {a.name}
+                  </option>
+                ))}
+              </select>
             </AdminField>
           </div>
           <AdminField label="الوسوم (مفصولة بفاصلة)" id="tags">
@@ -141,11 +196,33 @@ function AdminBlogEdit() {
               value={tagsText}
               onChange={(e) => setTagsText(e.target.value)}
               className={adminInputClass("text-start")}
+              placeholder="seo, web-design, saudi"
             />
           </AdminField>
+          <div className="grid gap-4 sm:grid-cols-2 sm:items-end">
+            <AdminPublishSelect
+              value={form.status as PublishStatus}
+              onChange={(status) => patch({ status })}
+            />
+            <label className="flex min-h-10 cursor-pointer items-center gap-2.5 rounded-[var(--admin-radius,0.625rem)] border border-[var(--admin-border,#dde3ec)] bg-[#fbfcfe] px-3 py-2 text-sm font-medium text-[var(--admin-text,#152238)]">
+              <input
+                type="checkbox"
+                checked={form.trending}
+                onChange={(e) => patch({ trending: e.target.checked })}
+                className="h-4 w-4 accent-[var(--admin-primary,#1149b0)]"
+              />
+              مقال رائج (يظهر في الأعلى)
+            </label>
+          </div>
+        </AdminCardSection>
+
+        <AdminCardSection
+          title="صورة الغلاف"
+          description="تظهر أعلى المقال وفي بطاقات المدونة ومشاركة الروابط."
+        >
           <ImageUploadField
             id="featuredImage"
-            label="صورة الغلاف (أعلى المقال)"
+            label="رفع أو لصق رابط الصورة"
             folder="blog"
             value={form.featuredImage ?? ""}
             onChange={(featuredImage) => patch({ featuredImage })}
@@ -169,22 +246,11 @@ function AdminBlogEdit() {
               value={form.featuredImageAlt ?? ""}
               onChange={(e) => patch({ featuredImageAlt: e.target.value })}
               className={adminInputClass()}
-              placeholder="وصف صورة الغلاف"
+              placeholder="وصف مختصر للصورة بالعربية"
             />
           </AdminField>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.trending}
-              onChange={(e) => patch({ trending: e.target.checked })}
-            />
-            مقال رائج
-          </label>
-          <AdminPublishSelect
-            value={form.status as PublishStatus}
-            onChange={(status) => patch({ status })}
-          />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminSeoSection
           slug={form.slug}
           metaTitle={form.metaTitle}
@@ -192,14 +258,16 @@ function AdminBlogEdit() {
           onSlug={(slug) => patch({ slug })}
           onMetaTitle={(metaTitle) => patch({ metaTitle })}
           onMetaDescription={(metaDescription) => patch({ metaDescription })}
+          showSlug={false}
         />
+
         <AdminFormActions
           saving={save.isPending}
           onDelete={
             isNew
               ? undefined
               : async () => {
-                  if (confirm("حذف؟")) {
+                  if (confirm("حذف المقال؟")) {
                     await remove.mutateAsync(id);
                     navigate({ to: "/admin/blog" });
                   }

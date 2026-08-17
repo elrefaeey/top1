@@ -11,11 +11,9 @@ const CORE_PUBLIC_PATHS = [
   "/services",
   "/portfolio",
   "/blog",
-  "/pricing",
   "/contact",
   "/privacy",
   "/terms",
-  "/cookies",
 ] as const;
 
 const EXCLUDE_PREFIXES = ["/admin", "/api", "/media"] as const;
@@ -77,10 +75,9 @@ function priorityForPath(path: string): string {
     return "0.85";
   }
   if (path === "/portfolio" || path === "/blog") return "0.8";
-  if (path === "/pricing") return "0.75";
   if (path === "/about") return "0.8";
   if (path === "/contact") return "0.7";
-  if (path === "/privacy" || path === "/terms" || path === "/cookies") return "0.3";
+  if (path === "/privacy" || path === "/terms") return "0.3";
   if (
     path === "/digital-marketing" ||
     path === "/ecommerce-development"
@@ -94,7 +91,7 @@ function changefreqForPath(path: string): "daily" | "weekly" | "monthly" | "year
   if (path === "/" || path === "/services" || path === "/portfolio" || path === "/blog") {
     return "weekly";
   }
-  if (path === "/privacy" || path === "/terms" || path === "/cookies") return "yearly";
+  if (path === "/privacy" || path === "/terms") return "yearly";
   return "monthly";
 }
 

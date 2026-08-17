@@ -29,7 +29,7 @@ function AdminStatsList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="الإحصائيات"
         description="أرقام قسم الإحصائيات في الصفحة الرئيسية."
@@ -47,7 +47,7 @@ function AdminStatsList() {
         />
       )}
       {data.length > 0 && (
-        <div className="surface-card overflow-hidden">
+        <div className="admin-table-wrap">
           <Table>
             <TableHeader>
               <TableRow>

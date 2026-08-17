@@ -7,7 +7,6 @@ import {
   getPageBySlug,
   getPortfolio,
   getPortfolioItemBySlug,
-  getPricingPlans,
   getServiceBySlug,
   getServices,
   getSiteSettings,
@@ -82,8 +81,6 @@ export async function handleCmsApiGet(
       if (!slug) throw new Error("Missing slug");
       return getAuthorBySlug(slug);
     }
-    case "pricing":
-      return getPricingPlans();
     case "faqs":
       return getFaqs();
     case "stats":

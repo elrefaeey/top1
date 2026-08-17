@@ -18,4 +18,8 @@ export const PERMANENT_REDIRECTS: Readonly<Record<string, string>> = {
   /** Legacy Riyadh URL → dedicated Riyadh landing (not national) */
   "/riyadh-web-development": "/web-design-riyadh",
   "/case-studies": "/portfolio",
+  /** Removed cookies policy page — keep old URLs from indexing as soft 404 */
+  "/cookies": "/privacy",
+  /** Removed public pricing page — quotes via contact */
+  "/pricing": "/contact",
 };

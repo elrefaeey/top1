@@ -116,7 +116,7 @@ export function ImageUploadField({
           <label
             htmlFor={`${id}-file`}
             className={cn(
-              "btn-primary !py-2 !px-4 !text-sm cursor-pointer",
+              "admin-btn admin-btn-primary admin-btn-sm cursor-pointer",
               uploading && "pointer-events-none opacity-60",
             )}
           >
@@ -133,7 +133,7 @@ export function ImageUploadField({
           <button
             type="button"
             onClick={() => setShowUrl((v) => !v)}
-            className="btn-ghost !py-2 !px-3 !text-sm"
+            className="admin-btn admin-btn-ghost admin-btn-sm"
           >
             <Link2 className="h-4 w-4" /> {showUrl ? "إخفاء الرابط" : "رابط خارجي"}
           </button>

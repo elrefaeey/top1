@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FaqItem, PublishStatus } from "@/types/cms";
 import {
-  AdminCard,
+  AdminCardSection,
   AdminField,
   AdminFormActions,
   AdminFetchingBar,
@@ -54,11 +54,22 @@ function AdminFaqEdit() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
-      <AdminPageHeader title={isNew ? "سؤال جديد" : "تعديل سؤال"} backTo="/admin/faqs" />
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <AdminCard className="space-y-4">
+      <AdminPageHeader
+        title={isNew ? "سؤال جديد" : "تعديل سؤال"}
+        description={
+          isNew
+            ? "أضف السؤال والإجابة، ثم احفظ كمسودة أو انشر."
+            : "عدّل السؤال والإجابة ثم احفظ التغييرات."
+        }
+        backTo="/admin/faqs"
+      />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <AdminCardSection
+          title="المحتوى"
+          description="السؤال والإجابة يظهران في قسم الأسئلة الشائعة."
+        >
           <AdminField label="السؤال" id="question">
             <input
               id="question"
@@ -66,6 +77,7 @@ function AdminFaqEdit() {
               value={form.question}
               onChange={(e) => patch({ question: e.target.value })}
               className={adminInputClass()}
+              placeholder="مثال: كم يستغرق تصميم الموقع؟"
             />
           </AdminField>
           <AdminField label="الإجابة" id="answer" hint="يدعم HTML — يمكنك ربط كلمات بروابط خارجية.">
@@ -77,6 +89,7 @@ function AdminFaqEdit() {
               value={form.answer}
               onChange={(e) => patch({ answer: e.target.value })}
               className={adminInputClass()}
+              placeholder="اكتب الإجابة هنا…"
             />
           </AdminField>
           <CmsExternalLinkTool
@@ -103,6 +116,9 @@ function AdminFaqEdit() {
               {linkError}
             </p>
           )}
+        </AdminCardSection>
+
+        <AdminCardSection title="نشر" description="ترتيب الظهور وحالة النشر.">
           <AdminField label="الترتيب" id="order">
             <input
               id="order"
@@ -116,7 +132,8 @@ function AdminFaqEdit() {
             value={form.status as PublishStatus}
             onChange={(status) => patch({ status })}
           />
-        </AdminCard>
+        </AdminCardSection>
+
         <AdminFormActions
           saving={save.isPending}
           onDelete={

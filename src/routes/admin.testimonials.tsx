@@ -30,7 +30,7 @@ function AdminTestimonialsList() {
   if (isChild) return <Outlet />;
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="آراء العملاء"
         description="شهادات العملاء المعروضة في الموقع."

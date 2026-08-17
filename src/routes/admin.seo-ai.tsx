@@ -279,7 +279,7 @@ function AdminSeoAiPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div>
       <AdminPageHeader
         title="SEO AI"
         description="ربط Search Console، مزامنة الأداء، مراجعة الفرص، ثم نشر المسودات يدوياً."
@@ -342,7 +342,7 @@ function AdminSeoAiPage() {
               <>
                 <button
                   type="button"
-                  className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+                  className="admin-btn admin-btn-ghost admin-btn-sm inline-flex items-center gap-2"
                   disabled={connecting}
                   onClick={() => void handleConnect()}
                 >
@@ -351,7 +351,7 @@ function AdminSeoAiPage() {
                 </button>
                 <button
                   type="button"
-                  className="btn-primary !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+                  className="admin-btn admin-btn-primary admin-btn-sm inline-flex items-center gap-2"
                   disabled={syncing || !connected}
                   onClick={() => void handleSync()}
                 >
@@ -365,7 +365,7 @@ function AdminSeoAiPage() {
             {isEditor ? (
               <button
                 type="button"
-                className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+                className="admin-btn admin-btn-ghost admin-btn-sm inline-flex items-center gap-2"
                 disabled={analyzing || snapshots.length === 0}
                 onClick={() => void handleAnalyze()}
               >
@@ -375,7 +375,7 @@ function AdminSeoAiPage() {
             ) : null}
             <button
               type="button"
-              className="btn-ghost !py-2 !px-3 !text-sm inline-flex items-center gap-2"
+              className="admin-btn admin-btn-ghost admin-btn-sm inline-flex items-center gap-2"
               disabled={loadingData}
               onClick={() => void loadDashboard()}
             >
@@ -487,7 +487,7 @@ function AdminSeoAiPage() {
                     <div className="flex shrink-0 flex-col gap-2 sm:w-44">
                       <button
                         type="button"
-                        className="btn-primary !py-2.5 !px-3 !text-sm inline-flex w-full items-center justify-center gap-2"
+                        className="admin-btn admin-btn-primary admin-btn-sm inline-flex w-full items-center justify-center gap-2"
                         disabled={generatingId === item.id}
                         onClick={() => void handleGenerateDraft(item.id)}
                       >

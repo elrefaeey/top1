@@ -14,7 +14,6 @@ const QUICK_LINKS = [
   { label: "أعمالنا", href: "/portfolio" },
   { label: "المدونة", href: "/blog" },
   { label: "من نحن", href: "/about" },
-  { label: "الأسعار", href: "/pricing" },
   { label: "تواصل", href: "/contact" },
 ];
 
@@ -23,7 +22,6 @@ const FOOTER_LANDING_LINKS = FOOTER_SEO_LINKS.slice(0, 8);
 const LEGAL_LINKS = [
   { label: "سياسة الخصوصية", href: "/privacy" },
   { label: "الشروط والأحكام", href: "/terms" },
-  { label: "ملفات تعريف الارتباط", href: "/cookies" },
 ] as const;
 
 export function SiteFooter() {

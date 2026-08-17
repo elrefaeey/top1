@@ -1,5 +1,6 @@
 import { generateAiText, hasLlmConfigured } from "@/lib/seo/ai/provider";
 import type { AiChatMessage } from "@/lib/seo/ai/types";
+import { DEFAULT_BLOG_CATEGORY, normalizeBlogCategory } from "@/lib/cms/blog-categories";
 import { SITE_NAME } from "@/lib/site-config";
 import type { AiBlogDraftInput, SeoInsight } from "@/types/seo-automation";
 
@@ -347,7 +348,7 @@ function finalizePrepared(
     imagePrompt,
     faqSchema,
     featuredImageAlt: partial.featuredImageAlt?.trim() || title,
-    category: partial.category?.trim() || "SEO",
+    category: normalizeBlogCategory(partial.category?.trim() || DEFAULT_BLOG_CATEGORY),
     tags: partial.tags && partial.tags.length > 0 ? partial.tags : keywords.slice(0, 5),
   };
 }
@@ -406,7 +407,7 @@ export async function generateBlogDraftFromInsight(
         imagePrompt: buildImagePrompt(keyword, fallbackTitle),
         faqSchema: buildFaqSchemaJson(faqs),
         featuredImageAlt: fallbackTitle,
-        category: /seo|تحسين|مواقع|تصميم/i.test(keyword) ? "SEO" : "تسويق",
+        category: /seo|تحسين/i.test(keyword) ? "SEO" : DEFAULT_BLOG_CATEGORY,
         tags: buildDefaultKeywords(keyword).slice(0, 5),
       },
       keyword,
@@ -474,7 +475,7 @@ export async function generateBlogDraftFromInsight(
       imagePrompt: String(parsed.imagePrompt ?? ""),
       faqSchema: buildFaqSchemaJson(faqs),
       featuredImageAlt: String(parsed.featuredImageAlt ?? title),
-      category: String(parsed.category ?? "SEO"),
+      category: normalizeBlogCategory(String(parsed.category ?? DEFAULT_BLOG_CATEGORY)),
       tags,
     },
     keyword,

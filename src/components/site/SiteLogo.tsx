@@ -1,4 +1,4 @@
-﻿import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
+import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
 import { useSiteSettings } from "@/hooks/use-cms";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +31,7 @@ export function SiteLogo({ className, imageClassName, showName = true }: SiteLog
       {showName && (
         <span
           dir="ltr"
-          className="font-display text-base sm:text-lg font-bold tracking-tight text-foreground truncate"
+          className="font-display text-base sm:text-lg font-bold tracking-tight text-primary truncate"
         >
           {brandName}
         </span>

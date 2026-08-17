@@ -4,7 +4,7 @@ import { SiteImage } from "@/components/site/SiteImage";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { usePortfolio } from "@/hooks/use-cms";
-import { portfolioItemSlug } from "@/lib/cms/admin-utils";
+import { flattenTitle, portfolioItemSlug, splitDisplayTitle } from "@/lib/cms/admin-utils";
 import { portfolioPageInternalLinks } from "@/lib/seo/internal-links";
 
 import { SITE_NAME } from "@/lib/site-config";
@@ -54,6 +54,7 @@ function Portfolio() {
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {items.map((p) => {
                 const slug = portfolioItemSlug(p);
+                const { name, specialty } = splitDisplayTitle(p.title);
                 return (
                   <Link
                     key={p.id}
@@ -64,7 +65,7 @@ function Portfolio() {
                     {p.imageUrl ? (
                       <SiteImage
                         src={p.imageUrl}
-                        alt={`${p.title} — مشروع ${p.category} | ${SITE_NAME}`}
+                        alt={`${flattenTitle(p.title)} — مشروع ${p.category} | ${SITE_NAME}`}
                         overlay
                         width={800}
                         height={600}
@@ -81,8 +82,11 @@ function Portfolio() {
                       <div className="flex items-center justify-between gap-3">
                         <div className="min-w-0">
                           <h2 className="font-semibold text-base group-hover:text-primary transition-colors">
-                            {p.title}
+                            {name}
                           </h2>
+                          {specialty ? (
+                            <p className="mt-0.5 text-sm font-medium text-foreground/80">{specialty}</p>
+                          ) : null}
                           <p className="text-xs text-muted-foreground mt-0.5">{p.category}</p>
                         </div>
                         <ArrowUpLeft className="h-4 w-4 rtl-flip text-muted-foreground group-hover:text-primary transition-colors shrink-0" />

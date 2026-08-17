@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BadgeCheck, Users } from "lucide-react";
+import { BadgeCheck, Users, MessageSquare, Star, Quote } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { useAuthors, useSiteStats, useTestimonials } from "@/hooks/use-cms";
 import { authorSlug } from "@/lib/cms/admin-utils";
@@ -100,24 +100,51 @@ export function TrustAuthoritySections() {
         <section className="section" aria-labelledby="eeat-quotes">
           <div className="container-page">
             <div className="page-intro-block me-auto mb-8 w-full text-start">
-              <span className="page-intro-eyebrow">ثقة العملاء</span>
+              <span className="page-intro-eyebrow">
+                <MessageSquare className="h-3.5 w-3.5" /> ثقة العملاء
+              </span>
               <h2 id="eeat-quotes" className="page-intro-title page-intro-title--section">
                 ماذا يقول عملاؤنا.
               </h2>
+              <p className="page-intro-desc mt-3 !max-w-none">
+                قصص نجاح واقعية وتجارب حقيقية لشركائنا الذين وضعوا ثقتهم في {SITE_NAME}.
+              </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {quotes.map((t) => (
-                <blockquote key={t.id} className="surface-card p-5">
-                  <p className="text-sm leading-relaxed text-muted-foreground">“{t.quote}”</p>
-                  <footer className="mt-4 text-sm font-semibold">
-                    {t.name}
-                    <span className="mt-0.5 block font-normal text-muted-foreground">
-                      {t.role}
-                      {t.company ? ` — ${t.company}` : ""}
-                      {t.city ? ` · ${t.city}` : ""}
-                    </span>
-                  </footer>
-                </blockquote>
+            <div className="grid gap-6 md:grid-cols-3">
+              {quotes.map((t, i) => (
+                <Reveal key={t.id} delay={i * 80}>
+                  <blockquote className="card-interactive flex h-full flex-col justify-between p-6 bg-card relative overflow-hidden group">
+                    <div className="absolute -top-4 -left-4 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:bg-primary/10" />
+                    <div>
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex gap-0.5 text-amber-500">
+                          {[...Array(5)].map((_, idx) => (
+                            <Star key={idx} className="h-4 w-4 fill-current text-amber-500" />
+                          ))}
+                        </div>
+                        <Quote className="h-6 w-6 text-primary/15 transition-transform duration-300 group-hover:scale-110" />
+                      </div>
+                      <p className="text-[0.95rem] leading-relaxed text-foreground/80 relative z-10 font-normal">
+                        “{t.quote}”
+                      </p>
+                    </div>
+                    <div className="mt-6 flex items-center gap-3 border-t border-border/50 pt-4 relative z-10">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                        {t.name.trim().slice(0, 1)}
+                      </div>
+                      <div className="min-w-0">
+                        <cite className="not-italic block font-semibold text-foreground text-sm tracking-tight transition-colors duration-300 group-hover:text-primary">
+                          {t.name}
+                        </cite>
+                        <span className="block text-xs text-muted-foreground mt-0.5">
+                          {t.role}
+                          {t.company ? ` — ${t.company}` : ""}
+                          {t.city ? ` · ${t.city}` : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </blockquote>
+                </Reveal>
               ))}
             </div>
           </div>

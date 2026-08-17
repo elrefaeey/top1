@@ -70,11 +70,8 @@ function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold">5. ملفات تعريف الارتباط (Cookies)</h2>
             <p>
-              قد يستخدم الموقع ملفات تعريف ارتباط ضرورية أو تحليلية. راجع{" "}
-              <Link to="/cookies" className="text-primary font-medium">
-                سياسة ملفات تعريف الارتباط
-              </Link>{" "}
-              للتفاصيل وخيارات التحكم.
+              قد يستخدم الموقع ملفات تعريف ارتباط ضرورية أو تحليلية لتشغيل الموقع وتحسين التجربة.
+              يمكنك التحكم فيها أو حذفها من إعدادات المتصفح.
             </p>
           </section>
           <section className="space-y-3">

@@ -163,20 +163,6 @@ export interface Testimonial extends Timestamps {
   status: PublishStatus;
 }
 
-export interface PricingPlan extends Timestamps {
-  id: string;
-  name: string;
-  price: string;
-  period: string;
-  description: string;
-  features: string[];
-  highlighted: boolean;
-  ctaLabel: string;
-  ctaHref: string;
-  order: number;
-  status: PublishStatus;
-}
-
 export interface FaqItem extends Timestamps {
   id: string;
   question: string;

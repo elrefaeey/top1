@@ -31,11 +31,9 @@ import { Route as SeoBuraidahRouteImport } from './routes/seo-buraidah'
 import { Route as SeoAbuDhabiRouteImport } from './routes/seo-abu-dhabi'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as EcommerceDevelopmentRouteImport } from './routes/ecommerce-development'
 import { Route as DigitalMarketingRouteImport } from './routes/digital-marketing'
-import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -57,7 +55,6 @@ import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminSeoAiRouteImport } from './routes/admin.seo-ai'
 import { Route as AdminSeoRouteImport } from './routes/admin.seo'
-import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
 import { Route as AdminPortfolioRouteImport } from './routes/admin.portfolio'
 import { Route as AdminPagesRouteImport } from './routes/admin.pages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -75,7 +72,6 @@ import { Route as ApiCmsResourceRouteImport } from './routes/api/cms.$resource'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
 import { Route as AdminServicesIdRouteImport } from './routes/admin.services.$id'
-import { Route as AdminPricingIdRouteImport } from './routes/admin.pricing.$id'
 import { Route as AdminPortfolioIdRouteImport } from './routes/admin.portfolio.$id'
 import { Route as AdminPagesIdRouteImport } from './routes/admin.pages.$id'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
@@ -196,11 +192,6 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
@@ -214,11 +205,6 @@ const EcommerceDevelopmentRoute = EcommerceDevelopmentRouteImport.update({
 const DigitalMarketingRoute = DigitalMarketingRouteImport.update({
   id: '/digital-marketing',
   path: '/digital-marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CookiesRoute = CookiesRouteImport.update({
-  id: '/cookies',
-  path: '/cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -326,11 +312,6 @@ const AdminSeoRoute = AdminSeoRouteImport.update({
   path: '/seo',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminPricingRoute = AdminPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminPortfolioRoute = AdminPortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
@@ -416,11 +397,6 @@ const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminServicesRoute,
 } as any)
-const AdminPricingIdRoute = AdminPricingIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPricingRoute,
-} as any)
 const AdminPortfolioIdRoute = AdminPortfolioIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -474,11 +450,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
@@ -508,7 +482,6 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
-  '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
   '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
@@ -529,7 +502,6 @@ export interface FileRoutesByFullPath {
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
   '/admin/portfolio/$id': typeof AdminPortfolioIdRoute
-  '/admin/pricing/$id': typeof AdminPricingIdRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -551,11 +523,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
@@ -585,7 +555,6 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
-  '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
   '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
@@ -606,7 +575,6 @@ export interface FileRoutesByTo {
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
   '/admin/portfolio/$id': typeof AdminPortfolioIdRoute
-  '/admin/pricing/$id': typeof AdminPricingIdRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -630,11 +598,9 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/cookies': typeof CookiesRoute
   '/digital-marketing': typeof DigitalMarketingRoute
   '/ecommerce-development': typeof EcommerceDevelopmentRoute
   '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/seo-abu-dhabi': typeof SeoAbuDhabiRoute
@@ -664,7 +630,6 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/pages': typeof AdminPagesRouteWithChildren
   '/admin/portfolio': typeof AdminPortfolioRouteWithChildren
-  '/admin/pricing': typeof AdminPricingRouteWithChildren
   '/admin/seo': typeof AdminSeoRoute
   '/admin/seo-ai': typeof AdminSeoAiRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
@@ -685,7 +650,6 @@ export interface FileRoutesById {
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/pages/$id': typeof AdminPagesIdRoute
   '/admin/portfolio/$id': typeof AdminPortfolioIdRoute
-  '/admin/pricing/$id': typeof AdminPricingIdRoute
   '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -710,11 +674,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
-    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
-    | '/pricing'
     | '/privacy'
     | '/robots.txt'
     | '/seo-abu-dhabi'
@@ -744,7 +706,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pages'
     | '/admin/portfolio'
-    | '/admin/pricing'
     | '/admin/seo'
     | '/admin/seo-ai'
     | '/admin/services'
@@ -765,7 +726,6 @@ export interface FileRouteTypes {
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
     | '/admin/portfolio/$id'
-    | '/admin/pricing/$id'
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -787,11 +747,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/blog'
     | '/contact'
-    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
-    | '/pricing'
     | '/privacy'
     | '/robots.txt'
     | '/seo-abu-dhabi'
@@ -821,7 +779,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pages'
     | '/admin/portfolio'
-    | '/admin/pricing'
     | '/admin/seo'
     | '/admin/seo-ai'
     | '/admin/services'
@@ -842,7 +799,6 @@ export interface FileRouteTypes {
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
     | '/admin/portfolio/$id'
-    | '/admin/pricing/$id'
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -865,11 +821,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/contact'
-    | '/cookies'
     | '/digital-marketing'
     | '/ecommerce-development'
     | '/portfolio'
-    | '/pricing'
     | '/privacy'
     | '/robots.txt'
     | '/seo-abu-dhabi'
@@ -899,7 +853,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/pages'
     | '/admin/portfolio'
-    | '/admin/pricing'
     | '/admin/seo'
     | '/admin/seo-ai'
     | '/admin/services'
@@ -920,7 +873,6 @@ export interface FileRouteTypes {
     | '/admin/faqs/$id'
     | '/admin/pages/$id'
     | '/admin/portfolio/$id'
-    | '/admin/pricing/$id'
     | '/admin/services/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -944,11 +896,9 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
-  CookiesRoute: typeof CookiesRoute
   DigitalMarketingRoute: typeof DigitalMarketingRoute
   EcommerceDevelopmentRoute: typeof EcommerceDevelopmentRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
-  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SeoAbuDhabiRoute: typeof SeoAbuDhabiRoute
@@ -1141,13 +1091,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/portfolio': {
       id: '/portfolio'
       path: '/portfolio'
@@ -1167,13 +1110,6 @@ declare module '@tanstack/react-router' {
       path: '/digital-marketing'
       fullPath: '/digital-marketing'
       preLoaderRoute: typeof DigitalMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cookies': {
-      id: '/cookies'
-      path: '/cookies'
-      fullPath: '/cookies'
-      preLoaderRoute: typeof CookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1323,13 +1259,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSeoRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/pricing': {
-      id: '/admin/pricing'
-      path: '/pricing'
-      fullPath: '/admin/pricing'
-      preLoaderRoute: typeof AdminPricingRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/portfolio': {
       id: '/admin/portfolio'
       path: '/portfolio'
@@ -1448,13 +1377,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/services/$id'
       preLoaderRoute: typeof AdminServicesIdRouteImport
       parentRoute: typeof AdminServicesRoute
-    }
-    '/admin/pricing/$id': {
-      id: '/admin/pricing/$id'
-      path: '/$id'
-      fullPath: '/admin/pricing/$id'
-      preLoaderRoute: typeof AdminPricingIdRouteImport
-      parentRoute: typeof AdminPricingRoute
     }
     '/admin/portfolio/$id': {
       id: '/admin/portfolio/$id'
@@ -1582,18 +1504,6 @@ const AdminPortfolioRouteWithChildren = AdminPortfolioRoute._addFileChildren(
   AdminPortfolioRouteChildren,
 )
 
-interface AdminPricingRouteChildren {
-  AdminPricingIdRoute: typeof AdminPricingIdRoute
-}
-
-const AdminPricingRouteChildren: AdminPricingRouteChildren = {
-  AdminPricingIdRoute: AdminPricingIdRoute,
-}
-
-const AdminPricingRouteWithChildren = AdminPricingRoute._addFileChildren(
-  AdminPricingRouteChildren,
-)
-
 interface AdminServicesRouteChildren {
   AdminServicesIdRoute: typeof AdminServicesIdRoute
 }
@@ -1637,7 +1547,6 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPagesRoute: typeof AdminPagesRouteWithChildren
   AdminPortfolioRoute: typeof AdminPortfolioRouteWithChildren
-  AdminPricingRoute: typeof AdminPricingRouteWithChildren
   AdminSeoRoute: typeof AdminSeoRoute
   AdminSeoAiRoute: typeof AdminSeoAiRoute
   AdminServicesRoute: typeof AdminServicesRouteWithChildren
@@ -1655,7 +1564,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminPagesRoute: AdminPagesRouteWithChildren,
   AdminPortfolioRoute: AdminPortfolioRouteWithChildren,
-  AdminPricingRoute: AdminPricingRouteWithChildren,
   AdminSeoRoute: AdminSeoRoute,
   AdminSeoAiRoute: AdminSeoAiRoute,
   AdminServicesRoute: AdminServicesRouteWithChildren,
@@ -1726,11 +1634,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
-  CookiesRoute: CookiesRoute,
   DigitalMarketingRoute: DigitalMarketingRoute,
   EcommerceDevelopmentRoute: EcommerceDevelopmentRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
-  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SeoAbuDhabiRoute: SeoAbuDhabiRoute,

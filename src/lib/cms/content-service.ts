@@ -12,7 +12,6 @@ import type {
   CmsPage,
   FaqItem,
   PortfolioItem,
-  PricingPlan,
   Service,
   SiteSettings,
   SiteStat,
@@ -20,6 +19,7 @@ import type {
   WithId,
 } from "@/types/cms";
 import { normalizePublicSiteSettings } from "@/lib/cms/normalize-settings";
+import { normalizeBlogCategory } from "@/lib/cms/blog-categories";
 import { sanitizeCmsHtml } from "@/lib/server/sanitize-cms-html";
 import { sanitizePublicImageUrl } from "@/lib/security/image-url";
 
@@ -233,6 +233,7 @@ function normalizeBlogPost(docId: string, post: BlogPost): WithId<BlogPost> {
     id: docId,
     slug,
     content,
+    category: normalizeBlogCategory(post.category),
     featuredImage: sanitizePublicImageUrl(post.featuredImage) || undefined,
     ogImage: sanitizePublicImageUrl(post.ogImage) || undefined,
     authorAvatar: sanitizePublicImageUrl(post.authorAvatar) || undefined,
@@ -324,10 +325,6 @@ export async function getTrendingPosts(max = 3): Promise<WithId<BlogPost>[]> {
 
 export async function getTestimonials(): Promise<WithId<Testimonial>[]> {
   return safeList(() => getPublished<Testimonial>(COLLECTIONS.testimonials));
-}
-
-export async function getPricingPlans(): Promise<WithId<PricingPlan>[]> {
-  return safeList(() => getPublished<PricingPlan>(COLLECTIONS.pricingPlans));
 }
 
 export async function getFaqs(): Promise<WithId<FaqItem>[]> {
