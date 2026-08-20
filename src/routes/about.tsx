@@ -10,10 +10,12 @@ import {
   Sparkles,
   Target,
   Megaphone,
+  CheckCircle2,
 } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { MarketsServeStrip } from "@/components/site/MarketsContact";
 import { TrustAuthoritySections } from "@/components/site/TrustAuthoritySections";
+import { PageIntro } from "@/components/site/SectionIntro";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildStaticPageHead } from "@/lib/seo";
@@ -99,117 +101,150 @@ function About() {
     },
   ];
 
+  const whyUs = [
+    "تواصل مباشر بدون وسيط",
+    "تسليم في المواعيد المحددة",
+    "دعم ما بعد الإطلاق",
+    "شفافية كاملة في التسعير",
+  ];
+
   return (
     <>
-      {/* Hero */}
-      <section className="hero-bg relative overflow-hidden page-intro">
-        <div aria-hidden className="absolute inset-0 grid-fade pointer-events-none" />
-        <div className="container-page relative page-intro-inner">
-          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-            <div className="order-last text-center lg:order-1 lg:text-start">
-              <span className="page-intro-eyebrow">
-                <Sparkles className="h-3 w-3" /> عن {SITE_NAME}
-              </span>
-              <MarketsServeStrip className="mt-3 justify-center lg:justify-start" />
-              <h1 className="page-intro-title">
-                وكالة رقمية <span className="text-gradient">للسعودية والإمارات.</span>
-              </h1>
-              <p className="page-intro-desc lg:mx-0">
-                {SITE_NAME} وكالة رقمية ناشئة متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين
-                محركات البحث، والتسويق الرقمي. نساعد الشركات في السعودية والإمارات على بناء حضور
-                أونلاين احترافي — من الفكرة إلى الإطلاق.
-              </p>
-              <div className="mt-7 flex flex-wrap justify-center gap-3 lg:justify-start">
-                <Link to="/contact" className="btn-primary">
-                  ابدأ مشروعك
-                  <ArrowRight className="h-4 w-4 rtl-flip" />
-                </Link>
-                <Link to="/services" className="btn-ghost">
-                  استكشف الخدمات
-                </Link>
+      {/* ─── Hero — نفس باقي الصفحات ─── */}
+      <PageIntro
+        eyebrow={`عن ${SITE_NAME}`}
+        title={
+          <>
+            وكالة رقمية{" "}
+            <span className="text-gradient">للسعودية والإمارات.</span>
+          </>
+        }
+        desc={`${SITE_NAME} وكالة رقمية متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين محركات البحث، والتسويق الرقمي.`}
+      />
+
+      {/* ─── Intro — صورة + checklist ─── */}
+      <section className="section">
+        <div className="container-page">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+
+            {/* copy + checklist + CTAs — يمين */}
+            <Reveal delay={80} className="order-1">
+              <div className="flex flex-col gap-5">
+                <MarketsServeStrip />
+                <h2 className="text-2xl font-bold tracking-tight leading-snug">
+                  نبني حضورك الرقمي — من الفكرة إلى الإطلاق.
+                </h2>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  نساعد الشركات في السعودية والإمارات على بناء حضور أونلاين احترافي بخطوات
+                  مرتبة، تواصل واضح، وتنفيذ يركز على النتيجة.
+                </p>
+                <ul className="grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-foreground/80">
+                  {whyUs.map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <Link to="/contact" className="btn-primary">
+                    ابدأ مشروعك
+                    <ArrowRight className="h-4 w-4 rtl-flip" />
+                  </Link>
+                  <Link to="/services" className="btn-ghost">
+                    استكشف الخدمات
+                  </Link>
+                </div>
               </div>
-            </div>
-            <figure className="about-hero-figure order-first lg:order-2">
-              <img
-                src={siteImages.about.studio}
-                alt={siteImages.about.studioAlt}
-                width={1200}
-                height={900}
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
-                className="about-hero-img"
-              />
-            </figure>
+            </Reveal>
+
+            {/* صورة — شمال */}
+            <Reveal className="order-2">
+              <figure className="m-0 w-full overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-card-hover)]">
+                <img
+                  src={siteImages.about.studio}
+                  alt={siteImages.about.studioAlt}
+                  width={1200}
+                  height={800}
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
+                  className="block w-full h-auto aspect-[16/9] object-cover object-center"
+                />
+              </figure>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Values — editorial beliefs layout */}
-      <section className="about-beliefs section" aria-labelledby="about-values-heading">
-        <div className="container-page about-beliefs-inner">
-          <header className="about-beliefs-head">
-            <span className="page-intro-eyebrow">ما نؤمن به</span>
-            <h2 id="about-values-heading" className="page-intro-title page-intro-title--section">
+      {/* ─── Values ─── */}
+      <section className="section" aria-labelledby="about-values-heading">
+        <div className="container-page">
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <span className="page-intro-eyebrow mx-auto">ما نؤمن به</span>
+            <h2 id="about-values-heading" className="page-intro-title page-intro-title--section mt-3">
               وضوح، جودة، والتزام.
             </h2>
-            <p className="about-beliefs-lead">
+            <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
               ثلاث مبادئ بسيطة نشتغل عليها في كل مشروع — من أول اجتماع حتى بعد الإطلاق.
             </p>
-          </header>
+          </div>
 
-          <ul className="about-beliefs-list">
+          <div className="grid gap-5 md:grid-cols-3">
             {values.map((v, i) => (
-              <li key={v.t} className="about-belief-item">
-                <Reveal delay={i * 90} className="about-belief-reveal">
-                  <div className="about-belief-meta">
-                    <span className="about-belief-num" aria-hidden>
-                      {v.n}
-                    </span>
-                    <span className="about-belief-icon" aria-hidden>
-                      <v.icon className="h-5 w-5" />
-                    </span>
-                  </div>
-                  <div className="about-belief-copy">
-                    <h3 className="about-belief-title">{v.t}</h3>
-                    <p className="about-belief-desc">{v.d}</p>
-                  </div>
-                </Reveal>
-              </li>
+              <Reveal key={v.t} delay={i * 90}>
+                <div className="relative rounded-2xl border border-border bg-surface p-7 flex flex-col gap-4 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full">
+                  <span aria-hidden className="absolute -top-3 -end-2 text-[7rem] font-black leading-none text-primary/5 select-none pointer-events-none">
+                    {v.n}
+                  </span>
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <v.icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <h3 className="text-lg font-bold tracking-tight relative">{v.t}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed relative">{v.d}</p>
+                </div>
+              </Reveal>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
-      {/* Offers */}
+      {/* ─── Offers ─── */}
       <section className="section tone-tinted" aria-labelledby="about-offers-heading">
         <div className="container-page">
-          <div className="page-intro-block me-auto w-full text-start">
-            <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
-            <h2 id="about-offers-heading" className="page-intro-title page-intro-title--section">
-              خدمات واضحة لنمو عملك.
-            </h2>
-            <p className="page-intro-desc mt-3 !max-w-none">
-              سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك الحالي — نعمل بخطوات مرتبة وتحديثات
-              مستمرة حتى الإطلاق وما بعده.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div>
+              <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
+              <h2 id="about-offers-heading" className="page-intro-title page-intro-title--section mt-3">
+                خدمات واضحة لنمو عملك.
+              </h2>
+              <p className="text-muted-foreground mt-2 text-sm leading-relaxed max-w-lg">
+                سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك — نعمل بخطوات مرتبة حتى الإطلاق وما بعده.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 shrink-0">
+              <Link to="/services" className="btn-ghost text-sm">
+                كل الخدمات <ArrowRight className="h-3.5 w-3.5 rtl-flip" />
+              </Link>
+            </div>
           </div>
-          <div className="section-body grid gap-4 sm:grid-cols-2">
+
+          <div className="grid gap-4 sm:grid-cols-2">
             {offers.map((o, i) => (
               <Reveal key={o.t} delay={i * 60}>
                 <Link
                   to={o.href}
-                  className="about-offer-card group flex h-full gap-4 rounded-2xl border border-border bg-background p-5 transition-colors hover:border-primary/30 hover:bg-accent/40"
+                  className="group flex h-full gap-4 rounded-2xl border border-border bg-background p-6 transition-all hover:border-primary/30 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 duration-300"
                 >
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110">
                     <o.icon className="h-5 w-5" aria-hidden />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center justify-between gap-2">
-                      <span className="font-semibold tracking-tight">{o.t}</span>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 rtl-flip" />
+                      <span className="font-bold tracking-tight group-hover:text-primary transition-colors">{o.t}</span>
+                      <ArrowRight className="h-4 w-4 shrink-0 text-primary opacity-0 transition-all group-hover:opacity-100 rtl-flip" />
                     </span>
-                    <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                    <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">
                       {o.d}
                     </span>
                   </span>
@@ -217,64 +252,65 @@ function About() {
               </Reveal>
             ))}
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/services" className="btn-ghost">
-              كل الخدمات
-              <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
-            <Link to="/portfolio" className="btn-ghost">
-              أعمالنا
-            </Link>
-            <Link to="/contact" className="btn-ghost">
-              تواصل معنا
-            </Link>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/portfolio" className="btn-ghost">أعمالنا</Link>
+            <Link to="/contact" className="btn-ghost">تواصل معنا</Link>
           </div>
         </div>
       </section>
 
+      {/* ─── Trust / Team / Stats / Testimonials ─── */}
       <TrustAuthoritySections />
 
-      {/* How we work — right aligned intro + process */}
+      {/* ─── How we work ─── */}
       <section className="section tone-tinted" aria-labelledby="about-steps-heading">
         <div className="container-page">
-          <div className="page-intro-block me-auto w-full text-start">
-            <span className="page-intro-eyebrow">
-              <Award className="h-3 w-3" /> بدايتنا
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <span className="page-intro-eyebrow mx-auto">
+              <Award className="h-3 w-3" /> كيف نعمل
             </span>
-            <h2 id="about-steps-heading" className="page-intro-title page-intro-title--section">
+            <h2 id="about-steps-heading" className="page-intro-title page-intro-title--section mt-3">
               بدأنا مؤخراً — ونبني معك من اليوم.
             </h2>
-            <p className="page-intro-desc mt-3 !max-w-none">
+            <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
               {SITE_NAME} وكالة جديدة تخدم السعودية والإمارات. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
             </p>
           </div>
-          <ol className="section-body grid list-none gap-5 p-0 md:grid-cols-3">
+
+          <div className="grid gap-5 md:grid-cols-3 relative">
+            {/* connector line */}
+            <div aria-hidden className="hidden md:block absolute top-11 start-[20%] end-[20%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
             {steps.map((s, i) => (
               <Reveal key={s.n} delay={i * 80}>
-                <li className="process-step h-full text-start">
-                  <span className="process-num" aria-hidden>
-                    {s.n}
-                  </span>
-                  <h3 className="font-semibold tracking-tight">{s.t}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.d}</p>
-                </li>
+                <div className="relative rounded-2xl border border-border bg-surface p-7 h-full flex flex-col gap-3 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300 text-center md:text-start">
+                  {/* step circle */}
+                  <div className="flex justify-center md:justify-start">
+                    <span className="h-11 w-11 rounded-full bg-primary text-primary-foreground grid place-items-center text-sm font-black shadow-md">
+                      {s.n}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-base tracking-tight mt-1">{s.t}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{s.d}</p>
+                </div>
               </Reveal>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section section-compact-top pb-16">
+      {/* ─── CTA ─── */}
+      <section className="section pb-20">
         <div className="container-page">
-          <div className="home-cta-block relative">
-            <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white">
+          <div className="home-cta-block relative text-center">
+            <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white mx-auto">
               <Sparkles className="h-3 w-3" /> ابدأ الآن
             </span>
-            <h2 className="relative mx-auto mt-3 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
+            <h2 className="relative mx-auto mt-4 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
               جاهز تبني حضورك الرقمي معنا؟
             </h2>
-            <p className="relative mx-auto mt-2.5 max-w-lg text-sm text-white/80">
+            <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/80">
               تواصل عبر واتساب أو النموذج — نرد خلال 24 ساعة، بدون التزام.
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">

@@ -15,18 +15,22 @@ export function BreadcrumbNav({ items, className = "" }: BreadcrumbNavProps) {
         {items.map((item, i) => {
           const isLast = i === items.length - 1;
           return (
-            <li key={item.path} className="flex items-center gap-1.5">
+            <li key={item.path} className={`flex items-center gap-1.5 ${isLast ? "min-w-0" : ""}`}>
               {i > 0 && (
-                <span aria-hidden className="opacity-50">
+                <span aria-hidden className="opacity-50 shrink-0">
                   /
                 </span>
               )}
               {isLast ? (
-                <span className="text-foreground font-medium" aria-current="page">
+                <span
+                  className="text-foreground font-medium truncate max-w-[32ch] sm:max-w-[48ch]"
+                  aria-current="page"
+                  title={item.name}
+                >
                   {item.name}
                 </span>
               ) : (
-                <Link to={item.path} className="hover:text-primary transition-colors">
+                <Link to={item.path} className="hover:text-primary transition-colors shrink-0">
                   {item.name}
                 </Link>
               )}

@@ -12,9 +12,8 @@ export const siteImages = {
     mainAlt: `فريق ${SITE_NAME} يتعاون على بناء منتج رقمي`,
   },
   about: {
-    /** Public path kept stable for SEO/cache; filename is about-team.png. */
-    studio: "/about-team.png",
-    studioAlt: `استوديو ${SITE_NAME} — تصميم مواقع وتحليلات رقمية`,
+    studio: "/about-studio.png",
+    studioAlt: `${SITE_NAME} — وكالة رقمية للسعودية والإمارات`,
   },
   contact: {
     sideAlt: `تواصل مع فريق ${SITE_NAME}`,

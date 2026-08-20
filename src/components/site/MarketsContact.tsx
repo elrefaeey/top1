@@ -72,18 +72,23 @@ export function MarketsPhoneCards({
   );
 }
 
-/** شارة نطاق الخدمة — السعودية والإمارات */
+/** شارة نطاق الخدمة — السعودية والإمارات + المدن */
 export function MarketsServeStrip({ className = "" }: { className?: string }) {
   return (
-    <ul className={`markets-serve ${className}`.trim()} aria-label="نخدم السعودية والإمارات">
-      <li className="markets-serve-item markets-serve-item--sa">
-        <span className="markets-serve-dot" aria-hidden />
-        السعودية
-      </li>
-      <li className="markets-serve-item markets-serve-item--ae">
-        <span className="markets-serve-dot" aria-hidden />
-        الإمارات
-      </li>
-    </ul>
+    <div className={`markets-serve-wrap ${className}`.trim()}>
+      <ul className="markets-serve" aria-label="نخدم السعودية والإمارات">
+        <li className="markets-serve-item markets-serve-item--sa">
+          <span className="markets-serve-dot" aria-hidden />
+          السعودية
+        </li>
+        <li className="markets-serve-item markets-serve-item--ae">
+          <span className="markets-serve-dot" aria-hidden />
+          الإمارات
+        </li>
+      </ul>
+      <p className="markets-serve-cities">
+        الرياض · جدة · القصيم · دبي · أبوظبي · الشارقة
+      </p>
+    </div>
   );
 }

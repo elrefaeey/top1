@@ -1919,6 +1919,12 @@
 }
 
 /* —— نطاق الخدمة: السعودية + الإمارات —— */
+.markets-serve-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 .markets-serve {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1927,6 +1933,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.markets-serve-cities {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.01em;
 }
 
 .markets-serve-item {
