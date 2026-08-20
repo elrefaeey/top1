@@ -107,6 +107,8 @@ function Hero() {
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
       <div className="container-page hero-studio-grid">
+
+        {/* ── Copy ── */}
         <div className="hero-studio-copy">
           <p className="hero-studio-brand animate-hero animate-hero-delay-1">{SITE_NAME}</p>
           <MarketsServeStrip className="hero-markets-serve animate-hero animate-hero-delay-1" />
@@ -114,17 +116,30 @@ function Hero() {
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
             تصميم مواقع وSEO
             <span className="hero-studio-title-line">
-              يحوّلان الزوار إلى عملاء في السعودية والإمارات.
+              يحوّلان الزوار إلى عملاء.
             </span>
           </h1>
 
           <p className="hero-studio-desc animate-hero animate-hero-delay-3">
-            مواقع، تحسين محركات البحث، وتسويق رقمي — لعلامات تريد نتائج واضحة وقابلة للقياس.
+            مواقع احترافية، تحسين محركات البحث، وتسويق رقمي — لعلامات تريد نتائج واضحة وقابلة للقياس في السعودية والإمارات.
           </p>
+
+          {/* trust badges */}
+          <div className="flex flex-wrap gap-2 mt-4 animate-hero animate-hero-delay-3">
+            {["رد خلال 24 ساعة", "استشارة مجانية", "لا التزام"].map((t) => (
+              <span
+                key={t}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold border border-border bg-surface rounded-full px-3 py-1 text-muted-foreground"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" aria-hidden />
+                {t}
+              </span>
+            ))}
+          </div>
 
           <div className="hero-studio-actions animate-hero animate-hero-delay-4">
             <Link to="/contact" className="btn-primary">
-              تواصل معنا
+              ابدأ مشروعك
               <ArrowRight className="h-4 w-4 rtl-flip" />
             </Link>
             <Link to="/portfolio" className="btn-ghost">
@@ -133,6 +148,7 @@ function Hero() {
           </div>
         </div>
 
+        {/* ── Visual ── */}
         <div className="hero-studio-visual animate-hero animate-hero-delay-3">
           <SiteImage
             key={heroSrc}
@@ -176,7 +192,7 @@ function Services() {
   if (services.length === 0) return null;
 
   return (
-    <section id="services" className="section">
+    <section id="services" className="section tone-tinted">
       <div className="container-page">
         <Reveal>
           <SectionIntro
@@ -185,13 +201,16 @@ function Services() {
             desc="تصميم، تطوير، SEO، وإعلانات — فريق واحد مسؤول عن النتيجة."
           />
         </Reveal>
-        <div className="section-body bento-grid">
+        <div className="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => {
             const Icon = serviceIcon(s.icon);
-            const featured = i === 0 && services.length >= 3;
             return (
-              <Reveal key={s.id} delay={i * 70} className={featured ? "bento-featured" : undefined}>
-                <Link to="/services/$slug" params={{ slug: s.slug }} className="bento-card group">
+              <Reveal key={s.id} delay={i * 70}>
+                <Link
+                  to="/services/$slug"
+                  params={{ slug: s.slug }}
+                  className="group flex flex-col rounded-2xl border border-border bg-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full"
+                >
                   {s.imageUrl && (
                     <SiteImage
                       src={s.imageUrl}
@@ -199,19 +218,19 @@ function Services() {
                       width={640}
                       height={360}
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      wrapperClassName="aspect-[16/9] w-full"
-                      className="transition-transform duration-500 group-hover:scale-105"
+                      wrapperClassName="aspect-[16/9] w-full overflow-hidden"
+                      className="transition-transform duration-500 group-hover:scale-105 object-cover object-top"
                     />
                   )}
-                  <div className="bento-card-body">
-                    <span className="bento-icon">
+                  <div className="flex flex-col flex-1 p-5 gap-3">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
                       <Icon className="h-5 w-5" />
                     </span>
-                    <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">
+                    <h3 className="font-bold text-base group-hover:text-primary transition-colors">{s.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">
                       {s.shortDescription}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary mt-auto pt-2 border-t border-border/50">
                       التفاصيل{" "}
                       <ArrowRight className="h-3.5 w-3.5 rtl-flip group-hover:translate-x-0.5 transition-transform" />
                     </span>
@@ -238,7 +257,11 @@ function WhyUs() {
       t: "خبراء فقط",
       d: "فريق senior بدون outsourcing — جودة ثابتة من أول يوم.",
     },
-    { icon: Zap, t: "سرعة وتسليم واضح", d: "سبرنتات أسبوعين، تحديثات مستمرة، بدون مفاجآت." },
+    {
+      icon: Zap,
+      t: "سرعة وتسليم واضح",
+      d: "سبرنتات أسبوعين، تحديثات مستمرة، بدون مفاجآت.",
+    },
     {
       icon: TrendingUp,
       t: "SEO من البداية",
@@ -247,20 +270,21 @@ function WhyUs() {
   ];
 
   return (
-    <section className="section tone-tinted">
+    <section className="section">
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
+
+          {/* Panel */}
           <Reveal>
-            <div className="why-panel relative">
+            <div className="why-panel relative rounded-2xl overflow-hidden">
               <span className="relative page-intro-eyebrow !bg-white/10 !text-white !border-white/20">
                 لماذا {SITE_NAME}
               </span>
-              <h2 className="relative mt-3 text-xl md:text-2xl font-bold text-white leading-snug">
+              <h2 className="relative mt-4 text-2xl md:text-3xl font-bold text-white leading-snug">
                 شريك تسويق يفهم السعودية والإمارات
               </h2>
-              <p className="relative mt-2.5 text-sm text-white/70 leading-relaxed max-w-md">
-                RTL، WhatsApp، وسلوك المستخدم المحلي في الخليج — نبني منتجات digital تناسب جمهورك
-                وتحقق leads حقيقية.
+              <p className="relative mt-3 text-sm text-white/75 leading-relaxed max-w-md">
+                RTL، WhatsApp، وسلوك المستخدم المحلي في الخليج — نبني منتجات رقمية تناسب جمهورك وتحقق leads حقيقية.
               </p>
               <Link
                 to="/about"
@@ -270,14 +294,16 @@ function WhyUs() {
               </Link>
             </div>
           </Reveal>
+
+          {/* Points grid */}
           <div className="grid gap-4 sm:grid-cols-2">
             {points.map((p, i) => (
               <Reveal key={p.t} delay={i * 80}>
-                <div className="surface-card p-5 h-full hover:shadow-[var(--shadow-card-hover)] transition-shadow">
-                  <span className="bento-icon mb-3">
-                    <p.icon />
+                <div className="rounded-2xl border border-border bg-surface p-5 h-full hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300">
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary mb-3">
+                    <p.icon className="h-5 w-5" />
                   </span>
-                  <h3 className="font-semibold text-[0.9375rem]">{p.t}</h3>
+                  <h3 className="font-bold text-[0.9375rem]">{p.t}</h3>
                   <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">{p.d}</p>
                 </div>
               </Reveal>

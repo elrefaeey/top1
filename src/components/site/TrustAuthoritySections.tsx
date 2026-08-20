@@ -27,9 +27,7 @@ export function TrustAuthoritySections() {
               <h2 id="eeat-team" className="page-intro-title page-intro-title--section">
                 أشخاص حقيقيون خلف النتائج.
               </h2>
-              <p className="page-intro-desc mt-3 !max-w-none">
-                تعرف على من يخطط وينفّذ مشاريع {SITE_NAME} — شفافية تدعم الثقة وE-E-A-T.
-              </p>
+
             </div>
             <div className="section-body grid gap-4 sm:grid-cols-2">
               {team.map((author, i) => (

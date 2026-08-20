@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
-import { ArrowLeft, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { useService } from "@/hooks/use-cms";
 import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
@@ -12,7 +13,6 @@ import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { serviceLocationClusterLinks, moneyPageForService } from "@/lib/seo/service-money-pages";
 import { buildServiceHead, notFoundHead } from "@/lib/seo";
 import { stripHtml } from "@/lib/seo/blog-utils";
-
 import { SITE_NAME } from "@/lib/site-config";
 
 function looksLikeHtml(value: string): boolean {
@@ -24,19 +24,10 @@ const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 export const Route = createFileRoute("/services/$slug")({
   loader: async ({ params }) => {
     const service = await loadServiceForSeoFn({ data: { slug: params.slug } });
-    if (!service) {
-      throw notFound({ headers: NOINDEX_HEADERS });
-    }
-    // Always canonicalize to the preferred public slug — never to the CMS/legacy slug.
-    // Redirecting to CMS slugs conflicts with vercel/permanent-redirects and creates loops.
+    if (!service) throw notFound({ headers: NOINDEX_HEADERS });
     const preferred = preferredServiceSlug(service.slug || params.slug);
     if (params.slug !== preferred) {
-      throw redirect({
-        to: "/services/$slug",
-        params: { slug: preferred },
-        statusCode: 301,
-        replace: true,
-      });
+      throw redirect({ to: "/services/$slug", params: { slug: preferred }, statusCode: 301, replace: true });
     }
     return { service };
   },
@@ -63,7 +54,6 @@ function ServiceDetail() {
       </div>
     );
   }
-
   if (!s) return null;
 
   const Icon = getServiceIcon(s.icon);
@@ -80,22 +70,23 @@ function ServiceDetail() {
 
   return (
     <article itemScope itemType="https://schema.org/Service">
+
+      {/* ─── Hero ─── */}
       <section className="hero-bg relative overflow-hidden">
-        <div className="container-page relative pb-16 pt-6">
-          <BreadcrumbNav items={breadcrumbs} className="mb-6" />
+        <div className="container-page relative pt-8 pb-14">
+          <BreadcrumbNav items={breadcrumbs} className="mb-8" />
+
           {moneyPage && (
-            <p className="mb-6 text-sm text-muted-foreground">
+            <p className="mb-5 text-sm text-muted-foreground">
               للبحث حسب المدينة أو الدولة، ابدأ من{" "}
-              <Link
-                to={moneyPage}
-                className="font-medium text-primary underline-offset-2 hover:underline"
-              >
+              <Link to={moneyPage} className="font-medium text-primary underline-offset-2 hover:underline">
                 صفحة الخدمة الرئيسية
-              </Link>
-              .
+              </Link>.
             </p>
           )}
-          <div className="grid items-center gap-10 lg:grid-cols-2">
+
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            {/* Image */}
             {s.imageUrl && (
               <SiteImage
                 src={s.imageUrl}
@@ -104,25 +95,28 @@ function ServiceDetail() {
                 height={800}
                 fetchPriority="high"
                 loading="eager"
-                wrapperClassName="order-1 lg:order-2 aspect-[16/10] w-full max-w-xl mx-auto rounded-2xl shadow-[var(--shadow-card-hover)]"
+                wrapperClassName="order-1 lg:order-2 aspect-[16/9] w-full rounded-2xl border border-border shadow-[var(--shadow-card-hover)] overflow-hidden"
+                className="object-cover object-top"
               />
             )}
-            <div className="order-2 lg:order-1 max-w-xl">
+
+            {/* Copy */}
+            <div className="order-2 lg:order-1">
               {s.tagline && (
-                <span className="eyebrow inline-flex">
-                  <Sparkles className="h-3.5 w-3.5" aria-hidden /> {s.tagline}
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 rounded-full px-3 py-1 mb-5">
+                  <Sparkles className="h-3 w-3" aria-hidden /> {s.tagline}
                 </span>
               )}
               <h1
-                className="mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-[1.2]"
+                className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.2]"
                 itemProp="name"
               >
                 {s.title}
               </h1>
-              <p className="mt-5 text-lg text-muted-foreground" itemProp="description">
+              <p className="mt-5 text-lg text-muted-foreground leading-relaxed" itemProp="description">
                 {s.shortDescription || stripHtml(s.description)}
               </p>
-              <div className="mt-8 flex gap-3">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link to="/contact" className="btn-primary">
                   ابدأ مشروعك <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
                 </Link>
@@ -135,6 +129,7 @@ function ServiceDetail() {
         </div>
       </section>
 
+      {/* ─── Description ─── */}
       {looksLikeHtml(s.description) ? (
         <section className="section">
           <div
@@ -145,8 +140,8 @@ function ServiceDetail() {
       ) : seoBlock ? (
         <section className="section">
           <div className="container-page max-w-3xl">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">نظرة عامة</h2>
-            <div className="mt-6 space-y-4 text-[17px] leading-[1.85] text-foreground/85">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">نظرة عامة</h2>
+            <div className="space-y-4 text-[17px] leading-[1.85] text-foreground/85">
               {seoBlock.intro.map((p) => (
                 <p key={p.slice(0, 48)}>{p}</p>
               ))}
@@ -155,34 +150,46 @@ function ServiceDetail() {
         </section>
       ) : null}
 
+      {/* ─── Deliverables ─── */}
       <section className="section tone-tinted">
-        <div className="container-page grid gap-10 md:grid-cols-[1fr_1.4fr]">
-          <div>
-            <span className="service-card-icon" aria-hidden>
-              <Icon />
+        <div className="container-page">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <Icon className="h-6 w-6" aria-hidden />
             </span>
-            <h2 className="mt-5 text-2xl md:text-3xl font-bold tracking-tight">ما ستحصل عليه</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">ما ستحصل عليه</h2>
           </div>
-          <ul className="grid sm:grid-cols-2 gap-3">
+          <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
             {deliverables.map((d) => (
-              <li key={d} className="flex items-start gap-2 surface-card px-4 py-3 text-sm">
-                <Check className="h-4 w-4 mt-0.5 text-primary shrink-0" aria-hidden /> {d}
+              <li
+                key={d}
+                className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-4 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-300"
+              >
+                <CheckCircle2 className="h-5 w-5 mt-0.5 text-primary shrink-0" aria-hidden />
+                <span className="text-sm leading-relaxed">{d}</span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
+      {/* ─── Why us ─── */}
       {seoBlock && (
         <section className="section">
           <div className="container-page">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-              لماذا تختار Top1Markting؟
-            </h2>
-            <ul className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl">
+            <div className="text-center max-w-xl mx-auto mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+                لماذا تختار Top1Markting؟
+              </h2>
+            </div>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
               {seoBlock.whyChooseUs.map((item) => (
-                <li key={item} className="flex items-start gap-2 surface-card px-4 py-3 text-sm">
-                  <Check className="h-4 w-4 mt-0.5 text-primary shrink-0" aria-hidden /> {item}
+                <li
+                  key={item}
+                  className="flex items-start gap-3 rounded-2xl border border-border bg-surface p-4 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <CheckCircle2 className="h-5 w-5 mt-0.5 text-primary shrink-0" aria-hidden />
+                  <span className="text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
@@ -190,18 +197,37 @@ function ServiceDetail() {
         </section>
       )}
 
+      {/* ─── Process ─── */}
       {process.length > 0 && (
-        <section className="section">
+        <section className="section tone-tinted">
           <div className="container-page">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">كيف ننفّذ</h2>
-            <div className="mt-10 grid gap-5 md:grid-cols-4">
+            <div className="text-center max-w-xl mx-auto mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">كيف ننفّذ</h2>
+              <p className="mt-2 text-sm text-muted-foreground">خطوات واضحة من البداية للإطلاق</p>
+            </div>
+
+            <div
+              className={`grid gap-5 relative ${
+                process.length <= 3 ? "md:grid-cols-3" : "md:grid-cols-4"
+              }`}
+            >
+              {/* connector line */}
+              <div
+                aria-hidden
+                className="hidden md:block absolute top-11 start-[12%] end-[12%] h-px bg-gradient-to-r from-transparent via-border to-transparent"
+              />
               {process.map((p, i) => (
-                <div key={p.title} className="surface-card p-6">
-                  <div className="text-3xl font-bold text-gradient" aria-hidden>
-                    {String(i + 1).padStart(2, "0")}
+                <div
+                  key={p.title}
+                  className="relative rounded-2xl border border-border bg-surface p-6 text-center md:text-start hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="flex justify-center md:justify-start mb-4">
+                    <span className="h-11 w-11 rounded-full bg-primary text-primary-foreground grid place-items-center text-sm font-black shadow-md">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   </div>
-                  <h3 className="mt-2 font-semibold">{p.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{p.description}</p>
+                  <h3 className="font-bold text-base">{p.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.description}</p>
                 </div>
               ))}
             </div>
@@ -209,56 +235,99 @@ function ServiceDetail() {
         </section>
       )}
 
+      {/* ─── FAQs ─── */}
       {seoBlock && seoBlock.faqs.length > 0 && (
-        <section className="section tone-tinted">
-          <div className="container-page max-w-3xl">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">أسئلة شائعة</h2>
-            <div className="mt-8 space-y-4">
-              {seoBlock.faqs.map((faq) => (
-                <details key={faq.question} className="surface-card p-5 group">
-                  <summary className="font-semibold cursor-pointer list-none flex items-center justify-between gap-2">
-                    {faq.question}
-                    <span
-                      className="text-primary text-lg group-open:rotate-45 transition-transform"
-                      aria-hidden
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
-                </details>
-              ))}
+        <section className="section">
+          <div className="container-page max-w-2xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">أسئلة شائعة</h2>
+              <p className="mt-2 text-sm text-muted-foreground">إجابات سريعة على أكثر الأسئلة شيوعاً</p>
             </div>
+            <FaqAccordion faqs={seoBlock.faqs} />
           </div>
         </section>
       )}
 
-      <section className="section">
-        <div className="container-page max-w-3xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">جاهز للبدء؟</h2>
-          <p className="mt-3 text-muted-foreground">
-            تواصل معنا عبر واتساب أو النموذج — نرد خلال 24 ساعة.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="btn-primary">
-              تواصل معنا
-            </Link>
-            <Link to="/portfolio" className="btn-ghost">
-              شاهد أعمالنا
-            </Link>
+      {/* ─── CTA + Internal links ─── */}
+      <section className="section pb-20">
+        <div className="container-page">
+          <div className="home-cta-block relative text-center mb-12">
+            <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white mx-auto">
+              <Sparkles className="h-3 w-3" /> ابدأ الآن
+            </span>
+            <h2 className="relative mx-auto mt-4 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
+              جاهز للبدء؟
+            </h2>
+            <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/80">
+              تواصل معنا عبر واتساب أو النموذج — نرد خلال 24 ساعة، بدون التزام.
+            </p>
+            <div className="relative mt-8 flex flex-wrap justify-center gap-3">
+              <Link to="/contact" className="btn-primary">
+                تواصل معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+              </Link>
+              <Link to="/portfolio" className="btn-ghost">
+                شاهد أعمالنا
+              </Link>
+            </div>
           </div>
+
           <InternalLinksBlock
             title="صفحات المدن والخدمات ذات الصلة"
             links={locationCluster}
-            className="mt-12 text-start"
           />
           <InternalLinksBlock
             title="روابط إضافية"
             links={footerInternalLinks()}
-            className="mt-8 text-start"
+            className="mt-8"
           />
         </div>
       </section>
     </article>
+  );
+}
+
+/* ── FAQ Accordion ── */
+function FaqAccordion({ faqs }: { faqs: Array<{ question: string; answer: string }> }) {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <div className="flex flex-col gap-2">
+      {faqs.map((faq, i) => {
+        const isOpen = open === i;
+        return (
+          <div
+            key={faq.question}
+            className={`rounded-2xl border transition-colors duration-200 overflow-hidden ${
+              isOpen
+                ? "border-primary/30 bg-surface shadow-sm"
+                : "border-border bg-surface hover:border-primary/20"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpen(isOpen ? null : i)}
+              className="w-full flex items-center justify-between gap-3 px-5 py-4 text-start"
+              aria-expanded={isOpen}
+            >
+              <span className="font-semibold text-sm leading-snug min-w-0">{faq.question}</span>
+              <span
+                className={`h-6 w-6 rounded-full grid place-items-center shrink-0 transition-all ${
+                  isOpen
+                    ? "bg-primary text-primary-foreground rotate-180"
+                    : "bg-muted text-muted-foreground"
+                }`}
+                aria-hidden
+              >
+                <ChevronDown className="h-3.5 w-3.5" />
+              </span>
+            </button>
+            {isOpen && (
+              <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                {faq.answer}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }

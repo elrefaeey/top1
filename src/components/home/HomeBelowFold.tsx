@@ -226,10 +226,10 @@ function Testimonials() {
 function BlogPreview() {
   const mounted = useHasMounted();
   const { data: home } = useHomeBundle();
-  const posts = (home?.blog ?? []).slice(0, 3);
+  const posts = (home?.blog ?? []).slice(0, 4);
   if (!mounted || posts.length === 0) return null;
   return (
-    <section className="section">
+    <section className="section tone-tinted">
       <div className="container-page">
         <SectionIntro
           eyebrow="المدونة"
@@ -240,31 +240,33 @@ function BlogPreview() {
             </Link>
           }
         />
-        <div className="section-body grid gap-5 md:grid-cols-3">
+        <div className="section-body grid gap-5 sm:grid-cols-2">
           {posts.map((p) => (
             <Link
               key={p.id}
               to="/blog/$slug"
               params={{ slug: blogPostSlug(p) }}
-              className="group bento-card block"
+              className="group overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300 flex flex-col"
             >
               {p.featuredImage && (
                 <SiteImage
                   src={p.featuredImage}
                   alt={p.featuredImageAlt ?? p.title}
                   width={640}
-                  height={400}
-                  wrapperClassName="aspect-[16/10] w-full"
-                  className="transition-transform duration-500 group-hover:scale-105"
+                  height={360}
+                  wrapperClassName="aspect-[16/9] w-full overflow-hidden"
+                  className="transition-transform duration-500 group-hover:scale-105 object-cover object-top"
                 />
               )}
-              <div className="p-5">
+              <div className="flex flex-col flex-1 p-5 gap-2">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="font-medium text-primary">{p.category}</span>
-                  <span>·</span>
+                  <span className="bg-primary/10 text-primary font-semibold rounded-full px-2.5 py-0.5">
+                    {p.category}
+                  </span>
+                  <span className="opacity-40">·</span>
                   <span>{p.publishedAt ? formatPostDate(p.publishedAt) : ""}</span>
                 </div>
-                <h3 className="mt-2 line-clamp-2 font-semibold leading-snug transition-colors group-hover:text-primary">
+                <h3 className="font-bold text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
                   {p.title}
                 </h3>
               </div>

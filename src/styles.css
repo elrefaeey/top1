@@ -567,7 +567,7 @@
 /* ─── Hero — split copy + image inside container-page ─── */
 .hero-studio {
   position: relative;
-  padding-block: clamp(1.5rem, 4vw, 2.75rem) clamp(0.5rem, 1.5vw, 1rem);
+  padding-block: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 2vw, 1.5rem);
 }
 
 .hero-studio-grid {
@@ -587,8 +587,8 @@
 
 @media (min-width: 1024px) {
   .hero-studio-grid {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(2rem, 4vw, 3.5rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 5vw, 4rem);
   }
 
   /* لابتوب RTL: نص يمين / صورة شمال */
@@ -602,14 +602,14 @@
 }
 
 .hero-studio-copy {
-  max-width: 34rem;
+  max-width: 36rem;
   min-width: 0;
 }
 
 .hero-studio-brand {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.05;
@@ -620,18 +620,18 @@
 }
 
 .hero-studio-title {
-  margin: 1rem 0 0;
+  margin: 0.75rem 0 0;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
-  line-height: 1.3;
-  letter-spacing: -0.015em;
+  font-weight: 800;
+  font-size: clamp(1.75rem, 3.8vw, 2.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
   color: var(--foreground);
 }
 
 .hero-studio-title-line {
   display: block;
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   background-clip: text;
@@ -639,15 +639,15 @@
 }
 
 .hero-studio-desc {
-  margin: 1rem 0 0;
-  max-width: 30rem;
-  font-size: clamp(0.98rem, 1.5vw, 1.1rem);
+  margin: 1.1rem 0 0;
+  max-width: 32rem;
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
   line-height: 1.75;
   color: var(--muted-foreground);
 }
 
 .hero-studio-actions {
-  margin-top: 1.5rem;
+  margin-top: 1.75rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -655,9 +655,10 @@
 
 .hero-studio-visual {
   min-width: 0;
-  border-radius: clamp(1rem, 2vw, 1.5rem);
+  border-radius: clamp(1rem, 2vw, 1.75rem);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 24px 64px -12px color-mix(in srgb, var(--primary) 20%, transparent),
+              var(--shadow-card-hover);
   background: var(--surface);
 }
 
@@ -1284,7 +1285,7 @@
   background: linear-gradient(145deg, #021c4d 0%, #04214f 32%, #072969 62%, #1149b0 100%);
   color: white;
   border-radius: var(--radius-2xl);
-  padding: clamp(2rem, 5vw, 3rem);
+  padding: clamp(2.25rem, 5vw, 3.5rem);
   position: relative;
   overflow: hidden;
 }
@@ -1293,8 +1294,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 100% 0%, rgb(63 126 243 / 0.35), transparent 48%),
-    radial-gradient(circle at 0% 100%, rgb(30 99 224 / 0.22), transparent 45%);
+    radial-gradient(circle at 100% 0%, rgb(63 126 243 / 0.4), transparent 48%),
+    radial-gradient(circle at 0% 100%, rgb(30 99 224 / 0.25), transparent 45%);
   pointer-events: none;
 }
 
@@ -1381,15 +1382,15 @@
 
 .stats-band-value {
   font-family: var(--font-display);
-  font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
   font-weight: 800;
   color: var(--foreground);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   line-height: 1;
 }
 
 .stats-band-label {
-  margin-top: 0.375rem;
+  margin-top: 0.4rem;
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--muted-foreground);
@@ -1424,6 +1425,12 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+}
+.process-step:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--border));
 }
 @media (min-width: 1024px) {
   .process-step { text-align: start; }
@@ -1431,15 +1438,15 @@
 .process-num {
   display: inline-grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 999px;
   background: var(--gradient-primary);
   color: white;
-  font-weight: 700;
-  font-size: 0.875rem;
+  font-weight: 800;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
-  box-shadow: var(--shadow-elevated);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 35%, transparent);
 }
 
 .home-cta-block {
