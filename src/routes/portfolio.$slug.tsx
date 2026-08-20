@@ -34,7 +34,6 @@ export const Route = createFileRoute("/portfolio/$slug")({
   component: PortfolioDetail,
 });
 
-/** Normalize tags that may arrive as one comma-separated string. */
 function normalizeTags(tags: string[]): string[] {
   const out: string[] = [];
   for (const raw of tags) {
@@ -71,31 +70,37 @@ function PortfolioDetail() {
   const hasStory = Boolean(item.challenge || item.solution || item.resultsSummary);
   const { name: brandName, specialty } = splitDisplayTitle(item.title);
 
+  const hasExtra =
+    hasStory ||
+    (item.servicesProvided && item.servicesProvided.length > 0) ||
+    (item.technologies && item.technologies.length > 0) ||
+    serviceLinks.length > 0;
+
   return (
     <article className="portfolio-detail" itemScope itemType="https://schema.org/CreativeWork">
+
+      {/* ─── Hero ─── */}
       <section className="hero-bg relative overflow-hidden">
         <div className="container-page relative pb-12 pt-6 md:pb-16">
           <div className="portfolio-detail-head">
             <div className="portfolio-detail-head-main">
-              {item.category ? (
+              {item.category && (
                 <p className="portfolio-detail-kicker">
                   <span>{item.category}</span>
                 </p>
-              ) : null}
+              )}
               <h1 className="portfolio-detail-title" itemProp="name">
                 <span className="portfolio-detail-brand">{brandName}</span>
-                {specialty ? (
-                  <span className="portfolio-detail-specialty">{specialty}</span>
-                ) : null}
+                {specialty && <span className="portfolio-detail-specialty">{specialty}</span>}
               </h1>
-              {item.client ? (
+              {item.client && (
                 <p className="portfolio-detail-client">
                   <span>العميل</span>
                   {item.client}
                 </p>
-              ) : null}
+              )}
             </div>
-            {projectUrl ? (
+            {projectUrl && (
               <div className="portfolio-detail-actions">
                 <a
                   href={projectUrl}
@@ -108,10 +113,10 @@ function PortfolioDetail() {
                   <ExternalLink className="h-4 w-4" aria-hidden />
                 </a>
               </div>
-            ) : null}
+            )}
           </div>
 
-          {item.imageUrl ? (
+          {item.imageUrl && (
             <figure className="portfolio-detail-figure">
               <SiteImage
                 src={item.imageUrl}
@@ -125,7 +130,7 @@ function PortfolioDetail() {
                 className="!h-auto !w-full !max-h-none !object-contain"
               />
             </figure>
-          ) : null}
+          )}
 
           <div className="portfolio-detail-lower">
             <div className="portfolio-detail-copy">
@@ -134,8 +139,7 @@ function PortfolioDetail() {
                 {item.description}
               </p>
             </div>
-
-            {tags.length > 0 ? (
+            {tags.length > 0 && (
               <aside className="portfolio-detail-side">
                 <h2 className="portfolio-detail-section-label">الكلمات المفتاحية</h2>
                 <ul className="portfolio-detail-tags">
@@ -144,79 +148,113 @@ function PortfolioDetail() {
                   ))}
                 </ul>
               </aside>
-            ) : null}
+            )}
           </div>
         </div>
       </section>
 
-      {(hasStory ||
-        (item.servicesProvided && item.servicesProvided.length > 0) ||
-        (item.technologies && item.technologies.length > 0) ||
-        serviceLinks.length > 0) && (
-        <section className="section tone-tinted portfolio-detail-body">
+      {/* ─── Story + Chips ─── */}
+      {hasExtra && (
+        <section className="section tone-tinted">
           <div className="container-page">
-            <div className="portfolio-detail-panel">
-              {hasStory ? (
-                <div className="portfolio-detail-story">
-                  {item.challenge ? (
-                    <div>
-                      <h2>التحدي</h2>
-                      <p>{item.challenge}</p>
+
+            {/* Challenge / Solution / Result */}
+            {hasStory && (
+              <div className="grid gap-5 md:grid-cols-2 mb-8">
+                {item.challenge && (
+                  <div className="rounded-2xl border border-border bg-surface p-6 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="h-8 w-8 rounded-lg bg-orange-500/10 text-orange-500 grid place-items-center shrink-0 font-black text-sm">
+                        !
+                      </span>
+                      <h2 className="font-bold text-base">التحدي</h2>
                     </div>
-                  ) : null}
-                  {item.solution ? (
-                    <div>
-                      <h2>الحل</h2>
-                      <p>{item.solution}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.challenge}</p>
+                  </div>
+                )}
+                {item.solution && (
+                  <div className="rounded-2xl border border-border bg-surface p-6 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="h-8 w-8 rounded-lg bg-primary/10 text-primary grid place-items-center shrink-0 font-black text-sm">
+                        ✓
+                      </span>
+                      <h2 className="font-bold text-base">الحل</h2>
                     </div>
-                  ) : null}
-                  {item.resultsSummary ? (
-                    <div className="portfolio-detail-story-full">
-                      <h2>النتيجة</h2>
-                      <p>{item.resultsSummary}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.solution}</p>
+                  </div>
+                )}
+                {item.resultsSummary && (
+                  <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 flex flex-col gap-3 md:col-span-2">
+                    <div className="flex items-center gap-2">
+                      <span className="h-8 w-8 rounded-lg bg-primary/15 text-primary grid place-items-center shrink-0 font-black text-base">
+                        ↑
+                      </span>
+                      <h2 className="font-bold text-base text-primary">النتيجة</h2>
                     </div>
-                  ) : null}
-                </div>
-              ) : null}
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.resultsSummary}</p>
+                  </div>
+                )}
+              </div>
+            )}
 
-              {item.servicesProvided && item.servicesProvided.length > 0 ? (
-                <div className="portfolio-detail-chips">
-                  <h2>الخدمات المقدَّمة</h2>
-                  <ul>
-                    {item.servicesProvided.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
+            {/* Services / Tech / Related */}
+            {(item.servicesProvided?.length || item.technologies?.length || serviceLinks.length > 0) && (
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {item.servicesProvided && item.servicesProvided.length > 0 && (
+                  <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
+                    <h2 className="font-bold text-sm">الخدمات المقدَّمة</h2>
+                    <ul className="flex flex-wrap gap-2">
+                      {item.servicesProvided.map((s) => (
+                        <li
+                          key={s}
+                          className="text-xs font-semibold border border-border bg-background rounded-full px-3 py-1"
+                        >
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {item.technologies && item.technologies.length > 0 && (
+                  <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
+                    <h2 className="font-bold text-sm">التقنيات</h2>
+                    <ul className="flex flex-wrap gap-2">
+                      {item.technologies.map((t) => (
+                        <li
+                          key={t}
+                          className="text-xs font-semibold border border-border bg-background rounded-full px-3 py-1"
+                        >
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {serviceLinks.length > 0 && (
+                  <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
+                    <h2 className="font-bold text-sm">خدمات مرتبطة</h2>
+                    <ul className="flex flex-wrap gap-2">
+                      {serviceLinks.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            to={link.href}
+                            className="text-xs font-semibold border border-border bg-background rounded-full px-3 py-1 hover:border-primary/40 hover:text-primary transition-colors inline-block"
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
 
-              {item.technologies && item.technologies.length > 0 ? (
-                <div className="portfolio-detail-chips">
-                  <h2>التقنيات</h2>
-                  <ul>
-                    {item.technologies.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-
-              {serviceLinks.length > 0 ? (
-                <div className="portfolio-detail-chips">
-                  <h2>خدمات مرتبطة</h2>
-                  <ul>
-                    {serviceLinks.map((link) => (
-                      <li key={link.href}>
-                        <Link to={link.href}>{link.label}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="portfolio-detail-back">
-              <Link to="/portfolio">
+            <div className="mt-8">
+              <Link
+                to="/portfolio"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
+              >
                 <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
                 العودة إلى الأعمال
               </Link>
@@ -225,22 +263,22 @@ function PortfolioDetail() {
         </section>
       )}
 
-      {!hasStory &&
-      !(item.servicesProvided && item.servicesProvided.length > 0) &&
-      !(item.technologies && item.technologies.length > 0) &&
-      serviceLinks.length === 0 ? (
+      {/* back link if no extra section */}
+      {!hasExtra && (
         <section className="section section-compact-top">
           <div className="container-page">
-            <div className="portfolio-detail-back">
-              <Link to="/portfolio">
-                <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
-                العودة إلى الأعمال
-              </Link>
-            </div>
+            <Link
+              to="/portfolio"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
+            >
+              <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
+              العودة إلى الأعمال
+            </Link>
           </div>
         </section>
-      ) : null}
+      )}
 
+      {/* ─── CTA ─── */}
       <section className="section section-compact-top pb-16">
         <div className="container-page">
           <div className="home-cta-block relative">
