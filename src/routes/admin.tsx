@@ -51,8 +51,9 @@ function AdminGate() {
 
   if (loading) {
     return (
-      <div className="admin-shell flex min-h-screen items-center justify-center">
-        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
+      <div className="admin-shell flex min-h-screen flex-col items-center justify-center gap-3">
+        <div className="admin-spinner" aria-hidden />
+        <div className="text-sm text-[var(--admin-muted)]">جاري التحميل…</div>
       </div>
     );
   }
@@ -73,20 +74,20 @@ function AdminGate() {
       <div className="admin-shell flex min-h-screen items-center justify-center p-6">
         <div className="admin-card max-w-md p-8 text-center">
           <h1 className="text-xl font-bold">لا تملك صلاحية الدخول</h1>
-          <p className="mt-2 text-sm text-[var(--admin-muted,#5b6b82)]">
+          <p className="mt-2 text-sm text-[var(--admin-muted)]">
             حسابك مسجّل في Firebase Auth لكن بدون دور في Firestore. اطلب من مدير النظام إنشاء مستند{" "}
-            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">users/{"{uid}"}</code>{" "}
+            <code className="rounded bg-[var(--admin-surface-muted)] px-1">users/{"{uid}"}</code>{" "}
             مع الحقل{" "}
-            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">role: admin</code> أو{" "}
-            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">editor</code>.
+            <code className="rounded bg-[var(--admin-surface-muted)] px-1">role: admin</code> أو{" "}
+            <code className="rounded bg-[var(--admin-surface-muted)] px-1">editor</code>.
           </p>
-          <p className="mt-3 text-xs text-[var(--admin-muted,#5b6b82)]">
+          <p className="mt-3 text-xs text-[var(--admin-muted)]">
             إذا استمرت المشكلة: انشر{" "}
-            <code className="rounded bg-[var(--admin-surface-muted,#eef1f6)] px-1">firestore.rules</code> من
+            <code className="rounded bg-[var(--admin-surface-muted)] px-1">firestore.rules</code> من
             Firebase Console.
           </p>
           {user && (
-            <p className="mt-3 break-all text-xs text-[var(--admin-muted,#5b6b82)]" dir="ltr">
+            <p className="mt-3 break-all text-xs text-[var(--admin-muted)]" dir="ltr">
               UID: {user.uid}
             </p>
           )}
@@ -111,11 +112,11 @@ function AdminGate() {
   return (
     <div className="admin-shell flex min-h-dvh">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-[var(--admin-bg,#f3f5f8)]">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--admin-border,#dde3ec)] bg-[color-mix(in_srgb,var(--admin-surface,#fff)_92%,transparent)] px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
+      <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-[var(--admin-bg)]">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--admin-border)] bg-[color-mix(in_srgb,var(--admin-surface)_90%,transparent)] px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] border border-[var(--admin-border,#dde3ec)] bg-[var(--admin-surface,#fff)] text-[var(--admin-text,#152238)] hover:bg-[var(--admin-surface-muted,#eef1f6)]"
+            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] border border-[var(--admin-border)] bg-[var(--admin-surface)] text-[var(--admin-text)] hover:bg-[var(--admin-surface-muted)]"
             aria-label="فتح القائمة"
             aria-expanded={sidebarOpen}
             onClick={() => setSidebarOpen(true)}
@@ -124,8 +125,9 @@ function AdminGate() {
           </button>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold tracking-tight" dir="ltr">
-              {SITE_NAME} <span className="text-[var(--admin-primary,#1149b0)]">Admin</span>
+              {SITE_NAME}
             </p>
+            <p className="text-[11px] font-medium text-[var(--admin-primary)]">لوحة التحكم</p>
           </div>
         </header>
         <AdminFirestoreBanner />

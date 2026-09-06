@@ -1,10 +1,11 @@
-﻿import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Pencil, Trash2 } from "lucide-react";
+﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
   AdminPageHeader,
+  AdminRowActions,
   AdminStatusBadge,
+  AdminTableCard,
   useAdminChildRoute,
 } from "@/components/admin/AdminUi";
 import { useAdminFaqs, useDeleteFaq } from "@/hooks/use-admin-cms";
@@ -47,7 +48,7 @@ function AdminFaqsList() {
         />
       )}
       {data.length > 0 && (
-        <div className="admin-table-wrap">
+        <AdminTableCard>
           <Table>
             <TableHeader>
               <TableRow>
@@ -64,28 +65,17 @@ function AdminFaqsList() {
                     <AdminStatusBadge status={f.status} />
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      <Link
-                        to="/admin/faqs/$id"
-                        params={{ id: f.id }}
-                        className="grid h-11 w-11 place-items-center rounded-md hover:bg-accent"
-                      >
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => confirm("حذف؟") && del.mutate(f.id)}
-                        className="grid h-11 w-11 place-items-center rounded-md hover:bg-destructive/10 text-destructive"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
+                    <AdminRowActions
+                      editTo="/admin/faqs/$id"
+                      editParams={{ id: f.id }}
+                      onDelete={() => confirm("حذف؟") && del.mutate(f.id)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </div>
+        </AdminTableCard>
       )}
     </div>
   );

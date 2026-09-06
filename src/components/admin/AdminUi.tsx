@@ -208,7 +208,10 @@ export function AdminCardSection({
 
 export function AdminLoading() {
   return (
-    <div className="p-10 text-center text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
+    <div className="flex flex-col items-center gap-3 p-10 text-center text-sm text-[var(--admin-muted)]">
+      <div className="admin-spinner" aria-hidden />
+      جاري التحميل…
+    </div>
   );
 }
 

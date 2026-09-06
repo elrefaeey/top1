@@ -236,7 +236,7 @@ function buildAttentionItems(blogPosts: WithId<BlogPost>[], leads: WithId<Lead>[
 }
 
 function AdminDashboard() {
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const { data: blogPosts = [] } = useAdminBlogPosts();
   const { data: services = [] } = useAdminServices();
   const { data: portfolio = [] } = useAdminPortfolio();
@@ -274,50 +274,64 @@ function AdminDashboard() {
     [blogPosts, leads],
   );
 
+  const todayLabel = useMemo(() => {
+    try {
+      return new Date().toLocaleDateString("ar", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "";
+    }
+  }, []);
+
   const stats = [
-    { label: "الرسائل", value: leads.length, hint: `${newLeads.length} جديدة`, icon: Inbox },
-    { label: "الصفحات", value: pagesCount, hint: "ثابتة + CMS + هبوط", icon: FileText },
+    { label: "الرسائل", value: leads.length, hint: `${newLeads.length} جديدة`, icon: Inbox, tone: "sky" },
+    { label: "الصفحات", value: pagesCount, hint: "ثابتة + CMS + هبوط", icon: FileText, tone: "blue" },
     {
       label: "مقالات منشورة",
       value: publishedPosts.length,
       hint: draftPosts.length > 0 ? `${draftPosts.length} مسودة` : "لا مسودات",
       icon: BookOpen,
+      tone: "emerald",
     },
-    { label: "المسودات", value: draftPosts.length, hint: "حالة draft", icon: Pencil },
-    { label: "الخدمات", value: services.length, icon: Briefcase },
-    { label: "المشاريع", value: portfolio.length, icon: Image },
-    { label: "آراء العملاء", value: testimonials.length, icon: MessageSquare },
-    { label: "الأسئلة الشائعة", value: faqs.length, icon: HelpCircle },
+    { label: "المسودات", value: draftPosts.length, hint: "حالة draft", icon: Pencil, tone: "amber" },
+    { label: "الخدمات", value: services.length, icon: Briefcase, tone: "violet" },
+    { label: "المشاريع", value: portfolio.length, icon: Image, tone: "teal" },
+    { label: "آراء العملاء", value: testimonials.length, icon: MessageSquare, tone: "rose" },
+    { label: "الأسئلة الشائعة", value: faqs.length, icon: HelpCircle, tone: "slate" },
   ];
 
   return (
     <div>
-      <div className="mb-7">
-        <span className="inline-flex rounded-md bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] px-2.5 py-1 text-xs font-semibold text-[var(--admin-primary,#1149b0)]">
+      <div className="admin-page-hero mb-7">
+        <span className="inline-flex rounded-full bg-[color-mix(in_srgb,var(--admin-accent)_18%,white)] px-2.5 py-1 text-xs font-semibold text-[var(--admin-primary)]">
           لوحة التحكم
         </span>
-        <h1 className="mt-3 text-2xl font-bold tracking-tight text-[var(--admin-text,#152238)]">
+        <h1 className="mt-3 text-2xl font-bold tracking-tight text-[var(--admin-text)]">
           أهلاً بعودتك{user?.displayName ? `، ${user.displayName}` : ""}
         </h1>
-        <p className="mt-1.5 text-sm text-[var(--admin-muted,#5b6b82)]">
-          أرقام حية من Firestore — مقالات، صفحات، ورسائل.
+        <p className="mt-1.5 text-sm text-[var(--admin-muted)]">
+          {todayLabel ? `${todayLabel} — ` : ""}أرقام حية من المحتوى والرسائل.
         </p>
       </div>
 
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(({ label, value, hint, icon: Icon }) => (
-          <div key={label} className="admin-card p-4 sm:p-5">
+        {stats.map(({ label, value, hint, icon: Icon, tone }) => (
+          <div key={label} className="admin-card admin-kpi p-4 sm:p-5" data-tone={tone}>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-[var(--admin-muted,#5b6b82)]">{label}</span>
-              <span className="grid h-8 w-8 place-items-center rounded-[var(--admin-radius,0.625rem)] bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] text-[var(--admin-primary,#1149b0)]">
+              <span className="text-xs font-medium text-[var(--admin-muted)]">{label}</span>
+              <span className="admin-kpi-icon">
                 <Icon className="h-4 w-4" />
               </span>
             </div>
-            <div className="mt-3 text-2xl font-bold tabular-nums text-[var(--admin-text,#152238)]">
+            <div className="mt-3 text-2xl font-bold tabular-nums text-[var(--admin-text)]">
               {value}
             </div>
             {hint ? (
-              <p className="mt-1 text-[11px] text-[var(--admin-muted,#5b6b82)]">{hint}</p>
+              <p className="mt-1 text-[11px] text-[var(--admin-muted)]">{hint}</p>
             ) : null}
           </div>
         ))}
@@ -325,30 +339,28 @@ function AdminDashboard() {
 
       <div className="mb-8 grid gap-4 lg:grid-cols-2">
         <section className="admin-card p-5">
-          <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text,#152238)]">
-            <Clock className="h-4 w-4 text-[var(--admin-primary,#1149b0)]" />
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text)]">
+            <Clock className="h-4 w-4 text-[var(--admin-primary)]" />
             آخر المحتوى المحدَّث
           </h2>
           {recentActivity.length === 0 ? (
-            <p className="mt-4 text-sm text-[var(--admin-muted,#5b6b82)]">لا يوجد نشاط حديث بعد.</p>
+            <p className="mt-4 text-sm text-[var(--admin-muted)]">لا يوجد نشاط حديث بعد.</p>
           ) : (
-            <ul className="mt-4 divide-y divide-[var(--admin-border,#dde3ec)]">
+            <ul className="mt-4 divide-y divide-[var(--admin-border)]">
               {recentActivity.map((item) => (
                 <li key={item.id}>
                   <Link
                     to={item.to}
                     params={item.params}
-                    className="flex items-start justify-between gap-3 py-3 transition-colors hover:text-[var(--admin-primary,#1149b0)]"
+                    className="flex items-start justify-between gap-3 py-3 transition-colors hover:text-[var(--admin-primary)]"
                   >
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-medium text-[var(--admin-text,#152238)]">
+                      <div className="truncate text-sm font-medium text-[var(--admin-text)]">
                         {item.title}
                       </div>
-                      <div className="mt-0.5 text-xs text-[var(--admin-muted,#5b6b82)]">
-                        {item.kind}
-                      </div>
+                      <span className="admin-kind-pill mt-1">{item.kind}</span>
                     </div>
-                    <time className="shrink-0 text-[11px] tabular-nums text-[var(--admin-muted,#5b6b82)]">
+                    <time className="shrink-0 text-[11px] tabular-nums text-[var(--admin-muted)]">
                       {formatRelativeAr(item.at)}
                     </time>
                   </Link>
@@ -359,12 +371,12 @@ function AdminDashboard() {
         </section>
 
         <section className="admin-card p-5">
-          <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text,#152238)]">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text)]">
+            <AlertTriangle className="h-4 w-4 text-amber-700" />
             يحتاج انتباهك
           </h2>
           {attentionItems.length === 0 ? (
-            <p className="mt-4 text-sm text-[var(--admin-muted,#5b6b82)]">
+            <p className="mt-4 text-sm text-[var(--admin-muted)]">
               لا توجد تنبيهات واضحة حاليًا.
             </p>
           ) : (
@@ -373,12 +385,12 @@ function AdminDashboard() {
                 <li key={item.id}>
                   <Link
                     to={item.to}
-                    className="block rounded-[var(--admin-radius,0.625rem)] border border-[var(--admin-border,#dde3ec)] bg-[var(--admin-surface-muted,#eef1f6)] px-3 py-2.5 transition-colors hover:border-[color-mix(in_srgb,var(--admin-primary,#1149b0)_28%,var(--admin-border,#dde3ec))]"
+                    className="block rounded-[var(--admin-radius)] border border-[color-mix(in_srgb,#b45309_22%,var(--admin-border))] bg-[color-mix(in_srgb,#b45309_8%,var(--admin-surface))] px-3 py-2.5 transition-colors hover:border-[color-mix(in_srgb,#b45309_40%,var(--admin-border))]"
                   >
-                    <div className="text-sm font-medium text-[var(--admin-text,#152238)]">
+                    <div className="text-sm font-medium text-[var(--admin-text)]">
                       {item.label}
                     </div>
-                    <div className="mt-0.5 text-xs text-[var(--admin-muted,#5b6b82)]">
+                    <div className="mt-0.5 text-xs text-[var(--admin-muted)]">
                       {item.detail}
                     </div>
                   </Link>
@@ -389,21 +401,17 @@ function AdminDashboard() {
         </section>
       </div>
 
-      <h2 className="mb-4 text-sm font-semibold text-[var(--admin-text,#152238)]">إجراءات سريعة</h2>
+      <h2 className="mb-4 text-sm font-semibold text-[var(--admin-text)]">إجراءات سريعة</h2>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {quickLinks.map(({ to, label, icon: Icon, desc }) => (
-          <Link
-            key={to}
-            to={to}
-            className="admin-card group p-5 transition-colors hover:border-[color-mix(in_srgb,var(--admin-primary,#1149b0)_30%,var(--admin-border,#dde3ec))]"
-          >
-            <span className="mb-3 grid h-9 w-9 place-items-center rounded-[var(--admin-radius,0.625rem)] bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] text-[var(--admin-primary,#1149b0)]">
+          <Link key={to} to={to} className="admin-card admin-card-interactive group p-5">
+            <span className="admin-kpi-icon mb-3">
               <Icon className="h-4 w-4" />
             </span>
-            <div className="font-semibold text-[var(--admin-text,#152238)] transition-colors group-hover:text-[var(--admin-primary,#1149b0)]">
+            <div className="font-semibold text-[var(--admin-text)] transition-colors group-hover:text-[var(--admin-primary)]">
               {label}
             </div>
-            <p className="mt-1 text-xs text-[var(--admin-muted,#5b6b82)]">{desc}</p>
+            <p className="mt-1 text-xs text-[var(--admin-muted)]">{desc}</p>
           </Link>
         ))}
       </div>

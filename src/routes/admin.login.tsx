@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { loginWithEmail } from "@/lib/firebase/auth";
 import { getAuthErrorMessage } from "@/lib/firebase/auth-errors";
-import { SITE_NAME } from "@/lib/site-config";
+import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
 import { useAuth } from "@/providers/AuthProvider";
 import { adminInputClass } from "@/components/admin/AdminUi";
 
@@ -41,7 +41,10 @@ function AdminLogin() {
   if (authLoading) {
     return (
       <div className="admin-login-page">
-        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري التحميل…</div>
+        <div className="flex flex-col items-center gap-3 text-sm text-white/70">
+          <div className="admin-spinner" aria-hidden />
+          جاري التحميل…
+        </div>
       </div>
     );
   }
@@ -49,24 +52,29 @@ function AdminLogin() {
   if (user) {
     return (
       <div className="admin-login-page">
-        <div className="text-sm text-[var(--admin-muted,#5b6b82)]">جاري الدخول للوحة التحكم…</div>
+        <div className="flex flex-col items-center gap-3 text-sm text-white/70">
+          <div className="admin-spinner" aria-hidden />
+          جاري الدخول للوحة التحكم…
+        </div>
       </div>
     );
   }
 
   return (
     <div className="admin-login-page">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-[var(--admin-text,#152238)]" dir="ltr">
-            {SITE_NAME} <span className="text-[var(--admin-primary,#1149b0)]">Admin</span>
+      <div className="w-full max-w-md">
+        <div className="mb-7 text-center">
+          <img src={SITE_LOGO_URL} alt="" className="mx-auto h-12 w-12 rounded-xl object-contain" />
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-white" dir="ltr">
+            {SITE_NAME}
           </h1>
-          <p className="mt-2 text-sm text-[var(--admin-muted,#5b6b82)]">سجّل الدخول لإدارة موقعك</p>
+          <p className="mt-1.5 text-sm text-[var(--admin-accent,#c4a035)]">لوحة التحكم</p>
+          <p className="mt-2 text-sm text-white/65">سجّل الدخول لإدارة محتوى الموقع</p>
         </div>
 
         <form onSubmit={handleSubmit} className="admin-card space-y-4 p-6 sm:p-7">
           {error && (
-            <div className="rounded-[var(--admin-radius,0.625rem)] bg-destructive/10 px-3 py-2 text-sm leading-relaxed text-destructive">
+            <div className="rounded-[var(--admin-radius)] bg-[color-mix(in_srgb,var(--admin-danger)_10%,white)] px-3 py-2 text-sm leading-relaxed text-[var(--admin-danger)]">
               {error}
             </div>
           )}
@@ -107,8 +115,8 @@ function AdminLogin() {
             {loading ? "جاري التحقق…" : "تسجيل الدخول"}
           </button>
 
-          <p className="pt-1 text-center text-xs text-[var(--admin-muted,#5b6b82)]">
-            <Link to="/" className="hover:text-[var(--admin-primary,#1149b0)]">
+          <p className="pt-1 text-center text-xs text-[var(--admin-muted)]">
+            <Link to="/" className="hover:text-[var(--admin-primary)]">
               ← العودة للموقع
             </Link>
           </p>
