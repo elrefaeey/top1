@@ -3,11 +3,16 @@ import { createPortal } from "react-dom";
 import { useSiteSettings } from "@/hooks/use-cms";
 import { whatsAppHref } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { useLocale } from "@/providers/LocaleProvider";
 
 export function WhatsAppButton() {
   const { data: settings } = useSiteSettings();
   const [mounted, setMounted] = useState(false);
-  const href = whatsAppHref(settings?.whatsappNumber, settings?.whatsappMessage);
+  const { m, locale } = useLocale();
+  const href = whatsAppHref(
+    settings?.whatsappNumber,
+    locale === "en" ? m.common.whatsappMessage : settings?.whatsappMessage,
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -21,7 +26,7 @@ export function WhatsAppButton() {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="تواصل عبر واتساب — السعودية"
+        aria-label={m.common.whatsapp}
         onClick={() => {
           void import("@/lib/firebase/analytics").then((m) =>
             m.trackWhatsAppClick("floating_button"),

@@ -1,7 +1,9 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, writeBatch } from "firebase/firestore";
 import { getDb, COLLECTIONS, withFirestoreTimeout } from "@/lib/firebase/firestore";
 import { isDataImageUrl } from "@/lib/security/image-url";
-import { nowIso } from "./admin-utils";
+import { getAdminMessages } from "@/lib/i18n/admin-messages";
+import type { Locale } from "@/lib/i18n/locale";
+import { nowIso, normalizeDisplayOrder, planOrderShifts } from "./admin-utils";
 import { normalizeBlogCategory } from "./blog-categories";
 import type {
   Author,
@@ -50,22 +52,19 @@ function classifyFirestoreError(err: unknown): "timeout" | "permission" | "unkno
   return "unknown";
 }
 
-export function formatAdminFirestoreError(err: unknown): string {
+export function formatAdminFirestoreError(err: unknown, locale: Locale = "ar"): string {
+  const a = getAdminMessages(locale);
   const kind = classifyFirestoreError(err);
   const msg = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
   const code =
     typeof err === "object" && err && "code" in err ? String((err as { code: string }).code) : "";
-  if (kind === "permission") {
-    return "صلاحية غير كافية. تأكد أن حسابك له دور admin/editor في Firestore (users/{uid}) وانشر firestore.rules.";
-  }
-  if (kind === "timeout") {
-    return "انتهت مهلة الاتصال بـ Firestore. تحقق من الإنترنت أو فعّل Firestore في Firebase Console.";
-  }
+  if (kind === "permission") return a.fsErrPermission;
+  if (kind === "timeout") return a.fsErrTimeout;
   if (msg.includes("undefined") || code === "invalid-argument" || msg.includes("invalid data")) {
-    return "تعذّر الحفظ — بيانات غير صالحة. جرّب استخدام رابط خارجي للصور بدل الرفع المباشر.";
+    return a.fsErrInvalid;
   }
   if (err instanceof Error && err.message) return err.message;
-  return "تعذّر حفظ البيانات في Firestore.";
+  return a.fsErrGeneric;
 }
 
 function markFirestoreUnavailable(err?: unknown) {
@@ -210,6 +209,51 @@ export async function saveAdminDoc<T extends Record<string, unknown>>(
   }
 }
 
+/** Save an ordered CMS item and shift siblings so the chosen number stays unique. */
+async function saveAdminDocShiftingOrder<T extends Record<string, unknown>>(
+  collectionName: string,
+  id: string,
+  data: T,
+): Promise<void> {
+  const order = normalizeDisplayOrder(data.order);
+  const payload = { ...data, order } as T;
+  rejectBase64Deep(payload, collectionName);
+
+  try {
+    const db = getDb();
+    const snap = await withFirestoreTimeout(getDocs(collection(db, collectionName)), ADMIN_READ_MS);
+    const items = snap.docs.map((d) => {
+      const raw = d.data() as { order?: number };
+      return { id: d.id, order: Number(raw.order) || 0 };
+    });
+    const isNew = !snap.docs.some((d) => d.id === id);
+    const shifts = planOrderShifts(items, id, order, isNew);
+    const ts = nowIso();
+    const ref = doc(db, collectionName, id);
+    const body = stripUndefinedDeep({
+      ...payload,
+      updatedAt: ts,
+      ...(isNew ? { createdAt: ts } : {}),
+    });
+
+    if (shifts.length === 0) {
+      await withFirestoreTimeout(setDoc(ref, body, { merge: true }), ADMIN_WRITE_MS);
+    } else {
+      const batch = writeBatch(db);
+      for (const shift of shifts) {
+        batch.update(doc(db, collectionName, shift.id), { order: shift.order, updatedAt: ts });
+      }
+      batch.set(ref, body, { merge: true });
+      await withFirestoreTimeout(batch.commit(), ADMIN_WRITE_MS);
+    }
+
+    markFirestoreAvailable();
+  } catch (err) {
+    markFirestoreUnavailable(err);
+    throw err;
+  }
+}
+
 export async function deleteAdminDoc(collectionName: string, id: string): Promise<void> {
   try {
     await withFirestoreTimeout(deleteDoc(doc(getDb(), collectionName, id)), ADMIN_WRITE_MS);
@@ -224,7 +268,7 @@ export async function deleteAdminDoc(collectionName: string, id: string): Promis
 export const listAdminServices = () => listCollection<Service>(COLLECTIONS.services, "order");
 export const getAdminService = (id: string) => getAdminDoc<Service>(COLLECTIONS.services, id);
 export const saveAdminService = (id: string, data: Omit<Service, "id">) =>
-  saveAdminDoc(COLLECTIONS.services, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.services, id, data);
 export const deleteAdminService = (id: string) => deleteAdminDoc(COLLECTIONS.services, id);
 
 // ── Blog ──
@@ -263,7 +307,7 @@ export const listAdminPortfolio = () =>
 export const getAdminPortfolioItem = (id: string) =>
   getAdminDoc<PortfolioItem>(COLLECTIONS.portfolio, id);
 export const saveAdminPortfolioItem = (id: string, data: Omit<PortfolioItem, "id">) =>
-  saveAdminDoc(COLLECTIONS.portfolio, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.portfolio, id, data);
 export const deleteAdminPortfolioItem = (id: string) => deleteAdminDoc(COLLECTIONS.portfolio, id);
 
 // ── Testimonials ──
@@ -272,28 +316,28 @@ export const listAdminTestimonials = () =>
 export const getAdminTestimonial = (id: string) =>
   getAdminDoc<Testimonial>(COLLECTIONS.testimonials, id);
 export const saveAdminTestimonial = (id: string, data: Omit<Testimonial, "id">) =>
-  saveAdminDoc(COLLECTIONS.testimonials, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.testimonials, id, data);
 export const deleteAdminTestimonial = (id: string) => deleteAdminDoc(COLLECTIONS.testimonials, id);
 
 // ── Authors ──
 export const listAdminAuthors = () => listCollection<Author>(COLLECTIONS.authors, "order");
 export const getAdminAuthor = (id: string) => getAdminDoc<Author>(COLLECTIONS.authors, id);
 export const saveAdminAuthor = (id: string, data: Omit<Author, "id">) =>
-  saveAdminDoc(COLLECTIONS.authors, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.authors, id, data);
 export const deleteAdminAuthor = (id: string) => deleteAdminDoc(COLLECTIONS.authors, id);
 
 // ── FAQs ──
 export const listAdminFaqs = () => listCollection<FaqItem>(COLLECTIONS.faqs, "order");
 export const getAdminFaq = (id: string) => getAdminDoc<FaqItem>(COLLECTIONS.faqs, id);
 export const saveAdminFaq = (id: string, data: Omit<FaqItem, "id">) =>
-  saveAdminDoc(COLLECTIONS.faqs, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.faqs, id, data);
 export const deleteAdminFaq = (id: string) => deleteAdminDoc(COLLECTIONS.faqs, id);
 
 // ── Site stats ──
 export const listAdminSiteStats = () => listCollection<SiteStat>(COLLECTIONS.siteStats, "order");
 export const getAdminSiteStat = (id: string) => getAdminDoc<SiteStat>(COLLECTIONS.siteStats, id);
 export const saveAdminSiteStat = (id: string, data: Omit<SiteStat, "id">) =>
-  saveAdminDoc(COLLECTIONS.siteStats, id, data);
+  saveAdminDocShiftingOrder(COLLECTIONS.siteStats, id, data);
 export const deleteAdminSiteStat = (id: string) => deleteAdminDoc(COLLECTIONS.siteStats, id);
 
 // ── Pages ──

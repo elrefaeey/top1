@@ -13,6 +13,7 @@ import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from 
 import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { SectionIntro } from "@/components/site/SectionIntro";
 import { MarketsServeStrip } from "@/components/site/MarketsContact";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const HomeBelowFold = lazy(() =>
   import("@/components/home/HomeBelowFold").then((m) => ({ default: m.HomeBelowFold })),
@@ -52,7 +53,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const MARQUEE_ITEMS = [
+const MARQUEE_ITEMS_FALLBACK = [
   "تصميم مواقع",
   "SEO السعودية",
   "SEO الإمارات",
@@ -94,6 +95,7 @@ function Home() {
 function Hero() {
   const { hero } = Route.useLoaderData();
   const { data: home } = useHomeBundle();
+  const { m, t } = useLocale();
   const settings = home?.settings;
   const cmsSrc = (settings?.heroImageUrl?.trim() || hero.heroImageUrl || "").trim();
   const usableCmsSrc = cmsSrc && !cmsSrc.startsWith("data:") ? cmsSrc : "";
@@ -102,7 +104,7 @@ function Hero() {
   const heroAlt =
     settings?.heroImageAlt?.trim() ||
     hero.heroImageAlt ||
-    siteImages.hero.mainAlt;
+    t(m.common.heroImageAlt, { name: SITE_NAME });
 
   return (
     <section className="hero-studio hero-bg" aria-labelledby="hero-heading">
@@ -114,36 +116,36 @@ function Hero() {
           <MarketsServeStrip className="hero-markets-serve animate-hero animate-hero-delay-1" />
 
           <h1 id="hero-heading" className="hero-studio-title animate-hero animate-hero-delay-2">
-            تصميم مواقع وSEO
+            {m.home.heroTitle}
             <span className="hero-studio-title-line">
-              يحوّلان الزوار إلى عملاء.
+              {m.home.heroTitleLine}
             </span>
           </h1>
 
           <p className="hero-studio-desc animate-hero animate-hero-delay-3">
-            مواقع احترافية، تحسين محركات البحث، وتسويق رقمي — لعلامات تريد نتائج واضحة وقابلة للقياس في السعودية والإمارات.
+            {m.home.heroDesc}
           </p>
 
           {/* trust badges */}
           <div className="flex flex-wrap gap-2 mt-4 animate-hero animate-hero-delay-3">
-            {["رد خلال 24 ساعة", "استشارة مجانية", "لا التزام"].map((t) => (
+            {[m.home.trustReply, m.home.trustConsult, m.home.trustNoCommit].map((badge) => (
               <span
-                key={t}
+                key={badge}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold border border-border bg-surface rounded-full px-3 py-1 text-muted-foreground"
               >
                 <span className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" aria-hidden />
-                {t}
+                {badge}
               </span>
             ))}
           </div>
 
           <div className="hero-studio-actions animate-hero animate-hero-delay-4">
             <Link to="/contact" className="btn-primary">
-              ابدأ مشروعك
+              {m.common.startProject}
               <ArrowRight className="h-4 w-4 rtl-flip" />
             </Link>
             <Link to="/portfolio" className="btn-ghost">
-              شاهد أعمالنا
+              {m.common.viewWork}
             </Link>
           </div>
         </div>
@@ -172,7 +174,9 @@ function Hero() {
 }
 
 function Marquee() {
-  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  const { m } = useLocale();
+  const source = m.home.marquee.length ? m.home.marquee : MARQUEE_ITEMS_FALLBACK;
+  const items = [...source, ...source];
   return (
     <div className="home-marquee-wrap" aria-hidden>
       <div className="marquee-track">
@@ -188,6 +192,7 @@ function Marquee() {
 
 function Services() {
   const { data: home } = useHomeBundle();
+  const { m } = useLocale();
   const services = home?.services ?? [];
   if (services.length === 0) return null;
 
@@ -196,9 +201,9 @@ function Services() {
       <div className="container-page">
         <Reveal>
           <SectionIntro
-            eyebrow="خدماتنا"
-            title="كل ما تحتاجه للنمو الرقمي."
-            desc="تصميم، تطوير، SEO، وإعلانات — فريق واحد مسؤول عن النتيجة."
+            eyebrow={m.home.servicesEyebrow}
+            title={m.home.servicesTitle}
+            desc={m.home.servicesDesc}
           />
         </Reveal>
         <div className="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -231,7 +236,7 @@ function Services() {
                       {s.shortDescription}
                     </p>
                     <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary mt-auto pt-2 border-t border-border/50">
-                      التفاصيل{" "}
+                      {m.common.details}{" "}
                       <ArrowRight className="h-3.5 w-3.5 rtl-flip group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
@@ -246,26 +251,27 @@ function Services() {
 }
 
 function WhyUs() {
+  const { m, t } = useLocale();
   const points = [
     {
       icon: Target,
-      t: "تركيز على النتائج",
-      d: "كل قرار مبني على تحويل وزيارات وعائد — مش vanity metrics.",
+      t: m.home.why1t,
+      d: m.home.why1d,
     },
     {
       icon: ShieldCheck,
-      t: "خبراء فقط",
-      d: "فريق senior بدون outsourcing — جودة ثابتة من أول يوم.",
+      t: m.home.why2t,
+      d: m.home.why2d,
     },
     {
       icon: Zap,
-      t: "سرعة وتسليم واضح",
-      d: "سبرنتات أسبوعين، تحديثات مستمرة، بدون مفاجآت.",
+      t: m.home.why3t,
+      d: m.home.why3d,
     },
     {
       icon: TrendingUp,
-      t: "SEO من البداية",
-      d: "Core Web Vitals، schema، ومحتوى يُرتّب في Google.",
+      t: m.home.why4t,
+      d: m.home.why4d,
     },
   ];
 
@@ -278,19 +284,19 @@ function WhyUs() {
           <Reveal>
             <div className="why-panel relative rounded-2xl overflow-hidden">
               <span className="relative page-intro-eyebrow !bg-white/10 !text-white !border-white/20">
-                لماذا {SITE_NAME}
+                {t(m.home.whyEyebrow, { name: SITE_NAME })}
               </span>
               <h2 className="relative mt-4 text-2xl md:text-3xl font-bold text-white leading-snug">
-                شريك تسويق يفهم السعودية والإمارات
+                {m.home.whyTitle}
               </h2>
               <p className="relative mt-3 text-sm text-white/75 leading-relaxed max-w-md">
-                RTL، WhatsApp، وسلوك المستخدم المحلي في الخليج — نبني منتجات رقمية تناسب جمهورك وتحقق leads حقيقية.
+                {m.home.whyDesc}
               </p>
               <Link
                 to="/about"
                 className="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors"
               >
-                تعرّف علينا <ArrowRight className="h-4 w-4 rtl-flip" />
+                {m.home.whyCta} <ArrowRight className="h-4 w-4 rtl-flip" />
               </Link>
             </div>
           </Reveal>
@@ -317,6 +323,7 @@ function WhyUs() {
 
 function Portfolio() {
   const { data: home } = useHomeBundle();
+  const { m } = useLocale();
   const projects = home?.portfolio ?? [];
   const preview = projects.slice(0, 3);
   if (preview.length === 0) return null;
@@ -325,12 +332,12 @@ function Portfolio() {
     <section className="section">
       <div className="container-page">
         <SectionIntro
-          eyebrow="أعمالنا"
-          title="مشاريع حققت نتائج."
-          desc="عيّنة من أعمالنا — مواقع، حملات، وSEO."
+          eyebrow={m.home.workEyebrow}
+          title={m.home.workTitle}
+          desc={m.home.workDesc}
           action={
             <Link to="/portfolio" className="btn-ghost">
-              كل المشاريع <ArrowRight className="h-4 w-4 rtl-flip" />
+              {m.common.allProjects} <ArrowRight className="h-4 w-4 rtl-flip" />
             </Link>
           }
         />

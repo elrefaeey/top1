@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useT } from "@/providers/LocaleProvider";
 import { useEffect, useRef, useState } from "react";
 
 type SiteImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
@@ -46,6 +47,7 @@ export function SiteImage({
   onError,
   ...props
 }: SiteImageProps) {
+  const m = useT();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(src ? "loading" : "error");
   const formats = optimizedFormats(typeof src === "string" ? src : undefined);
@@ -102,9 +104,9 @@ export function SiteImage({
         <div
           className="absolute inset-0 grid place-items-center text-xs text-muted-foreground px-2 text-center"
           role="img"
-          aria-label={alt || "تعذّر تحميل الصورة"}
+          aria-label={alt || m.common.imageUnavailableAria}
         >
-          لا تتوفر صورة
+          {m.common.imageUnavailable}
         </div>
       ) : null}
       {src && status !== "error" ? (

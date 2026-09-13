@@ -8,6 +8,8 @@ import { loadAuthorForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { LANDING_LINKS } from "@/lib/seo/internal-links";
 import { buildAuthorHead, notFoundHead } from "@/lib/seo/authority-head";
 import { SITE_NAME } from "@/lib/site-config";
+import { localizeAuthorProfile } from "@/lib/i18n/localize-cms";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
@@ -35,12 +37,14 @@ function AuthorProfile() {
   const { slug } = useParams({ from: "/authors/$slug" });
   const { author: loaderAuthor } = Route.useLoaderData();
   const { data: hookAuthor, isLoading } = useAuthor(slug);
-  const author = hookAuthor ?? loaderAuthor;
+  const { m, t, locale } = useLocale();
+  const raw = hookAuthor ?? loaderAuthor;
+  const author = raw ? localizeAuthorProfile(raw, locale) : raw;
 
   if (isLoading && !author) {
     return (
       <div className="container-page py-24 text-center text-sm text-muted-foreground">
-        جاري التحميل…
+        {m.common.loading}
       </div>
     );
   }
@@ -53,8 +57,8 @@ function AuthorProfile() {
       ? author.avatarUrl.trim()
       : "";
   const breadcrumbs = [
-    { name: "الرئيسية", path: "/" },
-    { name: "من نحن", path: "/about" },
+    { name: m.nav.home, path: "/" },
+    { name: m.nav.about, path: "/about" },
     { name: author.name, path: `/authors/${pathSlug}` },
   ];
 
@@ -94,7 +98,7 @@ function AuthorProfile() {
                 {author.yearsExperience != null ? (
                   <span className="author-profile-chip">
                     <Briefcase className="h-3.5 w-3.5" aria-hidden />
-                    {author.yearsExperience}+ سنوات خبرة
+                    {t(m.authorPage.years, { n: author.yearsExperience })}
                   </span>
                 ) : null}
                 <span className="author-profile-chip">{SITE_NAME}</span>
@@ -102,11 +106,11 @@ function AuthorProfile() {
 
               <div className="author-profile-actions">
                 <Link to="/contact" className="btn-primary">
-                  تواصل معنا
+                  {m.common.contactUs}
                   <ArrowRight className="h-4 w-4 rtl-flip" />
                 </Link>
                 <Link to="/about" className="btn-ghost">
-                  عن {SITE_NAME}
+                  {t(m.authorPage.aboutSite, { name: SITE_NAME })}
                 </Link>
                 {author.linkedinUrl ? (
                   <a
@@ -129,7 +133,7 @@ function AuthorProfile() {
         <div className="container-page author-profile-body">
           {author.expertise.length > 0 ? (
             <div className="author-profile-expertise">
-              <h2 className="author-profile-section-title">مجالات الخبرة</h2>
+              <h2 className="author-profile-section-title">{m.authorPage.expertise}</h2>
               <ul className="author-profile-expertise-list">
                 {author.expertise.map((item) => (
                   <li key={item}>{item}</li>
@@ -138,7 +142,7 @@ function AuthorProfile() {
             </div>
           ) : null}
 
-          <InternalLinksBlock title="خدمات ومناطق" links={LANDING_LINKS} />
+          <InternalLinksBlock title={m.authorPage.regions} links={LANDING_LINKS} />
         </div>
       </section>
     </article>

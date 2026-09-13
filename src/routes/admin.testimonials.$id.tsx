@@ -19,6 +19,7 @@ import {
   useAdminTestimonials,
 } from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/testimonials/$id")({
   component: AdminTestimonialEdit,
@@ -37,6 +38,7 @@ const empty = (): Omit<Testimonial, "id"> => ({
 });
 
 function AdminTestimonialEdit() {
+  const { a } = useAdminI18n();
   const { id } = useParams({ from: "/admin/testimonials/$id" });
   const isNew = id === "new";
   const navigate = useNavigate();
@@ -70,31 +72,34 @@ function AdminTestimonialEdit() {
     <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader
-        title={isNew ? "رأي جديد" : "تعديل رأي"}
-        description={
-          isNew
-            ? "أضف اسم العميل والاقتباس والتقييم، ثم احفظ كمسودة أو انشر."
-            : "عدّل رأي العميل ثم احفظ التغييرات."
-        }
+        title={isNew ? a.testimonialsNew : a.testimonialEdit}
+        description={isNew ? a.testimonialNewDesc : a.testimonialEditDesc}
         backTo="/admin/testimonials"
       />
       <form onSubmit={handleSubmit} className="space-y-5">
-        <AdminCardSection
-          title="أساسيات الرأي"
-          description="الاسم والاقتباس يظهران في قسم آراء العملاء."
-        >
-          <AdminField label="الاسم" id="name">
+        <AdminCardSection title={a.testimonialBasics} description={a.testimonialBasicsDesc}>
+          <AdminField label={a.fieldAr.replace("{label}", a.name)} id="name">
             <input
               id="name"
               required
               value={form.name}
               onChange={(e) => patch({ name: e.target.value })}
               className={adminInputClass()}
-              placeholder="مثال: محمد العتيبي"
+              placeholder={a.testimonialNamePh}
+            />
+          </AdminField>
+          <AdminField label={a.nameEn} id="nameEn">
+            <input
+              id="nameEn"
+              dir="ltr"
+              value={form.nameEn ?? ""}
+              onChange={(e) => patch({ nameEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English name"
             />
           </AdminField>
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="المنصب" id="role">
+            <AdminField label={a.testimonialRoleLabel} id="role">
               <select
                 id="role"
                 required
@@ -109,17 +114,39 @@ function AdminTestimonialEdit() {
                 ))}
               </select>
             </AdminField>
-            <AdminField label="الشركة" id="company">
+            <AdminField label={a.roleEn} id="roleEn">
+              <input
+                id="roleEn"
+                dir="ltr"
+                value={form.roleEn ?? ""}
+                onChange={(e) => patch({ roleEn: e.target.value })}
+                className={adminInputClass("text-start")}
+                placeholder="English role"
+              />
+            </AdminField>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label={a.company} id="company">
               <input
                 id="company"
                 value={form.company}
                 onChange={(e) => patch({ company: e.target.value })}
                 className={adminInputClass()}
-                placeholder="اسم الشركة"
+                placeholder={a.testimonialCompanyPh}
+              />
+            </AdminField>
+            <AdminField label={a.companyEn} id="companyEn">
+              <input
+                id="companyEn"
+                dir="ltr"
+                value={form.companyEn ?? ""}
+                onChange={(e) => patch({ companyEn: e.target.value })}
+                className={adminInputClass("text-start")}
+                placeholder="English company"
               />
             </AdminField>
           </div>
-          <AdminField label="الاقتباس" id="quote">
+          <AdminField label={a.fieldAr.replace("{label}", a.testimonialQuote)} id="quote">
             <textarea
               id="quote"
               rows={4}
@@ -127,17 +154,25 @@ function AdminTestimonialEdit() {
               value={form.quote}
               onChange={(e) => patch({ quote: e.target.value })}
               className={adminInputClass()}
-              placeholder="نص شهادة العميل…"
+              placeholder={a.testimonialQuotePh}
+            />
+          </AdminField>
+          <AdminField label={a.quoteEn} id="quoteEn">
+            <textarea
+              id="quoteEn"
+              dir="ltr"
+              rows={4}
+              value={form.quoteEn ?? ""}
+              onChange={(e) => patch({ quoteEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English quote"
             />
           </AdminField>
         </AdminCardSection>
 
-        <AdminCardSection
-          title="إعدادات ونشر"
-          description="التقييم والترتيب والربط بخدمة وحالة النشر."
-        >
+        <AdminCardSection title={a.testimonialSettings} description={a.testimonialSettingsDesc}>
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="التقييم (1-5)" id="rating">
+            <AdminField label={a.testimonialRating} id="rating">
               <input
                 id="rating"
                 type="number"
@@ -148,10 +183,11 @@ function AdminTestimonialEdit() {
                 className={adminInputClass()}
               />
             </AdminField>
-            <AdminField label="الترتيب" id="order">
+            <AdminField label={a.order} id="order" hint={a.orderHint}>
               <input
                 id="order"
                 type="number"
+                min={1}
                 value={form.order}
                 onChange={(e) => patch({ order: Number(e.target.value) })}
                 className={adminInputClass()}
@@ -159,16 +195,26 @@ function AdminTestimonialEdit() {
             </AdminField>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="المدينة (اختياري)" id="city">
+            <AdminField label={a.testimonialCity} id="city">
               <input
                 id="city"
                 value={form.city ?? ""}
                 onChange={(e) => patch({ city: e.target.value || undefined })}
                 className={adminInputClass()}
-                placeholder="الرياض"
+                placeholder={a.testimonialCityPh}
               />
             </AdminField>
-            <AdminField label="خدمة مرتبطة (slug)" id="serviceSlug">
+            <AdminField label={a.cityEn} id="cityEn">
+              <input
+                id="cityEn"
+                dir="ltr"
+                value={form.cityEn ?? ""}
+                onChange={(e) => patch({ cityEn: e.target.value || undefined })}
+                className={adminInputClass("text-start")}
+                placeholder="Riyadh"
+              />
+            </AdminField>
+            <AdminField label={a.testimonialServiceSlug} id="serviceSlug">
               <input
                 id="serviceSlug"
                 dir="ltr"
@@ -191,7 +237,7 @@ function AdminTestimonialEdit() {
             isNew
               ? undefined
               : async () => {
-                  if (confirm("حذف؟")) {
+                  if (confirm(a.confirmDelete)) {
                     await remove.mutateAsync(id);
                     navigate({ to: "/admin/testimonials" });
                   }

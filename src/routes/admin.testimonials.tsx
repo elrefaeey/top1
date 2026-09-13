@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -17,64 +18,71 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeTestimonial } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/testimonials")({
   component: AdminTestimonialsList,
 });
 
 function AdminTestimonialsList() {
+  const { a, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/testimonials/$id");
   const { data = [], isFetching } = useAdminTestimonials();
   const del = useDeleteTestimonial();
+  const rows = useMemo(
+    () => data.map((item) => localizeTestimonial(item, locale)),
+    [data, locale],
+  );
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="آراء العملاء"
-        description="شهادات العملاء المعروضة في الموقع."
+        title={a.testimonialsTitle}
+        description={a.testimonialsDesc}
         actionTo="/admin/testimonials/$id"
         actionParams={{ id: "new" }}
-        actionLabel="رأي جديد"
+        actionLabel={a.testimonialsNew}
       />
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا توجد آراء."
+          message={a.testimonialsEmpty}
           actionTo="/admin/testimonials/$id"
           actionParams={{ id: "new" }}
-          actionLabel="إضافة رأي"
+          actionLabel={a.testimonialsAdd}
         />
       )}
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[28%]">الاسم</TableHead>
-                <TableHead className="w-[22%]">الدور</TableHead>
-                <TableHead className="w-[22%]">الشركة</TableHead>
-                <TableHead className="w-[14%]">الحالة</TableHead>
-                <TableHead className="w-[14%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[28%]">{a.name}</TableHead>
+                <TableHead className="w-[22%]">{a.role}</TableHead>
+                <TableHead className="w-[22%]">{a.company}</TableHead>
+                <TableHead className="w-[14%]">{a.status}</TableHead>
+                <TableHead className="w-[14%] text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((t) => (
-                <TableRow key={t.id}>
-                  <TableCell className="font-medium">{t.name}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground truncate">{t.role}</TableCell>
+              {rows.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground truncate">{item.role}</TableCell>
                   <TableCell className="text-sm text-muted-foreground truncate">
-                    {t.company}
+                    {item.company}
                   </TableCell>
                   <TableCell>
-                    <AdminStatusBadge status={t.status} />
+                    <AdminStatusBadge status={item.status} />
                   </TableCell>
                   <TableCell>
                     <AdminRowActions
                       editTo="/admin/testimonials/$id"
-                      editParams={{ id: t.id }}
-                      onDelete={() => confirm("حذف هذا الرأي؟") && del.mutate(t.id)}
+                      editParams={{ id: item.id }}
+                      onDelete={() => confirm(a.confirmDeleteTestimonial) && del.mutate(item.id)}
                     />
                   </TableCell>
                 </TableRow>

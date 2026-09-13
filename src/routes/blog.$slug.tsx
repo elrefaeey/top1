@@ -16,6 +16,9 @@ import {
 import { serviceLinksForBlogPost } from "@/lib/seo/internal-links";
 import { buildBlogPostHead, notFoundHead } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
+import { localizeBlogPost } from "@/lib/i18n/localize-cms";
+import { localeDateTag } from "@/lib/i18n/locale";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
@@ -47,13 +50,15 @@ function Post() {
   const { slug } = useParams({ from: "/blog/$slug" });
   const { post: loaderPost } = Route.useLoaderData();
   const { data: hookPost, isLoading } = useBlogPost(slug);
-  const post = hookPost ?? loaderPost;
+  const { m, t, locale } = useLocale();
+  const raw = hookPost ?? loaderPost;
+  const post = raw ? localizeBlogPost(raw, locale) : raw;
   const { data: allPosts = [] } = useBlogPosts();
 
   if (isLoading && !post) {
     return (
       <div className="container-page py-24 text-center text-muted-foreground text-sm">
-        جاري تحميل المقال…
+        {m.blogDetail.loading}
       </div>
     );
   }
@@ -66,11 +71,11 @@ function Post() {
   const showToc = toc.length >= 3;
   const related = getRelatedPosts(post, allPosts, 3);
   const serviceLinks = serviceLinksForBlogPost(post);
-  const dateLabel = post.publishedAt ? formatPostDate(post.publishedAt) : "";
-  const modifiedLabel = post.updatedAt ? formatPostDate(post.updatedAt) : "";
+  const dateLabel = post.publishedAt ? formatPostDate(post.publishedAt, localeDateTag(locale)) : "";
+  const modifiedLabel = post.updatedAt ? formatPostDate(post.updatedAt, localeDateTag(locale)) : "";
   const breadcrumbs = [
-    { name: "الرئيسية", path: "/" },
-    { name: "المدونة", path: "/blog" },
+    { name: m.nav.home, path: "/" },
+    { name: m.nav.blog, path: "/blog" },
     { name: post.title, path: `/blog/${slug}` },
   ];
 
@@ -137,7 +142,7 @@ function Post() {
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Clock className="h-3.5 w-3.5 shrink-0" aria-hidden />
               <span>
-                {readTime} دقائق قراءة
+                {t(m.blogDetail.minRead, { n: readTime })}
                 <meta itemProp="timeRequired" content={`PT${readTime}M`} />
               </span>
             </div>
@@ -146,7 +151,7 @@ function Post() {
             {modifiedLabel && post.updatedAt !== post.publishedAt && (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/60 rounded-full px-2.5 py-1">
                 <time dateTime={post.updatedAt} itemProp="dateModified">
-                  محدّث {modifiedLabel}
+                  {t(m.blogDetail.updated, { date: modifiedLabel })}
                 </time>
               </div>
             )}
@@ -159,7 +164,7 @@ function Post() {
         <div className="container-page pt-2 pb-10 max-w-4xl">
           <SiteImage
             src={post.featuredImage}
-            alt={post.featuredImageAlt ?? `${post.title} — مدونة ${SITE_NAME}`}
+            alt={post.featuredImageAlt ?? t(m.blogDetail.imageAlt, { title: post.title, name: SITE_NAME })}
             width={1280}
             height={640}
             fetchPriority="high"
@@ -177,9 +182,9 @@ function Post() {
         {showToc && (
           <nav
             className="rounded-2xl border border-border bg-surface/80 p-5 mb-10 shadow-sm"
-            aria-label="جدول المحتويات"
+            aria-label={m.blogDetail.toc}
           >
-            <h2 className="text-sm font-bold text-foreground mb-3">جدول المحتويات</h2>
+            <h2 className="text-sm font-bold text-foreground mb-3">{m.blogDetail.toc}</h2>
             <ol className="space-y-2">
               {toc.map((entry, i) => (
                 <li key={entry.id} className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -201,7 +206,7 @@ function Post() {
         />
 
         <InternalLinksBlock
-          title="خدمات ذات صلة"
+          title={m.blogDetail.relatedServices}
           links={serviceLinks}
           className="mt-10 pt-6 border-t border-border"
         />
@@ -219,15 +224,15 @@ function Post() {
               <div className="text-sm font-semibold" itemProp="author">
                 {post.author}
               </div>
-              <div className="text-xs text-muted-foreground">فريق الاستوديو · {SITE_NAME}</div>
+              <div className="text-xs text-muted-foreground">{t(m.blogDetail.team, { name: SITE_NAME })}</div>
             </div>
           </div>
-          <div className="flex items-center gap-2" aria-label="مشاركة المقال">
+          <div className="flex items-center gap-2" aria-label={m.blogDetail.share}>
             {[Twitter, Linkedin, Facebook, Link2].map((Icon, i) => (
               <button
                 key={i}
                 type="button"
-                aria-label="مشاركة"
+                aria-label={m.blogDetail.shareOne}
                 className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-surface text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-colors"
               >
                 <Icon className="h-4 w-4" aria-hidden />
@@ -240,7 +245,7 @@ function Post() {
         {related.length > 0 && (
           <section className="mt-16" aria-labelledby="related-posts-title">
             <h2 id="related-posts-title" className="text-xl font-bold mb-5">
-              مقالات ذات صلة
+              {m.blogDetail.related}
             </h2>
             <div className="grid gap-5 md:grid-cols-2">
               {related.map((r) => (
@@ -269,11 +274,11 @@ function Post() {
                     </h3>
                     <div className="mt-auto flex items-center justify-between pt-2 border-t border-border/50">
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
-                        اقرأ المقال <ArrowUpLeft className="h-3 w-3 rtl-flip" />
+                        {m.blogPage.read} <ArrowUpLeft className="h-3 w-3 rtl-flip" />
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        {resolveReadTime(r)} دقائق
+                        {t(m.blogDetail.minutes, { n: resolveReadTime(r) })}
                       </span>
                     </div>
                   </div>

@@ -49,6 +49,60 @@ export function nextOrderFromList(items: Array<{ order?: number }>): number {
   return Math.max(...items.map((item) => item.order ?? 0)) + 1;
 }
 
+export function normalizeDisplayOrder(value: unknown): number {
+  const n = Math.trunc(Number(value));
+  return Number.isFinite(n) && n >= 1 ? n : 1;
+}
+
+/**
+ * When inserting or moving an item to `newOrder`, bump others so numbers stay unique.
+ * Insert at 2 → old 2 becomes 3, old 3 becomes 4, …
+ */
+export function planOrderShifts(
+  items: Array<{ id: string; order?: number }>,
+  id: string,
+  newOrder: number,
+  isNew: boolean,
+): Array<{ id: string; order: number }> {
+  const target = normalizeDisplayOrder(newOrder);
+  const current = items.find((item) => item.id === id);
+  const parsedOld = current ? Math.trunc(Number(current.order) || 0) : 0;
+  const oldOrder = isNew || parsedOld < 1 ? null : parsedOld;
+  const others = items.filter((item) => item.id !== id);
+  const shifts: Array<{ id: string; order: number }> = [];
+
+  if (oldOrder == null) {
+    for (const item of others) {
+      const order = Math.trunc(Number(item.order) || 0);
+      if (order >= target) shifts.push({ id: item.id, order: order + 1 });
+    }
+    return shifts;
+  }
+
+  if (target === oldOrder) return shifts;
+
+  if (target < oldOrder) {
+    for (const item of others) {
+      const order = Math.trunc(Number(item.order) || 0);
+      if (order >= target && order < oldOrder) {
+        shifts.push({ id: item.id, order: order + 1 });
+      }
+    }
+    return shifts;
+  }
+
+  for (const item of others) {
+    const order = Math.trunc(Number(item.order) || 0);
+    if (order > oldOrder && order <= target) {
+      shifts.push({ id: item.id, order: order - 1 });
+    }
+  }
+  return shifts;
+}
+
+export const ADMIN_ORDER_HINT =
+  "لو اخترت رقماً موجوداً، العناصر من هذا الرقم تنزل تلقائياً (٢ تصبح ٣، و٣ تصبح ٤).";
+
 export function linesToArray(value: string): string[] {
   return value
     .split("\n")

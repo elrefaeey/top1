@@ -58,9 +58,12 @@ export const FOOTER_SEO_LINKS: InternalLink[] = [
 
 const CATEGORY_SERVICE_MAP: Record<string, string> = {
   "تصميم مواقع": "/web-design-saudi-arabia",
+  "Web design": "/web-design-saudi-arabia",
   مواقع: "/web-design-saudi-arabia",
   متجر: "/ecommerce-development",
   "تجارة إلكترونية": "/ecommerce-development",
+  "E-commerce": "/ecommerce-development",
+  Ecommerce: "/ecommerce-development",
   SEO: "/seo-services",
   UI: "/services/ui-ux",
   UX: "/services/ui-ux",

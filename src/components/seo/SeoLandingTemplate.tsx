@@ -4,12 +4,16 @@ import { useState } from "react";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
+import { localizeLanding } from "@/lib/i18n/localize-cms";
+import { useLocale } from "@/providers/LocaleProvider";
 
 type SeoLandingTemplateProps = {
   page: LandingPageContent;
 };
 
-export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
+export function SeoLandingTemplate({ page: rawPage }: SeoLandingTemplateProps) {
+  const { m, locale } = useLocale();
+  const page = localizeLanding(rawPage, locale);
   return (
     <>
       {/* ─── Hero ─── */}
@@ -38,7 +42,7 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/contact" className="btn-primary">
-                احصل على استشارة مجانية
+                {m.landing.consult}
                 <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
               </Link>
               <Link
@@ -46,7 +50,7 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
                 params={{ slug: page.relatedServiceSlug }}
                 className="btn-ghost"
               >
-                تفاصيل الخدمة
+                {m.landing.serviceDetails}
               </Link>
             </div>
           </div>
@@ -58,10 +62,10 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
         <div className="container-page">
           <div className="text-center max-w-xl mx-auto mb-10">
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-              لماذا Top1Markting؟
+              {m.landing.why}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              مميزات تجعلنا الخيار الأول لعملائنا في السعودية والإمارات
+              {m.landing.whyDesc}
             </p>
           </div>
           <ul className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
@@ -82,8 +86,8 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
       <section className="section">
         <div className="container-page">
           <div className="text-center max-w-xl mx-auto mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">كيف نعمل</h2>
-            <p className="mt-2 text-sm text-muted-foreground">خطوات واضحة من البداية للإطلاق</p>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{m.home.processEyebrow}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{m.home.processDesc}</p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-3 relative">
@@ -118,8 +122,8 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
         <section className="section tone-tinted">
           <div className="container-page max-w-2xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">أسئلة شائعة</h2>
-              <p className="mt-2 text-sm text-muted-foreground">إجابات سريعة على أكثر الأسئلة شيوعاً</p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{m.home.faqEyebrow}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{m.home.faqTitle}</p>
             </div>
             <FaqList faqs={page.faqs} />
           </div>
@@ -130,7 +134,7 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
       {page.relatedLinks && page.relatedLinks.length > 0 && (
         <section className="section">
           <div className="container-page">
-            <InternalLinksBlock title="صفحات ذات صلة" links={page.relatedLinks} />
+            <InternalLinksBlock title={m.common.usefulLinks} links={page.relatedLinks} />
           </div>
         </section>
       )}
@@ -140,20 +144,20 @@ export function SeoLandingTemplate({ page }: SeoLandingTemplateProps) {
         <div className="container-page">
           <div className="home-cta-block relative text-center">
             <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white mx-auto">
-              <Sparkles className="h-3 w-3" /> ابدأ الآن
+              <Sparkles className="h-3 w-3" /> {m.common.startNow}
             </span>
             <h2 className="relative mx-auto mt-4 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
-              جاهز للبدء؟
+              {m.common.ready}
             </h2>
             <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/80">
-              تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة، بدون التزام.
+              {m.home.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/contact" className="btn-primary">
-                تواصل معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+                {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
               </Link>
               <Link to="/portfolio" className="btn-ghost">
-                شاهد أعمالنا
+                {m.common.viewWork}
               </Link>
             </div>
           </div>

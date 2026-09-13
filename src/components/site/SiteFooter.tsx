@@ -7,6 +7,7 @@ import { MarketsPhoneCards } from "@/components/site/MarketsContact";
 import { SITE_NAME, SITE_CONTACT_PHONE, SITE_CONTACT_PHONE_SA, SITE_TAGLINE } from "@/lib/site-config";
 import { FOOTER_SEO_LINKS } from "@/lib/seo/internal-links";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const QUICK_LINKS = [
   { label: "الرئيسية", href: "/" },
@@ -27,8 +28,12 @@ const LEGAL_LINKS = [
 export function SiteFooter() {
   const { data: settings } = useSiteSettings();
   const { data: services = [] } = useServices();
+  const { m, labelForHref, locale } = useLocale();
   const siteName = settings?.siteName || SITE_NAME;
-  const tagline = settings?.tagline || SITE_TAGLINE;
+  const tagline =
+    locale === "en"
+      ? m.common.defaultTagline
+      : settings?.tagline || SITE_TAGLINE;
   const phoneUae = settings?.contactPhone || SITE_CONTACT_PHONE;
   const phoneSa = settings?.contactPhoneSa || SITE_CONTACT_PHONE_SA;
 
@@ -39,15 +44,13 @@ export function SiteFooter() {
         <div className="container-page footer-cta-inner">
           <div className="footer-cta-copy">
             <span className="footer-cta-badge">
-              <Sparkles className="h-3.5 w-3.5" /> ابدأ اليوم
+              <Sparkles className="h-3.5 w-3.5" /> {m.footer.startToday}
             </span>
-            <h2 className="footer-cta-title">جاهز ترفع مبيعاتك أونلاين؟</h2>
-            <p className="footer-cta-desc">
-              تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
-            </p>
+            <h2 className="footer-cta-title">{m.footer.ctaTitle}</h2>
+            <p className="footer-cta-desc">{m.footer.ctaDesc}</p>
           </div>
           <Link to="/contact" className="btn-primary footer-cta-btn shrink-0">
-            تواصل معنا
+            {m.footer.contactCta}
             <ArrowLeft className="h-4 w-4 rtl-flip" />
           </Link>
         </div>
@@ -72,7 +75,7 @@ export function SiteFooter() {
                 {settings?.address && (
                   <li>
                     <MapPin className="h-4 w-4 shrink-0 text-primary" />
-                    <span>{settings.address}</span>
+                    <span>{locale === "en" ? m.common.defaultAddress : settings.address}</span>
                   </li>
                 )}
                 {settings?.contactEmail && (
@@ -103,12 +106,12 @@ export function SiteFooter() {
             <div className="footer-links-grid">
               {/* روابط سريعة */}
               <div className="footer-links-col">
-                <h3 className="footer-col-title">روابط سريعة</h3>
+                <h3 className="footer-col-title">{m.footer.quickLinks}</h3>
                 <ul className="footer-link-list">
                   {QUICK_LINKS.map((l) => (
                     <li key={l.href}>
                       <Link to={l.href} className="footer-link">
-                        {l.label}
+                        {labelForHref(l.href, l.label)}
                       </Link>
                     </li>
                   ))}
@@ -118,7 +121,7 @@ export function SiteFooter() {
               {/* الخدمات — ديسكتوب فقط */}
               {services.length > 0 && (
                 <div className="footer-links-col footer-services-col">
-                  <h3 className="footer-col-title">خدماتنا</h3>
+                  <h3 className="footer-col-title">{m.footer.ourServices}</h3>
                   <ul className="footer-link-list">
                     {services.slice(0, 6).map((s) => (
                       <li key={s.id}>
@@ -137,33 +140,33 @@ export function SiteFooter() {
 
               {/* أدلة SEO — ديسكتوب فقط */}
               <div className="footer-links-col footer-perks-col">
-                <h3 className="footer-col-title">أدلة وخدمات</h3>
+                <h3 className="footer-col-title">{m.footer.guides}</h3>
                 <ul className="footer-link-list">
                   {FOOTER_LANDING_LINKS.map((l) => (
                     <li key={l.href}>
                       <Link to={l.href} className="footer-link">
-                        {l.label}
+                        {labelForHref(l.href, l.label)}
                       </Link>
                     </li>
                   ))}
                 </ul>
                 <Link to="/contact" className="footer-mini-cta mt-4">
-                  تواصل معنا
+                  {m.footer.contactCta}
                   <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
                 </Link>
               </div>
             </div>
 
             {/* موبايل — روابط مضغوطة + CTA واحد */}
-            <nav className="footer-mobile-nav footer-mobile-only" aria-label="روابط الموقع">
+            <nav className="footer-mobile-nav footer-mobile-only" aria-label={m.footer.siteLinks}>
               {QUICK_LINKS.map((l) => (
                 <Link key={l.href} to={l.href} className="footer-mobile-link">
-                  {l.label}
+                  {labelForHref(l.href, l.label)}
                 </Link>
               ))}
             </nav>
             <Link to="/contact" className="footer-mobile-cta footer-mobile-only">
-              تواصل معنا
+              {m.footer.contactCta}
               <ArrowLeft className="h-4 w-4 rtl-flip" />
             </Link>
           </div>
@@ -171,19 +174,19 @@ export function SiteFooter() {
           {/* الشريط السفلي */}
           <div className="footer-bottom">
             <p className="footer-copy">
-              <Link to="/admin/login" className="footer-copy-mark" aria-label="لوحة التحكم">
+              <Link to="/admin/login" className="footer-copy-mark" aria-label={m.footer.adminAria}>
                 ©
               </Link>{" "}
-              {new Date().getFullYear()} {siteName}. جميع الحقوق محفوظة.
+              {new Date().getFullYear()} {siteName}. {m.footer.rights}
             </p>
-            <nav className="footer-legal-nav" aria-label="روابط قانونية">
+            <nav className="footer-legal-nav" aria-label={m.footer.legalNav}>
               {LEGAL_LINKS.map((l) => (
                 <Link key={l.href} to={l.href} className="footer-legal-link">
-                  {l.label}
+                  {labelForHref(l.href, l.label)}
                 </Link>
               ))}
             </nav>
-            <p className="footer-made">نصمّم حضوراً رقمياً يحوّل الزوار إلى عملاء.</p>
+            <p className="footer-made">{m.footer.made}</p>
           </div>
         </div>
       </div>

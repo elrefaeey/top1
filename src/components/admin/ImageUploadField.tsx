@@ -4,6 +4,7 @@ import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
 import { isSafeExternalUrl } from "@/lib/security/validate";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 type ImageUploadFieldProps = {
   id: string;
@@ -17,14 +18,9 @@ type ImageUploadFieldProps = {
   required?: boolean;
 };
 
-const STAGE_LABEL: Record<UploadStage, string> = {
-  compress: "جاري تحضير الصورة…",
-  upload: "جاري الرفع…",
-};
-
 export function ImageUploadField({
   id,
-  label = "الصورة",
+  label,
   value,
   onChange,
   onUploaded,
@@ -32,12 +28,17 @@ export function ImageUploadField({
   hint,
   required,
 }: ImageUploadFieldProps) {
+  const { a } = useAdminI18n();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [stage, setStage] = useState<UploadStage>("upload");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [showUrl, setShowUrl] = useState(Boolean(value));
+  const stageLabel: Record<UploadStage, string> = {
+    compress: a.imageCompressing,
+    upload: a.imageUploading,
+  };
 
   useEffect(() => {
     if (value) setShowUrl(true);
@@ -53,20 +54,16 @@ export function ImageUploadField({
       const url = await uploadMediaImage(folder, file, setStage);
       onChange(url);
       setShowUrl(true);
-      setNotice("تم رفع الصورة بنجاح — جاري ربطها بالمشروع…");
+      setNotice(a.imageNoticeLinking);
       try {
         await onUploaded?.(url);
-        setNotice(
-          onUploaded
-            ? "تم رفع الصورة وحفظ الرابط. حدّث الصفحة الرئيسية إن لم تظهر فوراً."
-            : "تم رفع الصورة — اضغط «حفظ» أسفل الصفحة حتى تظهر في الموقع.",
-        );
+        setNotice(onUploaded ? a.imageNoticeSaved : a.imageNoticeSaveForm);
       } catch (persistErr) {
-        setNotice("تم الرفع، لكن الحفظ التلقائي فشل — اضغط «حفظ» أسفل الصفحة.");
-        setError(persistErr instanceof Error ? persistErr.message : "فشل حفظ رابط الصورة");
+        setNotice(a.imageNoticePersistFail);
+        setError(persistErr instanceof Error ? persistErr.message : a.imageErrPersist);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "فشل رفع الصورة");
+      setError(err instanceof Error ? err.message : a.imageErrUpload);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -76,11 +73,11 @@ export function ImageUploadField({
   function handleUrlChange(next: string) {
     const value = next.trim();
     if (value.startsWith("data:image/")) {
-      setError("لا يُسمح بروابط Base64 — ارفع الملف أو الصق رابط https://");
+      setError(a.imageErrBase64);
       return;
     }
     if (value && !isSafeExternalUrl(value) && !value.startsWith("/")) {
-      setError("رابط غير صالح — استخدم https://");
+      setError(a.imageErrInvalidUrl);
       return;
     }
     setError("");
@@ -88,14 +85,7 @@ export function ImageUploadField({
   }
 
   return (
-    <AdminField
-      id={id}
-      label={label}
-      hint={
-        hint ??
-        "ارفع JPG/PNG/WebP. يتم الرفع عبر السيرفر (Storage إن وُجد، وإلا حفظ داخل Firebase ويعرض عبر /media/…). ثم احفظ إن لم يُحفظ تلقائياً."
-      }
-    >
+    <AdminField id={id} label={label ?? a.imageDefaultLabel} hint={hint ?? a.imageHintDefault}>
       <div className="space-y-3">
         {value && (
           <div className="overflow-hidden rounded-xl border border-border bg-muted/30">
@@ -122,11 +112,11 @@ export function ImageUploadField({
           >
             {uploading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" /> {STAGE_LABEL[stage]}
+                <Loader2 className="h-4 w-4 animate-spin" /> {stageLabel[stage]}
               </>
             ) : (
               <>
-                <ImagePlus className="h-4 w-4" /> رفع صورة
+                <ImagePlus className="h-4 w-4" /> {a.imageUploadBtn}
               </>
             )}
           </label>
@@ -135,7 +125,7 @@ export function ImageUploadField({
             onClick={() => setShowUrl((v) => !v)}
             className="admin-btn admin-btn-ghost admin-btn-sm"
           >
-            <Link2 className="h-4 w-4" /> {showUrl ? "إخفاء الرابط" : "رابط خارجي"}
+            <Link2 className="h-4 w-4" /> {showUrl ? a.imageHideUrl : a.imageExternalUrl}
           </button>
         </div>
 
@@ -153,11 +143,11 @@ export function ImageUploadField({
 
         {value ? (
           <p className="text-[11px] text-muted-foreground break-all" dir="ltr">
-            {value.startsWith("http") ? "رابط الصورة مربوط ✓" : "تحذير: الرابط غير صالح"}
+            {value.startsWith("http") ? a.imageUrlOk : a.imageUrlWarn}
           </p>
         ) : (
           <p className="text-[11px] text-amber-700 leading-relaxed rounded-lg bg-amber-500/10 px-3 py-2">
-            لا يوجد رابط صورة محفوظ لهذا العنصر — ارفع صورة من الزر أعلاه (رفع من Storage Console وحده لا يكفي).
+            {a.imageNoUrl}
           </p>
         )}
 

@@ -30,6 +30,7 @@ import { whatsAppHref } from "@/lib/whatsapp";
 
 import { buildContactPageHead } from "@/lib/seo/static-page-head";
 import { loadContactRouteSeoFn } from "@/lib/seo/cms-seo.functions";
+import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/contact")({
   loader: () => loadContactRouteSeoFn(),
@@ -37,22 +38,20 @@ export const Route = createFileRoute("/contact")({
   component: Contact,
 });
 
-const PERKS = [
-  { icon: Check, text: "رد خلال 24 ساعة" },
-  { icon: Check, text: "استشارة مجانية" },
-  { icon: Check, text: "لا التزام" },
-];
-
 function Contact() {
   const { data: settings } = useSiteSettings();
   const submitLead = useSubmitLead();
   const toast = useToast();
+  const { m, locale } = useLocale();
 
   const email = settings?.contactEmail || SITE_CONTACT_EMAIL;
   const phoneUae = settings?.contactPhone || SITE_CONTACT_PHONE;
   const phoneSa = settings?.contactPhoneSa || SITE_CONTACT_PHONE_SA;
-  const address = settings?.address || SITE_ADDRESS;
-  const waHref = whatsAppHref(settings?.whatsappNumber, settings?.whatsappMessage);
+  const address = locale === "en" ? m.common.defaultAddress : settings?.address || SITE_ADDRESS;
+  const waHref = whatsAppHref(
+    settings?.whatsappNumber,
+    locale === "en" ? m.common.whatsappMessage : settings?.whatsappMessage,
+  );
 
   const [sent, setSent] = useState(false);
 
@@ -65,11 +64,11 @@ function Contact() {
     const website = String(fd.get("website") ?? "").trim();
 
     if (!name || !phoneVal || !msg) {
-      toast.push("يرجى تعبئة الاسم ورقم الجوال والاستفسار.", "error");
+      toast.push(m.contact.needName, "error");
       return;
     }
     if (name.length > 120 || phoneVal.length > 30 || msg.length > 5000) {
-      toast.push("تحقق من طول الحقول وحاول مرة أخرى.", "error");
+      toast.push(m.contact.tooLong, "error");
       return;
     }
 
@@ -83,9 +82,9 @@ function Contact() {
       });
       setSent(true);
       e.currentTarget.reset();
-      toast.push("تم إرسال رسالتك بنجاح.", "success");
+      toast.push(m.contact.success, "success");
     } catch {
-      toast.push("تعذّر إرسال الرسالة. جرّب واتساب أو حاول مرة أخرى.", "error");
+      toast.push(m.contact.fail, "error");
     }
   }
 
@@ -93,13 +92,14 @@ function Contact() {
     <>
       {/* ─── Hero ─── */}
       <PageIntro
-        eyebrow="تواصل معنا"
+        eyebrow={m.contact.eyebrow}
         title={
           <>
-            نبني معك من <span className="text-gradient">أول محادثة.</span>
+            {m.contact.titleBefore}
+            <span className="text-gradient">{m.contact.titleGradient}</span>
           </>
         }
-        desc="استشارة مجانية عبر واتساب أو النموذج — نخدم السعودية والإمارات ونرد خلال 24 ساعة."
+        desc={m.contact.desc}
       />
 
       {/* ─── Main content ─── */}
@@ -114,16 +114,16 @@ function Contact() {
                   <span className="h-14 w-14 rounded-full bg-primary/10 text-primary grid place-items-center">
                     <Sparkles className="h-6 w-6" />
                   </span>
-                  <h2 className="text-xl font-bold">تم إرسال رسالتك!</h2>
+                  <h2 className="text-xl font-bold">{m.contact.sentTitle}</h2>
                   <p className="text-sm text-muted-foreground max-w-xs">
-                    شكراً — سنتواصل معك خلال 24 ساعة.
+                    {m.contact.sentDesc}
                   </p>
                   <button
                     type="button"
                     className="btn-ghost mt-2"
                     onClick={() => setSent(false)}
                   >
-                    إرسال رسالة أخرى
+                    {m.contact.sendAnother}
                   </button>
                 </div>
               ) : (
@@ -146,18 +146,18 @@ function Contact() {
                       <Send className="h-4 w-4" />
                     </span>
                     <div>
-                      <h2 className="font-bold text-base">اترك رسالتك</h2>
+                      <h2 className="font-bold text-base">{m.contact.formTitle}</h2>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        الاسم ورقم الجوال والاستفسار — الحقول مطلوبة
+                        {m.contact.formHint}
                       </p>
                     </div>
                   </div>
 
                   {/* Name + Phone */}
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <Field label="اسمك" id="name" name="name" required />
+                    <Field label={m.contact.name} id="name" name="name" required />
                     <Field
-                      label="رقم الجوال"
+                      label={m.contact.phone}
                       id="phone"
                       name="phone"
                       type="tel"
@@ -170,7 +170,7 @@ function Contact() {
                   {/* Message */}
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="msg" className="text-sm font-medium">
-                      استفسارك <span className="text-primary">*</span>
+                      {m.contact.message} <span className="text-primary">*</span>
                     </label>
                     <textarea
                       id="msg"
@@ -178,7 +178,7 @@ function Contact() {
                       rows={5}
                       required
                       className="contact-textarea w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring resize-none"
-                      placeholder="اكتب استفسارك أو تفاصيل مشروعك…"
+                      placeholder={m.contact.messagePh}
                     />
                   </div>
 
@@ -187,7 +187,7 @@ function Contact() {
                     disabled={submitLead.isPending}
                     className="btn-primary self-start"
                   >
-                    {submitLead.isPending ? "جاري الإرسال…" : "إرسال الرسالة"}
+                    {submitLead.isPending ? m.contact.sending : m.contact.send}
                     {!submitLead.isPending && <ArrowLeft className="h-4 w-4 rtl-flip" />}
                   </button>
                 </form>
@@ -209,15 +209,15 @@ function Contact() {
                   <WhatsAppIcon className="h-6 w-6" />
                 </span>
                 <span className="flex-1 min-w-0">
-                  <strong className="block font-bold text-sm">واتساب السعودية</strong>
-                  <span className="text-xs opacity-90">أسرع طريقة — رقم سعودي · رد سريع</span>
+                  <strong className="block font-bold text-sm">{m.contact.waTitle}</strong>
+                  <span className="text-xs opacity-90">{m.contact.waHint}</span>
                 </span>
                 <ArrowLeft className="h-4 w-4 shrink-0 opacity-80 rtl-flip" />
               </a>
 
               {/* Contact info */}
               <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-4">
-                <h3 className="font-bold text-sm">بيانات التواصل</h3>
+                <h3 className="font-bold text-sm">{m.contact.details}</h3>
 
                 <ul className="flex flex-col gap-3 text-sm text-muted-foreground">
                   <li className="flex items-center gap-3">
@@ -255,7 +255,11 @@ function Contact() {
 
               {/* Perks */}
               <ul className="flex flex-wrap gap-2">
-                {PERKS.map(({ icon: Icon, text }) => (
+                {[
+                  { icon: Check, text: m.home.trustReply },
+                  { icon: Check, text: m.home.trustConsult },
+                  { icon: Check, text: m.home.trustNoCommit },
+                ].map(({ icon: Icon, text }) => (
                   <li
                     key={text}
                     className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-surface border border-border rounded-full px-3 py-1.5"
@@ -309,26 +313,27 @@ function ContactFaq() {
   const { data: faqs = [], isLoading, isError, refetch } = useFaqs();
   const [open, setOpen] = useState<number | null>(0);
   const items = faqs.slice(0, 4);
+  const { m } = useLocale();
 
   return (
     <section className="section tone-tinted" aria-labelledby="contact-faq-heading">
       <div className="container-page max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <span className="page-intro-eyebrow mx-auto">
-            <Clock className="h-3 w-3" aria-hidden /> أسئلة شائعة
+            <Clock className="h-3 w-3" aria-hidden /> {m.contact.faqEyebrow}
           </span>
           <h2
             id="contact-faq-heading"
             className="page-intro-title page-intro-title--section mt-3"
           >
-            إجابات سريعة قبل التواصل
+            {m.contact.faqTitle}
           </h2>
         </div>
 
-        {isLoading ? <ContentLoading label="جاري تحميل الأسئلة…" /> : null}
+        {isLoading ? <ContentLoading label={m.contact.faqLoading} /> : null}
         {isError ? (
           <ContentError
-            message="تعذّر تحميل الأسئلة الشائعة."
+            message={m.contact.faqFail}
             onRetry={() => void refetch()}
           />
         ) : null}

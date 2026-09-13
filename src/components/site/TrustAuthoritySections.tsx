@@ -4,12 +4,14 @@ import { Reveal } from "@/components/site/Reveal";
 import { useAuthors, useSiteStats, useTestimonials } from "@/hooks/use-cms";
 import { authorSlug } from "@/lib/cms/admin-utils";
 import { SITE_NAME } from "@/lib/site-config";
+import { useLocale } from "@/providers/LocaleProvider";
 
 /** E-E-A-T trust block: team, proof stats, testimonials */
 export function TrustAuthoritySections() {
   const { data: authors = [] } = useAuthors();
   const { data: stats = [] } = useSiteStats();
   const { data: testimonials = [] } = useTestimonials();
+  const { m, t } = useLocale();
 
   const team = authors.slice(0, 4);
   const proofStats = stats.slice(0, 4);
@@ -22,10 +24,10 @@ export function TrustAuthoritySections() {
           <div className="container-page">
             <div className="page-intro-block me-auto w-full text-start">
               <span className="page-intro-eyebrow">
-                <Users className="h-3 w-3" /> الخبرة والفريق
+                <Users className="h-3 w-3" /> {m.about.teamEyebrow}
               </span>
               <h2 id="eeat-team" className="page-intro-title page-intro-title--section">
-                أشخاص حقيقيون خلف النتائج.
+                {m.about.teamTitle}
               </h2>
 
             </div>
@@ -74,10 +76,10 @@ export function TrustAuthoritySections() {
           <div className="container-page">
             <div className="page-intro-block me-auto mb-8 w-full text-start">
               <span className="page-intro-eyebrow">
-                <BadgeCheck className="h-3 w-3" /> نتائج قابلة للقياس
+                <BadgeCheck className="h-3 w-3" /> {m.about.statsEyebrow}
               </span>
               <h2 id="eeat-stats" className="page-intro-title page-intro-title--section">
-                أرقام نعرضها بوضوح.
+                {m.about.statsTitle}
               </h2>
             </div>
             <div className="stats-band">
@@ -99,13 +101,13 @@ export function TrustAuthoritySections() {
           <div className="container-page">
             <div className="page-intro-block me-auto mb-8 w-full text-start">
               <span className="page-intro-eyebrow">
-                <MessageSquare className="h-3.5 w-3.5" /> ثقة العملاء
+                <MessageSquare className="h-3.5 w-3.5" /> {m.about.quotesEyebrow}
               </span>
               <h2 id="eeat-quotes" className="page-intro-title page-intro-title--section">
-                ماذا يقول عملاؤنا.
+                {m.about.quotesTitle}
               </h2>
               <p className="page-intro-desc mt-3 !max-w-none">
-                قصص نجاح واقعية وتجارب حقيقية لشركائنا الذين وضعوا ثقتهم في {SITE_NAME}.
+                {t(m.about.quotesDesc, { name: SITE_NAME })}
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">

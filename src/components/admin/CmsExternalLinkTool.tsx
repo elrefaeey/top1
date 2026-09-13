@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link2 } from "lucide-react";
 import { AdminField, adminInputClass } from "@/components/admin/AdminUi";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 type CmsExternalLinkToolProps = {
   idPrefix?: string;
@@ -47,6 +48,7 @@ export function CmsExternalLinkTool({
   onNotice,
   onError,
 }: CmsExternalLinkToolProps) {
+  const { a, t } = useAdminI18n();
   const [linkText, setLinkText] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
 
@@ -57,18 +59,18 @@ export function CmsExternalLinkTool({
     const url = normalizeExternalUrl(linkUrl);
 
     if (!text) {
-      onError?.("حدّد كلمة أو جملة في المحرر، أو اكتب نص الرابط أولاً.");
+      onError?.(a.extErrSelect);
       return;
     }
     if (!url) {
-      onError?.("أدخل رابطاً صالحاً (مثل https://example.com).");
+      onError?.(a.extErrUrl);
       return;
     }
 
     const html = `<a href="${escapeHtmlAttr(url)}" target="_blank" rel="noopener noreferrer">${escapeHtmlText(text)}</a>`;
     if (!el) {
       onChange(`${value}${html}`);
-      onNotice?.(`تم ربط «${text}» بالرابط الخارجي`);
+      onNotice?.(t(a.extLinked, { text }));
       setLinkText("");
       setLinkUrl("");
       return;
@@ -88,7 +90,7 @@ export function CmsExternalLinkTool({
       el.setSelectionRange(pos, pos);
     });
 
-    onNotice?.(`تم ربط «${text}» بالرابط الخارجي`);
+    onNotice?.(t(a.extLinked, { text }));
     setLinkText("");
     setLinkUrl("");
   }
@@ -96,23 +98,21 @@ export function CmsExternalLinkTool({
   return (
     <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
       <div>
-        <p className="text-sm font-semibold text-foreground">روابط خارجية (كلمات قابلة للنقر)</p>
-        <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-          حدّد كلمة في النص، الصق الرابط، ثم اضغط إدراج — ستظهر بلون مختلف وتفتح عند الضغط.
-        </p>
+        <p className="text-sm font-semibold text-foreground">{a.extLinksTitle}</p>
+        <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{a.extLinksDesc}</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <AdminField label="نص الرابط" id={`${idPrefix}-text`}>
+        <AdminField label={a.blogLinkText} id={`${idPrefix}-text`}>
           <input
             id={`${idPrefix}-text`}
             value={linkText}
             onChange={(e) => setLinkText(e.target.value)}
-            placeholder="اتركه فارغاً لاستخدام النص المحدد"
+            placeholder={a.blogLinkTextPh}
             className={adminInputClass()}
           />
         </AdminField>
-        <AdminField label="الرابط (URL)" id={`${idPrefix}-url`}>
+        <AdminField label={a.extLinkUrl} id={`${idPrefix}-url`}>
           <input
             id={`${idPrefix}-url`}
             dir="ltr"
@@ -125,7 +125,7 @@ export function CmsExternalLinkTool({
       </div>
 
       <button type="button" onClick={insertExternalLink} className="admin-btn admin-btn-primary admin-btn-sm">
-        <Link2 className="h-4 w-4" /> إدراج رابط خارجي
+        <Link2 className="h-4 w-4" /> {a.extInsert}
       </button>
     </div>
   );

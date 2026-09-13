@@ -5,12 +5,14 @@ import { getAuthErrorMessage } from "@/lib/firebase/auth-errors";
 import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
 import { useAuth } from "@/providers/AuthProvider";
 import { adminInputClass } from "@/components/admin/AdminUi";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/login")({
   component: AdminLogin,
 });
 
 function AdminLogin() {
+  const { a, locale } = useAdminI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,7 +34,7 @@ function AdminLogin() {
       await loginWithEmail(email.trim(), password);
       navigate({ to: "/admin" });
     } catch (err) {
-      setError(getAuthErrorMessage(err));
+      setError(getAuthErrorMessage(err, locale));
     } finally {
       setLoading(false);
     }
@@ -43,7 +45,7 @@ function AdminLogin() {
       <div className="admin-login-page">
         <div className="flex flex-col items-center gap-3 text-sm text-white/70">
           <div className="admin-spinner" aria-hidden />
-          جاري التحميل…
+          {a.loading}
         </div>
       </div>
     );
@@ -54,7 +56,7 @@ function AdminLogin() {
       <div className="admin-login-page">
         <div className="flex flex-col items-center gap-3 text-sm text-white/70">
           <div className="admin-spinner" aria-hidden />
-          جاري الدخول للوحة التحكم…
+          {a.loginEntering}
         </div>
       </div>
     );
@@ -68,8 +70,8 @@ function AdminLogin() {
           <h1 className="mt-4 text-2xl font-bold tracking-tight text-white" dir="ltr">
             {SITE_NAME}
           </h1>
-          <p className="mt-1.5 text-sm text-[var(--admin-accent,#c4a035)]">لوحة التحكم</p>
-          <p className="mt-2 text-sm text-white/65">سجّل الدخول لإدارة محتوى الموقع</p>
+          <p className="mt-1.5 text-sm text-[#8eb6ff]">{a.loginPanel}</p>
+          <p className="mt-2 text-sm text-white/65">{a.loginSubtitle}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="admin-card space-y-4 p-6 sm:p-7">
@@ -81,7 +83,7 @@ function AdminLogin() {
 
           <div>
             <label htmlFor="email" className="text-sm font-semibold">
-              البريد الإلكتروني
+              {a.loginEmail}
             </label>
             <input
               id="email"
@@ -97,7 +99,7 @@ function AdminLogin() {
 
           <div>
             <label htmlFor="password" className="text-sm font-semibold">
-              كلمة المرور
+              {a.loginPassword}
             </label>
             <input
               id="password"
@@ -112,12 +114,12 @@ function AdminLogin() {
           </div>
 
           <button type="submit" disabled={loading} className="admin-btn admin-btn-primary w-full">
-            {loading ? "جاري التحقق…" : "تسجيل الدخول"}
+            {loading ? a.loginChecking : a.loginSubmit}
           </button>
 
           <p className="pt-1 text-center text-xs text-[var(--admin-muted)]">
             <Link to="/" className="hover:text-[var(--admin-primary)]">
-              ← العودة للموقع
+              ← {a.backToSite}
             </Link>
           </p>
         </form>

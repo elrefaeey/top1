@@ -31,21 +31,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
 export const Route = createFileRoute("/admin/seo")({
   component: AdminSeoPage,
 });
 
-const STATIC_PAGES: Array<{ id: StaticPageSeoId; title: string; path: string; editId: string }> = [
-  { id: "home", title: "الرئيسية", path: "/", editId: "home" },
-  { id: "about", title: "من نحن", path: "/about", editId: "about" },
-  { id: "contact", title: "تواصل", path: "/contact", editId: "contact" },
-  { id: "services", title: "الخدمات", path: "/services", editId: "services" },
-  { id: "portfolio", title: "أعمالنا", path: "/portfolio", editId: "portfolio" },
-  { id: "blog", title: "المدونة", path: "/blog", editId: "blog" },
+const STATIC_PAGE_IDS: Array<{
+  id: StaticPageSeoId;
+  path: string;
+  editId: string;
+  titleKey: keyof AdminMessages;
+}> = [
+  { id: "home", path: "/", editId: "home", titleKey: "pageHome" },
+  { id: "about", path: "/about", editId: "about", titleKey: "pageAbout" },
+  { id: "contact", path: "/contact", editId: "contact", titleKey: "pageContact" },
+  { id: "services", path: "/services", editId: "services", titleKey: "services" },
+  { id: "portfolio", path: "/portfolio", editId: "portfolio", titleKey: "portfolio" },
+  { id: "blog", path: "/blog", editId: "blog", titleKey: "blog" },
 ];
 
 function AdminSeoPage() {
+  const { a } = useAdminI18n();
   const { data: services = [], isFetching: loadingServices } = useAdminServices();
   const { data: blogPosts = [], isFetching: loadingBlog } = useAdminBlogPosts();
   const { data: cmsPages = [], isFetching: loadingPages } = useAdminPages();
@@ -80,19 +88,13 @@ function AdminSeoPage() {
 
   return (
     <div>
-      <AdminPageHeader
-        title="SEO"
-        description="تقييم شامل لعناوين الصفحات، الوصف، Schema، والصور."
-      />
+      <AdminPageHeader title={a.seo} description={a.seoPageDesc} />
 
       <AdminFetchingBar show={isFetching} />
 
-      <AdminSection
-        title="تقييم صفحات الموقع"
-        description="كل بطاقة تعرض النتيجة من 100 مع أهم النقاط التي تحتاج تحسين."
-      >
+      <AdminSection title={a.seoScoreSection} description={a.seoScoreSectionDesc}>
         <div className="grid gap-4 sm:grid-cols-2">
-          {STATIC_PAGES.map((p) => {
+          {STATIC_PAGE_IDS.map((p) => {
             const cms = cmsPages.find((c) => c.id === p.editId || c.slug === p.editId);
             return (
               <AdminSeoScorePanel
@@ -100,7 +102,7 @@ function AdminSeoPage() {
                 pageId={p.id}
                 cms={cms}
                 settings={settings}
-                title={p.title}
+                title={a[p.titleKey]}
                 subtitle={p.path}
                 editTo="/admin/pages/$id"
                 editParams={{ id: p.editId }}
@@ -110,22 +112,22 @@ function AdminSeoPage() {
         </div>
       </AdminSection>
 
-      <AdminSection title="الخدمات" description="حالة النشر وعناوين SEO للخدمات.">
+      <AdminSection title={a.services} description={a.seoServicesDesc}>
         <AdminTableCard>
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[35%]">العنوان</TableHead>
+                <TableHead className="w-[35%]">{a.title}</TableHead>
                 <TableHead className="w-[40%]">Meta Title</TableHead>
-                <TableHead className="w-[15%]">الحالة</TableHead>
-                <TableHead className="w-[10%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[15%]">{a.status}</TableHead>
+                <TableHead className="w-[10%] text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {services.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4} className="text-sm text-muted-foreground py-8 text-center">
-                    لا توجد خدمات.
+                    {a.servicesEmpty}
                   </TableCell>
                 </TableRow>
               )}
@@ -148,22 +150,22 @@ function AdminSeoPage() {
         </AdminTableCard>
       </AdminSection>
 
-      <AdminSection title="المقالات" description="حالة النشر وعناوين SEO للمدونة.">
+      <AdminSection title={a.blog} description={a.seoPostsDesc}>
         <AdminTableCard>
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[35%]">العنوان</TableHead>
+                <TableHead className="w-[35%]">{a.title}</TableHead>
                 <TableHead className="w-[40%]">Meta Title</TableHead>
-                <TableHead className="w-[15%]">الحالة</TableHead>
-                <TableHead className="w-[10%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[15%]">{a.status}</TableHead>
+                <TableHead className="w-[10%] text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {blogPosts.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4} className="text-sm text-muted-foreground py-8 text-center">
-                    لا توجد مقالات.
+                    {a.blogEmpty}
                   </TableCell>
                 </TableRow>
               )}
@@ -189,7 +191,7 @@ function AdminSeoPage() {
       <AdminSection title="robots.txt">
         <AdminCard>
           <form onSubmit={handleRobotsSubmit} className="space-y-4">
-            <AdminField label="robots.txt" id="robots" hint="يُستخدم عند تفعيل SEO الديناميكي.">
+            <AdminField label="robots.txt" id="robots" hint={a.seoRobotsHint}>
               <textarea
                 id="robots"
                 dir="ltr"
@@ -206,9 +208,9 @@ function AdminSeoPage() {
       </AdminSection>
 
       <p className="text-xs text-muted-foreground">
-        لتحرير Meta لصفحة معيّنة:{" "}
+        {a.seoEditMetaHint}{" "}
         <Link to="/admin/pages" className="text-primary hover:underline">
-          الصفحات
+          {a.pages}
         </Link>
       </p>
     </div>

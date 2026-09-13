@@ -31,6 +31,8 @@ import { useAdminBlogPosts } from "@/hooks/use-admin-cms";
 import { auth } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
 import type { AiLog, GscSnapshot, SeoInsight } from "@/types/seo-automation";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
 export const Route = createFileRoute("/admin/seo-ai")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -40,9 +42,9 @@ export const Route = createFileRoute("/admin/seo-ai")({
   component: AdminSeoAiPage,
 });
 
-async function getIdToken(): Promise<string> {
+async function getIdToken(mustLogin: string): Promise<string> {
   const user = auth.currentUser;
-  if (!user) throw new Error("يجب تسجيل الدخول");
+  if (!user) throw new Error(mustLogin);
   return user.getIdToken();
 }
 
@@ -50,8 +52,8 @@ function formatPct(ctr: number) {
   return `${(ctr * 100).toFixed(1)}%`;
 }
 
-function formatNum(n: number) {
-  return Math.round(n).toLocaleString("ar-SA");
+function formatNum(n: number, locale: string) {
+  return Math.round(n).toLocaleString(locale === "en" ? "en-US" : "ar-SA");
 }
 
 function shortUrl(url: string) {
@@ -64,6 +66,7 @@ function shortUrl(url: string) {
 }
 
 function AdminSeoAiPage() {
+  const { a, t, locale } = useAdminI18n();
   const { isAdmin, isEditor } = useAuth();
   const search = useRouterState({
     select: (s) => s.location.search as { gsc?: string; message?: string },
@@ -97,7 +100,7 @@ function AdminSeoAiPage() {
 
   const topSnapshots = useMemo(() => {
     return [...snapshots]
-      .sort((a, b) => b.impressions - a.impressions)
+      .sort((x, y) => y.impressions - x.impressions)
       .slice(0, 15);
   }, [snapshots]);
 
@@ -105,7 +108,7 @@ function AdminSeoAiPage() {
     if (!isEditor) return;
     setLoadingData(true);
     try {
-      const token = await getIdToken();
+      const token = await getIdToken(a.seoAiMustLogin);
       const headers = { Authorization: `Bearer ${token}` };
 
       const [gscRes, insightsRes, logsRes, statusRes] = await Promise.all([
@@ -142,24 +145,24 @@ function AdminSeoAiPage() {
     } catch (err) {
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "تعذّر تحميل لوحة SEO AI",
+        text: err instanceof Error ? err.message : a.seoAiLoadFail,
       });
     } finally {
       setLoadingData(false);
     }
-  }, [isAdmin, isEditor]);
+  }, [isAdmin, isEditor, a.seoAiMustLogin, a.seoAiLoadFail]);
 
   useEffect(() => {
     if (search.gsc === "connected") {
-      setBanner({ type: "success", text: "تم ربط Google Search Console بنجاح." });
+      setBanner({ type: "success", text: a.seoAiGscConnected });
       setConnected(true);
     } else if (search.gsc === "error") {
       setBanner({
         type: "error",
-        text: search.message || "فشل ربط Google Search Console",
+        text: search.message || a.seoAiGscFail,
       });
     }
-  }, [search.gsc, search.message]);
+  }, [search.gsc, search.message, a.seoAiGscConnected, a.seoAiGscFail]);
 
   useEffect(() => {
     void loadDashboard();
@@ -169,17 +172,17 @@ function AdminSeoAiPage() {
     setConnecting(true);
     setBanner(null);
     try {
-      const token = await getIdToken();
+      const token = await getIdToken(a.seoAiMustLogin);
       const res = await fetch("/api/seo/gsc/connect", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = (await res.json()) as { authorizeUrl?: string; error?: string };
-      if (!res.ok || !data.authorizeUrl) throw new Error(data.error || "تعذّر بدء الربط");
+      if (!res.ok || !data.authorizeUrl) throw new Error(data.error || a.seoAiConnectFail);
       window.location.href = data.authorizeUrl;
     } catch (err) {
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "تعذّر بدء الربط",
+        text: err instanceof Error ? err.message : a.seoAiConnectFail,
       });
       setConnecting(false);
     }
@@ -190,7 +193,7 @@ function AdminSeoAiPage() {
     setBanner(null);
     setSyncMeta(null);
     try {
-      const token = await getIdToken();
+      const token = await getIdToken(a.seoAiMustLogin);
       const res = await fetch("/api/seo/gsc/sync", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
@@ -202,16 +205,16 @@ function AdminSeoAiPage() {
         periodEnd?: string;
         error?: string;
       };
-      if (!res.ok) throw new Error(data.error || "فشلت المزامنة");
-      setBanner({ type: "success", text: "تمت مزامنة Search Console وتجهيز فرص SEO." });
+      if (!res.ok) throw new Error(data.error || a.seoAiSyncFail);
+      setBanner({ type: "success", text: a.seoAiSyncOk });
       setSyncMeta(
-        `${data.syncedRows ?? 0} صف · ${data.insightsPrepared ?? 0} فرصة · ${data.periodStart} → ${data.periodEnd}`,
+        `${data.syncedRows ?? 0} · ${data.insightsPrepared ?? 0} · ${data.periodStart} → ${data.periodEnd}`,
       );
       await loadDashboard();
     } catch (err) {
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "فشلت المزامنة",
+        text: err instanceof Error ? err.message : a.seoAiSyncFail,
       });
     } finally {
       setSyncing(false);
@@ -222,22 +225,22 @@ function AdminSeoAiPage() {
     setAnalyzing(true);
     setBanner(null);
     try {
-      const token = await getIdToken();
+      const token = await getIdToken(a.seoAiMustLogin);
       const res = await fetch("/api/seo/analyze", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = (await res.json()) as { opportunities?: number; error?: string };
-      if (!res.ok) throw new Error(data.error || "فشل التحليل");
+      if (!res.ok) throw new Error(data.error || a.seoAiAnalyzeFail);
       setBanner({
         type: "success",
-        text: `تم تحليل فرص SEO: ${data.opportunities ?? 0} فرصة.`,
+        text: t(a.seoAiAnalyzeOk, { n: data.opportunities ?? 0 }),
       });
       await loadDashboard();
     } catch (err) {
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "فشل التحليل",
+        text: err instanceof Error ? err.message : a.seoAiAnalyzeFail,
       });
     } finally {
       setAnalyzing(false);
@@ -248,7 +251,7 @@ function AdminSeoAiPage() {
     setGeneratingId(insightId);
     setBanner(null);
     try {
-      const token = await getIdToken();
+      const token = await getIdToken(a.seoAiMustLogin);
       const res = await fetch("/api/seo/generate-draft", {
         method: "POST",
         headers: {
@@ -262,16 +265,16 @@ function AdminSeoAiPage() {
         status?: string;
         error?: string;
       };
-      if (!res.ok) throw new Error(data.error || "فشل توليد المسودة");
+      if (!res.ok) throw new Error(data.error || a.seoAiDraftFail);
       setBanner({
         type: "success",
-        text: `تم إنشاء مسودة draft: ${data.slug ?? ""} — راجعها من المدونة قبل النشر.`,
+        text: t(a.seoAiDraftOk, { slug: data.slug ?? "" }),
       });
       await loadDashboard();
     } catch (err) {
       setBanner({
         type: "error",
-        text: err instanceof Error ? err.message : "فشل توليد المسودة",
+        text: err instanceof Error ? err.message : a.seoAiDraftFail,
       });
     } finally {
       setGeneratingId(null);
@@ -280,10 +283,7 @@ function AdminSeoAiPage() {
 
   return (
     <div>
-      <AdminPageHeader
-        title="SEO AI"
-        description="ربط Search Console، مزامنة الأداء، مراجعة الفرص، ثم نشر المسودات يدوياً."
-      />
+      <AdminPageHeader title={a.seoAi} description={a.seoAiDesc} />
 
       <AdminFetchingBar show={loadingData || loadingBlog || syncing || analyzing || Boolean(generatingId)} />
 
@@ -301,17 +301,25 @@ function AdminSeoAiPage() {
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="حالة GSC"
-          value={connected ? "متصل" : "غير متصل"}
+          label={a.seoAiStatGsc}
+          value={connected ? a.seoAiConnected : a.seoAiDisconnected}
           hint={connectedEmail || siteUrl}
         />
-        <StatCard label="صفوف الأداء" value={formatNum(snapshots.length)} hint="gsc_snapshots" />
         <StatCard
-          label="فرص بانتظار المراجعة"
-          value={formatNum(pendingInsights)}
-          hint={`من أصل ${insights.length}`}
+          label={a.seoAiPerfRows}
+          value={formatNum(snapshots.length, locale)}
+          hint="gsc_snapshots"
         />
-        <StatCard label="مسودات المدونة" value={formatNum(drafts.length)} hint="status: draft" />
+        <StatCard
+          label={a.seoAiPendingOpps}
+          value={formatNum(pendingInsights, locale)}
+          hint={t(a.seoAiOfTotal, { n: insights.length })}
+        />
+        <StatCard
+          label={a.seoAiBlogDrafts}
+          value={formatNum(drafts.length, locale)}
+          hint="status: draft"
+        />
       </div>
 
       <AdminCard className="mb-8">
@@ -322,9 +330,7 @@ function AdminSeoAiPage() {
               <h2 className="text-base font-semibold">Google Search Console</h2>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {connected
-                ? "الحساب مربوط. يمكنك مزامنة آخر 28 يوماً وتحديث الفرص."
-                : "اربط حساب Google أولاً لسحب بيانات البحث."}
+              {connected ? a.seoAiGscCardDescConnected : a.seoAiGscCardDescDisconnected}
             </p>
             <p className="text-xs text-muted-foreground" dir="ltr">
               {siteUrl}
@@ -332,7 +338,7 @@ function AdminSeoAiPage() {
             </p>
             {syncMeta && (
               <p className="text-xs text-muted-foreground" dir="ltr">
-                آخر مزامنة: {syncMeta}
+                {t(a.seoAiLastSync, { meta: syncMeta })}
               </p>
             )}
           </div>
@@ -347,7 +353,11 @@ function AdminSeoAiPage() {
                   onClick={() => void handleConnect()}
                 >
                   <Link2 className="h-4 w-4" />
-                  {connecting ? "جارٍ التوجيه…" : connected ? "إعادة الربط" : "ربط Search Console"}
+                  {connecting
+                    ? a.seoAiRedirecting
+                    : connected
+                      ? a.seoAiReconnect
+                      : a.seoAiConnect}
                 </button>
                 <button
                   type="button"
@@ -356,11 +366,11 @@ function AdminSeoAiPage() {
                   onClick={() => void handleSync()}
                 >
                   <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
-                  {syncing ? "جارٍ المزامنة…" : "مزامنة البيانات"}
+                  {syncing ? a.seoAiSyncing : a.seoAiSync}
                 </button>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">الربط والمزامنة للمدير فقط.</p>
+              <p className="text-sm text-muted-foreground">{a.seoAiAdminOnly}</p>
             )}
             {isEditor ? (
               <button
@@ -370,7 +380,7 @@ function AdminSeoAiPage() {
                 onClick={() => void handleAnalyze()}
               >
                 <Lightbulb className={`h-4 w-4 ${analyzing ? "animate-pulse" : ""}`} />
-                {analyzing ? "جارٍ التحليل…" : "تحليل الفرص"}
+                {analyzing ? a.seoAiAnalyzing : a.seoAiAnalyze}
               </button>
             ) : null}
             <button
@@ -380,29 +390,26 @@ function AdminSeoAiPage() {
               onClick={() => void loadDashboard()}
             >
               <RefreshCw className={`h-4 w-4 ${loadingData ? "animate-spin" : ""}`} />
-              تحديث العرض
+              {a.seoAiRefresh}
             </button>
           </div>
         </div>
       </AdminCard>
 
-      <AdminSection
-        title="أداء البحث"
-        description="أعلى الاستعلامات حسب الظهور من آخر مزامنة."
-      >
+      <AdminSection title={a.seoAiPerfTitle} description={a.seoAiPerfDesc}>
         {topSnapshots.length === 0 ? (
-          <AdminEmpty message="لا توجد بيانات بعد. اربط GSC ثم اضغط مزامنة." />
+          <AdminEmpty message={a.seoAiPerfEmpty} />
         ) : (
           <AdminTableCard>
             <Table className="min-w-[40rem]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[28%]">الاستعلام</TableHead>
-                  <TableHead className="w-[28%]">الصفحة</TableHead>
-                  <TableHead className="w-[11%]">نقرات</TableHead>
-                  <TableHead className="w-[11%]">ظهور</TableHead>
-                  <TableHead className="w-[11%]">CTR</TableHead>
-                  <TableHead className="w-[11%]">ترتيب</TableHead>
+                  <TableHead className="w-[28%]">{a.seoAiColQuery}</TableHead>
+                  <TableHead className="w-[28%]">{a.seoAiColPage}</TableHead>
+                  <TableHead className="w-[11%]">{a.seoAiColClicks}</TableHead>
+                  <TableHead className="w-[11%]">{a.seoAiColImpressions}</TableHead>
+                  <TableHead className="w-[11%]">{a.seoAiColCtr}</TableHead>
+                  <TableHead className="w-[11%]">{a.seoAiColPosition}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -410,7 +417,7 @@ function AdminSeoAiPage() {
                   <TableRow key={row.id}>
                     <TableCell className="font-medium">
                       <span className="line-clamp-2" title={row.query}>
-                        {row.query || "—"}
+                        {row.query || a.emDash}
                       </span>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground" dir="ltr">
@@ -418,8 +425,8 @@ function AdminSeoAiPage() {
                         {shortUrl(row.page)}
                       </span>
                     </TableCell>
-                    <TableCell>{formatNum(row.clicks)}</TableCell>
-                    <TableCell>{formatNum(row.impressions)}</TableCell>
+                    <TableCell>{formatNum(row.clicks, locale)}</TableCell>
+                    <TableCell>{formatNum(row.impressions, locale)}</TableCell>
                     <TableCell>{formatPct(row.ctr)}</TableCell>
                     <TableCell>{row.position.toFixed(1)}</TableCell>
                   </TableRow>
@@ -430,19 +437,16 @@ function AdminSeoAiPage() {
         )}
       </AdminSection>
 
-      <AdminSection
-        title="فرص SEO"
-        description="كل بطاقة = فرصة واحدة. راجع التوصية ثم أنشئ مسودة للنشر اليدوي."
-      >
+      <AdminSection title={a.seoAiOppsTitle} description={a.seoAiOppsDesc}>
         {insights.length === 0 ? (
-          <AdminEmpty message="لا توجد فرص بعد. نفّذ مزامنة GSC أو اضغط تحليل الفرص." />
+          <AdminEmpty message={a.seoAiOppsEmpty} />
         ) : (
           <div className="space-y-3">
             {insights.slice(0, 25).map((item) => {
               const page = shortUrl(item.page || item.targetPage || "");
               const action =
-                item.recommended_action || item.recommendation || item.issue || "—";
-              const typeLabel = opportunityTypeLabel(item.type);
+                item.recommended_action || item.recommendation || item.issue || a.emDash;
+              const typeLabel = opportunityTypeLabel(item.type, a);
               const alreadyDrafted = item.status === "reviewed" || item.status === "completed";
 
               return (
@@ -458,27 +462,38 @@ function AdminSeoAiPage() {
                       </div>
 
                       <div>
-                        <p className="text-xs text-muted-foreground mb-1">الكلمة المفتاحية</p>
+                        <p className="text-xs text-muted-foreground mb-1">{a.seoAiKeyword}</p>
                         <h3 className="text-base font-semibold leading-snug text-foreground">
-                          {item.keyword || "—"}
+                          {item.keyword || a.emDash}
                         </h3>
                         {item.suggested_title ? (
-                          <p className="mt-1 text-sm text-muted-foreground line-clamp-1" title={item.suggested_title}>
-                            مقترح العنوان: {item.suggested_title}
+                          <p
+                            className="mt-1 text-sm text-muted-foreground line-clamp-1"
+                            title={item.suggested_title}
+                          >
+                            {t(a.seoAiSuggestedTitle, { title: item.suggested_title })}
                           </p>
                         ) : null}
                       </div>
 
                       <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-                        <MetaChip label="الترتيب" value={item.currentPosition.toFixed(1)} />
-                        <MetaChip label="الظهور" value={formatNum(item.impressions)} />
-                        <MetaChip label="CTR" value={formatPct(item.ctr)} />
-                        <MetaChip label="الصفحة" value={page || "—"} dir="ltr" />
+                        <MetaChip label={a.order} value={item.currentPosition.toFixed(1)} />
+                        <MetaChip
+                          label={a.seoAiColImpressions}
+                          value={formatNum(item.impressions, locale)}
+                        />
+                        <MetaChip label={a.seoAiColCtr} value={formatPct(item.ctr)} />
+                        <MetaChip label={a.seoAiColPage} value={page || a.emDash} dir="ltr" />
                       </div>
 
                       <div className="rounded-lg border border-border/70 bg-muted/30 px-3 py-2.5">
-                        <p className="text-xs font-medium text-muted-foreground mb-1">ماذا تفعل؟</p>
-                        <p className="text-sm leading-relaxed text-foreground/90 line-clamp-3" title={action}>
+                        <p className="text-xs font-medium text-muted-foreground mb-1">
+                          {a.seoAiWhatToDo}
+                        </p>
+                        <p
+                          className="text-sm leading-relaxed text-foreground/90 line-clamp-3"
+                          title={action}
+                        >
                           {simplifyRecommendation(action)}
                         </p>
                       </div>
@@ -493,21 +508,21 @@ function AdminSeoAiPage() {
                       >
                         <Sparkles className="h-4 w-4" />
                         {generatingId === item.id
-                          ? "جارٍ التوليد…"
+                          ? a.seoAiGenerating
                           : alreadyDrafted
-                            ? "إعادة توليد مسودة"
-                            : "توليد مسودة AI"}
+                            ? a.seoAiRegenDraft
+                            : a.seoAiGenDraft}
                       </button>
                       {alreadyDrafted ? (
                         <Link
                           to="/admin/blog"
                           className="text-center text-xs font-medium text-primary hover:underline"
                         >
-                          فتح المسودات في المدونة
+                          {a.seoAiOpenDrafts}
                         </Link>
                       ) : (
                         <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
-                          تُحفظ كـ draft فقط — بدون نشر تلقائي
+                          {a.seoAiDraftOnly}
                         </p>
                       )}
                     </div>
@@ -520,25 +535,22 @@ function AdminSeoAiPage() {
       </AdminSection>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <AdminSection
-          title="مسودات المدونة"
-          description="مقالات بحالة draft — راجعها وانشرها من المدونة."
-        >
+        <AdminSection title={a.seoAiBlogDrafts} description={a.seoAiDraftsDesc}>
           {drafts.length === 0 ? (
             <AdminEmpty
-              message="لا توجد مسودات حالياً."
+              message={a.seoAiNoDrafts}
               actionTo="/admin/blog/$id"
               actionParams={{ id: "new" }}
-              actionLabel="مقال جديد"
+              actionLabel={a.blogNew}
             />
           ) : (
             <AdminTableCard>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>العنوان</TableHead>
-                    <TableHead>الحالة</TableHead>
-                    <TableHead className="text-end">إجراءات</TableHead>
+                    <TableHead>{a.title}</TableHead>
+                    <TableHead>{a.status}</TableHead>
+                    <TableHead className="text-end">{a.actions}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -561,22 +573,22 @@ function AdminSeoAiPage() {
           )}
           <div className="mt-3">
             <Link to="/admin/blog" className="text-sm font-medium text-primary hover:underline">
-              فتح كل مقالات المدونة
+              {a.seoAiOpenAllBlog}
             </Link>
           </div>
         </AdminSection>
 
-        <AdminSection title="سجل الأتمتة" description="آخر إجراءات الربط والمزامنة وإنشاء المسودات.">
+        <AdminSection title={a.seoAiLogsTitle} description={a.seoAiLogsDesc}>
           {logs.length === 0 ? (
-            <AdminEmpty message="لا يوجد نشاط مسجّل بعد." />
+            <AdminEmpty message={a.seoAiLogsEmpty} />
           ) : (
             <AdminTableCard>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>الإجراء</TableHead>
-                    <TableHead>التفاصيل</TableHead>
-                    <TableHead>الوقت</TableHead>
+                    <TableHead>{a.seoAiColAction}</TableHead>
+                    <TableHead>{a.seoAiColDetails}</TableHead>
+                    <TableHead>{a.seoAiColTime}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -588,8 +600,15 @@ function AdminSeoAiPage() {
                       <TableCell className="text-sm text-muted-foreground">
                         <span className="line-clamp-2">{log.description}</span>
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap" dir="ltr">
-                        {log.createdAt ? new Date(log.createdAt).toLocaleString("ar-SA") : "—"}
+                      <TableCell
+                        className="text-xs text-muted-foreground whitespace-nowrap"
+                        dir="ltr"
+                      >
+                        {log.createdAt
+                          ? new Date(log.createdAt).toLocaleString(
+                              locale === "en" ? "en-GB" : "ar-SA",
+                            )
+                          : a.emDash}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -601,10 +620,10 @@ function AdminSeoAiPage() {
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-4">
-        <MiniHint icon={BarChart3} title="Performance" text="بيانات من gsc_snapshots" />
-        <MiniHint icon={Lightbulb} title="Opportunities" text="فرص من seo_insights" />
-        <MiniHint icon={FileText} title="Drafts" text="نشر يدوي فقط من المدونة" />
-        <MiniHint icon={ScrollText} title="Logs" text="تتبع عبر ai_logs" />
+        <MiniHint icon={BarChart3} title="Performance" text={a.seoAiHintPerf} />
+        <MiniHint icon={Lightbulb} title="Opportunities" text={a.seoAiHintOpps} />
+        <MiniHint icon={FileText} title="Drafts" text={a.seoAiHintDrafts} />
+        <MiniHint icon={ScrollText} title="Logs" text={a.seoAiHintLogs} />
       </div>
     </div>
   );
@@ -625,15 +644,16 @@ function StatCard({ label, value, hint }: { label: string; value: string; hint?:
 }
 
 function PriorityBadge({ priority }: { priority: string }) {
+  const { a } = useAdminI18n();
   const map: Record<string, string> = {
     high: "bg-destructive/10 text-destructive border-destructive/20",
     medium: "bg-amber-500/10 text-amber-700 border-amber-500/20",
     low: "bg-muted text-muted-foreground border-border",
   };
   const labels: Record<string, string> = {
-    high: "عالية",
-    medium: "متوسطة",
-    low: "منخفضة",
+    high: a.priorityHigh,
+    medium: a.priorityMedium,
+    low: a.priorityLow,
   };
   return (
     <span
@@ -644,14 +664,14 @@ function PriorityBadge({ priority }: { priority: string }) {
   );
 }
 
-function opportunityTypeLabel(type: string): string {
+function opportunityTypeLabel(type: string, a: AdminMessages): string {
   const map: Record<string, string> = {
-    quick_win: "فرصة سريعة",
-    content_opportunity: "فرصة محتوى",
-    page_improvement: "تحسين صفحة",
-    gsc_opportunity: "فرصة بحث",
+    quick_win: a.oppQuickWin,
+    content_opportunity: a.oppContent,
+    page_improvement: a.oppPage,
+    gsc_opportunity: a.oppGsc,
   };
-  return map[type] || "فرصة SEO";
+  return map[type] || a.oppDefault;
 }
 
 function simplifyRecommendation(text: string): string {

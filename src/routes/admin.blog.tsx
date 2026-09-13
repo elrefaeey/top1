@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -17,49 +18,56 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeBlogPost } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/blog")({
   component: AdminBlogList,
 });
 
 function AdminBlogList() {
+  const { a, t, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/blog/$id");
   const { data = [], isFetching } = useAdminBlogPosts();
   const deletePost = useDeleteBlogPost();
+  const rows = useMemo(
+    () => data.map((p) => localizeBlogPost(p, locale)),
+    [data, locale],
+  );
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="المدونة"
-        description="إدارة المقالات والمحتوى."
+        title={a.blogTitle}
+        description={a.blogDesc}
         actionTo="/admin/blog/$id"
         actionParams={{ id: "new" }}
-        actionLabel="مقال جديد"
+        actionLabel={a.blogNew}
       />
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا توجد مقالات."
+          message={a.blogEmpty}
           actionTo="/admin/blog/$id"
           actionParams={{ id: "new" }}
-          actionLabel="مقال جديد"
+          actionLabel={a.blogNew}
         />
       )}
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[40%]">العنوان</TableHead>
-                <TableHead className="w-[20%]">التصنيف</TableHead>
-                <TableHead className="w-[15%]">الحالة</TableHead>
-                <TableHead className="w-[25%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[40%]">{a.title}</TableHead>
+                <TableHead className="w-[20%]">{a.category}</TableHead>
+                <TableHead className="w-[15%]">{a.status}</TableHead>
+                <TableHead className="w-[25%] text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((p) => (
+              {rows.map((p) => (
                 <TableRow key={p.id}>
                   <TableCell className="font-medium">
                     <span className="line-clamp-2">{p.title}</span>
@@ -72,7 +80,10 @@ function AdminBlogList() {
                     <AdminRowActions
                       editTo="/admin/blog/$id"
                       editParams={{ id: p.id }}
-                      onDelete={() => confirm(`حذف "${p.title}"؟`) && deletePost.mutate(p.id)}
+                      onDelete={() =>
+                        confirm(t(a.confirmDeleteNamed, { name: p.title })) &&
+                        deletePost.mutate(p.id)
+                      }
                     />
                   </TableCell>
                 </TableRow>

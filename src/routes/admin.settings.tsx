@@ -23,6 +23,7 @@ import {
   SITE_TAGLINE,
 } from "@/lib/site-config";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/settings")({
   component: AdminSettingsPage,
@@ -48,6 +49,7 @@ const defaults: SiteSettings = {
 };
 
 function AdminSettingsPage() {
+  const { a, locale } = useAdminI18n();
   const { data, isFetching } = useAdminSiteSettings();
   const save = useSaveSiteSettings();
   const [form, setForm] = useState<SiteSettings>(defaults);
@@ -75,17 +77,14 @@ function AdminSettingsPage() {
       });
       setSaveOk(true);
     } catch (err) {
-      setSaveError(formatAdminFirestoreError(err));
+      setSaveError(formatAdminFirestoreError(err, locale));
     }
   }
 
   return (
     <div className="w-full max-w-5xl lg:max-w-6xl">
       <AdminFetchingBar show={isFetching && !data} />
-      <AdminPageHeader
-        title="إعدادات الموقع"
-        description="الاسم، التواصل، وروابط التواصل الاجتماعي."
-      />
+      <AdminPageHeader title={a.settingsTitle} description={a.settingsDesc} />
       {saveError && (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {saveError}
@@ -93,13 +92,13 @@ function AdminSettingsPage() {
       )}
       {saveOk && (
         <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800">
-          تم حفظ الإعدادات بنجاح.
+          {a.settingsSaved}
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-6">
         <AdminCard className="space-y-5">
           <div className="grid gap-4 lg:grid-cols-2">
-            <AdminField label="اسم الموقع" id="siteName">
+            <AdminField label={a.settingsSiteName} id="siteName">
               <input
                 id="siteName"
                 value={form.siteName}
@@ -107,7 +106,7 @@ function AdminSettingsPage() {
                 className={adminInputClass()}
               />
             </AdminField>
-            <AdminField label="الشعار (Tagline)" id="tagline">
+            <AdminField label={a.settingsTagline} id="tagline">
               <input
                 id="tagline"
                 value={form.tagline}
@@ -120,24 +119,24 @@ function AdminSettingsPage() {
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start">
             <ImageUploadField
               id="heroImageUrl"
-              label="صورة الصفحة الرئيسية (Hero)"
+              label={a.settingsHero}
               folder="hero"
               value={form.heroImageUrl ?? ""}
               onChange={(heroImageUrl) => patch({ heroImageUrl })}
             />
-            <AdminField label="وصف الصورة (Alt)" id="heroImageAlt">
+            <AdminField label={a.settingsHeroAlt} id="heroImageAlt">
               <input
                 id="heroImageAlt"
                 value={form.heroImageAlt ?? ""}
                 onChange={(e) => patch({ heroImageAlt: e.target.value })}
-                placeholder="وصف بديل لصورة الهيرو"
+                placeholder={a.settingsHeroAltPh}
                 className={adminInputClass()}
               />
             </AdminField>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
-            <AdminField label="البريد" id="contactEmail">
+            <AdminField label={a.settingsEmail} id="contactEmail">
               <input
                 id="contactEmail"
                 dir="ltr"
@@ -147,7 +146,7 @@ function AdminSettingsPage() {
                 className={adminInputClass("text-start")}
               />
             </AdminField>
-            <AdminField label="واتساب الأساسي — السعودية (بدون +)" id="whatsapp">
+            <AdminField label={a.settingsWhatsapp} id="whatsapp">
               <input
                 id="whatsapp"
                 dir="ltr"
@@ -157,7 +156,7 @@ function AdminSettingsPage() {
                 className={adminInputClass("text-start")}
               />
             </AdminField>
-            <AdminField label="هاتف الإمارات" id="contactPhone">
+            <AdminField label={a.settingsPhoneAe} id="contactPhone">
               <input
                 id="contactPhone"
                 dir="ltr"
@@ -167,7 +166,7 @@ function AdminSettingsPage() {
                 className={adminInputClass("text-start")}
               />
             </AdminField>
-            <AdminField label="هاتف السعودية" id="contactPhoneSa">
+            <AdminField label={a.settingsPhoneSa} id="contactPhoneSa">
               <input
                 id="contactPhoneSa"
                 dir="ltr"
@@ -179,7 +178,7 @@ function AdminSettingsPage() {
             </AdminField>
           </div>
 
-          <AdminField label="رسالة واتساب الافتراضية" id="whatsappMessage">
+          <AdminField label={a.settingsWaMessage} id="whatsappMessage">
             <textarea
               id="whatsappMessage"
               rows={3}
@@ -188,13 +187,11 @@ function AdminSettingsPage() {
               className={adminInputClass()}
               placeholder={SITE_WHATSAPP_MESSAGE}
             />
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              تظهر تلقائياً في محادثة واتساب عند الضغط على زر الواتساب في الموقع.
-            </p>
+            <p className="mt-1.5 text-xs text-muted-foreground">{a.settingsWaMessageHint}</p>
           </AdminField>
 
           <div className="grid gap-4 lg:grid-cols-2">
-            <AdminField label="العنوان" id="address">
+            <AdminField label={a.settingsAddress} id="address">
               <input
                 id="address"
                 value={form.address}

@@ -3,10 +3,12 @@ import { ArrowLeft, ArrowUpLeft, ExternalLink, Sparkles } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
 import { usePortfolioItem } from "@/hooks/use-cms";
 import { flattenTitle, portfolioItemSlug, splitDisplayTitle } from "@/lib/cms/admin-utils";
+import { localizePortfolio } from "@/lib/i18n/localize-cms";
 import { loadPortfolioItemForSeoFn } from "@/lib/seo/cms-seo.functions";
 import { serviceLinksForPortfolio } from "@/lib/seo/internal-links";
 import { buildPortfolioItemHead, notFoundHead } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site-config";
+import { useLocale } from "@/providers/LocaleProvider";
 
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
@@ -52,12 +54,14 @@ function PortfolioDetail() {
   const { slug } = useParams({ from: "/portfolio/$slug" });
   const { item: loaderItem } = Route.useLoaderData();
   const { data: hookItem, isLoading } = usePortfolioItem(slug);
-  const item = hookItem ?? loaderItem;
+  const { m, t, locale, labelForHref } = useLocale();
+  const raw = hookItem ?? loaderItem;
+  const item = raw ? localizePortfolio(raw, locale) : raw;
 
   if (isLoading && !item) {
     return (
       <div className="container-page py-24 text-center text-sm text-muted-foreground">
-        جاري تحميل المشروع…
+        {m.portfolioDetail.loading}
       </div>
     );
   }
@@ -95,7 +99,7 @@ function PortfolioDetail() {
               </h1>
               {item.client && (
                 <p className="portfolio-detail-client">
-                  <span>العميل</span>
+                  <span>{m.portfolioDetail.client}</span>
                   {item.client}
                 </p>
               )}
@@ -109,7 +113,7 @@ function PortfolioDetail() {
                   className="btn-primary"
                   itemProp="url"
                 >
-                  زيارة الموقع
+                  {m.portfolioDetail.visit}
                   <ExternalLink className="h-4 w-4" aria-hidden />
                 </a>
               </div>
@@ -120,7 +124,11 @@ function PortfolioDetail() {
             <figure className="portfolio-detail-figure">
               <SiteImage
                 src={item.imageUrl}
-                alt={`${flattenTitle(item.title)} — مشروع ${item.category} | ${SITE_NAME}`}
+                alt={t(m.portfolioDetail.imageAlt, {
+                  title: flattenTitle(item.title),
+                  category: item.category,
+                  name: SITE_NAME,
+                })}
                 width={1600}
                 height={1000}
                 fetchPriority="high"
@@ -134,14 +142,14 @@ function PortfolioDetail() {
 
           <div className="portfolio-detail-lower">
             <div className="portfolio-detail-copy">
-              <h2 className="portfolio-detail-section-label">عن المشروع</h2>
+              <h2 className="portfolio-detail-section-label">{m.portfolioDetail.about}</h2>
               <p className="portfolio-detail-desc" itemProp="description">
                 {item.description}
               </p>
             </div>
             {tags.length > 0 && (
               <aside className="portfolio-detail-side">
-                <h2 className="portfolio-detail-section-label">الكلمات المفتاحية</h2>
+                <h2 className="portfolio-detail-section-label">{m.portfolioDetail.keywords}</h2>
                 <ul className="portfolio-detail-tags">
                   {tags.slice(0, 12).map((tag) => (
                     <li key={tag}>{tag}</li>
@@ -167,7 +175,7 @@ function PortfolioDetail() {
                       <span className="h-8 w-8 rounded-lg bg-orange-500/10 text-orange-500 grid place-items-center shrink-0 font-black text-sm">
                         !
                       </span>
-                      <h2 className="font-bold text-base">التحدي</h2>
+                      <h2 className="font-bold text-base">{m.portfolioDetail.challenge}</h2>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{item.challenge}</p>
                   </div>
@@ -178,7 +186,7 @@ function PortfolioDetail() {
                       <span className="h-8 w-8 rounded-lg bg-primary/10 text-primary grid place-items-center shrink-0 font-black text-sm">
                         ✓
                       </span>
-                      <h2 className="font-bold text-base">الحل</h2>
+                      <h2 className="font-bold text-base">{m.portfolioDetail.solution}</h2>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{item.solution}</p>
                   </div>
@@ -189,7 +197,7 @@ function PortfolioDetail() {
                       <span className="h-8 w-8 rounded-lg bg-primary/15 text-primary grid place-items-center shrink-0 font-black text-base">
                         ↑
                       </span>
-                      <h2 className="font-bold text-base text-primary">النتيجة</h2>
+                      <h2 className="font-bold text-base text-primary">{m.portfolioDetail.result}</h2>
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{item.resultsSummary}</p>
                   </div>
@@ -202,7 +210,7 @@ function PortfolioDetail() {
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {item.servicesProvided && item.servicesProvided.length > 0 && (
                   <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
-                    <h2 className="font-bold text-sm">الخدمات المقدَّمة</h2>
+                    <h2 className="font-bold text-sm">{m.portfolioDetail.services}</h2>
                     <ul className="flex flex-wrap gap-2">
                       {item.servicesProvided.map((s) => (
                         <li
@@ -217,7 +225,7 @@ function PortfolioDetail() {
                 )}
                 {item.technologies && item.technologies.length > 0 && (
                   <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
-                    <h2 className="font-bold text-sm">التقنيات</h2>
+                    <h2 className="font-bold text-sm">{m.portfolioDetail.tech}</h2>
                     <ul className="flex flex-wrap gap-2">
                       {item.technologies.map((t) => (
                         <li
@@ -232,7 +240,7 @@ function PortfolioDetail() {
                 )}
                 {serviceLinks.length > 0 && (
                   <div className="rounded-2xl border border-border bg-surface p-5 flex flex-col gap-3">
-                    <h2 className="font-bold text-sm">خدمات مرتبطة</h2>
+                    <h2 className="font-bold text-sm">{m.portfolioDetail.related}</h2>
                     <ul className="flex flex-wrap gap-2">
                       {serviceLinks.map((link) => (
                         <li key={link.href}>
@@ -240,7 +248,7 @@ function PortfolioDetail() {
                             to={link.href}
                             className="text-xs font-semibold border border-border bg-background rounded-full px-3 py-1 hover:border-primary/40 hover:text-primary transition-colors inline-block"
                           >
-                            {link.label}
+                            {labelForHref(link.href, link.label)}
                           </Link>
                         </li>
                       ))}
@@ -256,7 +264,7 @@ function PortfolioDetail() {
                 className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
               >
                 <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
-                العودة إلى الأعمال
+                {m.portfolioDetail.back}
               </Link>
             </div>
           </div>
@@ -272,7 +280,7 @@ function PortfolioDetail() {
               className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
             >
               <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
-              العودة إلى الأعمال
+              {m.portfolioDetail.back}
             </Link>
           </div>
         </section>
@@ -283,20 +291,20 @@ function PortfolioDetail() {
         <div className="container-page">
           <div className="home-cta-block relative">
             <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white">
-              <Sparkles className="h-3 w-3" aria-hidden /> ابدأ اليوم
+              <Sparkles className="h-3 w-3" aria-hidden /> {m.portfolioDetail.ctaEyebrow}
             </span>
             <h2 className="relative mx-auto mt-3 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
-              مشروع مشابه في بالك؟
+              {m.portfolioDetail.ctaTitle}
             </h2>
             <p className="relative mx-auto mt-2.5 max-w-lg text-sm text-white/80">
-              تواصل معنا عبر واتساب أو اترك رسالة — نرد خلال 24 ساعة.
+              {m.portfolioDetail.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/contact" className="btn-primary">
-                تواصل معنا <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
+                {m.common.contactUs} <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
               </Link>
               <Link to="/portfolio" className="btn-ghost">
-                شاهد أعمال أخرى
+                {m.portfolioDetail.otherWork}
               </Link>
             </div>
           </div>

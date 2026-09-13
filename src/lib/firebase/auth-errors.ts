@@ -1,6 +1,9 @@
 import type { FirebaseError } from "firebase/app";
+import type { Locale } from "@/lib/i18n/locale";
+import { getAdminMessages, adminT } from "@/lib/i18n/admin-messages";
 
-export function getAuthErrorMessage(error: unknown): string {
+export function getAuthErrorMessage(error: unknown, locale: Locale = "ar"): string {
+  const a = getAdminMessages(locale);
   const code = (error as FirebaseError)?.code;
 
   switch (code) {
@@ -8,20 +11,18 @@ export function getAuthErrorMessage(error: unknown): string {
     case "auth/wrong-password":
     case "auth/user-not-found":
     case "auth/invalid-email":
-      return "البريد أو كلمة المرور غير صحيحة. تأكد أن المستخدم موجود في Firebase → Authentication (ليس Firestore فقط).";
+      return a.authBadCredentials;
     case "auth/too-many-requests":
-      return "محاولات كثيرة. انتظر دقيقة ثم حاول مجدداً.";
+      return a.authTooMany;
     case "auth/network-request-failed":
-      return "تعذّر الاتصال بـ Firebase. تحقق من الإنترنت أو أن Auth مفعّل في Console.";
+      return a.authNetwork;
     case "auth/unauthorized-domain":
-      return "النطاق غير مصرّح. أضف localhost في Firebase → Authentication → Authorized domains.";
+      return a.authUnauthorizedDomain;
     case "auth/user-disabled":
-      return "هذا الحساب معطّل في Firebase.";
+      return a.authDisabled;
     case "auth/operation-not-allowed":
-      return "تسجيل الدخول بالبريد غير مفعّل. فعّل Email/Password في Firebase Console.";
+      return a.authNotAllowed;
     default:
-      return code
-        ? `فشل الدخول (${code}). راجع إعدادات Firebase Authentication.`
-        : "فشل الدخول. حاول مجدداً.";
+      return code ? adminT(a.authFailedCode, { code }) : a.authFailed;
   }
 }

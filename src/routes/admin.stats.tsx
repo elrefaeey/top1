@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -17,50 +18,54 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeStat } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/stats")({
   component: AdminStatsList,
 });
 
 function AdminStatsList() {
+  const { a, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/stats/$id");
   const { data = [], isFetching } = useAdminSiteStats();
   const del = useDeleteSiteStat();
+  const rows = useMemo(() => data.map((s) => localizeStat(s, locale)), [data, locale]);
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="الإحصائيات"
-        description="أرقام قسم الإحصائيات في الصفحة الرئيسية."
+        title={a.statsTitle}
+        description={a.statsDesc}
         actionTo="/admin/stats/$id"
         actionParams={{ id: "new" }}
-        actionLabel="إحصائية جديدة"
+        actionLabel={a.statsNew}
       />
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا توجد إحصائيات."
+          message={a.statsEmpty}
           actionTo="/admin/stats/$id"
           actionParams={{ id: "new" }}
-          actionLabel="إحصائية جديدة"
+          actionLabel={a.statsNew}
         />
       )}
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>الرقم</TableHead>
-                <TableHead>الوصف</TableHead>
-                <TableHead>الترتيب</TableHead>
-                <TableHead>الحالة</TableHead>
+                <TableHead>{a.colValue}</TableHead>
+                <TableHead>{a.colLabel}</TableHead>
+                <TableHead>{a.order}</TableHead>
+                <TableHead>{a.status}</TableHead>
                 <TableHead className="w-28" />
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((s) => (
+              {rows.map((s) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-bold text-[var(--admin-primary)]">{s.value}</TableCell>
                   <TableCell className="font-medium">{s.label}</TableCell>
@@ -72,7 +77,7 @@ function AdminStatsList() {
                     <AdminRowActions
                       editTo="/admin/stats/$id"
                       editParams={{ id: s.id }}
-                      onDelete={() => confirm("حذف؟") && del.mutate(s.id)}
+                      onDelete={() => confirm(a.confirmDelete) && del.mutate(s.id)}
                     />
                   </TableCell>
                 </TableRow>

@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -17,48 +18,52 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeFaq } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/faqs")({
   component: AdminFaqsList,
 });
 
 function AdminFaqsList() {
+  const { a, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/faqs/$id");
   const { data = [], isFetching } = useAdminFaqs();
   const del = useDeleteFaq();
+  const rows = useMemo(() => data.map((f) => localizeFaq(f, locale)), [data, locale]);
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="الأسئلة الشائعة"
-        description="FAQ في الصفحة الرئيسية."
+        title={a.faqsTitle}
+        description={a.faqsDesc}
         actionTo="/admin/faqs/$id"
         actionParams={{ id: "new" }}
-        actionLabel="سؤال جديد"
+        actionLabel={a.faqsNew}
       />
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا توجد أسئلة."
+          message={a.faqsEmpty}
           actionTo="/admin/faqs/$id"
           actionParams={{ id: "new" }}
-          actionLabel="سؤال جديد"
+          actionLabel={a.faqsNew}
         />
       )}
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>السؤال</TableHead>
-                <TableHead>الحالة</TableHead>
+                <TableHead>{a.question}</TableHead>
+                <TableHead>{a.status}</TableHead>
                 <TableHead className="w-28" />
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((f) => (
+              {rows.map((f) => (
                 <TableRow key={f.id}>
                   <TableCell className="font-medium max-w-md truncate">{f.question}</TableCell>
                   <TableCell>
@@ -68,7 +73,7 @@ function AdminFaqsList() {
                     <AdminRowActions
                       editTo="/admin/faqs/$id"
                       editParams={{ id: f.id }}
-                      onDelete={() => confirm("حذف؟") && del.mutate(f.id)}
+                      onDelete={() => confirm(a.confirmDelete) && del.mutate(f.id)}
                     />
                   </TableCell>
                 </TableRow>

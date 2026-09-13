@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminFirestoreBanner } from "@/components/admin/AdminFirestoreBanner";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { AdminProviders } from "@/providers/AdminProviders";
 import { useAuth } from "@/providers/AuthProvider";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin")({
   head: () =>
     buildPageHead({
-      title: "لوحة التحكم",
-      description: "إدارة محتوى الموقع",
+      title: "Admin | لوحة التحكم",
+      description: "Manage site content",
       path: "/admin",
       noIndex: true,
     }),
@@ -29,6 +31,7 @@ function AdminLayout() {
 
 function AdminGate() {
   const { user, loading, isEditor, refreshUser } = useAuth();
+  const { a } = useAdminI18n();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLoginPage = pathname === "/admin/login";
@@ -43,7 +46,10 @@ function AdminGate() {
 
   if (isLoginPage) {
     return (
-      <div className="admin-shell min-h-dvh">
+      <div className="admin-shell relative min-h-dvh">
+        <div className="absolute end-4 top-4 z-10">
+          <LanguageSwitch className="shrink-0" />
+        </div>
         <Outlet />
       </div>
     );
@@ -53,7 +59,7 @@ function AdminGate() {
     return (
       <div className="admin-shell flex min-h-screen flex-col items-center justify-center gap-3">
         <div className="admin-spinner" aria-hidden />
-        <div className="text-sm text-[var(--admin-muted)]">جاري التحميل…</div>
+        <div className="text-sm text-[var(--admin-muted)]">{a.loading}</div>
       </div>
     );
   }
@@ -73,19 +79,9 @@ function AdminGate() {
     return (
       <div className="admin-shell flex min-h-screen items-center justify-center p-6">
         <div className="admin-card max-w-md p-8 text-center">
-          <h1 className="text-xl font-bold">لا تملك صلاحية الدخول</h1>
-          <p className="mt-2 text-sm text-[var(--admin-muted)]">
-            حسابك مسجّل في Firebase Auth لكن بدون دور في Firestore. اطلب من مدير النظام إنشاء مستند{" "}
-            <code className="rounded bg-[var(--admin-surface-muted)] px-1">users/{"{uid}"}</code>{" "}
-            مع الحقل{" "}
-            <code className="rounded bg-[var(--admin-surface-muted)] px-1">role: admin</code> أو{" "}
-            <code className="rounded bg-[var(--admin-surface-muted)] px-1">editor</code>.
-          </p>
-          <p className="mt-3 text-xs text-[var(--admin-muted)]">
-            إذا استمرت المشكلة: انشر{" "}
-            <code className="rounded bg-[var(--admin-surface-muted)] px-1">firestore.rules</code> من
-            Firebase Console.
-          </p>
+          <h1 className="text-xl font-bold">{a.noAccessTitle}</h1>
+          <p className="mt-2 text-sm text-[var(--admin-muted)]">{a.noAccessBody}</p>
+          <p className="mt-3 text-xs text-[var(--admin-muted)]">{a.noAccessRules}</p>
           {user && (
             <p className="mt-3 break-all text-xs text-[var(--admin-muted)]" dir="ltr">
               UID: {user.uid}
@@ -98,10 +94,10 @@ function AdminGate() {
               onClick={() => void handleRetry()}
               className="admin-btn admin-btn-primary"
             >
-              {retrying ? "جاري التحقق…" : "إعادة التحقق من الصلاحية"}
+              {retrying ? a.checkingPerm : a.retryPerm}
             </button>
             <button type="button" onClick={() => navigate({ to: "/" })} className="admin-btn admin-btn-ghost">
-              العودة للموقع
+              {a.backToSite}
             </button>
           </div>
         </div>
@@ -113,22 +109,23 @@ function AdminGate() {
     <div className="admin-shell flex min-h-dvh">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <main className="flex min-w-0 flex-1 flex-col overflow-auto bg-[var(--admin-bg)]">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--admin-border)] bg-[color-mix(in_srgb,var(--admin-surface)_90%,transparent)] px-4 py-3 backdrop-blur pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--admin-border)] bg-[color-mix(in_srgb,var(--admin-surface)_92%,transparent)] px-4 py-3 backdrop-blur-md pt-[max(0.75rem,env(safe-area-inset-top))] md:hidden">
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] border border-[var(--admin-border)] bg-[var(--admin-surface)] text-[var(--admin-text)] hover:bg-[var(--admin-surface-muted)]"
-            aria-label="فتح القائمة"
+            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] border border-[var(--admin-border)] bg-[var(--admin-surface)] text-[var(--admin-text)] shadow-sm hover:bg-[var(--admin-surface-muted)]"
+            aria-label={a.openMenu}
             aria-expanded={sidebarOpen}
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold tracking-tight" dir="ltr">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold tracking-tight text-[var(--admin-text)]" dir="ltr">
               {SITE_NAME}
             </p>
-            <p className="text-[11px] font-medium text-[var(--admin-primary)]">لوحة التحكم</p>
+            <p className="text-[11px] font-medium text-[var(--admin-primary)]">{a.panel}</p>
           </div>
+          <LanguageSwitch className="shrink-0" />
         </header>
         <AdminFirestoreBanner />
         <div className="admin-content mx-auto w-full min-w-0 max-w-6xl">

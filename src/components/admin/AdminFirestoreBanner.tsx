@@ -7,8 +7,10 @@ import {
   isAdminFirestoreUnavailable,
 } from "@/lib/cms/admin-service";
 import { useAdminServices } from "@/hooks/use-admin-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export function AdminFirestoreBanner() {
+  const { a } = useAdminI18n();
   const { isFetched, refetch } = useAdminServices();
   const [dismissed, setDismissed] = useState(false);
   const [retrying, setRetrying] = useState(false);
@@ -28,35 +30,29 @@ export function AdminFirestoreBanner() {
   }
 
   return (
-    <div className="mx-4 mt-4 flex items-start gap-3 rounded-[var(--admin-radius,0.625rem)] border border-amber-500/25 bg-amber-50 px-4 py-3 text-sm text-amber-950 md:mx-0">
-      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+    <div className="mx-4 mt-4 flex items-start gap-3 rounded-[var(--admin-radius)] border border-[color-mix(in_srgb,var(--admin-warning)_28%,var(--admin-border))] bg-[color-mix(in_srgb,var(--admin-warning)_8%,white)] px-4 py-3 text-sm text-[var(--admin-text)] md:mx-0">
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--admin-warning)]" />
       <div className="flex-1">
-        <p className="font-semibold">تعذّر الاتصال بـ Firestore</p>
-        <p className="mt-0.5 text-xs opacity-90">
+        <p className="font-semibold">{a.fsBannerTitle}</p>
+        <p className="mt-0.5 text-xs text-[var(--admin-muted)]">
           {kind === "permission" ? (
             <>
-              حسابك مسجّل لكن Firestore يرفض الطلب. أنشئ مستند{" "}
-              <code className="rounded bg-amber-500/10 px-1 text-[0.7rem]" dir="ltr">
-                users/UID
-              </code>{" "}
-              مع <code className="rounded bg-amber-500/10 px-1 text-[0.7rem]">role: admin</code>، ثم{" "}
+              {a.fsBannerPermission}{" "}
               <a
                 href="https://console.firebase.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium underline hover:text-[var(--admin-primary,#1149b0)]"
+                className="font-medium text-[var(--admin-primary)] underline hover:opacity-80"
               >
-                انشر firestore.rules
+                {a.fsBannerPublishRules}
               </a>
-              .
             </>
           ) : (
             <>
-              فعّل Firestore في Firebase Console، انشر قواعد الأمان، ثم{" "}
-              <Link to="/admin" className="font-medium underline hover:text-[var(--admin-primary,#1149b0)]">
-                استورد المحتوى
-              </Link>{" "}
-              من لوحة التحكم.
+              {a.fsBannerGeneric}{" "}
+              <Link to="/admin" className="font-medium text-[var(--admin-primary)] underline hover:opacity-80">
+                {a.fsBannerImport}
+              </Link>
             </>
           )}
         </p>
@@ -67,14 +63,14 @@ export function AdminFirestoreBanner() {
           className="admin-btn admin-btn-sm admin-btn-ghost mt-2 !min-h-8"
         >
           <RefreshCw className={`h-3 w-3 ${retrying ? "animate-spin" : ""}`} />
-          {retrying ? "جاري إعادة المحاولة…" : "إعادة المحاولة"}
+          {retrying ? a.retrying : a.retry}
         </button>
       </div>
       <button
         type="button"
         onClick={() => setDismissed(true)}
-        className="shrink-0 rounded p-1 hover:bg-amber-500/20"
-        aria-label="إغلاق"
+        className="shrink-0 rounded-md p-1 text-[var(--admin-muted)] hover:bg-[color-mix(in_srgb,var(--admin-warning)_15%,transparent)] hover:text-[var(--admin-text)]"
+        aria-label={a.close}
       >
         <X className="h-4 w-4" />
       </button>

@@ -11,9 +11,11 @@ import {
   Pencil,
   Clock,
   AlertTriangle,
+  type LucideIcon,
 } from "lucide-react";
 import { useMemo } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 import {
   useAdminBlogPosts,
   useAdminFaqs,
@@ -24,7 +26,16 @@ import {
   useAdminTestimonials,
 } from "@/hooks/use-admin-cms";
 import { SEO_LANDING_PAGES } from "@/lib/seo/landing-pages";
-import type { BlogPost, Lead, WithId } from "@/types/cms";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
+import {
+  localizeBlogPost,
+  localizeFaq,
+  localizePortfolio,
+  localizeService,
+  localizeTestimonial,
+} from "@/lib/i18n/localize-cms";
+import type { BlogPost, FaqItem, Lead, PortfolioItem, Service, Testimonial, WithId } from "@/types/cms";
+import type { Locale } from "@/lib/i18n/locale";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
@@ -42,22 +53,18 @@ const LISTED_SITE_PAGE_SLUGS = [
   "terms",
 ] as const;
 
-const quickLinks = [
-  { to: "/admin/leads", label: "الرسائل", icon: Inbox, desc: "استفسارات الزوار" },
-  { to: "/admin/services", label: "الخدمات", icon: Briefcase, desc: "إدارة الخدمات" },
-  { to: "/admin/blog", label: "المدونة", icon: BookOpen, desc: "المقالات وSEO" },
-  { to: "/admin/portfolio", label: "أعمالنا", icon: Image, desc: "عرض المشاريع" },
-  { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle, desc: "أسئلة وأجوبة" },
-  { to: "/admin/pages", label: "الصفحات", icon: FileText, desc: "SEO الصفحات" },
-  { to: "/admin/seo", label: "SEO", icon: Search, desc: "نظرة عامة SEO" },
-];
-
 type ActivityItem = {
   id: string;
   title: string;
   kind: string;
   at: string;
-  to: "/admin/blog/$id" | "/admin/portfolio/$id" | "/admin/services/$id" | "/admin/testimonials/$id" | "/admin/faqs/$id" | "/admin/pages/$id";
+  to:
+    | "/admin/blog/$id"
+    | "/admin/portfolio/$id"
+    | "/admin/services/$id"
+    | "/admin/testimonials/$id"
+    | "/admin/faqs/$id"
+    | "/admin/pages/$id";
   params: { id: string };
 };
 
@@ -67,19 +74,23 @@ function parseTime(iso?: string): number {
   return Number.isFinite(t) ? t : 0;
 }
 
-function formatRelativeAr(iso: string): string {
+function formatRelative(iso: string, a: AdminMessages, locale: Locale): string {
   const t = parseTime(iso);
   if (!t) return "—";
   const diffMs = Date.now() - t;
   const mins = Math.floor(diffMs / 60_000);
-  if (mins < 1) return "الآن";
-  if (mins < 60) return `منذ ${mins} د`;
+  if (mins < 1) return a.relativeNow;
+  if (mins < 60) return a.relativeMins.replace("{n}", String(mins));
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `منذ ${hours} س`;
+  if (hours < 24) return a.relativeHours.replace("{n}", String(hours));
   const days = Math.floor(hours / 24);
-  if (days < 30) return `منذ ${days} ي`;
+  if (days < 30) return a.relativeDays.replace("{n}", String(days));
   try {
-    return new Date(t).toLocaleDateString("ar", { year: "numeric", month: "short", day: "numeric" });
+    return new Date(t).toLocaleDateString(locale === "en" ? "en-GB" : "ar", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   } catch {
     return iso.slice(0, 10);
   }
@@ -97,61 +108,70 @@ function countListedSitePages(cmsPages: Array<{ id: string; slug: string }>): nu
   return ids.size;
 }
 
-function buildRecentActivity(input: {
-  blogPosts: WithId<BlogPost>[];
-  portfolio: Array<{ id: string; title: string; updatedAt?: string }>;
-  services: Array<{ id: string; title: string; updatedAt?: string }>;
-  testimonials: Array<{ id: string; name: string; updatedAt?: string }>;
-  faqs: Array<{ id: string; question: string; updatedAt?: string }>;
-  cmsPages: Array<{ id: string; title: string; slug: string; updatedAt?: string }>;
-}): ActivityItem[] {
+function buildRecentActivity(
+  input: {
+    blogPosts: WithId<BlogPost>[];
+    portfolio: WithId<PortfolioItem>[];
+    services: WithId<Service>[];
+    testimonials: WithId<Testimonial>[];
+    faqs: WithId<FaqItem>[];
+    cmsPages: Array<{ id: string; title: string; slug: string; updatedAt?: string }>;
+  },
+  a: AdminMessages,
+  locale: Locale,
+): ActivityItem[] {
   const items: ActivityItem[] = [];
 
   for (const p of input.blogPosts) {
+    const localized = localizeBlogPost(p, locale);
     items.push({
       id: `blog-${p.id}`,
-      title: p.title || p.id,
-      kind: "مقال",
+      title: localized.title || p.id,
+      kind: a.kindPost,
       at: p.updatedAt || p.publishedAt || p.createdAt || "",
       to: "/admin/blog/$id",
       params: { id: p.id },
     });
   }
   for (const p of input.portfolio) {
+    const localized = localizePortfolio(p, locale);
     items.push({
       id: `portfolio-${p.id}`,
-      title: p.title || p.id,
-      kind: "مشروع",
+      title: localized.title || p.id,
+      kind: a.kindProject,
       at: p.updatedAt || "",
       to: "/admin/portfolio/$id",
       params: { id: p.id },
     });
   }
   for (const s of input.services) {
+    const localized = localizeService(s, locale);
     items.push({
       id: `service-${s.id}`,
-      title: s.title || s.id,
-      kind: "خدمة",
+      title: localized.title || s.id,
+      kind: a.kindService,
       at: s.updatedAt || "",
       to: "/admin/services/$id",
       params: { id: s.id },
     });
   }
   for (const t of input.testimonials) {
+    const localized = localizeTestimonial(t, locale);
     items.push({
       id: `testimonial-${t.id}`,
-      title: t.name || t.id,
-      kind: "رأي عميل",
+      title: localized.name || t.id,
+      kind: a.kindTestimonial,
       at: t.updatedAt || "",
       to: "/admin/testimonials/$id",
       params: { id: t.id },
     });
   }
   for (const f of input.faqs) {
+    const localized = localizeFaq(f, locale);
     items.push({
       id: `faq-${f.id}`,
-      title: f.question || f.id,
-      kind: "سؤال شائع",
+      title: localized.question || f.id,
+      kind: a.kindFaq,
       at: f.updatedAt || "",
       to: "/admin/faqs/$id",
       params: { id: f.id },
@@ -161,7 +181,7 @@ function buildRecentActivity(input: {
     items.push({
       id: `page-${p.id}`,
       title: p.title || p.slug || p.id,
-      kind: "صفحة",
+      kind: a.kindPage,
       at: p.updatedAt || "",
       to: "/admin/pages/$id",
       params: { id: p.id },
@@ -170,7 +190,7 @@ function buildRecentActivity(input: {
 
   return items
     .filter((i) => parseTime(i.at) > 0)
-    .sort((a, b) => parseTime(b.at) - parseTime(a.at))
+    .sort((x, y) => parseTime(y.at) - parseTime(x.at))
     .slice(0, 8);
 }
 
@@ -181,7 +201,12 @@ type AttentionItem = {
   to: "/admin/leads" | "/admin/blog";
 };
 
-function buildAttentionItems(blogPosts: WithId<BlogPost>[], leads: WithId<Lead>[]): AttentionItem[] {
+function buildAttentionItems(
+  blogPosts: WithId<BlogPost>[],
+  leads: WithId<Lead>[],
+  a: AdminMessages,
+  t: (template: string, vars?: Record<string, string | number>) => string,
+): AttentionItem[] {
   const items: AttentionItem[] = [];
   const drafts = blogPosts.filter((p) => p.status === "draft");
   const missingImage = blogPosts.filter((p) => !p.featuredImage?.trim());
@@ -194,40 +219,40 @@ function buildAttentionItems(blogPosts: WithId<BlogPost>[], leads: WithId<Lead>[
   if (newLeads.length > 0) {
     items.push({
       id: "leads-new",
-      label: "رسائل جديدة",
-      detail: `${newLeads.length} رسالة بانتظار المتابعة`,
+      label: a.attnNewLeads,
+      detail: t(a.attnNewLeadsDetail, { n: newLeads.length }),
       to: "/admin/leads",
     });
   }
   if (drafts.length > 0) {
     items.push({
       id: "blog-drafts",
-      label: "مسودات مقالات",
-      detail: `${drafts.length} مقال بحالة مسودة`,
+      label: a.attnDrafts,
+      detail: t(a.attnDraftsDetail, { n: drafts.length }),
       to: "/admin/blog",
     });
   }
   if (missingImage.length > 0) {
     items.push({
       id: "blog-image",
-      label: "مقالات بدون صورة غلاف",
-      detail: `${missingImage.length} مقال`,
+      label: a.attnNoImage,
+      detail: t(a.attnNoImageDetail, { n: missingImage.length }),
       to: "/admin/blog",
     });
   }
   if (missingAuthor.length > 0) {
     items.push({
       id: "blog-author",
-      label: "مقالات بدون كاتب مرتبط",
-      detail: `${missingAuthor.length} مقال بلا authorSlug`,
+      label: a.attnNoAuthor,
+      detail: t(a.attnNoAuthorDetail, { n: missingAuthor.length }),
       to: "/admin/blog",
     });
   }
   if (missingSeo.length > 0) {
     items.push({
       id: "blog-seo",
-      label: "مقالات ناقصة SEO",
-      detail: `${missingSeo.length} مقال بلا عنوان أو وصف meta`,
+      label: a.attnSeo,
+      detail: t(a.attnSeoDetail, { n: missingSeo.length }),
       to: "/admin/blog",
     });
   }
@@ -237,6 +262,7 @@ function buildAttentionItems(blogPosts: WithId<BlogPost>[], leads: WithId<Lead>[
 
 function AdminDashboard() {
   const { user } = useAuth();
+  const { a, t, locale } = useAdminI18n();
   const { data: blogPosts = [] } = useAdminBlogPosts();
   const { data: services = [] } = useAdminServices();
   const { data: portfolio = [] } = useAdminPortfolio();
@@ -258,25 +284,29 @@ function AdminDashboard() {
 
   const recentActivity = useMemo(
     () =>
-      buildRecentActivity({
-        blogPosts,
-        portfolio,
-        services,
-        testimonials,
-        faqs,
-        cmsPages,
-      }),
-    [blogPosts, portfolio, services, testimonials, faqs, cmsPages],
+      buildRecentActivity(
+        {
+          blogPosts,
+          portfolio,
+          services,
+          testimonials,
+          faqs,
+          cmsPages,
+        },
+        a,
+        locale,
+      ),
+    [blogPosts, portfolio, services, testimonials, faqs, cmsPages, a, locale],
   );
 
   const attentionItems = useMemo(
-    () => buildAttentionItems(blogPosts, leads),
-    [blogPosts, leads],
+    () => buildAttentionItems(blogPosts, leads, a, t),
+    [blogPosts, leads, a, t],
   );
 
   const todayLabel = useMemo(() => {
     try {
-      return new Date().toLocaleDateString("ar", {
+      return new Date().toLocaleDateString(locale === "en" ? "en-GB" : "ar", {
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -285,36 +315,60 @@ function AdminDashboard() {
     } catch {
       return "";
     }
-  }, []);
+  }, [locale]);
 
-  const stats = [
-    { label: "الرسائل", value: leads.length, hint: `${newLeads.length} جديدة`, icon: Inbox, tone: "sky" },
-    { label: "الصفحات", value: pagesCount, hint: "ثابتة + CMS + هبوط", icon: FileText, tone: "blue" },
+  const stats: Array<{
+    label: string;
+    value: number;
+    hint?: string;
+    icon: LucideIcon;
+    tone: string;
+  }> = [
     {
-      label: "مقالات منشورة",
+      label: a.leads,
+      value: leads.length,
+      hint: t(a.newCount, { n: newLeads.length }),
+      icon: Inbox,
+      tone: "sky",
+    },
+    { label: a.pages, value: pagesCount, hint: a.pagesHint, icon: FileText, tone: "blue" },
+    {
+      label: a.publishedPosts,
       value: publishedPosts.length,
-      hint: draftPosts.length > 0 ? `${draftPosts.length} مسودة` : "لا مسودات",
+      hint: draftPosts.length > 0 ? t(a.draftsHint, { n: draftPosts.length }) : a.noDrafts,
       icon: BookOpen,
       tone: "emerald",
     },
-    { label: "المسودات", value: draftPosts.length, hint: "حالة draft", icon: Pencil, tone: "amber" },
-    { label: "الخدمات", value: services.length, icon: Briefcase, tone: "violet" },
-    { label: "المشاريع", value: portfolio.length, icon: Image, tone: "teal" },
-    { label: "آراء العملاء", value: testimonials.length, icon: MessageSquare, tone: "rose" },
-    { label: "الأسئلة الشائعة", value: faqs.length, icon: HelpCircle, tone: "slate" },
+    { label: a.drafts, value: draftPosts.length, hint: a.draftStatus, icon: Pencil, tone: "amber" },
+    { label: a.services, value: services.length, icon: Briefcase, tone: "violet" },
+    { label: a.projects, value: portfolio.length, icon: Image, tone: "teal" },
+    { label: a.testimonials, value: testimonials.length, icon: MessageSquare, tone: "rose" },
+    { label: a.faqs, value: faqs.length, icon: HelpCircle, tone: "slate" },
   ];
+
+  const quickLinks = [
+    { to: "/admin/leads", label: a.leads, icon: Inbox, desc: a.qLeads },
+    { to: "/admin/services", label: a.services, icon: Briefcase, desc: a.qServices },
+    { to: "/admin/blog", label: a.blog, icon: BookOpen, desc: a.qBlog },
+    { to: "/admin/portfolio", label: a.portfolio, icon: Image, desc: a.qPortfolio },
+    { to: "/admin/faqs", label: a.faqs, icon: HelpCircle, desc: a.qFaqs },
+    { to: "/admin/pages", label: a.pages, icon: FileText, desc: a.qPages },
+    { to: "/admin/seo", label: a.seo, icon: Search, desc: a.qSeo },
+  ] as const;
 
   return (
     <div>
       <div className="admin-page-hero mb-7">
-        <span className="inline-flex rounded-full bg-[color-mix(in_srgb,var(--admin-accent)_18%,white)] px-2.5 py-1 text-xs font-semibold text-[var(--admin-primary)]">
-          لوحة التحكم
+        <span className="inline-flex rounded-md bg-[color-mix(in_srgb,var(--admin-primary)_12%,white)] px-2.5 py-1 text-xs font-semibold text-[var(--admin-primary)]">
+          {a.panel}
         </span>
         <h1 className="mt-3 text-2xl font-bold tracking-tight text-[var(--admin-text)]">
-          أهلاً بعودتك{user?.displayName ? `، ${user.displayName}` : ""}
+          {user?.displayName
+            ? t(a.welcomeBackNamed, { name: user.displayName })
+            : a.welcomeBack}
         </h1>
         <p className="mt-1.5 text-sm text-[var(--admin-muted)]">
-          {todayLabel ? `${todayLabel} — ` : ""}أرقام حية من المحتوى والرسائل.
+          {todayLabel ? t(a.dateStats, { date: todayLabel }) : a.liveStats}
         </p>
       </div>
 
@@ -341,10 +395,10 @@ function AdminDashboard() {
         <section className="admin-card p-5">
           <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text)]">
             <Clock className="h-4 w-4 text-[var(--admin-primary)]" />
-            آخر المحتوى المحدَّث
+            {a.recentContent}
           </h2>
           {recentActivity.length === 0 ? (
-            <p className="mt-4 text-sm text-[var(--admin-muted)]">لا يوجد نشاط حديث بعد.</p>
+            <p className="mt-4 text-sm text-[var(--admin-muted)]">{a.noRecent}</p>
           ) : (
             <ul className="mt-4 divide-y divide-[var(--admin-border)]">
               {recentActivity.map((item) => (
@@ -361,7 +415,7 @@ function AdminDashboard() {
                       <span className="admin-kind-pill mt-1">{item.kind}</span>
                     </div>
                     <time className="shrink-0 text-[11px] tabular-nums text-[var(--admin-muted)]">
-                      {formatRelativeAr(item.at)}
+                      {formatRelative(item.at, a, locale)}
                     </time>
                   </Link>
                 </li>
@@ -372,27 +426,21 @@ function AdminDashboard() {
 
         <section className="admin-card p-5">
           <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--admin-text)]">
-            <AlertTriangle className="h-4 w-4 text-amber-700" />
-            يحتاج انتباهك
+            <AlertTriangle className="h-4 w-4 text-[var(--admin-warning)]" />
+            {a.needsAttention}
           </h2>
           {attentionItems.length === 0 ? (
-            <p className="mt-4 text-sm text-[var(--admin-muted)]">
-              لا توجد تنبيهات واضحة حاليًا.
-            </p>
+            <p className="mt-4 text-sm text-[var(--admin-muted)]">{a.noAlerts}</p>
           ) : (
             <ul className="mt-4 space-y-2">
               {attentionItems.map((item) => (
                 <li key={item.id}>
                   <Link
                     to={item.to}
-                    className="block rounded-[var(--admin-radius)] border border-[color-mix(in_srgb,#b45309_22%,var(--admin-border))] bg-[color-mix(in_srgb,#b45309_8%,var(--admin-surface))] px-3 py-2.5 transition-colors hover:border-[color-mix(in_srgb,#b45309_40%,var(--admin-border))]"
+                    className="block rounded-[var(--admin-radius)] border border-[color-mix(in_srgb,var(--admin-warning)_22%,var(--admin-border))] bg-[color-mix(in_srgb,var(--admin-warning)_8%,var(--admin-surface))] px-3 py-2.5 transition-colors hover:border-[color-mix(in_srgb,var(--admin-warning)_40%,var(--admin-border))]"
                   >
-                    <div className="text-sm font-medium text-[var(--admin-text)]">
-                      {item.label}
-                    </div>
-                    <div className="mt-0.5 text-xs text-[var(--admin-muted)]">
-                      {item.detail}
-                    </div>
+                    <div className="text-sm font-medium text-[var(--admin-text)]">{item.label}</div>
+                    <div className="mt-0.5 text-xs text-[var(--admin-muted)]">{item.detail}</div>
                   </Link>
                 </li>
               ))}
@@ -401,7 +449,7 @@ function AdminDashboard() {
         </section>
       </div>
 
-      <h2 className="mb-4 text-sm font-semibold text-[var(--admin-text)]">إجراءات سريعة</h2>
+      <h2 className="mb-4 text-sm font-semibold text-[var(--admin-text)]">{a.quickActions}</h2>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {quickLinks.map(({ to, label, icon: Icon, desc }) => (
           <Link key={to} to={to} className="admin-card admin-card-interactive group p-5">

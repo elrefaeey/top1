@@ -14,37 +14,43 @@ import {
 import { formatAdminFirestoreError } from "@/lib/cms/admin-service";
 import { nowIso } from "@/lib/cms/admin-utils";
 import { useAdminPage, useSavePage } from "@/hooks/use-admin-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
 export const Route = createFileRoute("/admin/pages/$id")({
   component: AdminPageEdit,
 });
 
-const PAGE_TITLES: Record<string, string> = {
-  home: "الرئيسية",
-  about: "من نحن",
-  contact: "تواصل",
-  services: "الخدمات",
-  portfolio: "أعمالنا",
-  blog: "المدونة",
+const PAGE_TITLE_KEYS: Record<string, keyof AdminMessages> = {
+  home: "pageHome",
+  about: "pageAbout",
+  contact: "pageContact",
+  services: "services",
+  portfolio: "portfolio",
+  blog: "blog",
 };
 
-const empty = (slug: string): Omit<CmsPage, "id"> => ({
-  slug,
-  title: PAGE_TITLES[slug] ?? "صفحة جديدة",
-  status: "published",
-  sections: [],
-  metaTitle: "",
-  metaDescription: "",
-  createdAt: nowIso(),
-  updatedAt: nowIso(),
-});
-
 function AdminPageEdit() {
+  const { a, t, locale } = useAdminI18n();
   const { id } = useParams({ from: "/admin/pages/$id" });
   const isNew = id === "new";
   const navigate = useNavigate();
   const { data, isFetching } = useAdminPage(id, !isNew);
   const save = useSavePage();
+  const pageTitle = (slug: string) =>
+    PAGE_TITLE_KEYS[slug] ? a[PAGE_TITLE_KEYS[slug]] : a.pageNewTitle;
+
+  const empty = (slug: string): Omit<CmsPage, "id"> => ({
+    slug,
+    title: pageTitle(slug),
+    status: "published",
+    sections: [],
+    metaTitle: "",
+    metaDescription: "",
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+  });
+
   const [form, setForm] = useState(empty(isNew ? "" : id));
   const [saveError, setSaveError] = useState("");
   const hydratedKey = useRef<string | null>(null);
@@ -55,11 +61,11 @@ function AdminPageEdit() {
     if (hydratedKey.current === key) return;
     if (data) {
       setForm({ ...data });
-    } else if (!isNew && PAGE_TITLES[id]) {
+    } else if (!isNew && PAGE_TITLE_KEYS[id]) {
       setForm(empty(id));
     }
     hydratedKey.current = key;
-  }, [data, id, isNew, isFetching]);
+  }, [data, id, isNew, isFetching, a]);
 
   const patch = (p: Partial<Omit<CmsPage, "id">>) => setForm((f) => ({ ...f, ...p }));
 
@@ -70,14 +76,14 @@ function AdminPageEdit() {
     const payload: Omit<CmsPage, "id"> = {
       ...form,
       slug: form.slug?.trim() || docId,
-      title: form.title || PAGE_TITLES[docId] || form.slug || "صفحة",
+      title: form.title || pageTitle(docId) || form.slug || a.pageFallbackTitle,
       updatedAt: nowIso(),
     };
     try {
       await save.mutateAsync({ id: docId, data: payload });
       navigate({ to: "/admin/pages" });
     } catch (err) {
-      setSaveError(formatAdminFirestoreError(err));
+      setSaveError(formatAdminFirestoreError(err, locale));
     }
   }
 
@@ -85,12 +91,8 @@ function AdminPageEdit() {
     <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader
-        title={isNew ? "صفحة جديدة" : `SEO — ${form.title}`}
-        description={
-          isNew
-            ? "أضف عنوان الصفحة والرابط وبيانات SEO، ثم احفظ."
-            : "عدّل بيانات SEO لهذه الصفحة ثم احفظ التغييرات. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع."
-        }
+        title={isNew ? a.pageNewTitle : t(a.pageEditSeoTitle, { title: form.title })}
+        description={isNew ? a.pageNewDesc : a.pageEditDesc}
         backTo="/admin/pages"
       />
       {saveError && (
@@ -100,26 +102,22 @@ function AdminPageEdit() {
       )}
       <form onSubmit={handleSubmit} className="space-y-5">
         <AdminCardSection
-          title="أساسيات الصفحة"
-          description={
-            isNew
-              ? "العنوان والرابط يحددان هوية الصفحة في لوحة التحكم."
-              : "حالة النشر لهذه الصفحة."
-          }
+          title={a.pageBasics}
+          description={isNew ? a.pageBasicsNewDesc : a.pageBasicsEditDesc}
         >
           {isNew && (
             <>
-              <AdminField label="العنوان" id="title">
+              <AdminField label={a.title} id="title">
                 <input
                   id="title"
                   required
                   value={form.title}
                   onChange={(e) => patch({ title: e.target.value })}
                   className={adminInputClass()}
-                  placeholder="مثال: من نحن"
+                  placeholder={a.pageTitlePh}
                 />
               </AdminField>
-              <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط — بالإنجليزية.">
+              <AdminField label={a.slug} id="slug" hint={a.pageSlugHint}>
                 <input
                   id="slug"
                   dir="ltr"
@@ -132,10 +130,8 @@ function AdminPageEdit() {
               </AdminField>
             </>
           )}
-          {!isNew && PAGE_TITLES[id] && (
-            <p className="text-sm text-[var(--admin-muted,#5b6b82)]">
-              تحرير بيانات SEO لهذه الصفحة. إذا تركت الحقول فارغة يُستخدم النص الافتراضي للموقع.
-            </p>
+          {!isNew && PAGE_TITLE_KEYS[id] && (
+            <p className="text-sm text-[var(--admin-muted,#5b6b82)]">{a.pageSeoOnlyHint}</p>
           )}
           <AdminPublishSelect
             value={form.status as PublishStatus}

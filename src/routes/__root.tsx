@@ -15,34 +15,34 @@ import { reportClientError } from "../lib/client-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { WhatsAppButton } from "../components/site/WhatsAppButton";
-import { MobileStickyCta } from "../components/site/MobileStickyCta";
 import { DeferredFirebaseAnalytics } from "../components/site/DeferredFirebaseAnalytics";
 import { GoogleAnalytics } from "../components/site/GoogleAnalytics";
 import { GoogleTagManager } from "../components/site/GoogleTagManager";
 import { ToastProvider } from "../components/site/Toast";
 import { SITE_NAME } from "@/lib/site-config";
 import { rootJsonLdScripts } from "@/lib/seo";
+import { LocaleProvider, useT } from "@/providers/LocaleProvider";
+import { applyDocumentLocale, LOCALE_BOOTSTRAP_SCRIPT, readStoredLocale } from "@/lib/i18n/locale";
 
 function NotFoundComponent() {
+  const m = useT();
   return (
     <div
       className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 text-center"
       role="main"
       aria-labelledby="not-found-title"
     >
-      <span className="eyebrow">٤٠٤ · غير موجود</span>
+      <span className="eyebrow">{m.notFound.eyebrow}</span>
       <h1 id="not-found-title" className="mt-6 text-6xl md:text-7xl font-bold tracking-tight">
-        الصفحة غير موجودة.
+        {m.notFound.title}
       </h1>
-      <p className="mt-3 max-w-md text-muted-foreground">
-        الصفحة التي تبحث عنها غير موجودة أو تم نقلها.
-      </p>
+      <p className="mt-3 max-w-md text-muted-foreground">{m.notFound.desc}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link to="/" className="btn-primary">
-          العودة للرئيسية
+          {m.notFound.home}
         </Link>
         <Link to="/contact" className="btn-ghost">
-          تواصل معنا
+          {m.notFound.contact}
         </Link>
       </div>
     </div>
@@ -52,6 +52,7 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const m = useT();
   useEffect(() => {
     reportClientError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
@@ -59,11 +60,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-[70vh] items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <span className="eyebrow">حدث خطأ</span>
-        <h1 className="mt-5 text-2xl font-semibold tracking-tight">تعذّر تحميل الصفحة</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          جرّب تحديث الصفحة — إذا استمرت المشكلة، ارجع للرئيسية.
-        </p>
+        <span className="eyebrow">{m.error.eyebrow}</span>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight">{m.error.title}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{m.error.desc}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -72,10 +71,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="btn-primary"
           >
-            إعادة المحاولة
+            {m.error.retry}
           </button>
           <a href="/" className="btn-ghost">
-            الرئيسية
+            {m.error.home}
           </a>
         </div>
       </div>
@@ -124,8 +123,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_BOOTSTRAP_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
@@ -140,30 +140,42 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isAdminRoute = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
 
+  useEffect(() => {
+    applyDocumentLocale(readStoredLocale());
+  }, [isAdminRoute]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        {/* Auth + Firestore stay out of the public shell — see AdminProviders under /admin */}
-        {!isAdminRoute ? <DeferredFirebaseAnalytics /> : null}
-        {!isAdminRoute ? <GoogleAnalytics /> : null}
-        <GoogleTagManager />
-        {isAdminRoute ? (
-          <Outlet />
-        ) : (
-          <div className="site-shell flex min-h-screen flex-col overflow-x-clip">
-            <a href="#main-content" className="skip-link">
-              تخطّي إلى المحتوى
-            </a>
-            <SiteHeader />
-            <main id="main-content" className="flex-1" tabIndex={-1}>
-              <Outlet />
-            </main>
-            <SiteFooter />
-            <MobileStickyCta />
-            <WhatsAppButton />
-          </div>
-        )}
-      </ToastProvider>
+      <LocaleProvider>
+        <ToastProvider>
+          {/* Auth + Firestore stay out of the public shell — see AdminProviders under /admin */}
+          {!isAdminRoute ? <DeferredFirebaseAnalytics /> : null}
+          {!isAdminRoute ? <GoogleAnalytics /> : null}
+          <GoogleTagManager />
+          {isAdminRoute ? (
+            <Outlet />
+          ) : (
+            <PublicShell />
+          )}
+        </ToastProvider>
+      </LocaleProvider>
     </QueryClientProvider>
+  );
+}
+
+function PublicShell() {
+  const m = useT();
+  return (
+    <div className="site-shell flex min-h-screen flex-col overflow-x-clip">
+      <a href="#main-content" className="skip-link">
+        {m.skipToContent}
+      </a>
+      <SiteHeader />
+      <main id="main-content" className="flex-1" tabIndex={-1}>
+        <Outlet />
+      </main>
+      <SiteFooter />
+      <WhatsAppButton />
+    </div>
   );
 }

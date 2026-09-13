@@ -1,4 +1,4 @@
-﻿import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import type { PublishStatus, SiteStat } from "@/types/cms";
 import {
@@ -20,6 +20,7 @@ import {
   useAdminSiteStats,
 } from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/stats/$id")({
   component: AdminStatEdit,
@@ -36,6 +37,7 @@ const empty = (): Omit<SiteStat, "id"> => ({
 });
 
 function AdminStatEdit() {
+  const { a, locale } = useAdminI18n();
   const { id } = useParams({ from: "/admin/stats/$id" });
   const isNew = id === "new";
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ function AdminStatEdit() {
       await save.mutateAsync({ id: docId, data: { ...form, updatedAt: nowIso() } });
       navigate({ to: "/admin/stats" });
     } catch (err) {
-      setSaveError(formatAdminFirestoreError(err));
+      setSaveError(formatAdminFirestoreError(err, locale));
     }
   }
 
@@ -68,12 +70,8 @@ function AdminStatEdit() {
     <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader
-        title={isNew ? "إحصائية جديدة" : "تعديل إحصائية"}
-        description={
-          isNew
-            ? "أضف القيمة والوصف والأيقونة، ثم احفظ كمسودة أو انشر."
-            : "عدّل بيانات الإحصائية ثم احفظ التغييرات."
-        }
+        title={isNew ? a.statsNew : a.statEdit}
+        description={isNew ? a.statNewDesc : a.statEditDesc}
         backTo="/admin/stats"
       />
       {saveError && (
@@ -82,11 +80,8 @@ function AdminStatEdit() {
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-5">
-        <AdminCardSection
-          title="أساسيات الإحصائية"
-          description="الرقم والوصف والأيقونة يظهرون في شريط الإحصائيات."
-        >
-          <AdminField label="الرقم / القيمة" id="value">
+        <AdminCardSection title={a.statBasics} description={a.statBasicsDesc}>
+          <AdminField label={a.statValue} id="value">
             <input
               id="value"
               required
@@ -94,20 +89,30 @@ function AdminStatEdit() {
               value={form.value}
               onChange={(e) => patch({ value: e.target.value })}
               className={adminInputClass("text-start")}
-              placeholder="120+ أو 98% أو 4.2×"
+              placeholder={a.statValuePh}
             />
           </AdminField>
-          <AdminField label="الوصف" id="label">
+          <AdminField label={a.fieldAr.replace("{label}", a.description)} id="label">
             <input
               id="label"
               required
               value={form.label}
               onChange={(e) => patch({ label: e.target.value })}
               className={adminInputClass()}
-              placeholder="مشروع منجز"
+              placeholder={a.statLabelPh}
             />
           </AdminField>
-          <AdminField label="الأيقونة" id="icon">
+          <AdminField label={a.labelEn} id="labelEn">
+            <input
+              id="labelEn"
+              dir="ltr"
+              value={form.labelEn ?? ""}
+              onChange={(e) => patch({ labelEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English label"
+            />
+          </AdminField>
+          <AdminField label={a.statIcon} id="icon">
             <select
               id="icon"
               value={form.icon}
@@ -123,11 +128,12 @@ function AdminStatEdit() {
           </AdminField>
         </AdminCardSection>
 
-        <AdminCardSection title="نشر" description="ترتيب الظهور وحالة النشر.">
-          <AdminField label="الترتيب" id="order">
+        <AdminCardSection title={a.publish} description={a.publishDesc}>
+          <AdminField label={a.order} id="order" hint={a.orderHint}>
             <input
               id="order"
               type="number"
+              min={1}
               value={form.order}
               onChange={(e) => patch({ order: Number(e.target.value) })}
               className={adminInputClass()}
@@ -145,7 +151,7 @@ function AdminStatEdit() {
             isNew
               ? undefined
               : async () => {
-                  if (confirm("حذف؟")) {
+                  if (confirm(a.confirmDelete)) {
                     await remove.mutateAsync(id);
                     navigate({ to: "/admin/stats" });
                   }

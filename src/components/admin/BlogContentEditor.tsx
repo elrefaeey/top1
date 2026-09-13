@@ -5,16 +5,12 @@ import { CmsExternalLinkTool } from "@/components/admin/CmsExternalLinkTool";
 import { uploadMediaImage, type UploadStage } from "@/lib/firebase/upload-image";
 import { listArticleAnchors } from "@/lib/seo/blog-utils";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 type BlogContentEditorProps = {
   id?: string;
   value: string;
   onChange: (html: string) => void;
-};
-
-const STAGE_LABEL: Record<UploadStage, string> = {
-  compress: "جاري تحضير الصورة…",
-  upload: "جاري الرفع…",
 };
 
 function buildImageHtml(url: string, alt: string, caption: string): string {
@@ -62,6 +58,7 @@ function insertHtmlSnippet(
 }
 
 export function BlogContentEditor({ id = "content", value, onChange }: BlogContentEditorProps) {
+  const { a, t } = useAdminI18n();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -73,6 +70,10 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
   const [pendingMode, setPendingMode] = useState<"cursor" | "end">("cursor");
   const [linkText, setLinkText] = useState("");
   const [linkTargetId, setLinkTargetId] = useState("");
+  const stageLabel: Record<UploadStage, string> = {
+    compress: a.imageCompressing,
+    upload: a.imageUploading,
+  };
 
   const anchors = useMemo(() => listArticleAnchors(value), [value]);
 
@@ -87,7 +88,7 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
   }
 
   function insertImage(url: string, mode: "cursor" | "end") {
-    const html = buildImageHtml(url, alt.trim() || "صورة من المقال", caption);
+    const html = buildImageHtml(url, alt.trim() || a.blogDefaultImgAlt, caption);
     const el = textareaRef.current;
     if (mode === "end" || !el) {
       onChange(`${value.trimEnd()}${html}`);
@@ -109,12 +110,10 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     try {
       const url = await uploadMediaImage("blog", file, setStage);
       insertImage(url, mode);
-      setNotice(
-        mode === "cursor" ? "تم إدراج الصورة عند موضع المؤشر" : "تم إدراج الصورة في نهاية المقال",
-      );
+      setNotice(mode === "cursor" ? a.blogInsertedAtCursor : a.blogInsertedAtEnd);
       setCaption("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "فشل رفع الصورة");
+      setError(err instanceof Error ? err.message : a.imageErrUpload);
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -133,11 +132,11 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     const selected = el ? value.slice(el.selectionStart ?? 0, el.selectionEnd ?? 0) : "";
     const text = linkText.trim() || selected.trim();
     if (!text) {
-      setError("حدّد نصاً في المحرر أو اكتب نص الرابط أولاً.");
+      setError(a.blogErrSelectText);
       return;
     }
     if (!linkTargetId) {
-      setError("اختر القسم المستهدف داخل المقال.");
+      setError(a.blogErrSelectSection);
       return;
     }
 
@@ -145,18 +144,16 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
     const { start, leadingNewline } = insertHtmlSnippet(value, html, el, onChange);
     focusAfterInsert(start, html.length, leadingNewline);
     setNotice(
-      `تم ربط النص بالقسم: ${anchors.find((a) => a.id === linkTargetId)?.title ?? linkTargetId}`,
+      t(a.blogLinkedSection, {
+        title: anchors.find((anchor) => anchor.id === linkTargetId)?.title ?? linkTargetId,
+      }),
     );
     setLinkText("");
   }
 
   return (
     <div className="space-y-4">
-      <AdminField
-        label="المحتوى (HTML)"
-        id={id}
-        hint="استخدم عناوين h2/h3 لأقسام المقال. لربط كلمة برابط: حدّدها في المحرر ثم استخدم أداة الروابط أدناه."
-      >
+      <AdminField label={a.blogContentLabel} id={id} hint={a.blogContentHint}>
         <textarea
           ref={textareaRef}
           id={id}
@@ -185,39 +182,36 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
 
       <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
         <div>
-          <p className="text-sm font-semibold text-foreground">روابط داخل المقال</p>
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-            اربط جملة أو كلمة بقسم معيّن (عنوان h2 أو h3). يمكنك تحديد النص في المحرر ثم اختيار
-            القسم، أو كتابة نص الرابط يدوياً.
-          </p>
+          <p className="text-sm font-semibold text-foreground">{a.blogInternalLinks}</p>
+          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{a.blogInternalLinksDesc}</p>
         </div>
 
         {anchors.length === 0 ? (
           <p className="text-xs text-amber-800 leading-relaxed rounded-lg bg-amber-500/10 px-3 py-2">
-            أضف عناوين مثل {"<h2>عنوان القسم</h2>"} داخل المحتوى حتى تظهر هنا كأهداف للروابط.
+            {a.blogInternalLinksEmpty}
           </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            <AdminField label="نص الرابط" id={`${id}-link-text`}>
+            <AdminField label={a.blogLinkText} id={`${id}-link-text`}>
               <input
                 id={`${id}-link-text`}
                 value={linkText}
                 onChange={(e) => setLinkText(e.target.value)}
-                placeholder="اتركه فارغاً لاستخدام النص المحدد"
+                placeholder={a.blogLinkTextPh}
                 className={adminInputClass()}
               />
             </AdminField>
-            <AdminField label="القسم المستهدف" id={`${id}-link-target`}>
+            <AdminField label={a.blogLinkTarget} id={`${id}-link-target`}>
               <select
                 id={`${id}-link-target`}
                 value={linkTargetId}
                 onChange={(e) => setLinkTargetId(e.target.value)}
                 className={adminInputClass()}
               >
-                <option value="">اختر قسماً…</option>
-                {anchors.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.title} (#{a.id})
+                <option value="">{a.blogLinkTargetPh}</option>
+                {anchors.map((anchor) => (
+                  <option key={anchor.id} value={anchor.id}>
+                    {anchor.title} (#{anchor.id})
                   </option>
                 ))}
               </select>
@@ -231,35 +225,33 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
             onClick={insertSectionLink}
             className="admin-btn admin-btn-ghost admin-btn-sm"
           >
-            <Link2 className="h-4 w-4" /> إدراج رابط إلى القسم
+            <Link2 className="h-4 w-4" /> {a.blogInsertSectionLink}
           </button>
         )}
       </div>
 
       <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-3">
         <div>
-          <p className="text-sm font-semibold text-foreground">صور داخل المقال</p>
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-            ارفع أكثر من صورة وحدد مكان كل واحدة: عند المؤشر في المحرر، أو في نهاية المقال.
-          </p>
+          <p className="text-sm font-semibold text-foreground">{a.blogInlineImages}</p>
+          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{a.blogInlineImagesDesc}</p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <AdminField label="وصف الصورة (Alt)" id={`${id}-alt`}>
+          <AdminField label={a.blogImageAlt} id={`${id}-alt`}>
             <input
               id={`${id}-alt`}
               value={alt}
               onChange={(e) => setAlt(e.target.value)}
-              placeholder="وصف مختصر للصورة"
+              placeholder={a.blogImageAltPh}
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminField label="تعليق تحت الصورة (اختياري)" id={`${id}-caption`}>
+          <AdminField label={a.blogImageCaption} id={`${id}-caption`}>
             <input
               id={`${id}-caption`}
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="نص يظهر تحت الصورة"
+              placeholder={a.blogImageCaptionPh}
               className={adminInputClass()}
             />
           </AdminField>
@@ -283,11 +275,11 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
           >
             {uploading && pendingMode === "cursor" ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" /> {STAGE_LABEL[stage]}
+                <Loader2 className="h-4 w-4 animate-spin" /> {stageLabel[stage]}
               </>
             ) : (
               <>
-                <TextCursorInput className="h-4 w-4" /> إدراج عند المؤشر
+                <TextCursorInput className="h-4 w-4" /> {a.blogInsertAtCursor}
               </>
             )}
           </button>
@@ -299,11 +291,11 @@ export function BlogContentEditor({ id = "content", value, onChange }: BlogConte
           >
             {uploading && pendingMode === "end" ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" /> {STAGE_LABEL[stage]}
+                <Loader2 className="h-4 w-4 animate-spin" /> {stageLabel[stage]}
               </>
             ) : (
               <>
-                <AlignEndVertical className="h-4 w-4" /> إدراج في نهاية المقال
+                <AlignEndVertical className="h-4 w-4" /> {a.blogInsertAtEnd}
               </>
             )}
           </button>

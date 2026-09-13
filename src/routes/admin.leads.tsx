@@ -14,15 +14,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/leads")({
   component: AdminLeadsList,
 });
 
-function formatDate(iso?: string) {
-  if (!iso) return "—";
+function formatDate(iso: string | undefined, locale: string, dash: string) {
+  if (!iso) return dash;
   try {
-    return new Intl.DateTimeFormat("ar-EG", {
+    return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "ar-EG", {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(new Date(iso));
@@ -32,30 +33,26 @@ function formatDate(iso?: string) {
 }
 
 function AdminLeadsList() {
+  const { a, locale } = useAdminI18n();
   const { data = [], isFetching } = useAdminLeads();
 
   return (
     <div>
-      <AdminPageHeader
-        title="الرسائل"
-        description="استفسارات الزوار من نموذج التواصل — الاسم ورقم الجوال والرسالة."
-      />
+      <AdminPageHeader title={a.leadsTitle} description={a.leadsDesc} />
 
       <AdminFetchingBar show={isFetching} />
-      {!isFetching && data.length === 0 && (
-        <AdminEmpty message="لا توجد رسائل بعد. ستظهر هنا عند إرسال نموذج التواصل." />
-      )}
+      {!isFetching && data.length === 0 && <AdminEmpty message={a.leadsEmpty} />}
 
       {data.length > 0 && (
         <div className="admin-table-wrap">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>الاسم</TableHead>
-                <TableHead>رقم الجوال</TableHead>
-                <TableHead>الاستفسار</TableHead>
-                <TableHead>الحالة</TableHead>
-                <TableHead>التاريخ</TableHead>
+                <TableHead>{a.name}</TableHead>
+                <TableHead>{a.colPhone}</TableHead>
+                <TableHead>{a.colInquiry}</TableHead>
+                <TableHead>{a.status}</TableHead>
+                <TableHead>{a.colDate}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -63,7 +60,7 @@ function AdminLeadsList() {
                 <TableRow key={lead.id}>
                   <TableCell className="font-medium">{lead.name}</TableCell>
                   <TableCell dir="ltr" className="text-sm">
-                    {lead.phone || "—"}
+                    {lead.phone || a.emDash}
                   </TableCell>
                   <TableCell className="text-sm max-w-[320px] whitespace-pre-wrap">
                     {lead.message}
@@ -72,7 +69,7 @@ function AdminLeadsList() {
                     <AdminStatusBadge status={lead.status} />
                   </TableCell>
                   <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                    {formatDate(lead.createdAt)}
+                    {formatDate(lead.createdAt, locale, a.emDash)}
                   </TableCell>
                 </TableRow>
               ))}

@@ -13,7 +13,9 @@ import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { serviceLocationClusterLinks, moneyPageForService } from "@/lib/seo/service-money-pages";
 import { buildServiceHead, notFoundHead } from "@/lib/seo";
 import { stripHtml } from "@/lib/seo/blog-utils";
+import { localizeService } from "@/lib/i18n/localize-cms";
 import { SITE_NAME } from "@/lib/site-config";
+import { useLocale } from "@/providers/LocaleProvider";
 
 function looksLikeHtml(value: string): boolean {
   return /<[a-z][\s\S]*>/i.test(value);
@@ -44,13 +46,15 @@ function ServiceDetail() {
   const { slug } = useParams({ from: "/services/$slug" });
   const { service: loaderService } = Route.useLoaderData();
   const { data: hookService, isLoading } = useService(slug);
-  const s = hookService ?? loaderService;
-  const seoBlock = getServiceSeoBlock(slug);
+  const { m, t, locale } = useLocale();
+  const raw = hookService ?? loaderService;
+  const s = raw ? localizeService(raw, locale) : raw;
+  const seoBlock = getServiceSeoBlock(slug, locale);
 
   if (isLoading && !s) {
     return (
       <div className="container-page py-24 text-center text-muted-foreground text-sm">
-        جاري تحميل الخدمة…
+        {m.serviceDetail.loading}
       </div>
     );
   }
@@ -63,10 +67,22 @@ function ServiceDetail() {
   const moneyPage = moneyPageForService(preferred);
   const locationCluster = serviceLocationClusterLinks(preferred);
   const breadcrumbs = [
-    { name: "الرئيسية", path: "/" },
-    { name: "الخدمات", path: "/services" },
+    { name: m.nav.home, path: "/" },
+    { name: m.nav.services, path: "/services" },
     { name: s.title, path: `/services/${slug}` },
   ];
+  const htmlDesc = looksLikeHtml(s.description);
+  const cmsParagraphs = s.description
+    ? s.description
+        .split(/\n\n+/u)
+        .map((p) => p.trim())
+        .filter(Boolean)
+    : [];
+  const introParagraphs = htmlDesc
+    ? []
+    : locale === "en" && cmsParagraphs.length > 0
+      ? cmsParagraphs
+      : (seoBlock?.intro ?? cmsParagraphs);
 
   return (
     <article itemScope itemType="https://schema.org/Service">
@@ -78,10 +94,11 @@ function ServiceDetail() {
 
           {moneyPage && (
             <p className="mb-5 text-sm text-muted-foreground">
-              للبحث حسب المدينة أو الدولة، ابدأ من{" "}
+              {m.serviceDetail.moneyBefore}{" "}
               <Link to={moneyPage} className="font-medium text-primary underline-offset-2 hover:underline">
-                صفحة الخدمة الرئيسية
-              </Link>.
+                {m.serviceDetail.moneyLink}
+              </Link>
+              {m.serviceDetail.moneyAfter}
             </p>
           )}
 
@@ -90,7 +107,7 @@ function ServiceDetail() {
             {s.imageUrl && (
               <SiteImage
                 src={s.imageUrl}
-                alt={`${s.title} — خدمات ${SITE_NAME}`}
+                alt={t(m.serviceDetail.imageAlt, { title: s.title, name: SITE_NAME })}
                 width={1280}
                 height={800}
                 fetchPriority="high"
@@ -118,10 +135,10 @@ function ServiceDetail() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link to="/contact" className="btn-primary">
-                  ابدأ مشروعك <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
+                  {m.common.startProject} <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
                 </Link>
                 <Link to="/portfolio" className="btn-ghost">
-                  أعمالنا
+                  {m.nav.portfolio}
                 </Link>
               </div>
             </div>
@@ -130,19 +147,19 @@ function ServiceDetail() {
       </section>
 
       {/* ─── Description ─── */}
-      {looksLikeHtml(s.description) ? (
+      {htmlDesc ? (
         <section className="section">
           <div
             className="container-page max-w-3xl prose-section space-y-4 text-[17px] leading-[1.85] text-foreground/85 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:md:text-3xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_ul]:list-disc [&_ul]:pe-6 [&_ul]:space-y-2"
             dangerouslySetInnerHTML={{ __html: s.description }}
           />
         </section>
-      ) : seoBlock ? (
+      ) : introParagraphs.length > 0 ? (
         <section className="section">
           <div className="container-page max-w-3xl">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">نظرة عامة</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">{m.serviceDetail.overview}</h2>
             <div className="space-y-4 text-[17px] leading-[1.85] text-foreground/85">
-              {seoBlock.intro.map((p) => (
+              {introParagraphs.map((p) => (
                 <p key={p.slice(0, 48)}>{p}</p>
               ))}
             </div>
@@ -157,7 +174,7 @@ function ServiceDetail() {
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
               <Icon className="h-6 w-6" aria-hidden />
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">ما ستحصل عليه</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{m.serviceDetail.deliverables}</h2>
           </div>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
             {deliverables.map((d) => (
@@ -179,7 +196,7 @@ function ServiceDetail() {
           <div className="container-page">
             <div className="text-center max-w-xl mx-auto mb-10">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                لماذا تختار Top1Markting؟
+                {m.serviceDetail.why}
               </h2>
             </div>
             <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -202,8 +219,8 @@ function ServiceDetail() {
         <section className="section tone-tinted">
           <div className="container-page">
             <div className="text-center max-w-xl mx-auto mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">كيف ننفّذ</h2>
-              <p className="mt-2 text-sm text-muted-foreground">خطوات واضحة من البداية للإطلاق</p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{m.serviceDetail.process}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{m.serviceDetail.processDesc}</p>
             </div>
 
             <div
@@ -240,8 +257,8 @@ function ServiceDetail() {
         <section className="section">
           <div className="container-page max-w-2xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">أسئلة شائعة</h2>
-              <p className="mt-2 text-sm text-muted-foreground">إجابات سريعة على أكثر الأسئلة شيوعاً</p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{m.serviceDetail.faqs}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{m.serviceDetail.faqsDesc}</p>
             </div>
             <FaqAccordion faqs={seoBlock.faqs} />
           </div>
@@ -253,30 +270,30 @@ function ServiceDetail() {
         <div className="container-page">
           <div className="home-cta-block relative text-center mb-12">
             <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white mx-auto">
-              <Sparkles className="h-3 w-3" /> ابدأ الآن
+              <Sparkles className="h-3 w-3" /> {m.serviceDetail.ctaEyebrow}
             </span>
             <h2 className="relative mx-auto mt-4 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
-              جاهز للبدء؟
+              {m.serviceDetail.ctaTitle}
             </h2>
             <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/80">
-              تواصل معنا عبر واتساب أو النموذج — نرد خلال 24 ساعة، بدون التزام.
+              {m.serviceDetail.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/contact" className="btn-primary">
-                تواصل معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+                {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
               </Link>
               <Link to="/portfolio" className="btn-ghost">
-                شاهد أعمالنا
+                {m.common.viewWork}
               </Link>
             </div>
           </div>
 
           <InternalLinksBlock
-            title="صفحات المدن والخدمات ذات الصلة"
+            title={m.serviceDetail.related}
             links={locationCluster}
           />
           <InternalLinksBlock
-            title="روابط إضافية"
+            title={m.serviceDetail.moreLinks}
             links={footerInternalLinks()}
             className="mt-8"
           />

@@ -19,6 +19,7 @@ import {
   useAdminAuthors,
 } from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/authors/$id")({
   component: AdminAuthorEdit,
@@ -39,6 +40,7 @@ const empty = (): Omit<Author, "id"> => ({
 });
 
 function AdminAuthorEdit() {
+  const { a } = useAdminI18n();
   const { id } = useParams({ from: "/admin/authors/$id" });
   const isNew = id === "new";
   const navigate = useNavigate();
@@ -74,40 +76,53 @@ function AdminAuthorEdit() {
     <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader
-        title={isNew ? "كاتب جديد" : "تعديل كاتب"}
-        description={
-          isNew
-            ? "أضف الاسم والدور والسيرة والصورة، ثم احفظ كمسودة أو انشر."
-            : "عدّل بيانات الكاتب ثم احفظ التغييرات."
-        }
+        title={isNew ? a.authorsNew : a.authorEdit}
+        description={isNew ? a.authorNewDesc : a.authorEditDesc}
         backTo="/admin/authors"
       />
       <form onSubmit={handleSubmit} className="space-y-5">
-        <AdminCardSection
-          title="أساسيات الكاتب"
-          description="الاسم والدور والسيرة يظهرون في صفحة المؤلف والمقالات."
-        >
-          <AdminField label="الاسم" id="name">
+        <AdminCardSection title={a.authorBasics} description={a.authorBasicsDesc}>
+          <AdminField label={a.fieldAr.replace("{label}", a.name)} id="name">
             <input
               id="name"
               required
               value={form.name}
               onChange={(e) => patch({ name: e.target.value })}
               className={adminInputClass()}
-              placeholder="مثال: أحمد الرفاعي"
+              placeholder={a.authorNamePh}
             />
           </AdminField>
-          <AdminField label="الدور" id="role">
+          <AdminField label={a.nameEn} id="nameEn">
+            <input
+              id="nameEn"
+              dir="ltr"
+              value={form.nameEn ?? ""}
+              onChange={(e) => patch({ nameEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English name"
+            />
+          </AdminField>
+          <AdminField label={a.fieldAr.replace("{label}", a.role)} id="role">
             <input
               id="role"
               required
               value={form.role}
               onChange={(e) => patch({ role: e.target.value })}
               className={adminInputClass()}
-              placeholder="خبير SEO"
+              placeholder={a.authorRolePh}
             />
           </AdminField>
-          <AdminField label="السيرة" id="bio">
+          <AdminField label={a.roleEn} id="roleEn">
+            <input
+              id="roleEn"
+              dir="ltr"
+              value={form.roleEn ?? ""}
+              onChange={(e) => patch({ roleEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English role"
+            />
+          </AdminField>
+          <AdminField label={a.fieldAr.replace("{label}", a.authorBio)} id="bio">
             <textarea
               id="bio"
               rows={5}
@@ -115,10 +130,21 @@ function AdminAuthorEdit() {
               value={form.bio}
               onChange={(e) => patch({ bio: e.target.value })}
               className={adminInputClass()}
-              placeholder="نبذة قصيرة عن الكاتب وخبراته"
+              placeholder={a.authorBioPh}
             />
           </AdminField>
-          <AdminField label="Slug" id="slug" hint="يُستخدم في رابط صفحة الكاتب — بالإنجليزية.">
+          <AdminField label={a.bioEn} id="bioEn">
+            <textarea
+              id="bioEn"
+              dir="ltr"
+              rows={5}
+              value={form.bioEn ?? ""}
+              onChange={(e) => patch({ bioEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English bio"
+            />
+          </AdminField>
+          <AdminField label={a.slug} id="slug" hint={a.authorSlugHint}>
             <input
               id="slug"
               dir="ltr"
@@ -130,11 +156,8 @@ function AdminAuthorEdit() {
           </AdminField>
         </AdminCardSection>
 
-        <AdminCardSection
-          title="تفاصيل إضافية"
-          description="الخبرات والروابط الاختيارية تظهر في صفحة المؤلف."
-        >
-          <AdminField label="الخبرات (مفصولة بفاصلة)" id="expertise">
+        <AdminCardSection title={a.authorExtra} description={a.authorExtraDesc}>
+          <AdminField label={a.authorExpertise} id="expertise">
             <input
               id="expertise"
               value={form.expertise.join(", ")}
@@ -150,8 +173,25 @@ function AdminAuthorEdit() {
               placeholder="SEO, Content, Analytics"
             />
           </AdminField>
+          <AdminField label={a.expertiseEn} id="expertiseEn">
+            <input
+              id="expertiseEn"
+              dir="ltr"
+              value={(form.expertiseEn ?? []).join(", ")}
+              onChange={(e) =>
+                patch({
+                  expertiseEn: e.target.value
+                    .split(",")
+                    .map((x) => x.trim())
+                    .filter(Boolean),
+                })
+              }
+              className={adminInputClass("text-start")}
+              placeholder="SEO, Content, Analytics"
+            />
+          </AdminField>
           <div className="grid gap-4 sm:grid-cols-2">
-            <AdminField label="سنوات الخبرة" id="years">
+            <AdminField label={a.authorYears} id="years">
               <input
                 id="years"
                 type="number"
@@ -178,13 +218,10 @@ function AdminAuthorEdit() {
           </div>
         </AdminCardSection>
 
-        <AdminCardSection
-          title="صورة وإعدادات"
-          description="الصورة الشخصية وبيانات SEO وحالة النشر."
-        >
+        <AdminCardSection title={a.authorImageSettings} description={a.authorImageSettingsDesc}>
           <ImageUploadField
             id="avatarUrl"
-            label="الصورة الشخصية"
+            label={a.authorAvatar}
             folder="authors"
             value={form.avatarUrl ?? ""}
             onChange={(avatarUrl) => patch({ avatarUrl: avatarUrl || undefined })}
@@ -200,7 +237,7 @@ function AdminAuthorEdit() {
                 },
               });
             }}
-            hint="صورة مربعة أو دائرية تظهر في صفحة المؤلف وOG."
+            hint={a.authorAvatarHint}
           />
           <AdminField label="Meta Title" id="metaTitle">
             <input
@@ -208,7 +245,7 @@ function AdminAuthorEdit() {
               value={form.metaTitle}
               onChange={(e) => patch({ metaTitle: e.target.value })}
               className={adminInputClass()}
-              placeholder="عنوان صفحة الكاتب في نتائج البحث"
+              placeholder={a.authorMetaTitlePh}
             />
           </AdminField>
           <AdminField label="Meta Description" id="metaDescription">
@@ -218,7 +255,7 @@ function AdminAuthorEdit() {
               value={form.metaDescription}
               onChange={(e) => patch({ metaDescription: e.target.value })}
               className={adminInputClass()}
-              placeholder="وصف مختصر يظهر تحت العنوان في Google"
+              placeholder={a.authorMetaDescPh}
             />
           </AdminField>
           <AdminPublishSelect
@@ -233,7 +270,7 @@ function AdminAuthorEdit() {
             isNew
               ? undefined
               : async () => {
-                  if (!confirm("حذف؟")) return;
+                  if (!confirm(a.confirmDelete)) return;
                   await remove.mutateAsync(id);
                   navigate({ to: "/admin/authors" });
                 }

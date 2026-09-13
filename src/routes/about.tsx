@@ -20,6 +20,7 @@ import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildStaticPageHead } from "@/lib/seo";
 import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/about")({
   loader: () => loadPublishedPageSeoFn({ data: { slug: "about" } }),
@@ -35,50 +36,51 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
+  const { m, t } = useLocale();
   const values = [
     {
       n: "01",
       icon: Eye,
-      t: "الرؤية",
-      d: "نبني حضوراً رقمياً واضحاً للشركات في السعودية والإمارات — مواقع ومتاجر تساعد على تحويل الزوار إلى عملاء.",
+      t: m.about.v1t,
+      d: m.about.v1d,
     },
     {
       n: "02",
       icon: Target,
-      t: "الرسالة",
-      d: "نقدّم تصميم مواقع، متاجر، SEO، وتسويق رقمي بخطوات بسيطة، تواصل واضح، وتنفيذ يركز على النتيجة.",
+      t: m.about.v2t,
+      d: m.about.v2d,
     },
     {
       n: "03",
       icon: Heart,
-      t: "القيم",
-      d: "صدق في الوعود، جودة في التنفيذ، ومتابعة بعد الإطلاق — بدون مبالغة وبدون تعقيد.",
+      t: m.about.v3t,
+      d: m.about.v3d,
     },
   ];
 
   const offers = [
     {
       icon: Layout,
-      t: "تصميم مواقع",
-      d: "مواقع سريعة وواضحة تعكس هوية نشاطك.",
+      t: m.about.o1t,
+      d: m.about.o1d,
       href: "/web-design-saudi-arabia",
     },
     {
       icon: ShoppingBag,
-      t: "متاجر إلكترونية",
-      d: "تجربة شراء سلسة جاهزة للبيع أونلاين.",
+      t: m.about.o2t,
+      d: m.about.o2d,
       href: "/ecommerce-development",
     },
     {
       icon: Search,
-      t: "SEO",
-      d: "تحسين ظهورك في Google بجهد عملي مستمر.",
+      t: m.about.o3t,
+      d: m.about.o3d,
       href: "/seo-services",
     },
     {
       icon: Megaphone,
-      t: "تسويق رقمي",
-      d: "حملات ورسائل تساعد على جذب عملاء حقيقيين.",
+      t: m.about.o4t,
+      d: m.about.o4d,
       href: "/digital-marketing",
     },
   ];
@@ -86,40 +88,35 @@ function About() {
   const steps = [
     {
       n: "01",
-      t: "نفهم احتياجك",
-      d: "نستمع لهدفك وميزانيتك والجمهور — بدون تعقيد.",
+      t: m.about.s1t,
+      d: m.about.s1d,
     },
     {
       n: "02",
-      t: "نصمّم ونبني",
-      d: "واجهة واضحة، أداء سريع، ومحتوى يخدم التحويل.",
+      t: m.about.s2t,
+      d: m.about.s2d,
     },
     {
       n: "03",
-      t: "نطلق ونحسّن",
-      d: "إطلاق مرتب، ثم تحسينات بناءً على الاستخدام والنتائج.",
+      t: m.about.s3t,
+      d: m.about.s3d,
     },
   ];
 
-  const whyUs = [
-    "تواصل مباشر بدون وسيط",
-    "تسليم في المواعيد المحددة",
-    "دعم ما بعد الإطلاق",
-    "شفافية كاملة في التسعير",
-  ];
+  const whyUs = [m.about.w1, m.about.w2, m.about.w3, m.about.w4];
 
   return (
     <>
       {/* ─── Hero — نفس باقي الصفحات ─── */}
       <PageIntro
-        eyebrow={`عن ${SITE_NAME}`}
+        eyebrow={t(m.about.eyebrow, { name: SITE_NAME })}
         title={
           <>
-            وكالة رقمية{" "}
-            <span className="text-gradient">للسعودية والإمارات.</span>
+            {m.about.titleBefore}
+            <span className="text-gradient">{m.about.titleGradient}</span>
           </>
         }
-        desc={`${SITE_NAME} وكالة رقمية متخصصة في تصميم المواقع، المتاجر الإلكترونية، تحسين محركات البحث، والتسويق الرقمي.`}
+        desc={t(m.about.desc, { name: SITE_NAME })}
       />
 
       {/* ─── Intro — صورة + checklist ─── */}
@@ -132,11 +129,10 @@ function About() {
               <div className="flex flex-col gap-5">
                 <MarketsServeStrip />
                 <h2 className="text-2xl font-bold tracking-tight leading-snug">
-                  نبني حضورك الرقمي — من الفكرة إلى الإطلاق.
+                  {m.about.introTitle}
                 </h2>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  نساعد الشركات في السعودية والإمارات على بناء حضور أونلاين احترافي بخطوات
-                  مرتبة، تواصل واضح، وتنفيذ يركز على النتيجة.
+                  {m.about.introDesc}
                 </p>
                 <ul className="grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-foreground/80">
                   {whyUs.map((item) => (
@@ -148,11 +144,11 @@ function About() {
                 </ul>
                 <div className="flex flex-wrap gap-3 pt-1">
                   <Link to="/contact" className="btn-primary">
-                    ابدأ مشروعك
+                    {m.common.startProject}
                     <ArrowRight className="h-4 w-4 rtl-flip" />
                   </Link>
                   <Link to="/services" className="btn-ghost">
-                    استكشف الخدمات
+                    {m.common.exploreServices}
                   </Link>
                 </div>
               </div>
@@ -163,7 +159,7 @@ function About() {
               <figure className="m-0 w-full overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-card-hover)]">
                 <img
                   src={siteImages.about.studio}
-                  alt={siteImages.about.studioAlt}
+                  alt={t(m.common.aboutImageAlt, { name: SITE_NAME })}
                   width={1200}
                   height={800}
                   loading="eager"
@@ -181,12 +177,12 @@ function About() {
       <section className="section" aria-labelledby="about-values-heading">
         <div className="container-page">
           <div className="text-center max-w-xl mx-auto mb-14">
-            <span className="page-intro-eyebrow mx-auto">ما نؤمن به</span>
+            <span className="page-intro-eyebrow mx-auto">{m.about.beliefsEyebrow}</span>
             <h2 id="about-values-heading" className="page-intro-title page-intro-title--section mt-3">
-              وضوح، جودة، والتزام.
+              {m.about.beliefsTitle}
             </h2>
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-              ثلاث مبادئ بسيطة نشتغل عليها في كل مشروع — من أول اجتماع حتى بعد الإطلاق.
+              {m.about.beliefsDesc}
             </p>
           </div>
 
@@ -214,17 +210,17 @@ function About() {
         <div className="container-page">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
             <div>
-              <span className="page-intro-eyebrow">ماذا نقدّم؟</span>
+              <span className="page-intro-eyebrow">{m.about.offersEyebrow}</span>
               <h2 id="about-offers-heading" className="page-intro-title page-intro-title--section mt-3">
-                خدمات واضحة لنمو عملك.
+                {m.about.offersTitle}
               </h2>
               <p className="text-muted-foreground mt-2 text-sm leading-relaxed max-w-lg">
-                سواء كنت تبدأ حضورك الرقمي أو تريد تطوير موقعك — نعمل بخطوات مرتبة حتى الإطلاق وما بعده.
+                {m.about.offersDesc}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 shrink-0">
               <Link to="/services" className="btn-ghost text-sm">
-                كل الخدمات <ArrowRight className="h-3.5 w-3.5 rtl-flip" />
+                {m.common.allServices} <ArrowRight className="h-3.5 w-3.5 rtl-flip" />
               </Link>
             </div>
           </div>
@@ -254,8 +250,8 @@ function About() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/portfolio" className="btn-ghost">أعمالنا</Link>
-            <Link to="/contact" className="btn-ghost">تواصل معنا</Link>
+            <Link to="/portfolio" className="btn-ghost">{m.nav.portfolio}</Link>
+            <Link to="/contact" className="btn-ghost">{m.common.contactUs}</Link>
           </div>
         </div>
       </section>
@@ -268,13 +264,13 @@ function About() {
         <div className="container-page">
           <div className="text-center max-w-xl mx-auto mb-14">
             <span className="page-intro-eyebrow mx-auto">
-              <Award className="h-3 w-3" /> كيف نعمل
+              <Award className="h-3 w-3" /> {m.about.stepsEyebrow}
             </span>
             <h2 id="about-steps-heading" className="page-intro-title page-intro-title--section mt-3">
-              بدأنا مؤخراً — ونبني معك من اليوم.
+              {m.about.stepsTitle}
             </h2>
             <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-              {SITE_NAME} وكالة جديدة تخدم السعودية والإمارات. نبدأ مع كل عميل من احتياجه الحقيقي — خطوة بخطوة.
+              {t(m.about.stepsDesc, { name: SITE_NAME })}
             </p>
           </div>
 
@@ -305,20 +301,20 @@ function About() {
         <div className="container-page">
           <div className="home-cta-block relative text-center">
             <span className="relative page-intro-eyebrow !border-white/25 !bg-white/15 !text-white mx-auto">
-              <Sparkles className="h-3 w-3" /> ابدأ الآن
+              <Sparkles className="h-3 w-3" /> {m.common.startNow}
             </span>
             <h2 className="relative mx-auto mt-4 max-w-2xl text-2xl font-bold leading-snug md:text-3xl">
-              جاهز تبني حضورك الرقمي معنا؟
+              {m.about.ctaTitle}
             </h2>
             <p className="relative mx-auto mt-3 max-w-lg text-sm text-white/80">
-              تواصل عبر واتساب أو النموذج — نرد خلال 24 ساعة، بدون التزام.
+              {m.about.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/contact" className="btn-primary">
-                تواصل معنا <ArrowRight className="h-4 w-4 rtl-flip" />
+                {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
               </Link>
               <Link to="/services" className="btn-ghost">
-                استكشف الخدمات
+                {m.common.exploreServices}
               </Link>
             </div>
           </div>

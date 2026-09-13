@@ -71,48 +71,78 @@ export interface CmsPage extends SeoFields, Timestamps {
 export interface Service extends SeoFields, Timestamps {
   id: string;
   title: string;
+  titleEn?: string;
   tagline?: string;
+  taglineEn?: string;
   shortDescription: string;
+  shortDescriptionEn?: string;
   description: string;
+  descriptionEn?: string;
   icon: string;
   features: string[];
+  featuresEn?: string[];
   deliverables?: string[];
+  deliverablesEn?: string[];
   process?: Array<{ title: string; description: string }>;
+  processEn?: Array<{ title: string; description: string }>;
   imageUrl?: string;
+  /** Optional English cover — falls back to `imageUrl` when empty. */
+  imageUrlEn?: string;
   order: number;
   status: PublishStatus;
+  metaTitleEn?: string;
+  metaDescriptionEn?: string;
 }
 
 export interface PortfolioItem extends SeoFields, Timestamps {
   id: string;
   title: string;
+  titleEn?: string;
   category: string;
+  categoryEn?: string;
   description: string;
+  descriptionEn?: string;
   imageUrl: string;
+  /** Optional English cover — falls back to `imageUrl` when empty. */
+  imageUrlEn?: string;
   tags: string[];
+  tagsEn?: string[];
   client?: string;
+  clientEn?: string;
   url?: string;
   /** Client problem / brief — optional to avoid inventing data */
   challenge?: string;
+  challengeEn?: string;
   /** What we delivered */
   solution?: string;
+  solutionEn?: string;
   /** Service labels shown on the project page */
   servicesProvided?: string[];
+  servicesProvidedEn?: string[];
   /** Stack / tools used */
   technologies?: string[];
   /** Optional outcome note (only when real) */
   resultsSummary?: string;
+  resultsSummaryEn?: string;
   order: number;
   status: PublishStatus;
+  metaTitleEn?: string;
+  metaDescriptionEn?: string;
 }
 
 export interface BlogPost extends SeoFields, Timestamps {
   id: string;
   title: string;
+  titleEn?: string;
   excerpt: string;
+  excerptEn?: string;
   content: string;
+  contentEn?: string;
   featuredImage?: string;
+  /** Optional English featured image — falls back to `featuredImage` when empty. */
+  featuredImageEn?: string;
   featuredImageAlt?: string;
+  featuredImageAltEn?: string;
   category: string;
   tags: string[];
   author: string;
@@ -123,6 +153,8 @@ export interface BlogPost extends SeoFields, Timestamps {
   views: number;
   trending: boolean;
   status: PublishStatus;
+  metaTitleEn?: string;
+  metaDescriptionEn?: string;
   /** Optional AI SEO title (mirrors metaTitle when set by draft generator). */
   seoTitle?: string;
   /** Optional keyword list from AI SEO drafts. */
@@ -137,10 +169,14 @@ export interface BlogPost extends SeoFields, Timestamps {
 export interface Author extends SeoFields, Timestamps {
   id: string;
   name: string;
+  nameEn?: string;
   role: string;
+  roleEn?: string;
   bio: string;
+  bioEn?: string;
   avatarUrl?: string;
   expertise: string[];
+  expertiseEn?: string[];
   linkedinUrl?: string;
   yearsExperience?: number;
   order: number;
@@ -150,13 +186,18 @@ export interface Author extends SeoFields, Timestamps {
 export interface Testimonial extends Timestamps {
   id: string;
   name: string;
+  nameEn?: string;
   role: string;
+  roleEn?: string;
   company: string;
+  companyEn?: string;
   quote: string;
+  quoteEn?: string;
   avatarUrl?: string;
   rating: number;
   /** Optional city for local E-E-A-T signals */
   city?: string;
+  cityEn?: string;
   /** Optional service slug association */
   serviceSlug?: string;
   order: number;
@@ -166,7 +207,9 @@ export interface Testimonial extends Timestamps {
 export interface FaqItem extends Timestamps {
   id: string;
   question: string;
+  questionEn?: string;
   answer: string;
+  answerEn?: string;
   order: number;
   status: PublishStatus;
 }
@@ -175,6 +218,7 @@ export interface SiteStat extends Timestamps {
   id: string;
   value: string;
   label: string;
+  labelEn?: string;
   icon: string;
   order: number;
   status: PublishStatus;

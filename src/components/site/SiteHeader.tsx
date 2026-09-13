@@ -2,7 +2,9 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SiteLogo } from "@/components/site/SiteLogo";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { useSiteSettings } from "@/hooks/use-cms";
+import { useLocale } from "@/providers/LocaleProvider";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_NAV = [
@@ -16,6 +18,7 @@ const DEFAULT_NAV = [
 
 export function SiteHeader() {
   const { data: settings } = useSiteSettings();
+  const { m, labelForHref } = useLocale();
   const navLinks = (settings?.headerNav?.length ? settings.headerNav : DEFAULT_NAV)
     .slice()
     .sort((a, b) => a.order - b.order);
@@ -90,34 +93,35 @@ export function SiteHeader() {
           <Link
             to="/"
             className="group flex items-center min-w-0 shrink-0"
-            aria-label={`${settings?.siteName ?? "Top1Markting"} — الصفحة الرئيسية`}
+            aria-label={`${settings?.siteName ?? "Top1Markting"} — ${m.nav.homeAria}`}
           >
             <SiteLogo />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" aria-label="التنقل الرئيسي">
+          <nav className="hidden lg:flex items-center gap-1" aria-label={m.nav.main}>
             {navLinks.map((l) => (
               <Link
                 key={l.href}
                 to={l.href}
                 className={cn("nav-link", isActive(l.href) && "nav-link-active")}
               >
-                {l.label}
+                {labelForHref(l.href, l.label)}
               </Link>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitch />
             <Link
               to="/contact"
               className="hidden sm:inline-flex btn-primary !py-2.5 !px-5 !text-[0.9375rem] min-h-11"
             >
-              تواصل معنا
+              {m.nav.contactCta}
             </Link>
             <button
               ref={menuBtnRef}
               type="button"
-              aria-label={open ? "إغلاق القائمة" : "فتح القائمة"}
+              aria-label={open ? m.nav.closeMenu : m.nav.openMenu}
               aria-expanded={open}
               aria-controls={menuId}
               className="lg:hidden grid h-11 w-11 place-items-center rounded-full border border-border bg-surface"
@@ -146,7 +150,7 @@ export function SiteHeader() {
         id={menuId}
         role="dialog"
         aria-modal="true"
-        aria-label="قائمة التنقل"
+        aria-label={m.nav.menu}
         className={cn(
           "fixed top-[3.75rem] lg:top-[4.25rem] inset-x-0 z-40 lg:hidden transition-all duration-300",
           open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none",
@@ -154,7 +158,7 @@ export function SiteHeader() {
       >
         <nav
           className="mx-4 rounded-2xl border border-border bg-surface p-2 shadow-[var(--shadow-card-hover)]"
-          aria-label="التنقل الرئيسي"
+          aria-label={m.nav.main}
         >
           {navLinks.map((l) => (
             <Link
@@ -168,7 +172,7 @@ export function SiteHeader() {
                   : "text-foreground hover:bg-muted",
               )}
             >
-              {l.label}
+              {labelForHref(l.href, l.label)}
             </Link>
           ))}
           <Link
@@ -176,7 +180,7 @@ export function SiteHeader() {
             onClick={() => setOpen(false)}
             className="btn-primary mt-2 w-full justify-center !text-sm min-h-11"
           >
-            تواصل معنا
+            {m.nav.contactCta}
           </Link>
         </nav>
       </div>

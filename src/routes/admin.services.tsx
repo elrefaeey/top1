@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -18,53 +19,60 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeService } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/services")({
   component: AdminServicesList,
 });
 
 function AdminServicesList() {
+  const { a, t, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/services/$id");
   const { data = [], isFetching } = useAdminServices();
   const deleteService = useDeleteService();
+  const rows = useMemo(
+    () => data.map((s) => localizeService(s, locale)),
+    [data, locale],
+  );
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="الخدمات"
-        description="إدارة خدمات الموقع — العنوان، SEO، والترتيب."
+        title={a.servicesTitle}
+        description={a.servicesDesc}
         actionTo="/admin/services/$id"
         actionParams={{ id: "new" }}
-        actionLabel="خدمة جديدة"
+        actionLabel={a.servicesNew}
       />
 
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا توجد خدمات بعد."
+          message={a.servicesEmpty}
           actionTo="/admin/services/$id"
           actionParams={{ id: "new" }}
-          actionLabel="إضافة خدمة"
+          actionLabel={a.servicesAdd}
         />
       )}
 
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[10rem]">العنوان</TableHead>
-                <TableHead className="min-w-[8rem]">Slug</TableHead>
+                <TableHead className="min-w-[10rem]">{a.title}</TableHead>
+                <TableHead className="min-w-[8rem]">{a.slug}</TableHead>
                 <TableHead className="min-w-[12rem]">Meta Title</TableHead>
-                <TableHead>الحالة</TableHead>
-                <TableHead>ترتيب</TableHead>
-                <TableHead className="text-end">إجراءات</TableHead>
+                <TableHead>{a.status}</TableHead>
+                <TableHead>{a.order}</TableHead>
+                <TableHead className="text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((s) => (
+              {rows.map((s) => (
                 <TableRow key={s.id}>
                   <TableCell className="font-medium align-top">{s.title}</TableCell>
                   <TableCell
@@ -87,7 +95,8 @@ function AdminServicesList() {
                       editTo="/admin/services/$id"
                       editParams={{ id: s.id }}
                       onDelete={() =>
-                        confirm(`حذف الخدمة "${s.title}"؟`) && deleteService.mutate(s.id)
+                        confirm(t(a.confirmDeleteService, { name: s.title })) &&
+                        deleteService.mutate(s.id)
                       }
                     />
                   </TableCell>

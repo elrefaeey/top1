@@ -20,6 +20,7 @@ import {
 } from "@/hooks/use-admin-cms";
 import { useApplyNextOrder } from "@/hooks/use-auto-order";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/portfolio/$id")({
   component: AdminPortfolioEdit,
@@ -42,6 +43,7 @@ const empty = (): Omit<PortfolioItem, "id"> => ({
 });
 
 function AdminPortfolioEdit() {
+  const { a } = useAdminI18n();
   const { id } = useParams({ from: "/admin/portfolio/$id" });
   const isNew = id === "new";
   const navigate = useNavigate();
@@ -80,24 +82,13 @@ function AdminPortfolioEdit() {
     <div className="mx-auto max-w-3xl">
       <AdminFetchingBar show={!isNew && isFetching && !data} />
       <AdminPageHeader
-        title={isNew ? "مشروع جديد" : "تعديل مشروع"}
-        description={
-          isNew
-            ? "أضف عنوان المشروع والوصف والصورة، ثم احفظ كمسودة أو انشر."
-            : "عدّل بيانات المشروع ثم احفظ التغييرات."
-        }
+        title={isNew ? a.portfolioNew : a.projectEdit}
+        description={isNew ? a.projectNewDesc : a.projectEditDesc}
         backTo="/admin/portfolio"
       />
       <form onSubmit={handleSubmit} className="space-y-5">
-        <AdminCardSection
-          title="أساسيات المشروع"
-          description="العنوان والرابط والتصنيف يظهرون في قائمة الأعمال."
-        >
-          <AdminField
-            label="العنوان"
-            id="title"
-            hint="اضغط Enter لتنزيل سطر جديد. يظهر بنفس التقسيم في صفحة المشروع."
-          >
+        <AdminCardSection title={a.projectBasics} description={a.projectBasicsDesc}>
+          <AdminField label={a.fieldAr.replace("{label}", a.title)} id="title" hint={a.projectTitleHint}>
             <textarea
               id="title"
               required
@@ -107,10 +98,21 @@ function AdminPortfolioEdit() {
                 patch({ title: e.target.value, slug: isNew ? slugify(e.target.value) : form.slug })
               }
               className={adminInputClass("min-h-[4.5rem] resize-y")}
-              placeholder={"مثال:\nVEE\nمتجر أزياء نسائية عصرية"}
+              placeholder={a.projectTitlePh}
             />
           </AdminField>
-          <AdminField label="Slug" id="slug" hint="يُستخدم في الرابط — بالإنجليزية.">
+          <AdminField label={a.titleEn} id="titleEn">
+            <textarea
+              id="titleEn"
+              dir="ltr"
+              rows={2}
+              value={form.titleEn ?? ""}
+              onChange={(e) => patch({ titleEn: e.target.value })}
+              className={adminInputClass("min-h-[4.5rem] resize-y text-start")}
+              placeholder="English title"
+            />
+          </AdminField>
+          <AdminField label={a.slug} id="slug" hint={a.pageSlugHint}>
             <input
               id="slug"
               dir="ltr"
@@ -121,45 +123,73 @@ function AdminPortfolioEdit() {
               placeholder="fashion-store"
             />
           </AdminField>
-          <AdminField label="التصنيف" id="category">
-            <input
-              id="category"
-              value={form.category}
-              onChange={(e) => patch({ category: e.target.value })}
-              className={adminInputClass()}
-              placeholder="تصميم مواقع"
-            />
-          </AdminField>
-          <AdminField label="الوصف" id="description">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label={a.category} id="category">
+              <input
+                id="category"
+                value={form.category}
+                onChange={(e) => patch({ category: e.target.value })}
+                className={adminInputClass()}
+                placeholder={a.projectCategoryPh}
+              />
+            </AdminField>
+            <AdminField label={a.categoryEn} id="categoryEn">
+              <input
+                id="categoryEn"
+                dir="ltr"
+                value={form.categoryEn ?? ""}
+                onChange={(e) => patch({ categoryEn: e.target.value })}
+                className={adminInputClass("text-start")}
+                placeholder="Web design"
+              />
+            </AdminField>
+          </div>
+          <AdminField label={a.fieldAr.replace("{label}", a.description)} id="description">
             <textarea
               id="description"
               rows={4}
               value={form.description}
               onChange={(e) => patch({ description: e.target.value })}
               className={adminInputClass()}
-              placeholder="وصف مختصر للمشروع يظهر في البطاقة وصفحة التفاصيل"
+              placeholder={a.projectDescPh}
+            />
+          </AdminField>
+          <AdminField label={a.descEn} id="descriptionEn">
+            <textarea
+              id="descriptionEn"
+              dir="ltr"
+              rows={4}
+              value={form.descriptionEn ?? ""}
+              onChange={(e) => patch({ descriptionEn: e.target.value })}
+              className={adminInputClass("text-start")}
+              placeholder="English description"
             />
           </AdminField>
         </AdminCardSection>
 
-        <AdminCardSection
-          title="تفاصيل المشروع"
-          description="معلومات إضافية اختيارية — اترك الحقول فارغة إن لم تتوفر بيانات حقيقية."
-        >
-          <AdminField label="العميل (اختياري)" id="client">
-            <input
-              id="client"
-              value={form.client ?? ""}
-              onChange={(e) => patch({ client: e.target.value || undefined })}
-              className={adminInputClass()}
-              placeholder="اسم العميل أو الشركة"
-            />
-          </AdminField>
-          <AdminField
-            label="التحدي / المشكلة"
-            id="challenge"
-            hint="اتركه فارغاً إن لم تتوفر بيانات حقيقية — لا تخترع نتائج."
-          >
+        <AdminCardSection title={a.projectDetails} description={a.projectDetailsDesc}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label={a.projectClient} id="client">
+              <input
+                id="client"
+                value={form.client ?? ""}
+                onChange={(e) => patch({ client: e.target.value || undefined })}
+                className={adminInputClass()}
+                placeholder={a.projectClientPh}
+              />
+            </AdminField>
+            <AdminField label={a.clientEn} id="clientEn">
+              <input
+                id="clientEn"
+                dir="ltr"
+                value={form.clientEn ?? ""}
+                onChange={(e) => patch({ clientEn: e.target.value || undefined })}
+                className={adminInputClass("text-start")}
+                placeholder="English client name"
+              />
+            </AdminField>
+          </div>
+          <AdminField label={a.projectChallenge} id="challenge" hint={a.projectChallengeHint}>
             <textarea
               id="challenge"
               rows={3}
@@ -168,7 +198,17 @@ function AdminPortfolioEdit() {
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminField label="الحل" id="solution">
+          <AdminField label={a.challengeEn} id="challengeEn">
+            <textarea
+              id="challengeEn"
+              dir="ltr"
+              rows={3}
+              value={form.challengeEn ?? ""}
+              onChange={(e) => patch({ challengeEn: e.target.value || undefined })}
+              className={adminInputClass("text-start")}
+            />
+          </AdminField>
+          <AdminField label={a.projectSolution} id="solution">
             <textarea
               id="solution"
               rows={3}
@@ -177,7 +217,17 @@ function AdminPortfolioEdit() {
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminField label="الخدمات المقدَّمة (مفصولة بفاصلة)" id="servicesProvided">
+          <AdminField label={a.solutionEn} id="solutionEn">
+            <textarea
+              id="solutionEn"
+              dir="ltr"
+              rows={3}
+              value={form.solutionEn ?? ""}
+              onChange={(e) => patch({ solutionEn: e.target.value || undefined })}
+              className={adminInputClass("text-start")}
+            />
+          </AdminField>
+          <AdminField label={a.projectServicesProvided} id="servicesProvided">
             <input
               id="servicesProvided"
               value={(form.servicesProvided ?? []).join(", ")}
@@ -193,7 +243,7 @@ function AdminPortfolioEdit() {
               placeholder="تصميم مواقع, SEO"
             />
           </AdminField>
-          <AdminField label="التقنيات (مفصولة بفاصلة)" id="technologies">
+          <AdminField label={a.projectTech} id="technologies">
             <input
               id="technologies"
               dir="ltr"
@@ -210,7 +260,7 @@ function AdminPortfolioEdit() {
               placeholder="React, Vite, GA4"
             />
           </AdminField>
-          <AdminField label="ملخص النتيجة (اختياري — بيانات حقيقية فقط)" id="resultsSummary">
+          <AdminField label={a.projectResults} id="resultsSummary">
             <textarea
               id="resultsSummary"
               rows={2}
@@ -219,11 +269,17 @@ function AdminPortfolioEdit() {
               className={adminInputClass()}
             />
           </AdminField>
-          <AdminField
-            label="رابط المشروع"
-            id="url"
-            hint="رابط الموقع الحقيقي — يظهر زر «الذهاب إلى الموقع» في صفحة التفاصيل"
-          >
+          <AdminField label={a.resultsEn} id="resultsSummaryEn">
+            <textarea
+              id="resultsSummaryEn"
+              dir="ltr"
+              rows={2}
+              value={form.resultsSummaryEn ?? ""}
+              onChange={(e) => patch({ resultsSummaryEn: e.target.value || undefined })}
+              className={adminInputClass("text-start")}
+            />
+          </AdminField>
+          <AdminField label={a.projectUrl} id="url" hint={a.projectUrlHint}>
             <input
               id="url"
               dir="ltr"
@@ -236,12 +292,10 @@ function AdminPortfolioEdit() {
           </AdminField>
         </AdminCardSection>
 
-        <AdminCardSection
-          title="صورة وإعدادات"
-          description="صورة المشروع والترتيب وحالة النشر."
-        >
+        <AdminCardSection title={a.projectImageSettings} description={a.projectImageSettingsDesc}>
           <ImageUploadField
             id="imageUrl"
+            label={a.projectImageAr}
             folder="portfolio"
             value={form.imageUrl}
             onChange={(imageUrl) => patch({ imageUrl })}
@@ -260,7 +314,27 @@ function AdminPortfolioEdit() {
             }}
             required
           />
-          <AdminField label="الوسوم" id="tags">
+          <ImageUploadField
+            id="imageUrlEn"
+            label={a.projectImageEn}
+            folder="portfolio"
+            value={form.imageUrlEn ?? ""}
+            onChange={(imageUrlEn) => patch({ imageUrlEn })}
+            onUploaded={async (imageUrlEn) => {
+              if (isNew) return;
+              await save.mutateAsync({
+                id,
+                data: {
+                  ...form,
+                  imageUrlEn,
+                  slug: form.slug || slugify(form.title),
+                  tags: commaToArray(tagsText),
+                  updatedAt: nowIso(),
+                },
+              });
+            }}
+          />
+          <AdminField label={a.projectTags} id="tags">
             <input
               id="tags"
               dir="ltr"
@@ -270,10 +344,11 @@ function AdminPortfolioEdit() {
               placeholder="ecommerce, redesign"
             />
           </AdminField>
-          <AdminField label="الترتيب" id="order">
+          <AdminField label={a.order} id="order" hint={a.orderHint}>
             <input
               id="order"
               type="number"
+              min={1}
               value={form.order}
               onChange={(e) => patch({ order: Number(e.target.value) })}
               className={adminInputClass()}
@@ -300,7 +375,7 @@ function AdminPortfolioEdit() {
             isNew
               ? undefined
               : async () => {
-                  if (confirm("حذف؟")) {
+                  if (confirm(a.confirmDelete)) {
                     await remove.mutateAsync(id);
                     navigate({ to: "/admin/portfolio" });
                   }

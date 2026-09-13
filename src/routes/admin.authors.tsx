@@ -1,4 +1,5 @@
-﻿import { createFileRoute, Outlet } from "@tanstack/react-router";
+﻿import { useMemo } from "react";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import {
   AdminEmpty,
   AdminFetchingBar,
@@ -17,64 +18,73 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { localizeAuthorProfile } from "@/lib/i18n/localize-cms";
+import { useAdminI18n } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/admin/authors")({
   component: AdminAuthorsList,
 });
 
 function AdminAuthorsList() {
+  const { a, locale } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/authors/$id");
   const { data = [], isFetching } = useAdminAuthors();
   const del = useDeleteAuthor();
+  const rows = useMemo(
+    () => data.map((author) => localizeAuthorProfile(author, locale)),
+    [data, locale],
+  );
 
   if (isChild) return <Outlet />;
 
   return (
     <div>
       <AdminPageHeader
-        title="الكتّاب والفريق"
-        description="ملفات E-E-A-T للكتّاب والخبراء المعروضة في الموقع."
+        title={a.authorsTitle}
+        description={a.authorsDesc}
         actionTo="/admin/authors/$id"
         actionParams={{ id: "new" }}
-        actionLabel="كاتب جديد"
+        actionLabel={a.authorsNew}
       />
       <AdminFetchingBar show={isFetching} />
       {!isFetching && data.length === 0 && (
         <AdminEmpty
-          message="لا يوجد كتّاب."
+          message={a.authorsEmpty}
           actionTo="/admin/authors/$id"
           actionParams={{ id: "new" }}
-          actionLabel="إضافة كاتب"
+          actionLabel={a.authorsAdd}
         />
       )}
-      {data.length > 0 && (
+      {rows.length > 0 && (
         <AdminTableCard>
           <Table className="min-w-[40rem]">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[28%]">الاسم</TableHead>
-                <TableHead className="w-[28%]">الدور</TableHead>
-                <TableHead className="w-[16%]">Slug</TableHead>
-                <TableHead className="w-[14%]">الحالة</TableHead>
-                <TableHead className="w-[14%] text-end">إجراءات</TableHead>
+                <TableHead className="w-[28%]">{a.name}</TableHead>
+                <TableHead className="w-[28%]">{a.role}</TableHead>
+                <TableHead className="w-[16%]">{a.slug}</TableHead>
+                <TableHead className="w-[14%]">{a.status}</TableHead>
+                <TableHead className="w-[14%] text-end">{a.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((a) => (
-                <TableRow key={a.id}>
-                  <TableCell className="font-medium">{a.name}</TableCell>
-                  <TableCell className="truncate text-sm text-muted-foreground">{a.role}</TableCell>
+              {rows.map((author) => (
+                <TableRow key={author.id}>
+                  <TableCell className="font-medium">{author.name}</TableCell>
+                  <TableCell className="truncate text-sm text-muted-foreground">
+                    {author.role}
+                  </TableCell>
                   <TableCell className="font-mono text-xs" dir="ltr">
-                    {a.slug}
+                    {author.slug}
                   </TableCell>
                   <TableCell>
-                    <AdminStatusBadge status={a.status} />
+                    <AdminStatusBadge status={author.status} />
                   </TableCell>
                   <TableCell>
                     <AdminRowActions
                       editTo="/admin/authors/$id"
-                      editParams={{ id: a.id }}
-                      onDelete={() => confirm("حذف هذا الكاتب؟") && del.mutate(a.id)}
+                      editParams={{ id: author.id }}
+                      onDelete={() => confirm(a.confirmDeleteAuthor) && del.mutate(author.id)}
                     />
                   </TableCell>
                 </TableRow>

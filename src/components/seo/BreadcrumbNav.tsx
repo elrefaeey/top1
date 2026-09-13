@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { BreadcrumbItem } from "@/lib/seo";
+import { useT } from "@/providers/LocaleProvider";
 
 type BreadcrumbNavProps = {
   items: BreadcrumbItem[];
@@ -7,10 +8,11 @@ type BreadcrumbNavProps = {
 };
 
 export function BreadcrumbNav({ items, className = "" }: BreadcrumbNavProps) {
+  const m = useT();
   if (items.length < 2) return null;
 
   return (
-    <nav aria-label="مسار التنقل" className={className}>
+    <nav aria-label={m.common.breadcrumbAria} className={className}>
       <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
         {items.map((item, i) => {
           const isLast = i === items.length - 1;

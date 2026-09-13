@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { Link, useMatch } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -15,34 +15,84 @@ import {
 } from "lucide-react";
 import type { PublishStatus } from "@/types/cms";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
+import type { Locale } from "@/lib/i18n/locale";
 import {
   checkIcon,
   evaluateStaticPageSeo,
   getSummaryChecks,
   type AdminSeoScoreInput,
+  type SeoCheckItem,
 } from "@/lib/seo/admin-seo-score";
 
-/* Shared admin UI co-exports hooks/helpers for DX — refresh boundary lives at route level. */
+function localizeSeoCheckLabel(
+  item: SeoCheckItem,
+  locale: Locale,
+  a: AdminMessages,
+  t: (template: string, vars?: Record<string, string | number>) => string,
+): string {
+  if (locale !== "en") return item.label;
+  switch (item.id) {
+    case "meta-title":
+      return /ظ…ط®طµطµ|custom/i.test(item.label) ? a.seoCheckMetaTitleCustom : a.seoCheckMetaTitleDefault;
+    case "meta-description":
+      return /ظ…ط®طµطµ|custom/i.test(item.label) ? a.seoCheckMetaDescCustom : a.seoCheckMetaDescDefault;
+    case "custom-meta":
+      return a.seoCheckCustomMeta;
+    case "keywords": {
+      const m = item.label.match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) return t(a.seoCheckKeywordsPartial, { matched: m[1]!, total: m[2]! });
+      return a.seoCheckKeywordsOk;
+    }
+    case "schema": {
+      const listMatch = item.label.match(/\(([^)]+)\)|:\s*(.+)$/);
+      const list = (listMatch?.[1] || listMatch?.[2] || "").trim();
+      if (/ظ†ط§ظ‚طµ|missing/i.test(item.label)) return t(a.seoCheckSchemaMissing, { list });
+      return t(a.seoCheckSchemaOk, { list });
+    }
+    case "canonical":
+      return /ط؛ظٹط±|invalid/i.test(item.label) ? a.seoCheckCanonicalBad : a.seoCheckCanonicalOk;
+    case "og-image":
+      return /ظ…ط®طµطµ|custom/i.test(item.label) ? a.seoCheckOgCustom : a.seoCheckOgDefault;
+    case "images":
+      return /ظ…ط®طµطµ|custom/i.test(item.label) ? a.seoCheckAltCustom : a.seoCheckAltDefault;
+    case "content": {
+      const words = item.label.match(/~?\s*(\d+)/);
+      const min = item.label.match(/(?:ط§ظ„ظ…ط·ظ„ظˆط¨|need)\s*(\d+)/i);
+      if (words && min) return t(a.seoCheckContentShort, { words: words[1]!, min: min[1]! });
+      return a.seoCheckContentOk;
+    }
+    default:
+      return item.label;
+  }
+}
+
+/* Shared admin UI co-exports hooks/helpers for DX â€” refresh boundary lives at route level. */
 /* eslint-disable react-refresh/only-export-components */
 
 export type AdminSectionTone = "blue" | "teal" | "violet" | "amber" | "emerald" | "rose" | "sky" | "slate";
 
 function inferSectionTone(title: string): AdminSectionTone {
   const t = title.toLowerCase();
-  if (/seo|سيو|meta/.test(t)) return "emerald";
-  if (/صورة|غلاف|وسائط|avatar|ميديا/.test(t)) return "violet";
-  if (/تصنيف|نشر|إعداد|ترتيب|حالة/.test(t)) return "amber";
-  if (/محتوى|وصف|سيرة|اقتباس|سؤال|إجابة|ميزات|تفاصيل|تسليم/.test(t)) return "teal";
-  if (/أساسي|عنوان|خدمة|كاتب|اسم|باقة|مشروع|رأي|إحصائ/.test(t)) return "blue";
-  if (/زر|cta|رابط/.test(t)) return "sky";
+  if (/seo|ط³ظٹظˆ|meta/.test(t)) return "emerald";
+  if (/طµظˆط±ط©|ط؛ظ„ط§ظپ|ظˆط³ط§ط¦ط·|avatar|ظ…ظٹط¯ظٹط§|image|cover|media|photo/.test(t)) return "violet";
+  if (/طھطµظ†ظٹظپ|ظ†ط´ط±|ط¥ط¹ط¯ط§ط¯|طھط±طھظٹط¨|ط­ط§ظ„ط©|categor|publish|setting|order|status/.test(t)) return "amber";
+  if (/ظ…ط­طھظˆظ‰|ظˆطµظپ|ط³ظٹط±ط©|ط§ظ‚طھط¨ط§ط³|ط³ط¤ط§ظ„|ط¥ط¬ط§ط¨ط©|ظ…ظٹط²ط§طھ|طھظپط§طµظٹظ„|طھط³ظ„ظٹظ…|content|bio|quote|question|feature|detail|deliver/.test(t))
+    return "teal";
+  if (/ط£ط³ط§ط³ظٹ|ط¹ظ†ظˆط§ظ†|ط®ط¯ظ…ط©|ظƒط§طھط¨|ط§ط³ظ…|ط¨ط§ظ‚ط©|ظ…ط´ط±ظˆط¹|ط±ط£ظٹ|ط¥ط­طµط§ط¦|basic|title|service|author|project|testimonial|stat/.test(t))
+    return "blue";
+  if (/ط²ط±|cta|ط±ط§ط¨ط·|link|button/.test(t)) return "sky";
   return "slate";
 }
 
 function inferSectionIcon(title: string, tone: AdminSectionTone): LucideIcon {
-  if (/seo|سيو|meta/.test(title.toLowerCase())) return Search;
-  if (/صورة|غلاف|وسائط|avatar/.test(title)) return ImageIcon;
-  if (/تصنيف|نشر|إعداد|ترتيب|حالة/.test(title)) return Settings2;
-  if (/محتوى|وصف|سيرة|اقتباس|سؤال|ميزات|تفاصيل/.test(title)) return FileText;
+  const t = title.toLowerCase();
+  if (/seo|ط³ظٹظˆ|meta/.test(t)) return Search;
+  if (/طµظˆط±ط©|ط؛ظ„ط§ظپ|ظˆط³ط§ط¦ط·|avatar|image|cover|media|photo/.test(t)) return ImageIcon;
+  if (/طھطµظ†ظٹظپ|ظ†ط´ط±|ط¥ط¹ط¯ط§ط¯|طھط±طھظٹط¨|ط­ط§ظ„ط©|categor|publish|setting|order|status/.test(t)) return Settings2;
+  if (/ظ…ط­طھظˆظ‰|ظˆطµظپ|ط³ظٹط±ط©|ط§ظ‚طھط¨ط§ط³|ط³ط¤ط§ظ„|ظ…ظٹط²ط§طھ|طھظپط§طµظٹظ„|content|bio|quote|question|feature|detail/.test(t))
+    return FileText;
   if (tone === "blue") return Sparkles;
   return LayoutList;
 }
@@ -51,7 +101,7 @@ export function AdminPageHeader({
   title,
   description,
   backTo,
-  backLabel = "رجوع",
+  backLabel,
   actionTo,
   actionParams,
   actionLabel,
@@ -64,22 +114,24 @@ export function AdminPageHeader({
   actionParams?: Record<string, string>;
   actionLabel?: string;
 }) {
+  const { a } = useAdminI18n();
+  const resolvedBack = backLabel ?? a.back;
   return (
     <div className="admin-page-hero mb-6 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
       <div className="min-w-0">
         {backTo && (
           <Link
             to={backTo}
-            className="mb-2 inline-flex min-h-10 items-center gap-1.5 text-sm text-[var(--admin-muted,#5b6b82)] hover:text-[var(--admin-primary,#1149b0)]"
+            className="mb-2 inline-flex min-h-10 items-center gap-1.5 text-sm text-[var(--admin-muted,#5c6785)] hover:text-[var(--admin-primary,#1149b0)]"
           >
-            <ArrowRight className="h-3.5 w-3.5 rtl-flip" /> {backLabel}
+            <ArrowRight className="h-3.5 w-3.5 rtl-flip" /> {resolvedBack}
           </Link>
         )}
-        <h1 className="text-xl font-bold tracking-tight text-[var(--admin-text,#152238)] sm:text-2xl">
+        <h1 className="text-xl font-bold tracking-tight text-[var(--admin-text,#111c36)] sm:text-2xl">
           {title}
         </h1>
         {description && (
-          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[var(--admin-muted,#5b6b82)]">
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[var(--admin-muted,#5c6785)]">
             {description}
           </p>
         )}
@@ -97,33 +149,34 @@ export function AdminPageHeader({
   );
 }
 
-/** إذا كان مسار $id نشطاً يعرض النموذج فقط */
+/** ط¥ط°ط§ ظƒط§ظ† ظ…ط³ط§ط± $id ظ†ط´ط·ط§ظ‹ ظٹط¹ط±ط¶ ط§ظ„ظ†ظ…ظˆط°ط¬ ظپظ‚ط· */
 export function useAdminChildRoute(from: string) {
   return useMatch({ from: from as never, shouldThrow: false });
 }
 
 export function AdminStatusBadge({ status }: { status: PublishStatus | string }) {
+  const { a } = useAdminI18n();
   const map: Record<string, string> = {
     published: "bg-emerald-500/12 text-emerald-800 border-emerald-500/25",
     draft: "bg-amber-500/12 text-amber-800 border-amber-500/25",
     scheduled: "bg-sky-500/12 text-sky-800 border-sky-500/25",
     new: "bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_12%,white)] text-[var(--admin-primary,#1149b0)] border-[color-mix(in_srgb,var(--admin-primary,#1149b0)_25%,transparent)]",
     contacted: "bg-amber-500/12 text-amber-800 border-amber-500/25",
-    closed: "bg-[var(--admin-surface-muted,#eef1f6)] text-[var(--admin-muted,#5b6b82)] border-[var(--admin-border,#dde3ec)]",
+    closed: "bg-[var(--admin-surface-muted,#eef2f8)] text-[var(--admin-muted,#5c6785)] border-[var(--admin-border,#dce3ef)]",
     pending: "bg-amber-500/12 text-amber-800 border-amber-500/25",
     reviewed: "bg-sky-500/12 text-sky-800 border-sky-500/25",
     completed: "bg-emerald-500/12 text-emerald-800 border-emerald-500/25",
   };
   const labels: Record<string, string> = {
-    published: "منشور",
-    draft: "مسودة",
-    scheduled: "مجدول",
-    new: "جديد",
-    contacted: "تم التواصل",
-    closed: "مغلق",
-    pending: "بانتظار",
-    reviewed: "تمت المراجعة",
-    completed: "مكتمل",
+    published: a.statusPublished,
+    draft: a.statusDraft,
+    scheduled: a.statusScheduled,
+    new: a.statusNew,
+    contacted: a.statusContacted,
+    closed: a.statusClosed,
+    pending: a.statusPending,
+    reviewed: a.statusReviewed,
+    completed: a.statusCompleted,
   };
   return (
     <span
@@ -150,11 +203,11 @@ export function AdminField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-semibold text-[var(--admin-text,#152238)]">
+      <label htmlFor={id} className="text-sm font-semibold text-[var(--admin-text,#111c36)]">
         {label}
       </label>
       <div className="mt-1.5">{children}</div>
-      {hint && <p className="mt-1.5 text-xs leading-relaxed text-[var(--admin-muted,#5b6b82)]">{hint}</p>}
+      {hint && <p className="mt-1.5 text-xs leading-relaxed text-[var(--admin-muted,#5c6785)]">{hint}</p>}
     </div>
   );
 }
@@ -167,7 +220,7 @@ export function AdminCard({ children, className }: { children: ReactNode; classN
   return <div className={cn("admin-card p-4 sm:p-5 md:p-6", className)}>{children}</div>;
 }
 
-/** بطاقة نموذج ملوّنة بأيقونة — لنماذج الإضافة/التعديل */
+/** ط¨ط·ط§ظ‚ط© ظ†ظ…ظˆط°ط¬ ظ…ظ„ظˆظ‘ظ†ط© ط¨ط£ظٹظ‚ظˆظ†ط© â€” ظ„ظ†ظ…ط§ط°ط¬ ط§ظ„ط¥ط¶ط§ظپط©/ط§ظ„طھط¹ط¯ظٹظ„ */
 export function AdminCardSection({
   title,
   description,
@@ -193,9 +246,9 @@ export function AdminCardSection({
           <Icon className="h-4 w-4" />
         </span>
         <div className="min-w-0 pt-0.5">
-          <h2 className="text-sm font-bold text-[var(--admin-text,#152238)]">{title}</h2>
+          <h2 className="text-sm font-bold text-[var(--admin-text,#111c36)]">{title}</h2>
           {description && (
-            <p className="mt-0.5 text-xs leading-relaxed text-[var(--admin-muted,#5b6b82)]">
+            <p className="mt-0.5 text-xs leading-relaxed text-[var(--admin-muted,#5c6785)]">
               {description}
             </p>
           )}
@@ -207,15 +260,16 @@ export function AdminCardSection({
 }
 
 export function AdminLoading() {
+  const { a } = useAdminI18n();
   return (
     <div className="flex flex-col items-center gap-3 p-10 text-center text-sm text-[var(--admin-muted)]">
       <div className="admin-spinner" aria-hidden />
-      جاري التحميل…
+      {a.loading}
     </div>
   );
 }
 
-/** شريط تحميل خفيف — لا يحجب الصفحة */
+/** ط´ط±ظٹط· طھط­ظ…ظٹظ„ ط®ظپظٹظپ â€” ظ„ط§ ظٹط­ط¬ط¨ ط§ظ„طµظپط­ط© */
 export function AdminFetchingBar({ show }: { show?: boolean }) {
   if (!show) return null;
   return (
@@ -238,7 +292,7 @@ export function AdminEmpty({
 }) {
   return (
     <div className="admin-card p-10 text-center sm:p-12">
-      <p className="text-sm text-[var(--admin-muted,#5b6b82)]">{message}</p>
+      <p className="text-sm text-[var(--admin-muted,#5c6785)]">{message}</p>
       {actionTo && actionLabel && (
         <Link to={actionTo} params={actionParams} className="admin-btn admin-btn-primary mt-5">
           <Plus className="h-4 w-4" /> {actionLabel}
@@ -251,24 +305,25 @@ export function AdminEmpty({
 export function AdminFormActions({
   saving,
   onDelete,
-  deleteLabel = "حذف",
+  deleteLabel,
 }: {
   saving: boolean;
   onDelete?: () => void;
   deleteLabel?: string;
 }) {
+  const { a } = useAdminI18n();
   return (
     <div className="admin-form-actions-bar">
       <button type="submit" disabled={saving} className="admin-btn admin-btn-primary min-w-[7.5rem]">
-        {saving ? "جاري الحفظ…" : "حفظ"}
+        {saving ? a.saving : a.save}
       </button>
       {onDelete && (
         <button type="button" onClick={onDelete} className="admin-btn admin-btn-danger">
-          {deleteLabel}
+          {deleteLabel ?? a.delete}
         </button>
       )}
-      <p className="ms-auto hidden text-xs text-[var(--admin-muted,#5b6b82)] sm:block">
-        احفظ التغييرات قبل مغادرة الصفحة
+      <p className="ms-auto hidden text-xs text-[var(--admin-muted,#5c6785)] sm:block">
+        {a.saveBeforeLeave}
       </p>
     </div>
   );
@@ -291,30 +346,31 @@ export function AdminSeoSection({
   onSlug: (v: string) => void;
   showSlug?: boolean;
 }) {
+  const { a, t } = useAdminI18n();
   const titleLen = metaTitle.length;
   const descLen = metaDescription.length;
   const titleHint =
     titleLen === 0
-      ? "فارغ — سيُستخدم النص الافتراضي للموقع"
+      ? a.metaTitleEmpty
       : titleLen >= 30 && titleLen <= 60
-        ? `${titleLen} حرف — طول مثالي`
-        : `${titleLen} حرف — المثالي 30–60`;
+        ? t(a.metaTitleIdeal, { n: titleLen })
+        : t(a.metaTitleHint, { n: titleLen });
   const descHint =
     descLen === 0
-      ? "فارغ — سيُستخدم النص الافتراضي للموقع"
+      ? a.metaDescEmpty
       : descLen >= 120 && descLen <= 160
-        ? `${descLen} حرف — طول مثالي`
-        : `${descLen} حرف — المثالي 120–160`;
+        ? t(a.metaDescIdeal, { n: descLen })
+        : t(a.metaDescHint, { n: descLen });
 
   return (
     <AdminCardSection
       title="SEO"
-      description="العناوين والوصف تظهر في Google ومشاركات السوشيال ميديا."
+      description={a.seoDesc}
       tone="emerald"
       icon={Search}
     >
       {showSlug && (
-        <AdminField label="Slug" id="slug" hint="معرّف الصفحة في الرابط — بالإنجليزية.">
+        <AdminField label="Slug" id="slug" hint={a.slugHint}>
           <input
             id="slug"
             dir="ltr"
@@ -330,7 +386,7 @@ export function AdminSeoSection({
           value={metaTitle}
           onChange={(e) => onMetaTitle(e.target.value)}
           className={adminInputClass()}
-          placeholder="عنوان يظهر في نتائج البحث"
+          placeholder={a.metaTitlePlaceholder}
         />
       </AdminField>
       <AdminField label="Meta Description" id="metaDescription" hint={descHint}>
@@ -340,7 +396,7 @@ export function AdminSeoSection({
           value={metaDescription}
           onChange={(e) => onMetaDescription(e.target.value)}
           className={adminInputClass()}
-          placeholder="وصف مختصر يشجّع على النقر"
+          placeholder={a.metaDescPlaceholder}
         />
       </AdminField>
     </AdminCardSection>
@@ -354,23 +410,24 @@ export function AdminPublishSelect({
   value: PublishStatus;
   onChange: (v: PublishStatus) => void;
 }) {
+  const { a } = useAdminI18n();
   return (
-    <AdminField label="الحالة" id="status">
+    <AdminField label={a.labelStatus} id="status">
       <select
         id="status"
         value={value}
         onChange={(e) => onChange(e.target.value as PublishStatus)}
         className={adminInputClass()}
       >
-        <option value="published">منشور</option>
-        <option value="draft">مسودة</option>
-        <option value="scheduled">مجدول</option>
+        <option value="published">{a.statusPublished}</option>
+        <option value="draft">{a.statusDraft}</option>
+        <option value="scheduled">{a.statusScheduled}</option>
       </select>
     </AdminField>
   );
 }
 
-/** غلاف قسم داخل صفحة الأدمن */
+/** ط؛ظ„ط§ظپ ظ‚ط³ظ… ط¯ط§ط®ظ„ طµظپط­ط© ط§ظ„ط£ط¯ظ…ظ† */
 export function AdminSection({
   title,
   description,
@@ -385,9 +442,9 @@ export function AdminSection({
   return (
     <section className={cn("mb-8", className)}>
       <div className="mb-3.5">
-        <h2 className="text-base font-semibold text-[var(--admin-text,#152238)]">{title}</h2>
+        <h2 className="text-base font-semibold text-[var(--admin-text,#111c36)]">{title}</h2>
         {description && (
-          <p className="mt-0.5 text-sm text-[var(--admin-muted,#5b6b82)]">{description}</p>
+          <p className="mt-0.5 text-sm text-[var(--admin-muted,#5c6785)]">{description}</p>
         )}
       </div>
       {children}
@@ -395,7 +452,7 @@ export function AdminSection({
   );
 }
 
-/** جدول داخل بطاقة — يسمح بالتمرير الأفقي على الموبايل */
+/** ط¬ط¯ظˆظ„ ط¯ط§ط®ظ„ ط¨ط·ط§ظ‚ط© â€” ظٹط³ظ…ط­ ط¨ط§ظ„طھظ…ط±ظٹط± ط§ظ„ط£ظپظ‚ظٹ ط¹ظ„ظ‰ ط§ظ„ظ…ظˆط¨ط§ظٹظ„ */
 export function AdminTableCard({
   children,
   className,
@@ -419,14 +476,15 @@ export function AdminActionLink({
   label?: string;
   icon?: typeof Pencil;
 }) {
+  const { a } = useAdminI18n();
   const className =
-    "inline-flex items-center gap-1.5 rounded-[var(--admin-radius,0.625rem)] px-2.5 py-1.5 text-xs font-semibold text-[var(--admin-primary,#1149b0)] hover:bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] transition-colors";
+    "inline-flex items-center gap-1.5 rounded-[var(--admin-radius)] px-2.5 py-1.5 text-xs font-semibold text-[var(--admin-primary,#1149b0)] hover:bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_10%,white)] transition-colors";
 
   if (href) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         <Icon className="h-3.5 w-3.5" />
-        {label ?? "فتح"}
+        {label ?? a.open}
       </a>
     );
   }
@@ -436,7 +494,7 @@ export function AdminActionLink({
   return (
     <Link to={to} params={params} className={className}>
       <Icon className="h-3.5 w-3.5" />
-      {label ?? "تحرير"}
+      {label ?? a.edit}
     </Link>
   );
 }
@@ -445,21 +503,23 @@ export function AdminRowActions({
   editTo,
   editParams,
   onDelete,
-  deleteLabel = "حذف",
+  deleteLabel,
 }: {
   editTo: string;
   editParams: Record<string, string>;
   onDelete?: () => void;
   deleteLabel?: string;
 }) {
+  const { a } = useAdminI18n();
+  const resolvedDelete = deleteLabel ?? a.delete;
   return (
     <div className="flex items-center justify-end gap-1">
       <Link
         to={editTo}
         params={editParams}
-        className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] text-[var(--admin-muted,#5b6b82)] transition-colors hover:bg-[var(--admin-surface-muted,#eef1f6)] hover:text-[var(--admin-text,#152238)]"
-        title="تحرير"
-        aria-label="تحرير"
+        className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] text-[var(--admin-muted,#5c6785)] transition-colors hover:bg-[var(--admin-surface-muted,#eef2f8)] hover:text-[var(--admin-text,#111c36)]"
+        title={a.edit}
+        aria-label={a.edit}
       >
         <Pencil className="h-4 w-4" />
       </Link>
@@ -467,9 +527,9 @@ export function AdminRowActions({
         <button
           type="button"
           onClick={onDelete}
-          className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.625rem)] text-[var(--admin-muted,#5b6b82)] transition-colors hover:bg-destructive/10 hover:text-destructive"
-          title={deleteLabel}
-          aria-label={deleteLabel}
+          className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] text-[var(--admin-muted,#5c6785)] transition-colors hover:bg-destructive/10 hover:text-destructive"
+          title={resolvedDelete}
+          aria-label={resolvedDelete}
         >
           <Trash2 className="h-4 w-4" />
         </button>
@@ -485,7 +545,7 @@ function scoreBarColor(score: number): string {
   return "bg-destructive";
 }
 
-/** لوحة تقييم SEO — للبطاقات أو الجداول */
+/** ظ„ظˆط­ط© طھظ‚ظٹظٹظ… SEO â€” ظ„ظ„ط¨ط·ط§ظ‚ط§طھ ط£ظˆ ط§ظ„ط¬ط¯ط§ظˆظ„ */
 export function AdminSeoScorePanel({
   title,
   subtitle,
@@ -498,16 +558,25 @@ export function AdminSeoScorePanel({
   editTo?: string;
   editParams?: Record<string, string>;
 }) {
+  const { a, t, locale } = useAdminI18n();
   const result = evaluateStaticPageSeo(input);
   const items = getSummaryChecks(result.checks).slice(0, 5);
+  const gradeLabel =
+    result.score >= 90
+      ? a.seoGradeExcellent
+      : result.score >= 70
+        ? a.seoGradeGood
+        : result.score >= 50
+          ? a.seoGradeNeedsWork
+          : a.seoGradePoor;
 
   return (
     <div className="admin-card flex h-full flex-col p-4 md:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="truncate font-semibold text-[var(--admin-text,#152238)]">{title}</h3>
+          <h3 className="truncate font-semibold text-[var(--admin-text,#111c36)]">{title}</h3>
           {subtitle && (
-            <p className="mt-0.5 truncate text-xs text-[var(--admin-muted,#5b6b82)]" dir="ltr">
+            <p className="mt-0.5 truncate text-xs text-[var(--admin-muted,#5c6785)]" dir="ltr">
               {subtitle}
             </p>
           )}
@@ -516,16 +585,16 @@ export function AdminSeoScorePanel({
           <div className="text-2xl font-bold tabular-nums leading-none" dir="ltr">
             {result.score}
           </div>
-          <div className="text-[10px] text-[var(--admin-muted,#5b6b82)]" dir="ltr">
+          <div className="text-[10px] text-[var(--admin-muted,#5c6785)]" dir="ltr">
             / 100
           </div>
           <div className={cn("mt-1 text-xs font-medium", result.labelClassName)}>
-            {result.label}
+            {gradeLabel}
           </div>
         </div>
       </div>
 
-      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef1f6)]">
+      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef2f8)]">
         <div
           className={cn("h-full rounded-full transition-all", scoreBarColor(result.score))}
           style={{ width: `${result.score}%` }}
@@ -539,40 +608,42 @@ export function AdminSeoScorePanel({
             <span
               className={
                 item.status === "pass"
-                  ? "text-[var(--admin-text,#152238)]"
-                  : "text-[var(--admin-muted,#5b6b82)]"
+                  ? "text-[var(--admin-text,#111c36)]"
+                  : "text-[var(--admin-muted,#5c6785)]"
               }
             >
-              {item.label}
+              {localizeSeoCheckLabel(item, locale, a, t)}
             </span>
           </li>
         ))}
       </ul>
 
       {editTo && (
-        <div className="mt-4 border-t border-[var(--admin-border,#dde3ec)] pt-3">
-          <AdminActionLink to={editTo} params={editParams} label="تحرير SEO" />
+        <div className="mt-4 border-t border-[var(--admin-border,#dce3ef)] pt-3">
+          <AdminActionLink to={editTo} params={editParams} label={a.editSeo} />
         </div>
       )}
     </div>
   );
 }
 
-/** معاينة نص SEO — يدعم العربية والإنجليزية بدون عكس الكلمات */
+/** ظ…ط¹ط§ظٹظ†ط© ظ†طµ SEO â€” ظٹط¯ط¹ظ… ط§ظ„ط¹ط±ط¨ظٹط© ظˆط§ظ„ط¥ظ†ط¬ظ„ظٹط²ظٹط© ط¨ط¯ظˆظ† ط¹ظƒط³ ط§ظ„ظƒظ„ظ…ط§طھ */
 export function AdminMetaPreview({
   text,
-  fallback = "نص افتراضي",
+  fallback,
 }: {
   text?: string;
   fallback?: string;
 }) {
-  const value = text?.trim() || fallback;
+  const { a } = useAdminI18n();
+  const resolvedFallback = fallback ?? a.metaDefault;
+  const value = text?.trim() || resolvedFallback;
   const isDefault = !text?.trim();
   return (
     <p
       className={cn(
         "text-xs leading-relaxed line-clamp-2 [unicode-bidi:plaintext]",
-        isDefault ? "italic text-[var(--admin-muted,#5b6b82)]" : "text-[var(--admin-text,#152238)]/80",
+        isDefault ? "italic text-[var(--admin-muted,#5c6785)]" : "text-[var(--admin-text,#111c36)]/80",
       )}
       dir="auto"
       title={value}
@@ -582,20 +653,30 @@ export function AdminMetaPreview({
   );
 }
 
-/** شارة تقييم SEO مدمجة — للجداول */
+/** ط´ط§ط±ط© طھظ‚ظٹظٹظ… SEO ظ…ط¯ظ…ط¬ط© â€” ظ„ظ„ط¬ط¯ط§ظˆظ„ */
 export function AdminSeoScoreBadge(input: AdminSeoScoreInput) {
+  const { a, t, locale } = useAdminI18n();
   const result = evaluateStaticPageSeo(input);
   const topIssue = getSummaryChecks(result.checks).find((c) => c.status !== "pass");
+  const gradeLabel =
+    result.score >= 90
+      ? a.seoGradeExcellent
+      : result.score >= 70
+        ? a.seoGradeGood
+        : result.score >= 50
+          ? a.seoGradeNeedsWork
+          : a.seoGradePoor;
+  const topIssueLabel = topIssue ? localizeSeoCheckLabel(topIssue, locale, a, t) : undefined;
 
   return (
     <div
       className="inline-flex flex-col gap-1.5"
-      title={topIssue ? `${topIssue.label}` : undefined}
+      title={topIssueLabel}
     >
       <div className="flex items-center gap-2">
         <span
           className={cn(
-            "inline-flex h-9 min-w-9 items-center justify-center rounded-[var(--admin-radius,0.625rem)] px-2 text-sm font-bold tabular-nums",
+            "inline-flex h-9 min-w-9 items-center justify-center rounded-[var(--admin-radius)] px-2 text-sm font-bold tabular-nums",
             result.score >= 90 && "bg-emerald-500/15 text-emerald-700",
             result.score >= 70 && result.score < 90 && "bg-emerald-500/10 text-emerald-600",
             result.score >= 50 && result.score < 70 && "bg-amber-500/15 text-amber-700",
@@ -605,9 +686,9 @@ export function AdminSeoScoreBadge(input: AdminSeoScoreInput) {
         >
           {result.score}
         </span>
-        <span className={cn("text-xs font-medium", result.labelClassName)}>{result.label}</span>
+        <span className={cn("text-xs font-medium", result.labelClassName)}>{gradeLabel}</span>
       </div>
-      <div className="h-1 w-full max-w-[5.5rem] overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef1f6)]">
+      <div className="h-1 w-full max-w-[5.5rem] overflow-hidden rounded-full bg-[var(--admin-surface-muted,#eef2f8)]">
         <div
           className={cn("h-full rounded-full", scoreBarColor(result.score))}
           style={{ width: `${result.score}%` }}

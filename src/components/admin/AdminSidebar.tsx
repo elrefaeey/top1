@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   LayoutDashboard,
   FileText,
@@ -17,48 +17,54 @@ import {
   X,
   UserRound,
   ExternalLink,
+  type LucideIcon,
 } from "lucide-react";
 import { logout } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import { LanguageSwitch } from "@/components/site/LanguageSwitch";
 import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
-const navGroups: Array<{
+function buildNavGroups(a: AdminMessages): Array<{
   label: string;
-  items: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }>;
-}> = [
-  {
-    label: "نظرة عامة",
-    items: [
-      { to: "/admin", label: "لوحة التحكم", icon: LayoutDashboard, exact: true },
-      { to: "/admin/leads", label: "الرسائل", icon: Inbox },
-    ],
-  },
-  {
-    label: "المحتوى",
-    items: [
-      { to: "/admin/pages", label: "الصفحات", icon: FileText },
-      { to: "/admin/services", label: "الخدمات", icon: Briefcase },
-      { to: "/admin/portfolio", label: "أعمالنا", icon: Image },
-      { to: "/admin/blog", label: "المدونة", icon: BookOpen },
-      { to: "/admin/authors", label: "الكتّاب", icon: UserRound },
-      { to: "/admin/testimonials", label: "آراء العملاء", icon: MessageSquare },
-      { to: "/admin/faqs", label: "الأسئلة الشائعة", icon: HelpCircle },
-    ],
-  },
-  {
-    label: "النمو",
-    items: [
-      { to: "/admin/stats", label: "الإحصائيات", icon: BarChart3 },
-      { to: "/admin/seo", label: "SEO", icon: Search },
-      { to: "/admin/seo-ai", label: "SEO AI", icon: Sparkles },
-    ],
-  },
-  {
-    label: "النظام",
-    items: [{ to: "/admin/settings", label: "الإعدادات", icon: Settings }],
-  },
-];
+  items: Array<{ to: string; label: string; icon: LucideIcon; exact?: boolean }>;
+}> {
+  return [
+    {
+      label: a.overview,
+      items: [
+        { to: "/admin", label: a.dashboard, icon: LayoutDashboard, exact: true },
+        { to: "/admin/leads", label: a.leads, icon: Inbox },
+      ],
+    },
+    {
+      label: a.content,
+      items: [
+        { to: "/admin/pages", label: a.pages, icon: FileText },
+        { to: "/admin/services", label: a.services, icon: Briefcase },
+        { to: "/admin/portfolio", label: a.portfolio, icon: Image },
+        { to: "/admin/blog", label: a.blog, icon: BookOpen },
+        { to: "/admin/authors", label: a.authors, icon: UserRound },
+        { to: "/admin/testimonials", label: a.testimonials, icon: MessageSquare },
+        { to: "/admin/faqs", label: a.faqs, icon: HelpCircle },
+      ],
+    },
+    {
+      label: a.growth,
+      items: [
+        { to: "/admin/stats", label: a.stats, icon: BarChart3 },
+        { to: "/admin/seo", label: a.seo, icon: Search },
+        { to: "/admin/seo-ai", label: a.seoAi, icon: Sparkles },
+      ],
+    },
+    {
+      label: a.system,
+      items: [{ to: "/admin/settings", label: a.settings, icon: Settings }],
+    },
+  ];
+}
 
 function isNavActive(pathname: string, to: string, exact?: boolean) {
   if (exact) return pathname === to || pathname === `${to}/`;
@@ -80,11 +86,12 @@ type AdminSidebarProps = {
 
 export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
   const { user } = useAuth();
+  const { a } = useAdminI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navGroups = useMemo(() => buildNavGroups(a), [a]);
 
   useEffect(() => {
     onClose?.();
-    // Close drawer on route change (mobile only)
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only pathname
   }, [pathname]);
 
@@ -106,9 +113,9 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
     <>
       <button
         type="button"
-        aria-label="إغلاق القائمة"
+        aria-label={a.closeMenu}
         className={cn(
-          "fixed inset-0 z-40 bg-[rgb(8_14_24_/0.55)] transition-opacity md:hidden",
+          "fixed inset-0 z-40 bg-[rgb(2_28_77_/0.48)] transition-opacity md:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={onClose}
@@ -125,22 +132,22 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
             : "max-md:ltr:-translate-x-full max-md:rtl:translate-x-full",
         )}
       >
-        <div className="flex shrink-0 items-start justify-between gap-2 border-b border-[var(--admin-sidebar-border,#1c2d45)] px-4 py-4 sm:px-4 sm:py-5">
+        <div className="flex shrink-0 items-start justify-between gap-2 border-b border-[var(--admin-sidebar-border)] px-4 py-4 sm:px-4 sm:py-5">
           <Link to="/admin" className="flex min-w-0 items-center gap-2.5" onClick={onClose}>
-            <img src={SITE_LOGO_URL} alt="" className="h-8 w-8 rounded-lg object-contain" />
+            <img src={SITE_LOGO_URL} alt="" className="h-8 w-8 rounded-lg object-contain ring-1 ring-white/15" />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold tracking-tight text-white" dir="ltr">
                 {SITE_NAME}
               </p>
-              <p className="mt-0.5 text-[11px] font-medium text-[var(--admin-accent,#c4a035)]">
-                لوحة التحكم
+              <p className="mt-0.5 text-[11px] font-medium text-[#8eb6ff]">
+                {a.panel}
               </p>
             </div>
           </Link>
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius,0.75rem)] text-[var(--admin-sidebar-text,#9aabbf)] hover:bg-[var(--admin-sidebar-hover,#152338)] hover:text-white md:hidden"
-            aria-label="إغلاق القائمة"
+            className="grid h-10 w-10 place-items-center rounded-[var(--admin-radius)] text-[var(--admin-sidebar-text)] hover:bg-[var(--admin-sidebar-hover)] hover:text-white md:hidden"
+            aria-label={a.closeMenu}
             onClick={onClose}
           >
             <X className="h-5 w-5" />
@@ -173,26 +180,29 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
           ))}
         </nav>
 
-        <div className="admin-sidebar-foot shrink-0 space-y-2 border-t border-[var(--admin-sidebar-border,#1c2d45)] p-2.5">
-          <div className="flex items-center gap-2.5 rounded-[var(--admin-radius,0.75rem)] bg-[rgb(255_255_255_/0.04)] px-2.5 py-2">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[color-mix(in_srgb,var(--admin-accent,#c4a035)_22%,transparent)] text-[11px] font-bold text-[var(--admin-accent,#c4a035)]">
-              {userInitials(user?.email, user?.displayName)}
-            </span>
-            <p className="min-w-0 truncate text-xs text-[var(--admin-sidebar-text,#9aabbf)]" dir="ltr">
-              {user?.email}
-            </p>
+        <div className="admin-sidebar-foot shrink-0 space-y-2 border-t border-[var(--admin-sidebar-border)] p-2.5">
+          <div className="flex items-center justify-between gap-2 rounded-[var(--admin-radius)] bg-white/5 px-2.5 py-2">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[color-mix(in_srgb,var(--admin-accent)_28%,transparent)] text-[11px] font-bold text-[#c5d9ff]">
+                {userInitials(user?.email, user?.displayName)}
+              </span>
+              <p className="min-w-0 truncate text-xs text-[var(--admin-sidebar-text)]" dir="ltr">
+                {user?.email}
+              </p>
+            </div>
+            <LanguageSwitch className="shrink-0" />
           </div>
           <Link to="/" onClick={onClose} className="admin-nav-link">
             <span className="admin-nav-icon" aria-hidden>
               <ExternalLink className="h-4 w-4" />
             </span>
-            عرض الموقع
+            {a.viewSite}
           </Link>
           <button type="button" onClick={() => logout()} className="admin-nav-link w-full text-start">
             <span className="admin-nav-icon" aria-hidden>
               <LogOut className="h-4 w-4 rtl-flip" />
             </span>
-            تسجيل الخروج
+            {a.logout}
           </button>
         </div>
       </aside>

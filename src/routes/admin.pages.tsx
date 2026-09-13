@@ -26,29 +26,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAdminI18n } from "@/providers/LocaleProvider";
+import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
-const STATIC_PAGES: Array<{
+const STATIC_PAGE_IDS: Array<{
   id: StaticPageSeoId;
-  title: string;
   path: string;
   slug: string;
+  titleKey: keyof AdminMessages;
 }> = [
-  { id: "home", title: "الرئيسية", path: "/", slug: "home" },
-  { id: "about", title: "من نحن", path: "/about", slug: "about" },
-  { id: "contact", title: "تواصل", path: "/contact", slug: "contact" },
-  { id: "services", title: "الخدمات", path: "/services", slug: "services" },
-  { id: "portfolio", title: "أعمالنا", path: "/portfolio", slug: "portfolio" },
-  { id: "blog", title: "المدونة", path: "/blog", slug: "blog" },
+  { id: "home", path: "/", slug: "home", titleKey: "pageHome" },
+  { id: "about", path: "/about", slug: "about", titleKey: "pageAbout" },
+  { id: "contact", path: "/contact", slug: "contact", titleKey: "pageContact" },
+  { id: "services", path: "/services", slug: "services", titleKey: "services" },
+  { id: "portfolio", path: "/portfolio", slug: "portfolio", titleKey: "portfolio" },
+  { id: "blog", path: "/blog", slug: "blog", titleKey: "blog" },
 ];
 
-const OTHER_SITE_PAGES: Array<{ title: string; path: string; slug: string }> = [
-  { title: "الخصوصية", path: "/privacy", slug: "privacy" },
-  { title: "الشروط", path: "/terms", slug: "terms" },
+const OTHER_SITE_PAGE_IDS: Array<{ path: string; slug: string; titleKey: keyof AdminMessages }> = [
+  { path: "/privacy", slug: "privacy", titleKey: "pagePrivacy" },
+  { path: "/terms", slug: "terms", titleKey: "pageTerms" },
 ];
 
 const KNOWN_SLUGS = new Set([
-  ...STATIC_PAGES.map((p) => p.slug),
-  ...OTHER_SITE_PAGES.map((p) => p.slug),
+  ...STATIC_PAGE_IDS.map((p) => p.slug),
+  ...OTHER_SITE_PAGE_IDS.map((p) => p.slug),
   ...SEO_LANDING_PAGES.map((p) => p.slug),
 ]);
 
@@ -93,7 +95,7 @@ function PageListCard({
         ? "from-amber-500/80 to-amber-400/20"
         : accent === "violet"
           ? "from-violet-500/80 to-violet-400/20"
-          : "from-[var(--admin-primary,#1149b0)]/80 to-[var(--admin-primary,#1149b0)]/15";
+          : "from-[var(--admin-primary)]/80 to-[var(--admin-primary)]/15";
 
   return (
     <div className="admin-card relative overflow-hidden p-4 sm:p-5">
@@ -122,6 +124,7 @@ function PageListCard({
 }
 
 function AdminPagesList() {
+  const { a, t } = useAdminI18n();
   const isChild = useAdminChildRoute("/admin/pages/$id");
   const { data: cmsPages = [], isFetching } = useAdminPages();
 
@@ -132,28 +135,28 @@ function AdminPagesList() {
   return (
     <div className="space-y-5">
       <AdminPageHeader
-        title="الصفحات"
-        description="إدارة صفحات الموقع وبيانات SEO. الصفحات الأساسية قابلة للتحرير من هنا؛ صفحات المدن تُعرض للمعاينة فقط."
+        title={a.pagesTitle}
+        description={a.pagesDesc}
         actionTo="/admin/pages/$id"
         actionParams={{ id: "new" }}
-        actionLabel="صفحة CMS جديدة"
+        actionLabel={a.pagesNewCms}
       />
 
       <AdminFetchingBar show={isFetching} />
 
       <AdminCardSection
-        title="صفحات الموقع الأساسية"
-        description="الستة الرئيسية — مرّر على درجة SEO لرؤية أهم ملاحظة."
+        title={a.pagesCoreTitle}
+        description={a.pagesCoreDesc}
         tone="blue"
         icon={FileText}
       >
         <div className="space-y-3">
-          {STATIC_PAGES.map((p) => {
+          {STATIC_PAGE_IDS.map((p) => {
             const cms = cmsPages.find((c) => c.id === p.slug || c.slug === p.slug);
             return (
               <PageListCard
                 key={p.id}
-                title={p.title}
+                title={a[p.titleKey]}
                 path={p.path}
                 status={cms?.status ?? "published"}
                 meta={cms?.metaTitle}
@@ -162,14 +165,14 @@ function AdminPagesList() {
                 accent="blue"
                 actions={
                   <>
-                    <AdminActionLink href={p.path} label="عرض" icon={ExternalLink} />
+                    <AdminActionLink href={p.path} label={a.view} icon={ExternalLink} />
                     <Link
                       to="/admin/pages/$id"
                       params={{ id: p.slug }}
                       className="admin-btn admin-btn-primary admin-btn-sm"
                     >
                       <Pencil className="h-3.5 w-3.5" />
-                      تحرير SEO
+                      {a.editSeo}
                     </Link>
                   </>
                 }
@@ -180,25 +183,25 @@ function AdminPagesList() {
       </AdminCardSection>
 
       <AdminCardSection
-        title="صفحات أخرى"
-        description="الصفحات القانونية — عرض على الموقع، وتحرير CMS إن وُجد."
+        title={a.pagesOtherTitle}
+        description={a.pagesOtherDesc}
         tone="amber"
         icon={Scale}
       >
         <div className="space-y-3">
-          {OTHER_SITE_PAGES.map((p) => {
+          {OTHER_SITE_PAGE_IDS.map((p) => {
             const cms = cmsPages.find((c) => c.id === p.slug || c.slug === p.slug);
             return (
               <PageListCard
                 key={p.slug}
-                title={p.title}
+                title={a[p.titleKey]}
                 path={p.path}
                 status={cms?.status ?? "published"}
                 meta={cms?.metaTitle}
                 accent="amber"
                 actions={
                   <>
-                    <AdminActionLink href={p.path} label="عرض" icon={ExternalLink} />
+                    <AdminActionLink href={p.path} label={a.view} icon={ExternalLink} />
                     {cms ? (
                       <Link
                         to="/admin/pages/$id"
@@ -206,7 +209,7 @@ function AdminPagesList() {
                         className="admin-btn admin-btn-primary admin-btn-sm"
                       >
                         <Pencil className="h-3.5 w-3.5" />
-                        تحرير
+                        {a.edit}
                       </Link>
                     ) : null}
                   </>
@@ -218,8 +221,8 @@ function AdminPagesList() {
       </AdminCardSection>
 
       <AdminCardSection
-        title="صفحات SEO / المدن"
-        description={`${SEO_LANDING_PAGES.length} صفحة هبوط من الكود — المعاينة متاحة، والتحرير من الأدمن غير متاح حالياً.`}
+        title={a.pagesLandingsTitle}
+        description={t(a.pagesLandingsDesc, { n: SEO_LANDING_PAGES.length })}
         tone="teal"
         icon={MapPin}
       >
@@ -232,7 +235,7 @@ function AdminPagesList() {
               status="published"
               meta={p.metaTitle}
               accent="teal"
-              actions={<AdminActionLink href={p.path} label="عرض" icon={ExternalLink} />}
+              actions={<AdminActionLink href={p.path} label={a.view} icon={ExternalLink} />}
             />
           ))}
         </div>
@@ -240,8 +243,8 @@ function AdminPagesList() {
 
       {extraPages.length > 0 && (
         <AdminCardSection
-          title="صفحات CMS إضافية"
-          description="صفحات ديناميكية غير مرتبطة بالمسارات الثابتة أعلاه."
+          title={a.pagesExtraTitle}
+          description={a.pagesExtraDesc}
           tone="violet"
           icon={Sparkles}
         >
@@ -249,10 +252,10 @@ function AdminPagesList() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>العنوان</TableHead>
-                  <TableHead>Slug</TableHead>
-                  <TableHead>الحالة</TableHead>
-                  <TableHead className="text-end">إجراءات</TableHead>
+                  <TableHead>{a.title}</TableHead>
+                  <TableHead>{a.slug}</TableHead>
+                  <TableHead>{a.status}</TableHead>
+                  <TableHead className="text-end">{a.actions}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -276,12 +279,10 @@ function AdminPagesList() {
         </AdminCardSection>
       )}
 
-      <div className="admin-card flex flex-wrap items-center justify-between gap-3 border-[color-mix(in_srgb,var(--admin-primary,#1149b0)_18%,var(--admin-border,#dde3ec))] bg-[color-mix(in_srgb,var(--admin-primary,#1149b0)_5%,white)] p-4">
-        <p className="text-sm text-[var(--admin-muted,#5b6b82)]">
-          تقرير SEO مفصّل للصفحات الأساسية متاح في قسم SEO.
-        </p>
+      <div className="admin-card flex flex-wrap items-center justify-between gap-3 border-[color-mix(in_srgb,var(--admin-primary)_18%,var(--admin-border))] bg-[color-mix(in_srgb,var(--admin-primary)_5%,white)] p-4">
+        <p className="text-sm text-[var(--admin-muted,#5b6b82)]">{a.pagesSeoFooter}</p>
         <Link to="/admin/seo" className="admin-btn admin-btn-ghost admin-btn-sm">
-          فتح قسم SEO
+          {a.pagesOpenSeo}
         </Link>
       </div>
     </div>
