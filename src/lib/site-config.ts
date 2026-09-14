@@ -7,6 +7,15 @@ export const SITE_TWITTER = "@Top1Markting";
 /** مسار اللوجو الافتراضي (شفاف — public/logo.png) */
 export const SITE_LOGO_URL = "/logo.png";
 
+/** نسخة فاتحة للخلفيات الداكنة (فوتر / أدمن) */
+export const SITE_LOGO_LIGHT_URL = "/logo-light.png";
+
+/** أيقونة اللوجو فقط — فافيكون وأماكن مضغوطة */
+export const SITE_LOGO_MARK_URL = "/logo-mark.png";
+
+/** أيقونة فاتحة للخلفيات الداكنة */
+export const SITE_LOGO_MARK_LIGHT_URL = "/logo-mark-light.png";
+
 /** رقم واتساب الأساسي — السعودية */
 export const SITE_WHATSAPP_NUMBER = "966537309257";
 

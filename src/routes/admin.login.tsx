@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { loginWithEmail } from "@/lib/firebase/auth";
 import { getAuthErrorMessage } from "@/lib/firebase/auth-errors";
-import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
+import { SITE_LOGO_MARK_LIGHT_URL, SITE_NAME } from "@/lib/site-config";
 import { useAuth } from "@/providers/AuthProvider";
 import { adminInputClass } from "@/components/admin/AdminUi";
 import { useAdminI18n } from "@/providers/LocaleProvider";
@@ -66,7 +66,11 @@ function AdminLogin() {
     <div className="admin-login-page">
       <div className="w-full max-w-md">
         <div className="mb-7 text-center">
-          <img src={SITE_LOGO_URL} alt="" className="mx-auto h-12 w-12 rounded-xl object-contain" />
+          <img
+            src={SITE_LOGO_MARK_LIGHT_URL}
+            alt=""
+            className="mx-auto h-14 w-14 rounded-xl object-contain"
+          />
           <h1 className="mt-4 text-2xl font-bold tracking-tight text-white" dir="ltr">
             {SITE_NAME}
           </h1>

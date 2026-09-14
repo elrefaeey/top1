@@ -26,7 +26,7 @@ const SITE_SETTINGS: SiteSettings = {
   siteName: SITE_NAME,
   tagline: SITE_TAGLINE,
   logoUrl: SITE_LOGO_URL,
-  faviconUrl: SITE_LOGO_URL,
+  faviconUrl: "/favicon.ico",
   heroImageUrl: "",
   heroImageAlt: "",
   contactEmail: SITE_CONTACT_EMAIL,

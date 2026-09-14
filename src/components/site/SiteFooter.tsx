@@ -67,7 +67,7 @@ export function SiteFooter() {
                 <SiteLogo
                   className="footer-brand-logo"
                   imageClassName="footer-brand-logo-img"
-                  showName
+                  tone="light"
                 />
               </Link>
               <p className="footer-tagline">{tagline}</p>

@@ -33,7 +33,7 @@ const defaults: SiteSettings = {
   siteName: SITE_NAME,
   tagline: SITE_TAGLINE,
   logoUrl: SITE_LOGO_URL,
-  faviconUrl: SITE_LOGO_URL,
+  faviconUrl: "/favicon.ico",
   contactEmail: SITE_CONTACT_EMAIL,
   contactPhone: SITE_CONTACT_PHONE,
   contactPhoneSa: SITE_CONTACT_PHONE_SA,
@@ -73,7 +73,7 @@ function AdminSettingsPage() {
       await save.mutateAsync({
         ...form,
         logoUrl: SITE_LOGO_URL,
-        faviconUrl: SITE_LOGO_URL,
+        faviconUrl: "/favicon.ico",
       });
       setSaveOk(true);
     } catch (err) {

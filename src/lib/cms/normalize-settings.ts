@@ -113,7 +113,7 @@ export function normalizePublicSiteSettings(
   return {
     ...raw,
     logoUrl: SITE_LOGO_URL,
-    faviconUrl: SITE_LOGO_URL,
+    faviconUrl: "/favicon.ico",
     contactPhone,
     contactPhoneSa,
     whatsappNumber,

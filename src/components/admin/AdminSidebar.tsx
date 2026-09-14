@@ -23,7 +23,7 @@ import { logout } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
 import { useAdminI18n } from "@/providers/LocaleProvider";
 import { LanguageSwitch } from "@/components/site/LanguageSwitch";
-import { SITE_LOGO_URL, SITE_NAME } from "@/lib/site-config";
+import { SITE_LOGO_MARK_LIGHT_URL, SITE_NAME } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { AdminMessages } from "@/lib/i18n/admin-messages";
 
@@ -134,7 +134,11 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
       >
         <div className="flex shrink-0 items-start justify-between gap-2 border-b border-[var(--admin-sidebar-border)] px-4 py-4 sm:px-4 sm:py-5">
           <Link to="/admin" className="flex min-w-0 items-center gap-2.5" onClick={onClose}>
-            <img src={SITE_LOGO_URL} alt="" className="h-8 w-8 rounded-lg object-contain ring-1 ring-white/15" />
+            <img
+              src={SITE_LOGO_MARK_LIGHT_URL}
+              alt=""
+              className="h-8 w-8 rounded-lg object-contain ring-1 ring-white/15"
+            />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold tracking-tight text-white" dir="ltr">
                 {SITE_NAME}
