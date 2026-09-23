@@ -48,6 +48,8 @@ export function routeFileToPublicPath(filePath: string): string | null {
   const path = ("/" + rel.split(".").join("/")).split(LITERAL_DOT).join(".");
 
   if (path.includes("$")) return null;
+  if (path === "/en" || path.startsWith("/en/")) return null;
+  if (path === "/ar" || path.startsWith("/ar/")) return null;
   if (EXCLUDE_EXACT.has(path)) return null;
   if (EXCLUDE_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`))) return null;
   if (PERMANENT_REDIRECTS[path]) return null;

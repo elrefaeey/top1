@@ -1,10 +1,12 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { SiteLogo } from "@/components/site/SiteLogo";
 import { LanguageSwitch } from "@/components/site/LanguageSwitch";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { useSiteSettings } from "@/hooks/use-cms";
 import { useLocale } from "@/providers/LocaleProvider";
+import { stripLocalePrefix } from "@/lib/i18n/locale-path";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_NAV = [
@@ -24,6 +26,7 @@ export function SiteHeader() {
     .sort((a, b) => a.order - b.order);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const basePath = stripLocalePrefix(pathname);
   const menuId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
@@ -82,42 +85,42 @@ export function SiteHeader() {
   }, [open]);
 
   function isActive(href: string) {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
+    if (href === "/") return basePath === "/";
+    return basePath === href || basePath.startsWith(`${href}/`);
   }
 
   return (
     <>
       <header className="site-header relative z-40 w-full border-b border-border/80 bg-background/95 backdrop-blur-sm">
         <div className="container-page flex h-[3.75rem] lg:h-[4.25rem] items-center justify-between gap-3">
-          <Link
+          <LocaleLink
             to="/"
             className="group flex items-center min-w-0 shrink-0"
             aria-label={`${settings?.siteName ?? "Top1Markting"} — ${m.nav.homeAria}`}
           >
             <SiteLogo />
-          </Link>
+          </LocaleLink>
 
           <nav className="hidden lg:flex items-center gap-1" aria-label={m.nav.main}>
             {navLinks.map((l) => (
-              <Link
+              <LocaleLink
                 key={l.href}
                 to={l.href}
                 className={cn("nav-link", isActive(l.href) && "nav-link-active")}
               >
                 {labelForHref(l.href, l.label)}
-              </Link>
+              </LocaleLink>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             <LanguageSwitch />
-            <Link
+            <LocaleLink
               to="/contact"
               className="hidden sm:inline-flex btn-primary !py-2.5 !px-5 !text-[0.9375rem] min-h-11"
             >
               {m.nav.contactCta}
-            </Link>
+            </LocaleLink>
             <button
               ref={menuBtnRef}
               type="button"
@@ -161,7 +164,7 @@ export function SiteHeader() {
           aria-label={m.nav.main}
         >
           {navLinks.map((l) => (
-            <Link
+            <LocaleLink
               key={l.href}
               to={l.href}
               onClick={() => setOpen(false)}
@@ -173,15 +176,15 @@ export function SiteHeader() {
               )}
             >
               {labelForHref(l.href, l.label)}
-            </Link>
+            </LocaleLink>
           ))}
-          <Link
+          <LocaleLink
             to="/contact"
             onClick={() => setOpen(false)}
             className="btn-primary mt-2 w-full justify-center !text-sm min-h-11"
           >
             {m.nav.contactCta}
-          </Link>
+          </LocaleLink>
         </nav>
       </div>
     </>

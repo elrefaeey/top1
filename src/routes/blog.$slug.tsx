@@ -1,9 +1,10 @@
-import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useLoaderData, useParams } from "@tanstack/react-router";
 import { Twitter, Linkedin, Facebook, Link2, Clock, Calendar, ArrowUpLeft } from "lucide-react";
 import { useBlogPost, useBlogPosts } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import { formatPostDate } from "@/lib/date-utils";
 import { SiteImage } from "@/components/site/SiteImage";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { loadBlogPostForSeoFn } from "@/lib/seo/cms-seo.functions";
@@ -23,32 +24,16 @@ import { useLocale } from "@/providers/LocaleProvider";
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: async ({ params }) => {
-    const post = await loadBlogPostForSeoFn({ data: { slug: params.slug } });
-    if (!post) {
-      throw notFound({ headers: NOINDEX_HEADERS });
-    }
-    const canonical = blogPostSlug(post);
-    if (canonical && canonical !== params.slug) {
-      throw redirect({
-        to: "/blog/$slug",
-        params: { slug: canonical },
-        statusCode: 301,
-        replace: true,
-      });
-    }
-    return { post };
+  beforeLoad: ({ params }) => {
+    throw redirect({ href: `/ar/blog/${params.slug}`, statusCode: 301 });
   },
-  head: ({ loaderData, params }) => {
-    if (!loaderData?.post) return notFoundHead();
-    return buildBlogPostHead(loaderData.post, params.slug);
-  },
-  component: Post,
 });
 
-function Post() {
-  const { slug } = useParams({ from: "/blog/$slug" });
-  const { post: loaderPost } = Route.useLoaderData();
+export function Post() {
+  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { post: loaderPost } = (useLoaderData({ strict: false }) ?? {}) as {
+    post?: import("@/types/cms").BlogPost;
+  };
   const { data: hookPost, isLoading } = useBlogPost(slug);
   const { m, t, locale } = useLocale();
   const raw = hookPost ?? loaderPost;
@@ -249,7 +234,7 @@ function Post() {
             </h2>
             <div className="grid gap-5 md:grid-cols-2">
               {related.map((r) => (
-                <Link
+                <LocaleLink
                   key={r.id}
                   to="/blog/$slug"
                   params={{ slug: blogPostSlug(r) }}
@@ -282,7 +267,7 @@ function Post() {
                       </span>
                     </div>
                   </div>
-                </Link>
+                </LocaleLink>
               ))}
             </div>
           </section>

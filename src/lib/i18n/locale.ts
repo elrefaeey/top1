@@ -54,4 +54,5 @@ export function applyDocumentLocale(locale: Locale) {
   document.documentElement.dir = localeDir(locale);
 }
 
-export const LOCALE_BOOTSTRAP_SCRIPT = `(function(){try{var m=document.cookie.match(/(?:^|; )top1_locale=([^;]*)/);var l=m?decodeURIComponent(m[1]):"ar";if(l!=="en"&&l!=="ar")l="ar";document.documentElement.lang=l;document.documentElement.dir=l==="en"?"ltr":"rtl";}catch(e){}})();`;
+/** Prefer `/ar` or `/en` URL path over cookie so SSR HTML lang matches the indexed URL. */
+export const LOCALE_BOOTSTRAP_SCRIPT = `(function(){try{var p=location.pathname;var l=(p==="/en"||p.indexOf("/en/")===0)?"en":(p==="/ar"||p.indexOf("/ar/")===0)?"ar":null);if(!l){var m=document.cookie.match(/(?:^|; )top1_locale=([^;]*)/);l=m?decodeURIComponent(m[1]):"ar";}if(l!=="en"&&l!=="ar")l="ar";document.documentElement.lang=l;document.documentElement.dir=l==="en"?"ltr":"rtl";}catch(e){}})();`;

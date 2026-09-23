@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { applySecurityHeaders } from "./lib/security/headers";
+import { legacyToArabicPath } from "./lib/i18n/locale-path";
 import { PERMANENT_REDIRECTS } from "./lib/seo/permanent-redirects";
 
 type ServerEntry = {
@@ -60,7 +61,20 @@ export default {
       const path = url.pathname.replace(/\/+$/, "") || "/";
       const redirectTo = PERMANENT_REDIRECTS[path] ?? PERMANENT_REDIRECTS[url.pathname];
       if (redirectTo) {
-        return permanentRedirect(redirectTo);
+        return permanentRedirect(`${redirectTo}${url.search}`);
+      }
+
+      // Normalize locale homes without trailing slash: `/ar/` → `/ar`, `/en/` → `/en`
+      if (url.pathname === "/ar/" || url.pathname === "/en/") {
+        return permanentRedirect(`${url.pathname.replace(/\/$/, "")}${url.search}`);
+      }
+
+      // Legacy unprefixed public URLs → /ar/...
+      const arabicPath = legacyToArabicPath(url.pathname);
+      if (arabicPath) {
+        if (url.pathname !== arabicPath) {
+          return permanentRedirect(`${arabicPath}${url.search}`);
+        }
       }
 
       const handler = await getServerEntry();

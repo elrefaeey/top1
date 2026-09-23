@@ -17,6 +17,10 @@ import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service } from "@/types
 import { blogPostSlug, flattenTitle, portfolioItemSlug } from "@/lib/cms/admin-utils";
 import { stripHtml } from "@/lib/seo/blog-utils";
 import { normalizeIntlPhone } from "@/lib/phone";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locale";
+import { hreflangPair, stripLocalePrefix, withLocalePrefix } from "@/lib/i18n/locale-path";
+import { localizeBlogPost, localizeLanding } from "@/lib/i18n/localize-cms";
+import { getMessages } from "@/lib/i18n/messages";
 
 export const SITE_TAGLINE_EN = "Digital agency serving Saudi Arabia and the United Arab Emirates";
 
@@ -113,6 +117,49 @@ export const STATIC_PAGE_SEO = {
       "تواصل مع Top1Markting — استشارة مجانية لتصميم المواقع والمتاجر الإلكترونية وSEO والتسويق الرقمي في السعودية والإمارات.",
   },
 } as const;
+
+export const STATIC_PAGE_SEO_EN: Record<keyof typeof STATIC_PAGE_SEO, { title: string; description: string }> = {
+  home: {
+    title: "Top1Markting | Digital Agency — Saudi Arabia & UAE",
+    description:
+      "Top1Markting is a digital agency serving Saudi Arabia and the UAE — web design, ecommerce, SEO, UI/UX, and digital marketing for growth in Riyadh, Dubai, Abu Dhabi, and Qassim.",
+  },
+  about: {
+    title: "About Us | Top1Markting",
+    description:
+      "Meet the Top1Markting team and our experience across Saudi Arabia and the UAE — web design, SEO, and digital marketing with E-E-A-T trust from idea to launch.",
+  },
+  services: {
+    title: "Our Services | Web Design, Ecommerce & SEO | Top1Markting",
+    description:
+      "Explore Top1Markting services in web design, ecommerce development, search engine optimization, UI/UX, and digital solutions for businesses in Saudi Arabia and the UAE.",
+  },
+  portfolio: {
+    title: "Our Work | Web & Ecommerce Projects | Top1Markting",
+    description:
+      "See recent Top1Markting projects in website design, ecommerce, UX, and digital brand presence.",
+  },
+  blog: {
+    title: "Top1Markting Blog | Web Design, Digital Marketing & SEO",
+    description:
+      "Read the latest articles and tips on web design, SEO, ecommerce, and user experience.",
+  },
+  contact: {
+    title: "Contact Top1Markting | Saudi Arabia & UAE",
+    description:
+      "Contact Top1Markting — a free consult for web design, ecommerce, SEO, and digital marketing in Saudi Arabia and the UAE.",
+  },
+};
+
+/** Reciprocal hreflang for Arabic (`/ar`) and English (`/en`). */
+export function hreflangLinksForPath(path: string): Array<Record<string, string>> {
+  const pair = hreflangPair(path);
+  return [
+    { rel: "alternate", hrefLang: "ar", href: absoluteUrl(pair.ar) },
+    { rel: "alternate", hrefLang: "en", href: absoluteUrl(pair.en) },
+    { rel: "alternate", hrefLang: "x-default", href: absoluteUrl(pair.xDefault) },
+  ];
+}
 
 export type BreadcrumbItem = { name: string; path: string };
 
@@ -268,7 +315,7 @@ function pageTitleForSchema(title: string): string {
 
 /** يبني مسار التنقل (Breadcrumb) تلقائيًا من رابط الصفحة + العنوان */
 export function breadcrumbsFromPath(path: string, pageTitle?: string): BreadcrumbItem[] {
-  const normalized = path.startsWith("/") ? path : `/${path}`;
+  const normalized = stripLocalePrefix(path.startsWith("/") ? path : `/${path}`);
   const clean = normalized.replace(/\/+$/, "") || "/";
   if (clean === "/") return [{ name: "الرئيسية", path: "/" }];
 
@@ -321,8 +368,8 @@ function scriptsHaveSchemaType(
   });
 }
 
-export function articleSchema(post: BlogPost, slug: string) {
-  const path = `/blog/${slug}`;
+export function articleSchema(post: BlogPost, slug: string, locale: Locale = DEFAULT_LOCALE) {
+  const path = withLocalePrefix(locale, `/blog/${slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -347,21 +394,21 @@ export function articleSchema(post: BlogPost, slug: string) {
     dateModified: post.updatedAt,
     mainEntityOfPage: absoluteUrl(path),
     timeRequired: `PT${post.readTime}M`,
-    inLanguage: "ar-SA",
+    inLanguage: locale === "en" ? "en" : "ar-SA",
   };
 }
 
-export function serviceSchema(service: Service, slug: string) {
+export function serviceSchema(service: Service, slug: string, locale: Locale = DEFAULT_LOCALE) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     name: service.title,
     description: service.metaDescription || service.shortDescription || service.description,
-    url: absoluteUrl(`/services/${slug}`),
+    url: absoluteUrl(withLocalePrefix(locale, `/services/${slug}`)),
     provider: {
       "@type": "Organization",
       name: SITE_NAME,
-      url: absoluteUrl("/"),
+      url: absoluteUrl(withLocalePrefix(locale, "/")),
     },
     areaServed: [...SEO_AREAS_SERVED],
     serviceType: service.title,
@@ -396,6 +443,8 @@ export type PageHeadInput = {
   noIndex?: boolean;
   scripts?: Array<{ type: string; children: string }>;
   extraLinks?: Array<Record<string, string>>;
+  /** Drives og:locale / alternate when provided. */
+  locale?: Locale;
 };
 
 export function buildPageHead(input: PageHeadInput) {
@@ -411,8 +460,14 @@ export function buildPageHead(input: PageHeadInput) {
     { property: "og:image", content: image },
     { property: "og:image:alt", content: input.title },
     { property: "og:site_name", content: SITE_NAME },
-    { property: "og:locale", content: "ar_SA" },
-    { property: "og:locale:alternate", content: "ar_AE" },
+    {
+      property: "og:locale",
+      content: input.locale === "en" ? "en_GB" : "ar_SA",
+    },
+    {
+      property: "og:locale:alternate",
+      content: input.locale === "en" ? "ar_SA" : "en_GB",
+    },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: SITE_TWITTER },
     { name: "twitter:title", content: input.title },
@@ -432,6 +487,7 @@ export function buildPageHead(input: PageHeadInput) {
 
   const links: Array<Record<string, string>> = [
     { rel: "canonical", href: url },
+    ...(input.noIndex ? [] : hreflangLinksForPath(input.path)),
     ...(input.extraLinks ?? []),
   ];
 
@@ -472,47 +528,69 @@ export function buildStaticPageHead(
     scripts?: Array<{ type: string; children: string }>;
     breadcrumbs?: BreadcrumbItem[];
     extraLinks?: Array<Record<string, string>>;
+    locale?: Locale;
   },
 ) {
-  const seo = STATIC_PAGE_SEO[page];
-  const title = options?.cms?.metaTitle?.trim() || seo.title;
-  const description = options?.cms?.metaDescription?.trim() || seo.description;
+  const locale = options?.locale ?? DEFAULT_LOCALE;
+  const seo = locale === "en" ? STATIC_PAGE_SEO_EN[page] : STATIC_PAGE_SEO[page];
+  // English must not fall back to Arabic CMS meta — use *En fields or EN defaults.
+  const cmsTitle =
+    locale === "en"
+      ? (options?.cms as { metaTitleEn?: string } | null | undefined)?.metaTitleEn?.trim() || ""
+      : options?.cms?.metaTitle?.trim() || "";
+  const cmsDescription =
+    locale === "en"
+      ? (options?.cms as { metaDescriptionEn?: string } | null | undefined)?.metaDescriptionEn?.trim() ||
+        ""
+      : options?.cms?.metaDescription?.trim() || "";
+  const title = cmsTitle || seo.title;
+  const description = cmsDescription || seo.description;
   const scripts = [...(options?.scripts ?? [])];
   if (options?.breadcrumbs?.length) {
     scripts.push(jsonLdScript(breadcrumbSchema(options.breadcrumbs)));
   }
   const image = options?.image ?? resolveStaticPageOgImage(page, options?.cms);
+  const localizedPath = withLocalePrefix(locale, path);
   return buildPageHead({
     title,
     description,
-    path,
+    path: localizedPath,
     type: options?.type,
     image,
-    canonicalUrl: resolveCanonicalUrl(path, options?.cms),
+    canonicalUrl: resolveCanonicalUrl(localizedPath, options?.cms),
     noIndex: options?.cms?.noIndex,
     scripts,
     extraLinks: options?.extraLinks,
+    locale,
   });
 }
 
-export function buildBlogPostHead(post: BlogPost, slugParam: string) {
+export function buildBlogPostHead(
+  post: BlogPost,
+  slugParam: string,
+  locale: Locale = DEFAULT_LOCALE,
+) {
   const slug = blogPostSlug({ slug: post.slug, id: slugParam });
-  const path = `/blog/${slug}`;
-  const title = post.metaTitle?.trim() || `${post.title} | ${SITE_NAME}`;
-  const description = post.metaDescription?.trim() || post.excerpt;
+  const arabicPath = `/blog/${slug}`;
+  const path = withLocalePrefix(locale, arabicPath);
+  const localized = localizeBlogPost(post, locale);
+  const m = getMessages(locale);
+  const title = localized.metaTitle?.trim() || `${localized.title} | ${SITE_NAME}`;
+  const description = localized.metaDescription?.trim() || localized.excerpt;
   return buildPageHead({
     title,
     description,
     path,
     type: "article",
-    image: post.featuredImage ?? DEFAULT_OG_IMAGE,
+    image: localized.featuredImage ?? DEFAULT_OG_IMAGE,
+    locale,
     scripts: [
-      jsonLdScript(articleSchema(post, slug)),
+      jsonLdScript(articleSchema(localized, slug, locale)),
       jsonLdScript(
         breadcrumbSchema([
-          { name: "الرئيسية", path: "/" },
-          { name: "المدونة", path: "/blog" },
-          { name: post.title, path },
+          { name: m.nav.home, path: withLocalePrefix(locale, "/") },
+          { name: m.nav.blog, path: withLocalePrefix(locale, "/blog") },
+          { name: localized.title, path },
         ]),
       ),
     ],
@@ -523,18 +601,23 @@ export function buildServiceHead(
   service: Service,
   slug: string,
   faqs?: Array<{ question: string; answer: string }>,
+  locale: Locale = DEFAULT_LOCALE,
 ) {
-  const path = `/services/${slug}`;
+  const path = withLocalePrefix(locale, `/services/${slug}`);
   const title = service.metaTitle?.trim() || `${service.title} | ${SITE_NAME}`;
   const rawDescription =
     service.metaDescription?.trim() || service.shortDescription || service.description || "";
   const description = stripHtml(rawDescription).slice(0, 320);
+  const m = getMessages(locale);
   const scripts: Array<{ type: string; children: string }> = [
-    jsonLdScript(serviceSchema(service, slug)),
+    jsonLdScript({
+      ...serviceSchema(service, slug),
+      url: absoluteUrl(path),
+    }),
     jsonLdScript(
       breadcrumbSchema([
-        { name: "الرئيسية", path: "/" },
-        { name: "الخدمات", path: "/services" },
+        { name: m.nav.home, path: withLocalePrefix(locale, "/") },
+        { name: m.nav.services, path: withLocalePrefix(locale, "/services") },
         { name: service.title, path },
       ]),
     ),
@@ -559,21 +642,28 @@ export function buildServiceHead(
     type: "website",
     image: service.imageUrl ?? DEFAULT_OG_IMAGE,
     scripts,
+    locale,
   });
 }
 
-export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
+export function buildPortfolioItemHead(
+  item: PortfolioItem,
+  slugParam: string,
+  locale: Locale = DEFAULT_LOCALE,
+) {
   const slug = portfolioItemSlug({ slug: item.slug, id: slugParam });
-  const path = `/portfolio/${slug}`;
+  const path = withLocalePrefix(locale, `/portfolio/${slug}`);
   const displayName = flattenTitle(item.title);
   const title = item.metaTitle?.trim() || `${displayName} | ${SITE_NAME}`;
   const description = item.metaDescription?.trim() || item.description || item.category;
+  const m = getMessages(locale);
   return buildPageHead({
     title,
     description,
     path,
     type: "website",
     image: item.imageUrl || DEFAULT_OG_IMAGE,
+    locale,
     scripts: [
       jsonLdScript({
         "@context": "https://schema.org",
@@ -581,8 +671,8 @@ export function buildPortfolioItemHead(item: PortfolioItem, slugParam: string) {
       }),
       jsonLdScript(
         breadcrumbSchema([
-          { name: "الرئيسية", path: "/" },
-          { name: "أعمالنا", path: "/portfolio" },
+          { name: m.nav.home, path: withLocalePrefix(locale, "/") },
+          { name: m.nav.portfolio, path: withLocalePrefix(locale, "/portfolio") },
           { name: displayName, path },
         ]),
       ),
@@ -624,30 +714,40 @@ function creativeWorkSchemaForHead(item: PortfolioItem, path: string) {
   };
 }
 
-export function buildLandingPageHead(page: LandingPageContent) {
-  const areaServed = page.areaServed?.length ? page.areaServed : [...SEO_AREAS_SERVED];
+export function buildLandingPageHead(page: LandingPageContent, locale: Locale = DEFAULT_LOCALE) {
+  const localized = localizeLanding(page, locale);
+  const areaServed = localized.areaServed?.length ? localized.areaServed : [...SEO_AREAS_SERVED];
+  const path = withLocalePrefix(locale, localized.path);
   const scripts: Array<{ type: string; children: string }> = [
-    jsonLdScript(breadcrumbSchema(page.breadcrumbs)),
+    jsonLdScript(
+      breadcrumbSchema(
+        localized.breadcrumbs.map((crumb) => ({
+          ...crumb,
+          path: withLocalePrefix(locale, stripLocalePrefix(crumb.path)),
+        })),
+      ),
+    ),
     jsonLdScript({
       "@context": "https://schema.org",
       "@type": "Service",
-      name: page.title,
-      description: page.metaDescription,
-      url: absoluteUrl(page.path),
+      name: localized.title,
+      description: localized.metaDescription,
+      url: absoluteUrl(path),
       provider: {
         "@type": "Organization",
         name: SITE_NAME,
-        url: absoluteUrl("/"),
+        url: absoluteUrl(withLocalePrefix(locale, "/")),
       },
       areaServed,
+      inLanguage: locale === "en" ? "en" : "ar-SA",
     }),
   ];
-  if (page.faqs.length) {
+  if (localized.faqs.length) {
     scripts.push(
       jsonLdScript({
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: page.faqs.map((faq) => ({
+        mainEntity: localized.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: stripHtml(faq.answer) },
@@ -655,14 +755,14 @@ export function buildLandingPageHead(page: LandingPageContent) {
       }),
     );
   }
-  if (page.process.length >= 2) {
+  if (localized.process.length >= 2) {
     scripts.push(
       jsonLdScript({
         "@context": "https://schema.org",
         "@type": "HowTo",
-        name: page.h1,
-        description: page.metaDescription,
-        step: page.process.map((step, index) => ({
+        name: localized.h1,
+        description: localized.metaDescription,
+        step: localized.process.map((step, index) => ({
           "@type": "HowToStep",
           position: index + 1,
           name: step.title,
@@ -672,10 +772,11 @@ export function buildLandingPageHead(page: LandingPageContent) {
     );
   }
   return buildPageHead({
-    title: page.metaTitle,
-    description: page.metaDescription,
-    path: page.path,
+    title: localized.metaTitle,
+    description: localized.metaDescription,
+    path,
     scripts,
+    locale,
   });
 }
 

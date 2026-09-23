@@ -1,28 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { PageIntro } from "@/components/site/SectionIntro";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { SITE_CONTACT_EMAIL, SITE_NAME } from "@/lib/site-config";
 import { buildPageHead, breadcrumbSchema, jsonLdScript } from "@/lib/seo";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/privacy")({
-  head: () =>
-    buildPageHead({
-      title: `سياسة الخصوصية | ${SITE_NAME}`,
-      description: `تعرّف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند استخدام موقع ${SITE_NAME}.`,
-      path: "/privacy",
-      scripts: [
-        jsonLdScript(
-          breadcrumbSchema([
-            { name: "الرئيسية", path: "/" },
-            { name: "سياسة الخصوصية", path: "/privacy" },
-          ]),
-        ),
-      ],
-    }),
-  component: PrivacyPage,
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/privacy", statusCode: 301 });
+  },
 });
 
-function PrivacyPage() {
+export function PrivacyPage() {
   const { m, locale } = useLocale();
   const en = locale === "en";
 
@@ -156,9 +145,9 @@ function PrivacyPage() {
             </>
           )}
           <p>
-            <Link to="/contact" className="btn-ghost inline-flex">
+            <LocaleLink to="/contact" className="btn-ghost inline-flex">
               {m.common.contactUs}
-            </Link>
+            </LocaleLink>
           </p>
         </div>
       </section>

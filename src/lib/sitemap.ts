@@ -3,6 +3,7 @@ import { PERMANENT_REDIRECTS } from "@/lib/seo/permanent-redirects";
 import { getPublicStaticSitemapPaths } from "@/lib/seo/public-sitemap-paths";
 import { preferredServiceSlug } from "@/lib/seo/service-slug-aliases";
 import { absoluteImageUrl } from "@/lib/seo";
+import { withLocalePrefix, stripLocalePrefix } from "@/lib/i18n/locale-path";
 import { SITE_PRODUCTION_URL } from "@/lib/site-config";
 import type { Author, BlogPost, PortfolioItem, Service, WithId } from "@/types/cms";
 
@@ -56,6 +57,21 @@ function isExcludedDynamicPath(path: string): boolean {
   }
   if (PERMANENT_REDIRECTS[path]) return true;
   return false;
+}
+
+/** Arabic `/ar` + English `/en` mirrors for every public URL. */
+function withLocaleMirrors(entries: SitemapEntry[]): SitemapEntry[] {
+  const out: SitemapEntry[] = [];
+  const seen = new Set<string>();
+  for (const entry of entries) {
+    for (const locale of ["ar", "en"] as const) {
+      const localized = { ...entry, path: withLocalePrefix(locale, entry.path) };
+      if (seen.has(localized.path)) continue;
+      seen.add(localized.path);
+      out.push(localized);
+    }
+  }
+  return out;
 }
 
 export function buildSitemapEntries(input: {
@@ -114,14 +130,30 @@ export function buildSitemapEntries(input: {
   }));
 
   const seen = new Set<string>();
-  return [...staticPages, ...servicePages, ...blogPages, ...portfolioPages, ...authorPages].filter(
-    (entry) => {
-      if (seen.has(entry.path)) return false;
-      if (isExcludedDynamicPath(entry.path)) return false;
-      seen.add(entry.path);
-      return true;
-    },
-  );
+  const arabicOnly = [
+    ...staticPages,
+    ...servicePages,
+    ...blogPages,
+    ...portfolioPages,
+    ...authorPages,
+  ].filter((entry) => {
+    if (seen.has(entry.path)) return false;
+    if (isExcludedDynamicPath(entry.path)) return false;
+    seen.add(entry.path);
+    return true;
+  });
+
+  return withLocaleMirrors(arabicOnly);
+}
+
+function xhtmlAlternates(path: string): string {
+  const base = stripLocalePrefix(path);
+  const ar = withLocalePrefix("ar", base);
+  const en = withLocalePrefix("en", base);
+  return `
+    <xhtml:link rel="alternate" hreflang="ar" href="${escapeXml(absoluteSitemapUrl(ar))}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="${escapeXml(absoluteSitemapUrl(en))}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(absoluteSitemapUrl(ar))}"/>`;
 }
 
 export function renderSitemapXml(entries: SitemapEntry[]): string {
@@ -141,7 +173,7 @@ export function renderSitemapXml(entries: SitemapEntry[]): string {
           })
           .join("") ?? "";
       return `  <url>
-    <loc>${escapeXml(absoluteSitemapUrl(entry.path))}</loc>${lastmod}
+    <loc>${escapeXml(absoluteSitemapUrl(entry.path))}</loc>${xhtmlAlternates(entry.path)}${lastmod}
     <changefreq>${entry.changefreq}</changefreq>
     <priority>${entry.priority}</priority>${images}
   </url>`;
@@ -150,6 +182,7 @@ export function renderSitemapXml(entries: SitemapEntry[]): string {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls}
 </urlset>`;

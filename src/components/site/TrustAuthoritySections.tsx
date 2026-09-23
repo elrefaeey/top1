@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
 import { BadgeCheck, Users, MessageSquare, Star, Quote } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { useAuthors, useSiteStats, useTestimonials } from "@/hooks/use-cms";
 import { authorSlug } from "@/lib/cms/admin-utils";
 import { SITE_NAME } from "@/lib/site-config";
@@ -34,7 +34,7 @@ export function TrustAuthoritySections() {
             <div className="section-body grid gap-4 sm:grid-cols-2">
               {team.map((author, i) => (
                 <Reveal key={author.id} delay={i * 60}>
-                  <Link
+                  <LocaleLink
                     to="/authors/$slug"
                     params={{ slug: authorSlug(author) }}
                     className="about-offer-card group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-colors hover:border-primary/30 hover:bg-accent/40"
@@ -63,7 +63,7 @@ export function TrustAuthoritySections() {
                     <span className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                       {author.bio}
                     </span>
-                  </Link>
+                  </LocaleLink>
                 </Reveal>
               ))}
             </div>

@@ -4,79 +4,101 @@ import {
   portfolioListingSchemas,
   servicesListingSchemas,
 } from "@/lib/seo/listing-schemas";
+import { withLocalePrefix } from "@/lib/i18n/locale-path";
+import { getMessages } from "@/lib/i18n/messages";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/locale";
 import type { BlogPost, CmsPage, FaqItem, PortfolioItem, Service, WithId } from "@/types/cms";
 
-const SERVICES_BREADCRUMBS = [
-  { name: "الرئيسية", path: "/" },
-  { name: "الخدمات", path: "/services" },
-] as const;
+function listingBreadcrumbs(
+  locale: Locale,
+  page: "services" | "portfolio" | "blog" | "contact",
+) {
+  const m = getMessages(locale);
+  const labels = {
+    services: m.nav.services,
+    portfolio: m.nav.portfolio,
+    blog: m.nav.blog,
+    contact: m.nav.contact,
+  } as const;
+  const paths = {
+    services: "/services",
+    portfolio: "/portfolio",
+    blog: "/blog",
+    contact: "/contact",
+  } as const;
+  return [
+    { name: m.nav.home, path: withLocalePrefix(locale, "/") },
+    { name: labels[page], path: withLocalePrefix(locale, paths[page]) },
+  ];
+}
 
-const PORTFOLIO_BREADCRUMBS = [
-  { name: "الرئيسية", path: "/" },
-  { name: "أعمالنا", path: "/portfolio" },
-] as const;
-
-const BLOG_BREADCRUMBS = [
-  { name: "الرئيسية", path: "/" },
-  { name: "المدونة", path: "/blog" },
-] as const;
-
-const CONTACT_BREADCRUMBS = [
-  { name: "الرئيسية", path: "/" },
-  { name: "تواصل معنا", path: "/contact" },
-] as const;
-
-export function buildServicesListingHead(data: {
-  cms: WithId<CmsPage> | null;
-  services: WithId<Service>[];
-  faqs: WithId<FaqItem>[];
-}) {
-  const scripts = servicesListingSchemas(data.services, data.faqs).map((schema) =>
+export function buildServicesListingHead(
+  data: {
+    cms: WithId<CmsPage> | null;
+    services: WithId<Service>[];
+    faqs: WithId<FaqItem>[];
+  },
+  locale: Locale = DEFAULT_LOCALE,
+) {
+  const scripts = servicesListingSchemas(data.services, data.faqs, locale).map((schema) =>
     jsonLdScript(schema),
   );
 
   return buildStaticPageHead("services", "/services", {
     cms: data.cms,
-    breadcrumbs: [...SERVICES_BREADCRUMBS],
+    breadcrumbs: listingBreadcrumbs(locale, "services"),
     scripts,
+    locale,
   });
 }
 
-export function buildPortfolioListingHead(data: {
-  cms: WithId<CmsPage> | null;
-  portfolio: WithId<PortfolioItem>[];
-}) {
-  const scripts = portfolioListingSchemas(data.portfolio).map((schema) => jsonLdScript(schema));
+export function buildPortfolioListingHead(
+  data: {
+    cms: WithId<CmsPage> | null;
+    portfolio: WithId<PortfolioItem>[];
+  },
+  locale: Locale = DEFAULT_LOCALE,
+) {
+  const scripts = portfolioListingSchemas(data.portfolio, locale).map((schema) => jsonLdScript(schema));
 
   return buildStaticPageHead("portfolio", "/portfolio", {
     cms: data.cms,
-    breadcrumbs: [...PORTFOLIO_BREADCRUMBS],
+    breadcrumbs: listingBreadcrumbs(locale, "portfolio"),
     scripts,
+    locale,
   });
 }
 
-export function buildBlogListingHead(data: {
-  cms: WithId<CmsPage> | null;
-  posts: WithId<BlogPost>[];
-}) {
-  const scripts = blogListingSchemas(data.posts).map((schema) => jsonLdScript(schema));
+export function buildBlogListingHead(
+  data: {
+    cms: WithId<CmsPage> | null;
+    posts: WithId<BlogPost>[];
+  },
+  locale: Locale = DEFAULT_LOCALE,
+) {
+  const scripts = blogListingSchemas(data.posts, locale).map((schema) => jsonLdScript(schema));
 
   return buildStaticPageHead("blog", "/blog", {
     cms: data.cms,
-    breadcrumbs: [...BLOG_BREADCRUMBS],
+    breadcrumbs: listingBreadcrumbs(locale, "blog"),
     scripts,
+    locale,
   });
 }
 
-export function buildContactPageHead(data: {
-  cms: WithId<CmsPage> | null;
-  faqs: WithId<FaqItem>[];
-}) {
+export function buildContactPageHead(
+  data: {
+    cms: WithId<CmsPage> | null;
+    faqs: WithId<FaqItem>[];
+  },
+  locale: Locale = DEFAULT_LOCALE,
+) {
   const scripts = data.faqs.length > 0 ? [jsonLdScript(faqPageSchema(data.faqs))] : [];
 
   return buildStaticPageHead("contact", "/contact", {
     cms: data.cms,
-    breadcrumbs: [...CONTACT_BREADCRUMBS],
+    breadcrumbs: listingBreadcrumbs(locale, "contact"),
     scripts,
+    locale,
   });
 }

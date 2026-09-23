@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import type { BreadcrumbItem } from "@/lib/seo";
 import { useT } from "@/providers/LocaleProvider";
 
@@ -32,9 +32,9 @@ export function BreadcrumbNav({ items, className = "" }: BreadcrumbNavProps) {
                   {item.name}
                 </span>
               ) : (
-                <Link to={item.path} className="hover:text-primary transition-colors shrink-0">
+                <LocaleLink to={item.path} className="hover:text-primary transition-colors shrink-0">
                   {item.name}
-                </Link>
+                </LocaleLink>
               )}
             </li>
           );

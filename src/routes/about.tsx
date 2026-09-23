@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import {
   ArrowRight,
   Award,
@@ -16,6 +16,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { MarketsServeStrip } from "@/components/site/MarketsContact";
 import { TrustAuthoritySections } from "@/components/site/TrustAuthoritySections";
 import { PageIntro } from "@/components/site/SectionIntro";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { siteImages } from "@/lib/site-images";
 import { SITE_NAME } from "@/lib/site-config";
 import { buildStaticPageHead } from "@/lib/seo";
@@ -23,19 +24,12 @@ import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/about")({
-  loader: () => loadPublishedPageSeoFn({ data: { slug: "about" } }),
-  head: ({ loaderData }) =>
-    buildStaticPageHead("about", "/about", {
-      cms: loaderData,
-      breadcrumbs: [
-        { name: "الرئيسية", path: "/" },
-        { name: "من نحن", path: "/about" },
-      ],
-    }),
-  component: About,
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/about", statusCode: 301 });
+  },
 });
 
-function About() {
+export function About() {
   const { m, t } = useLocale();
   const values = [
     {
@@ -143,13 +137,13 @@ function About() {
                   ))}
                 </ul>
                 <div className="flex flex-wrap gap-3 pt-1">
-                  <Link to="/contact" className="btn-primary">
+                  <LocaleLink to="/contact" className="btn-primary">
                     {m.common.startProject}
                     <ArrowRight className="h-4 w-4 rtl-flip" />
-                  </Link>
-                  <Link to="/services" className="btn-ghost">
+                  </LocaleLink>
+                  <LocaleLink to="/services" className="btn-ghost">
                     {m.common.exploreServices}
-                  </Link>
+                  </LocaleLink>
                 </div>
               </div>
             </Reveal>
@@ -219,16 +213,16 @@ function About() {
               </p>
             </div>
             <div className="flex flex-wrap gap-2 shrink-0">
-              <Link to="/services" className="btn-ghost text-sm">
+              <LocaleLink to="/services" className="btn-ghost text-sm">
                 {m.common.allServices} <ArrowRight className="h-3.5 w-3.5 rtl-flip" />
-              </Link>
+              </LocaleLink>
             </div>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             {offers.map((o, i) => (
               <Reveal key={o.t} delay={i * 60}>
-                <Link
+                <LocaleLink
                   to={o.href}
                   className="group flex h-full gap-4 rounded-2xl border border-border bg-background p-6 transition-all hover:border-primary/30 hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 duration-300"
                 >
@@ -244,14 +238,14 @@ function About() {
                       {o.d}
                     </span>
                   </span>
-                </Link>
+                </LocaleLink>
               </Reveal>
             ))}
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/portfolio" className="btn-ghost">{m.nav.portfolio}</Link>
-            <Link to="/contact" className="btn-ghost">{m.common.contactUs}</Link>
+            <LocaleLink to="/portfolio" className="btn-ghost">{m.nav.portfolio}</LocaleLink>
+            <LocaleLink to="/contact" className="btn-ghost">{m.common.contactUs}</LocaleLink>
           </div>
         </div>
       </section>
@@ -310,12 +304,12 @@ function About() {
               {m.about.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-              <Link to="/contact" className="btn-primary">
+              <LocaleLink to="/contact" className="btn-primary">
                 {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-              </Link>
-              <Link to="/services" className="btn-ghost">
+              </LocaleLink>
+              <LocaleLink to="/services" className="btn-ghost">
                 {m.common.exploreServices}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </div>

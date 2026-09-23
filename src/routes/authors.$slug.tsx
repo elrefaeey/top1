@@ -1,6 +1,7 @@
-import { createFileRoute, Link, notFound, useParams } from "@tanstack/react-router";
+import { createFileRoute, notFound, useLoaderData, useParams, redirect } from "@tanstack/react-router";
 import { ArrowRight, Briefcase, Linkedin } from "lucide-react";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { useAuthor } from "@/hooks/use-cms";
 import { authorSlug } from "@/lib/cms/admin-utils";
@@ -21,21 +22,16 @@ function authorInitials(name: string): string {
 }
 
 export const Route = createFileRoute("/authors/$slug")({
-  loader: async ({ params }) => {
-    const author = await loadAuthorForSeoFn({ data: { slug: params.slug } });
-    if (!author) throw notFound({ headers: NOINDEX_HEADERS });
-    return { author };
+  beforeLoad: ({ params }) => {
+    throw redirect({ href: `/ar/authors/${params.slug}`, statusCode: 301 });
   },
-  head: ({ loaderData }) => {
-    if (!loaderData?.author) return notFoundHead();
-    return buildAuthorHead(loaderData.author);
-  },
-  component: AuthorProfile,
 });
 
-function AuthorProfile() {
-  const { slug } = useParams({ from: "/authors/$slug" });
-  const { author: loaderAuthor } = Route.useLoaderData();
+export function AuthorProfile() {
+  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { author: loaderAuthor } = (useLoaderData({ strict: false }) ?? {}) as {
+    author?: import("@/types/cms").Author;
+  };
   const { data: hookAuthor, isLoading } = useAuthor(slug);
   const { m, t, locale } = useLocale();
   const raw = hookAuthor ?? loaderAuthor;
@@ -105,13 +101,13 @@ function AuthorProfile() {
               </div>
 
               <div className="author-profile-actions">
-                <Link to="/contact" className="btn-primary">
+                <LocaleLink to="/contact" className="btn-primary">
                   {m.common.contactUs}
                   <ArrowRight className="h-4 w-4 rtl-flip" />
-                </Link>
-                <Link to="/about" className="btn-ghost">
+                </LocaleLink>
+                <LocaleLink to="/about" className="btn-ghost">
                   {t(m.authorPage.aboutSite, { name: SITE_NAME })}
-                </Link>
+                </LocaleLink>
                 {author.linkedinUrl ? (
                   <a
                     href={author.linkedinUrl}

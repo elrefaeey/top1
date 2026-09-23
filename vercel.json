@@ -6,72 +6,72 @@
   "redirects": [
     {
       "source": "/web-design-egypt",
-      "destination": "/web-design-saudi-arabia",
+      "destination": "/ar/web-design-saudi-arabia",
       "permanent": true
     },
     {
       "source": "/egypt",
-      "destination": "/web-design-saudi-arabia",
+      "destination": "/ar/web-design-saudi-arabia",
       "permanent": true
     },
     {
       "source": "/web-design",
-      "destination": "/web-design-saudi-arabia",
+      "destination": "/ar/web-design-saudi-arabia",
       "permanent": true
     },
     {
       "source": "/services/web-design-development",
-      "destination": "/services/web-design",
+      "destination": "/ar/services/web-design",
       "permanent": true
     },
     {
       "source": "/services/seo-optimization",
-      "destination": "/services/seo",
+      "destination": "/ar/services/seo",
       "permanent": true
     },
     {
       "source": "/services/ecommerce-development",
-      "destination": "/ecommerce-development",
+      "destination": "/ar/ecommerce-development",
       "permanent": true
     },
     {
       "source": "/services/ui-ux-design",
-      "destination": "/services/ui-ux",
+      "destination": "/ar/services/ui-ux",
       "permanent": true
     },
     {
       "source": "/saudi-web-design",
-      "destination": "/web-design-saudi-arabia",
+      "destination": "/ar/web-design-saudi-arabia",
       "permanent": true
     },
     {
       "source": "/saudi-seo-services",
-      "destination": "/seo-services",
+      "destination": "/ar/seo-services",
       "permanent": true
     },
     {
       "source": "/riyadh-web-development",
-      "destination": "/web-design-riyadh",
+      "destination": "/ar/web-design-riyadh",
       "permanent": true
     },
     {
       "source": "/case-studies",
-      "destination": "/portfolio",
+      "destination": "/ar/portfolio",
       "permanent": true
     },
     {
       "source": "/case-studies/:path*",
-      "destination": "/portfolio",
+      "destination": "/ar/portfolio",
       "permanent": true
     },
     {
       "source": "/cookies",
-      "destination": "/privacy",
+      "destination": "/ar/privacy",
       "permanent": true
     },
     {
       "source": "/pricing",
-      "destination": "/contact",
+      "destination": "/ar/contact",
       "permanent": true
     }
   ],

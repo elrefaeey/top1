@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import {
   ArrowRight,
   HelpCircle,
@@ -240,14 +240,14 @@ function BlogPreview() {
           eyebrow={m.home.blogEyebrow}
           title={m.home.blogTitle}
           action={
-            <Link to="/blog" className="btn-ghost">
+            <LocaleLink to="/blog" className="btn-ghost">
               {m.common.allArticles} <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
+            </LocaleLink>
           }
         />
         <div className="section-body grid gap-5 sm:grid-cols-2">
           {posts.map((p) => (
-            <Link
+            <LocaleLink
               key={p.id}
               to="/blog/$slug"
               params={{ slug: blogPostSlug(p) }}
@@ -275,7 +275,7 @@ function BlogPreview() {
                   {p.title}
                 </h3>
               </div>
-            </Link>
+            </LocaleLink>
           ))}
         </div>
       </div>
@@ -436,12 +436,12 @@ function CTA() {
             {m.home.ctaDesc}
           </p>
           <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="btn-primary">
+            <LocaleLink to="/contact" className="btn-primary">
               {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
-            <Link to="/services" className="btn-ghost">
+            </LocaleLink>
+            <LocaleLink to="/services" className="btn-ghost">
               {m.common.exploreServices}
-            </Link>
+            </LocaleLink>
           </div>
         </div>
       </div>

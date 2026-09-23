@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import { useRouterState } from "@tanstack/react-router";
 import {
   applyDocumentLocale,
   DEFAULT_LOCALE,
@@ -6,6 +14,7 @@ import {
   readStoredLocale,
   type Locale,
 } from "@/lib/i18n/locale";
+import { getPathLocale, isLocaleExemptPath } from "@/lib/i18n/locale-path";
 import { getMessages, interpolate, type Messages } from "@/lib/i18n/messages";
 import { getAdminMessages, type AdminMessages } from "@/lib/i18n/admin-messages";
 
@@ -21,14 +30,29 @@ type LocaleContextValue = {
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+function localeFromLocation(pathname: string): Locale {
+  if (isLocaleExemptPath(pathname)) return readStoredLocale();
+  return getPathLocale(pathname);
+}
+
+export function LocaleProvider({
+  children,
+  initialLocale = DEFAULT_LOCALE,
+}: {
+  children: ReactNode;
+  initialLocale?: Locale;
+}) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   useEffect(() => {
-    const stored = readStoredLocale();
-    setLocaleState(stored);
-    applyDocumentLocale(stored);
-  }, []);
+    const next = localeFromLocation(pathname);
+    setLocaleState(next);
+    applyDocumentLocale(next);
+    if (!isLocaleExemptPath(pathname)) {
+      persistLocale(next);
+    }
+  }, [pathname]);
 
   const value = useMemo<LocaleContextValue>(() => {
     const m = getMessages(locale);

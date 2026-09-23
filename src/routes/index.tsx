@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useLoaderData, redirect } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, TrendingUp, Target } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
@@ -20,37 +21,9 @@ const HomeBelowFold = lazy(() =>
 );
 
 export const Route = createFileRoute("/")({
-  loader: async () => {
-    const [cms, hero] = await Promise.all([
-      loadPublishedPageSeoFn({ data: { slug: "home" } }),
-      loadHomeHeroSettingsFn(),
-    ]);
-    return { cms, hero };
+  beforeLoad: () => {
+    throw redirect({ href: "/ar", statusCode: 301 });
   },
-  head: ({ loaderData }) => {
-    const cms = loaderData?.cms;
-    const heroUrl = loaderData?.hero?.heroImageUrl?.trim() || "";
-    const image = resolveStaticPageOgImage("home", cms);
-    const preloadHref =
-      heroUrl && !heroUrl.startsWith("data:") ? absoluteImageUrl(heroUrl) : absoluteImageUrl(image);
-    const extraLinks =
-      preloadHref && !preloadHref.startsWith("data:")
-        ? [
-            {
-              rel: "preload",
-              as: "image",
-              href: preloadHref,
-              fetchPriority: "high",
-            },
-          ]
-        : undefined;
-    return buildStaticPageHead("home", "/", {
-      cms,
-      image: heroUrl && !heroUrl.startsWith("data:") ? heroUrl : image,
-      extraLinks,
-    });
-  },
-  component: Home,
 });
 
 const MARQUEE_ITEMS_FALLBACK = [
@@ -65,7 +38,7 @@ const MARQUEE_ITEMS_FALLBACK = [
   "تحويل الزوار",
 ];
 
-function Home() {
+export function Home() {
   return (
     <>
       <Hero />
@@ -93,7 +66,11 @@ function Home() {
 }
 
 function Hero() {
-  const { hero } = Route.useLoaderData();
+  const { hero } = (useLoaderData({ strict: false }) ?? {
+    hero: { heroImageUrl: "", heroImageAlt: "" },
+  }) as {
+    hero: { heroImageUrl?: string; heroImageAlt?: string };
+  };
   const { data: home } = useHomeBundle();
   const { m, t } = useLocale();
   const settings = home?.settings;
@@ -140,13 +117,13 @@ function Hero() {
           </div>
 
           <div className="hero-studio-actions animate-hero animate-hero-delay-4">
-            <Link to="/contact" className="btn-primary">
+            <LocaleLink to="/contact" className="btn-primary">
               {m.common.startProject}
               <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
-            <Link to="/portfolio" className="btn-ghost">
+            </LocaleLink>
+            <LocaleLink to="/portfolio" className="btn-ghost">
               {m.common.viewWork}
-            </Link>
+            </LocaleLink>
           </div>
         </div>
 
@@ -211,7 +188,7 @@ function Services() {
             const Icon = serviceIcon(s.icon);
             return (
               <Reveal key={s.id} delay={i * 70}>
-                <Link
+                <LocaleLink
                   to="/services/$slug"
                   params={{ slug: s.slug }}
                   className="group flex flex-col rounded-2xl border border-border bg-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full"
@@ -240,7 +217,7 @@ function Services() {
                       <ArrowRight className="h-3.5 w-3.5 rtl-flip group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
-                </Link>
+                </LocaleLink>
               </Reveal>
             );
           })}
@@ -292,12 +269,12 @@ function WhyUs() {
               <p className="relative mt-3 text-sm text-white/75 leading-relaxed max-w-md">
                 {m.home.whyDesc}
               </p>
-              <Link
+              <LocaleLink
                 to="/about"
                 className="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors"
               >
                 {m.home.whyCta} <ArrowRight className="h-4 w-4 rtl-flip" />
-              </Link>
+              </LocaleLink>
             </div>
           </Reveal>
 
@@ -336,9 +313,9 @@ function Portfolio() {
           title={m.home.workTitle}
           desc={m.home.workDesc}
           action={
-            <Link to="/portfolio" className="btn-ghost">
+            <LocaleLink to="/portfolio" className="btn-ghost">
               {m.common.allProjects} <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
+            </LocaleLink>
           }
         />
         <div className="section-body portfolio-home-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -346,7 +323,7 @@ function Portfolio() {
             const { name, specialty } = splitDisplayTitle(p.title);
             return (
             <Reveal key={p.id} delay={i * 100} className="h-full min-w-0 w-full">
-              <Link
+              <LocaleLink
                 to="/portfolio/$slug"
                 params={{ slug: portfolioItemSlug(p) }}
                 className="group bento-card portfolio-home-card block h-full w-full min-w-0 max-w-full overflow-hidden"
@@ -379,7 +356,7 @@ function Portfolio() {
                   </div>
                   <ArrowUpRight className="h-4 w-4 rtl-flip text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                 </div>
-              </Link>
+              </LocaleLink>
             </Reveal>
             );
           })}

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Check,
@@ -33,12 +33,12 @@ import { loadContactRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/contact")({
-  loader: () => loadContactRouteSeoFn(),
-  head: ({ loaderData }) => buildContactPageHead(loaderData ?? { cms: null, faqs: [] }),
-  component: Contact,
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/contact", statusCode: 301 });
+  },
 });
 
-function Contact() {
+export function Contact() {
   const { data: settings } = useSiteSettings();
   const submitLead = useSubmitLead();
   const toast = useToast();

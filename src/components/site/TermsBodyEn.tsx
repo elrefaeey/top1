@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { ArrowRight, Globe, Mail, Phone, type ReactNode } from "lucide-react";
 import {
   SITE_CONTACT_EMAIL,
@@ -622,12 +622,12 @@ export function TermsBodyEn({ phoneDisplay }: { phoneDisplay: string }) {
         <h2 className="page-intro-title page-intro-title--section">{m.legal.question}</h2>
         <p className="mt-2 text-sm text-muted-foreground">{m.legal.questionDesc}</p>
         <div className="mt-5 flex flex-wrap justify-center gap-3">
-          <Link to="/contact" className="btn-primary">
+          <LocaleLink to="/contact" className="btn-primary">
             {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-          </Link>
-          <Link to="/privacy" className="btn-ghost">
+          </LocaleLink>
+          <LocaleLink to="/privacy" className="btn-ghost">
             {m.legal.privacy}
-          </Link>
+          </LocaleLink>
         </div>
       </div>
     </>

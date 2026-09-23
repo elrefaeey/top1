@@ -1,11 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SeoLandingTemplate } from "@/components/seo/SeoLandingTemplate";
-import { buildLandingPageHead } from "@/lib/seo";
-import { getLandingPageByPath } from "@/lib/seo/landing-pages";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const PAGE = getLandingPageByPath("/web-design-jeddah")!;
-
+/** Legacy unprefixed URL → Arabic locale path. */
 export const Route = createFileRoute("/web-design-jeddah")({
-  head: () => buildLandingPageHead(PAGE),
-  component: () => <SeoLandingTemplate page={PAGE} />,
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/web-design-jeddah", statusCode: 301 });
+  },
 });

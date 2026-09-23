@@ -1,6 +1,7 @@
-import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useLoaderData, useParams } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpLeft, ExternalLink, Sparkles } from "lucide-react";
 import { SiteImage } from "@/components/site/SiteImage";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { usePortfolioItem } from "@/hooks/use-cms";
 import { flattenTitle, portfolioItemSlug, splitDisplayTitle } from "@/lib/cms/admin-utils";
 import { localizePortfolio } from "@/lib/i18n/localize-cms";
@@ -13,27 +14,9 @@ import { useLocale } from "@/providers/LocaleProvider";
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/portfolio/$slug")({
-  loader: async ({ params }) => {
-    const item = await loadPortfolioItemForSeoFn({ data: { slug: params.slug } });
-    if (!item) {
-      throw notFound({ headers: NOINDEX_HEADERS });
-    }
-    const canonical = portfolioItemSlug(item);
-    if (canonical && canonical !== params.slug) {
-      throw redirect({
-        to: "/portfolio/$slug",
-        params: { slug: canonical },
-        statusCode: 301,
-        replace: true,
-      });
-    }
-    return { item };
+  beforeLoad: ({ params }) => {
+    throw redirect({ href: `/ar/portfolio/${params.slug}`, statusCode: 301 });
   },
-  head: ({ loaderData, params }) => {
-    if (!loaderData?.item) return notFoundHead();
-    return buildPortfolioItemHead(loaderData.item, params.slug);
-  },
-  component: PortfolioDetail,
 });
 
 function normalizeTags(tags: string[]): string[] {
@@ -50,9 +33,11 @@ function normalizeTags(tags: string[]): string[] {
   return out;
 }
 
-function PortfolioDetail() {
-  const { slug } = useParams({ from: "/portfolio/$slug" });
-  const { item: loaderItem } = Route.useLoaderData();
+export function PortfolioDetail() {
+  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { item: loaderItem } = (useLoaderData({ strict: false }) ?? {}) as {
+    item?: import("@/types/cms").PortfolioItem;
+  };
   const { data: hookItem, isLoading } = usePortfolioItem(slug);
   const { m, t, locale, labelForHref } = useLocale();
   const raw = hookItem ?? loaderItem;
@@ -244,12 +229,12 @@ function PortfolioDetail() {
                     <ul className="flex flex-wrap gap-2">
                       {serviceLinks.map((link) => (
                         <li key={link.href}>
-                          <Link
+                          <LocaleLink
                             to={link.href}
                             className="text-xs font-semibold border border-border bg-background rounded-full px-3 py-1 hover:border-primary/40 hover:text-primary transition-colors inline-block"
                           >
                             {labelForHref(link.href, link.label)}
-                          </Link>
+                          </LocaleLink>
                         </li>
                       ))}
                     </ul>
@@ -259,13 +244,13 @@ function PortfolioDetail() {
             )}
 
             <div className="mt-8">
-              <Link
+              <LocaleLink
                 to="/portfolio"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
               >
                 <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
                 {m.portfolioDetail.back}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </section>
@@ -275,13 +260,13 @@ function PortfolioDetail() {
       {!hasExtra && (
         <section className="section section-compact-top">
           <div className="container-page">
-            <Link
+            <LocaleLink
               to="/portfolio"
               className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
             >
               <ArrowUpLeft className="h-4 w-4 rtl-flip" aria-hidden />
               {m.portfolioDetail.back}
-            </Link>
+            </LocaleLink>
           </div>
         </section>
       )}
@@ -300,12 +285,12 @@ function PortfolioDetail() {
               {m.portfolioDetail.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-              <Link to="/contact" className="btn-primary">
+              <LocaleLink to="/contact" className="btn-primary">
                 {m.common.contactUs} <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
-              </Link>
-              <Link to="/portfolio" className="btn-ghost">
+              </LocaleLink>
+              <LocaleLink to="/portfolio" className="btn-ghost">
                 {m.portfolioDetail.otherWork}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </div>

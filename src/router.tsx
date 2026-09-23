@@ -18,6 +18,8 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    // Prefer `/ar` and `/en` (no trailing slash). `/ar/` redirects here via router.
+    trailingSlash: "never",
   });
 
   return router;

@@ -1,9 +1,10 @@
-import { createFileRoute, Link, notFound, redirect, useParams } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, useLoaderData, useParams } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useService } from "@/hooks/use-cms";
 import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { loadServiceForSeoFn } from "@/lib/seo/cms-seo.functions";
@@ -24,27 +25,16 @@ function looksLikeHtml(value: string): boolean {
 const NOINDEX_HEADERS = { "X-Robots-Tag": "noindex, nofollow" };
 
 export const Route = createFileRoute("/services/$slug")({
-  loader: async ({ params }) => {
-    const service = await loadServiceForSeoFn({ data: { slug: params.slug } });
-    if (!service) throw notFound({ headers: NOINDEX_HEADERS });
-    const preferred = preferredServiceSlug(service.slug || params.slug);
-    if (params.slug !== preferred) {
-      throw redirect({ to: "/services/$slug", params: { slug: preferred }, statusCode: 301, replace: true });
-    }
-    return { service };
+  beforeLoad: ({ params }) => {
+    throw redirect({ href: `/ar/services/${params.slug}`, statusCode: 301 });
   },
-  head: ({ loaderData, params }) => {
-    if (!loaderData?.service) return notFoundHead();
-    const preferred = preferredServiceSlug(params.slug);
-    const seoBlock = getServiceSeoBlock(preferred);
-    return buildServiceHead(loaderData.service, preferred, seoBlock?.faqs);
-  },
-  component: ServiceDetail,
 });
 
-function ServiceDetail() {
-  const { slug } = useParams({ from: "/services/$slug" });
-  const { service: loaderService } = Route.useLoaderData();
+export function ServiceDetail() {
+  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { service: loaderService } = (useLoaderData({ strict: false }) ?? {}) as {
+    service?: import("@/types/cms").Service;
+  };
   const { data: hookService, isLoading } = useService(slug);
   const { m, t, locale } = useLocale();
   const raw = hookService ?? loaderService;
@@ -95,9 +85,9 @@ function ServiceDetail() {
           {moneyPage && (
             <p className="mb-5 text-sm text-muted-foreground">
               {m.serviceDetail.moneyBefore}{" "}
-              <Link to={moneyPage} className="font-medium text-primary underline-offset-2 hover:underline">
+              <LocaleLink to={moneyPage} className="font-medium text-primary underline-offset-2 hover:underline">
                 {m.serviceDetail.moneyLink}
-              </Link>
+              </LocaleLink>
               {m.serviceDetail.moneyAfter}
             </p>
           )}
@@ -134,12 +124,12 @@ function ServiceDetail() {
                 {s.shortDescription || stripHtml(s.description)}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/contact" className="btn-primary">
+                <LocaleLink to="/contact" className="btn-primary">
                   {m.common.startProject} <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
-                </Link>
-                <Link to="/portfolio" className="btn-ghost">
+                </LocaleLink>
+                <LocaleLink to="/portfolio" className="btn-ghost">
                   {m.nav.portfolio}
-                </Link>
+                </LocaleLink>
               </div>
             </div>
           </div>
@@ -279,12 +269,12 @@ function ServiceDetail() {
               {m.serviceDetail.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-              <Link to="/contact" className="btn-primary">
+              <LocaleLink to="/contact" className="btn-primary">
                 {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-              </Link>
-              <Link to="/portfolio" className="btn-ghost">
+              </LocaleLink>
+              <LocaleLink to="/portfolio" className="btn-ghost">
                 {m.common.viewWork}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
 

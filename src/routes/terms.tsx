@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowRight, Calendar, FileText, Globe, Mail, Phone, Scale } from "lucide-react";
 import { PageIntro } from "@/components/site/SectionIntro";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import {
   SITE_CONTACT_EMAIL,
   SITE_CONTACT_PHONE_SA,
@@ -14,21 +15,9 @@ import { useLocale } from "@/providers/LocaleProvider";
 import { TermsBodyEn } from "@/components/site/TermsBodyEn";
 
 export const Route = createFileRoute("/terms")({
-  head: () =>
-    buildPageHead({
-      title: `الشروط والأحكام | ${SITE_NAME}`,
-      description: `الشروط والأحكام المنظمة لاستخدام موقع وخدمات ${SITE_NAME}، بما في ذلك نطاق العمل والدفع والملكية الفكرية وحدود المسؤولية.`,
-      path: "/terms",
-      scripts: [
-        jsonLdScript(
-          breadcrumbSchema([
-            { name: "الرئيسية", path: "/" },
-            { name: "الشروط والأحكام", path: "/terms" },
-          ]),
-        ),
-      ],
-    }),
-  component: TermsPage,
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/terms", statusCode: 301 });
+  },
 });
 
 const TERMS_NAV = [
@@ -176,7 +165,7 @@ function TermsList({ items }: { items: string[] }) {
   );
 }
 
-function TermsPage() {
+export function TermsPage() {
   const phoneDisplay = formatSaPhoneIntl(SITE_CONTACT_PHONE_SA);
   const [activeId, setActiveId] = useState("term-1");
   const { m, t, locale } = useLocale();
@@ -252,10 +241,10 @@ function TermsPage() {
               <Scale className="h-3.5 w-3.5" />
               {m.legal.articlesCount}
             </span>
-            <Link to="/privacy" className="legal-meta-chip legal-meta-chip--privacy">
+            <LocaleLink to="/privacy" className="legal-meta-chip legal-meta-chip--privacy">
               <FileText className="h-3.5 w-3.5" />
               {m.legal.privacy}
-            </Link>
+            </LocaleLink>
           </div>
 
           <div className="legal-layout">
@@ -808,12 +797,12 @@ function TermsPage() {
                   {m.legal.questionDesc}
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-3">
-                  <Link to="/contact" className="btn-primary">
+                  <LocaleLink to="/contact" className="btn-primary">
                     {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-                  </Link>
-                  <Link to="/privacy" className="btn-ghost">
+                  </LocaleLink>
+                  <LocaleLink to="/privacy" className="btn-ghost">
                     {m.legal.privacy}
-                  </Link>
+                  </LocaleLink>
                 </div>
               </div>
                 </>

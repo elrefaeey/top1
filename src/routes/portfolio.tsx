@@ -1,7 +1,8 @@
-import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLoaderData, useRouterState, redirect } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpLeft, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { SiteImage } from "@/components/site/SiteImage";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { PageIntro } from "@/components/site/SectionIntro";
 import { ContentError } from "@/components/site/ContentState";
 import { Reveal } from "@/components/site/Reveal";
@@ -15,15 +16,13 @@ import { loadPortfolioRouteSeoFn } from "@/lib/seo/cms-seo.functions";
 import { buildPortfolioListingHead } from "@/lib/seo/static-page-head";
 import type { PortfolioItem, WithId } from "@/types/cms";
 import { localizePortfolio } from "@/lib/i18n/localize-cms";
+import { stripLocalePrefix } from "@/lib/i18n/locale-path";
 import { useLocale } from "@/providers/LocaleProvider";
 
 export const Route = createFileRoute("/portfolio")({
-  loader: () => loadPortfolioRouteSeoFn(),
-  head: ({ loaderData, matches }) => {
-    if (matches.some((m) => (m.routeId as string) === "/portfolio/$slug")) return {};
-    return buildPortfolioListingHead(loaderData ?? { cms: null, portfolio: [] });
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/portfolio", statusCode: 301 });
   },
-  component: Portfolio,
 });
 
 function projectExcerpt(description: string, max = 140) {
@@ -48,7 +47,7 @@ function PortfolioCard({
   const showClient = Boolean(item.client && item.client.trim() !== name);
 
   return (
-    <Link
+    <LocaleLink
       to="/portfolio/$slug"
       params={{ slug }}
       className={
@@ -116,13 +115,17 @@ function PortfolioCard({
           </span>
         </div>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }
 
-function Portfolio() {
-  const isDetail = useMatch({ from: "/portfolio/$slug", shouldThrow: false });
-  const { portfolio: loaderItems = [] } = Route.useLoaderData();
+export function Portfolio() {
+  const pathname = useRouterState({ select: (st) => st.location.pathname });
+  const basePath = stripLocalePrefix(pathname);
+  const isDetail = basePath.startsWith("/portfolio/") && basePath !== "/portfolio";
+  const { portfolio: loaderItems = [] } = (useLoaderData({ strict: false }) ?? {}) as {
+    portfolio?: Awaited<ReturnType<typeof loadPortfolioRouteSeoFn>>["portfolio"];
+  };
   const { data: queryItems = [], isLoading, isError, isSuccess, refetch } = usePortfolio();
   const { m, locale } = useLocale();
   const rawItems = isSuccess ? queryItems : loaderItems.length > 0 ? loaderItems : queryItems;
@@ -225,12 +228,12 @@ function Portfolio() {
                 {m.portfolioPage.nextDesc}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Link to="/contact" className="btn-primary">
+                <LocaleLink to="/contact" className="btn-primary">
                   {m.common.startProject} <ArrowRight className="h-4 w-4 rtl-flip" />
-                </Link>
-                <Link to="/services" className="btn-ghost">
+                </LocaleLink>
+                <LocaleLink to="/services" className="btn-ghost">
                   {m.common.browseServices}
-                </Link>
+                </LocaleLink>
               </div>
             </div>
           ) : null}

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLoaderData, useRouterState, redirect } from "@tanstack/react-router";
 import {
   ArrowRight,
   CheckCircle2,
@@ -10,8 +10,10 @@ import {
 import { useMemo } from "react";
 import { useServices } from "@/hooks/use-cms";
 import { localizeService } from "@/lib/i18n/localize-cms";
+import { stripLocalePrefix } from "@/lib/i18n/locale-path";
 import { getServiceIcon } from "@/lib/cms/icons";
 import { SiteImage } from "@/components/site/SiteImage";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { ContentError } from "@/components/site/ContentState";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
 import { serviceImage } from "@/lib/site-images";
@@ -26,12 +28,9 @@ import type { Service, WithId } from "@/types/cms";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/services")({
-  loader: () => loadServicesRouteSeoFn(),
-  head: ({ loaderData, matches }) => {
-    if (matches.some((m) => (m.routeId as string) === "/services/$slug")) return {};
-    return buildServicesListingHead(loaderData ?? { cms: null, services: [], faqs: [] });
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/services", statusCode: 301 });
   },
-  component: Services,
 });
 
 function serviceHref(slug: string) {
@@ -53,7 +52,7 @@ function ServiceCard({
   const features = service.features.slice(0, featured ? 5 : 3);
 
   return (
-    <Link
+    <LocaleLink
       to="/services/$slug"
       params={{ slug: serviceHref(service.slug) }}
       className={cn(
@@ -145,13 +144,17 @@ function ServiceCard({
           </span>
         </div>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }
 
-function Services() {
-  const isDetail = useMatch({ from: "/services/$slug", shouldThrow: false });
-  const { services: loaderServices = [] } = Route.useLoaderData();
+export function Services() {
+  const pathname = useRouterState({ select: (st) => st.location.pathname });
+  const basePath = stripLocalePrefix(pathname);
+  const isDetail = basePath.startsWith("/services/") && basePath !== "/services";
+  const { services: loaderServices = [] } = (useLoaderData({ strict: false }) ?? {}) as {
+    services?: Awaited<ReturnType<typeof loadServicesRouteSeoFn>>["services"];
+  };
   const { data: queryServices = [], isLoading, isError, isSuccess, refetch } = useServices();
   const { m, t, locale } = useLocale();
   const rawServices = isSuccess
@@ -186,12 +189,12 @@ function Services() {
           </h1>
           <p className="page-intro-desc">{m.servicesPage.desc}</p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/contact" className="btn-primary">
+            <LocaleLink to="/contact" className="btn-primary">
               {m.common.startProject} <ArrowRight className="h-4 w-4 rtl-flip" />
-            </Link>
-            <Link to="/portfolio" className="btn-ghost">
+            </LocaleLink>
+            <LocaleLink to="/portfolio" className="btn-ghost">
               {m.common.viewWork}
-            </Link>
+            </LocaleLink>
           </div>
         </div>
       </section>
@@ -291,12 +294,12 @@ function Services() {
                   {m.common.freeConsult}
                 </p>
                 <div className="relative z-[1] mt-7 flex flex-wrap justify-center gap-3">
-                  <Link to="/contact" className="btn-primary">
+                  <LocaleLink to="/contact" className="btn-primary">
                     {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-                  </Link>
-                  <Link to="/portfolio" className="btn-ghost">
+                  </LocaleLink>
+                  <LocaleLink to="/portfolio" className="btn-ghost">
                     {m.common.viewWork}
-                  </Link>
+                  </LocaleLink>
                 </div>
               </div>
             </Reveal>

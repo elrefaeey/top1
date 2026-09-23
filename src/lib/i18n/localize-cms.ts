@@ -226,9 +226,14 @@ export function localizeLanding<T extends LandingPageContent>(page: T, locale: L
   if (locale !== "en") return page;
   const en = ALL_LANDING_EN[page.slug];
   if (!en) return page;
+  const metaTitle = `${en.title} | Top1Markting`;
+  const metaDescription =
+    en.intro[0]?.slice(0, 160) || page.metaDescription;
   return {
     ...page,
     title: en.title,
+    metaTitle,
+    metaDescription,
     h1: en.h1,
     tagline: en.tagline,
     intro: en.intro,

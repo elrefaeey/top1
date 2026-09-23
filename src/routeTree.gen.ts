@@ -40,12 +40,30 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EnIndexRouteImport } from './routes/en.index'
+import { Route as ArIndexRouteImport } from './routes/ar.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as MediaIdRouteImport } from './routes/media.$id'
+import { Route as EnTermsRouteImport } from './routes/en.terms'
+import { Route as EnServicesRouteImport } from './routes/en.services'
+import { Route as EnPrivacyRouteImport } from './routes/en.privacy'
+import { Route as EnPortfolioRouteImport } from './routes/en.portfolio'
+import { Route as EnContactRouteImport } from './routes/en.contact'
+import { Route as EnBlogRouteImport } from './routes/en.blog'
+import { Route as EnAboutRouteImport } from './routes/en.about'
+import { Route as EnSplatRouteImport } from './routes/en.$'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthorsSlugRouteImport } from './routes/authors.$slug'
+import { Route as ArTermsRouteImport } from './routes/ar.terms'
+import { Route as ArServicesRouteImport } from './routes/ar.services'
+import { Route as ArPrivacyRouteImport } from './routes/ar.privacy'
+import { Route as ArPortfolioRouteImport } from './routes/ar.portfolio'
+import { Route as ArContactRouteImport } from './routes/ar.contact'
+import { Route as ArBlogRouteImport } from './routes/ar.blog'
+import { Route as ArAboutRouteImport } from './routes/ar.about'
+import { Route as ArSplatRouteImport } from './routes/ar.$'
 import { Route as ApiUploadImageRouteImport } from './routes/api/upload-image'
 import { Route as ApiLeadsRouteImport } from './routes/api/leads'
 import { Route as ApiFirebaseConfigRouteImport } from './routes/api/firebase-config'
@@ -62,6 +80,14 @@ import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 import { Route as AdminAuthorsRouteImport } from './routes/admin.authors'
+import { Route as EnServicesSlugRouteImport } from './routes/en.services.$slug'
+import { Route as EnPortfolioSlugRouteImport } from './routes/en.portfolio.$slug'
+import { Route as EnBlogSlugRouteImport } from './routes/en.blog.$slug'
+import { Route as EnAuthorsSlugRouteImport } from './routes/en.authors.$slug'
+import { Route as ArServicesSlugRouteImport } from './routes/ar.services.$slug'
+import { Route as ArPortfolioSlugRouteImport } from './routes/ar.portfolio.$slug'
+import { Route as ArBlogSlugRouteImport } from './routes/ar.blog.$slug'
+import { Route as ArAuthorsSlugRouteImport } from './routes/ar.authors.$slug'
 import { Route as ApiSeoLogsRouteImport } from './routes/api/seo.logs'
 import { Route as ApiSeoInsightsRouteImport } from './routes/api/seo.insights'
 import { Route as ApiSeoGscRouteImport } from './routes/api/seo.gsc'
@@ -237,6 +263,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnIndexRoute = EnIndexRouteImport.update({
+  id: '/en/',
+  path: '/en/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArIndexRoute = ArIndexRouteImport.update({
+  id: '/ar/',
+  path: '/ar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -257,6 +293,46 @@ const MediaIdRoute = MediaIdRouteImport.update({
   path: '/media/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnTermsRoute = EnTermsRouteImport.update({
+  id: '/en/terms',
+  path: '/en/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnServicesRoute = EnServicesRouteImport.update({
+  id: '/en/services',
+  path: '/en/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnPrivacyRoute = EnPrivacyRouteImport.update({
+  id: '/en/privacy',
+  path: '/en/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnPortfolioRoute = EnPortfolioRouteImport.update({
+  id: '/en/portfolio',
+  path: '/en/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnContactRoute = EnContactRouteImport.update({
+  id: '/en/contact',
+  path: '/en/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnBlogRoute = EnBlogRouteImport.update({
+  id: '/en/blog',
+  path: '/en/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnAboutRoute = EnAboutRouteImport.update({
+  id: '/en/about',
+  path: '/en/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnSplatRoute = EnSplatRouteImport.update({
+  id: '/en/$',
+  path: '/en/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -265,6 +341,46 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 const AuthorsSlugRoute = AuthorsSlugRouteImport.update({
   id: '/authors/$slug',
   path: '/authors/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArTermsRoute = ArTermsRouteImport.update({
+  id: '/ar/terms',
+  path: '/ar/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArServicesRoute = ArServicesRouteImport.update({
+  id: '/ar/services',
+  path: '/ar/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArPrivacyRoute = ArPrivacyRouteImport.update({
+  id: '/ar/privacy',
+  path: '/ar/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArPortfolioRoute = ArPortfolioRouteImport.update({
+  id: '/ar/portfolio',
+  path: '/ar/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArContactRoute = ArContactRouteImport.update({
+  id: '/ar/contact',
+  path: '/ar/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArBlogRoute = ArBlogRouteImport.update({
+  id: '/ar/blog',
+  path: '/ar/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArAboutRoute = ArAboutRouteImport.update({
+  id: '/ar/about',
+  path: '/ar/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArSplatRoute = ArSplatRouteImport.update({
+  id: '/ar/$',
+  path: '/ar/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiUploadImageRoute = ApiUploadImageRouteImport.update({
@@ -346,6 +462,46 @@ const AdminAuthorsRoute = AdminAuthorsRouteImport.update({
   id: '/authors',
   path: '/authors',
   getParentRoute: () => AdminRoute,
+} as any)
+const EnServicesSlugRoute = EnServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EnServicesRoute,
+} as any)
+const EnPortfolioSlugRoute = EnPortfolioSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EnPortfolioRoute,
+} as any)
+const EnBlogSlugRoute = EnBlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EnBlogRoute,
+} as any)
+const EnAuthorsSlugRoute = EnAuthorsSlugRouteImport.update({
+  id: '/en/authors/$slug',
+  path: '/en/authors/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArServicesSlugRoute = ArServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ArServicesRoute,
+} as any)
+const ArPortfolioSlugRoute = ArPortfolioSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ArPortfolioRoute,
+} as any)
+const ArBlogSlugRoute = ArBlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ArBlogRoute,
+} as any)
+const ArAuthorsSlugRoute = ArAuthorsSlugRouteImport.update({
+  id: '/ar/authors/$slug',
+  path: '/ar/authors/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSeoLogsRoute = ApiSeoLogsRouteImport.update({
   id: '/api/seo/logs',
@@ -491,12 +647,30 @@ export interface FileRoutesByFullPath {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/ar/$': typeof ArSplatRoute
+  '/ar/about': typeof ArAboutRoute
+  '/ar/blog': typeof ArBlogRouteWithChildren
+  '/ar/contact': typeof ArContactRoute
+  '/ar/portfolio': typeof ArPortfolioRouteWithChildren
+  '/ar/privacy': typeof ArPrivacyRoute
+  '/ar/services': typeof ArServicesRouteWithChildren
+  '/ar/terms': typeof ArTermsRoute
   '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/en/$': typeof EnSplatRoute
+  '/en/about': typeof EnAboutRoute
+  '/en/blog': typeof EnBlogRouteWithChildren
+  '/en/contact': typeof EnContactRoute
+  '/en/portfolio': typeof EnPortfolioRouteWithChildren
+  '/en/privacy': typeof EnPrivacyRoute
+  '/en/services': typeof EnServicesRouteWithChildren
+  '/en/terms': typeof EnTermsRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/ar/': typeof ArIndexRoute
+  '/en/': typeof EnIndexRoute
   '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
@@ -512,6 +686,14 @@ export interface FileRoutesByFullPath {
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
+  '/ar/authors/$slug': typeof ArAuthorsSlugRoute
+  '/ar/blog/$slug': typeof ArBlogSlugRoute
+  '/ar/portfolio/$slug': typeof ArPortfolioSlugRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/en/authors/$slug': typeof EnAuthorsSlugRoute
+  '/en/blog/$slug': typeof EnBlogSlugRoute
+  '/en/portfolio/$slug': typeof EnPortfolioSlugRoute
+  '/en/services/$slug': typeof EnServicesSlugRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -564,12 +746,30 @@ export interface FileRoutesByTo {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/ar/$': typeof ArSplatRoute
+  '/ar/about': typeof ArAboutRoute
+  '/ar/blog': typeof ArBlogRouteWithChildren
+  '/ar/contact': typeof ArContactRoute
+  '/ar/portfolio': typeof ArPortfolioRouteWithChildren
+  '/ar/privacy': typeof ArPrivacyRoute
+  '/ar/services': typeof ArServicesRouteWithChildren
+  '/ar/terms': typeof ArTermsRoute
   '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/en/$': typeof EnSplatRoute
+  '/en/about': typeof EnAboutRoute
+  '/en/blog': typeof EnBlogRouteWithChildren
+  '/en/contact': typeof EnContactRoute
+  '/en/portfolio': typeof EnPortfolioRouteWithChildren
+  '/en/privacy': typeof EnPrivacyRoute
+  '/en/services': typeof EnServicesRouteWithChildren
+  '/en/terms': typeof EnTermsRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/ar': typeof ArIndexRoute
+  '/en': typeof EnIndexRoute
   '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
@@ -585,6 +785,14 @@ export interface FileRoutesByTo {
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
+  '/ar/authors/$slug': typeof ArAuthorsSlugRoute
+  '/ar/blog/$slug': typeof ArBlogSlugRoute
+  '/ar/portfolio/$slug': typeof ArPortfolioSlugRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/en/authors/$slug': typeof EnAuthorsSlugRoute
+  '/en/blog/$slug': typeof EnBlogSlugRoute
+  '/en/portfolio/$slug': typeof EnPortfolioSlugRoute
+  '/en/services/$slug': typeof EnServicesSlugRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -639,12 +847,30 @@ export interface FileRoutesById {
   '/api/firebase-config': typeof ApiFirebaseConfigRoute
   '/api/leads': typeof ApiLeadsRoute
   '/api/upload-image': typeof ApiUploadImageRoute
+  '/ar/$': typeof ArSplatRoute
+  '/ar/about': typeof ArAboutRoute
+  '/ar/blog': typeof ArBlogRouteWithChildren
+  '/ar/contact': typeof ArContactRoute
+  '/ar/portfolio': typeof ArPortfolioRouteWithChildren
+  '/ar/privacy': typeof ArPrivacyRoute
+  '/ar/services': typeof ArServicesRouteWithChildren
+  '/ar/terms': typeof ArTermsRoute
   '/authors/$slug': typeof AuthorsSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/en/$': typeof EnSplatRoute
+  '/en/about': typeof EnAboutRoute
+  '/en/blog': typeof EnBlogRouteWithChildren
+  '/en/contact': typeof EnContactRoute
+  '/en/portfolio': typeof EnPortfolioRouteWithChildren
+  '/en/privacy': typeof EnPrivacyRoute
+  '/en/services': typeof EnServicesRouteWithChildren
+  '/en/terms': typeof EnTermsRoute
   '/media/$id': typeof MediaIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/ar/': typeof ArIndexRoute
+  '/en/': typeof EnIndexRoute
   '/admin/authors/$id': typeof AdminAuthorsIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
@@ -660,6 +886,14 @@ export interface FileRoutesById {
   '/api/seo/gsc': typeof ApiSeoGscRouteWithChildren
   '/api/seo/insights': typeof ApiSeoInsightsRoute
   '/api/seo/logs': typeof ApiSeoLogsRoute
+  '/ar/authors/$slug': typeof ArAuthorsSlugRoute
+  '/ar/blog/$slug': typeof ArBlogSlugRoute
+  '/ar/portfolio/$slug': typeof ArPortfolioSlugRoute
+  '/ar/services/$slug': typeof ArServicesSlugRoute
+  '/en/authors/$slug': typeof EnAuthorsSlugRoute
+  '/en/blog/$slug': typeof EnBlogSlugRoute
+  '/en/portfolio/$slug': typeof EnPortfolioSlugRoute
+  '/en/services/$slug': typeof EnServicesSlugRoute
   '/api/seo/gsc/callback': typeof ApiSeoGscCallbackRoute
   '/api/seo/gsc/connect': typeof ApiSeoGscConnectRoute
   '/api/seo/gsc/status': typeof ApiSeoGscStatusRoute
@@ -715,12 +949,30 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/ar/$'
+    | '/ar/about'
+    | '/ar/blog'
+    | '/ar/contact'
+    | '/ar/portfolio'
+    | '/ar/privacy'
+    | '/ar/services'
+    | '/ar/terms'
     | '/authors/$slug'
     | '/blog/$slug'
+    | '/en/$'
+    | '/en/about'
+    | '/en/blog'
+    | '/en/contact'
+    | '/en/portfolio'
+    | '/en/privacy'
+    | '/en/services'
+    | '/en/terms'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
+    | '/ar/'
+    | '/en/'
     | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
@@ -736,6 +988,14 @@ export interface FileRouteTypes {
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
+    | '/ar/authors/$slug'
+    | '/ar/blog/$slug'
+    | '/ar/portfolio/$slug'
+    | '/ar/services/$slug'
+    | '/en/authors/$slug'
+    | '/en/blog/$slug'
+    | '/en/portfolio/$slug'
+    | '/en/services/$slug'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -788,12 +1048,30 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/ar/$'
+    | '/ar/about'
+    | '/ar/blog'
+    | '/ar/contact'
+    | '/ar/portfolio'
+    | '/ar/privacy'
+    | '/ar/services'
+    | '/ar/terms'
     | '/authors/$slug'
     | '/blog/$slug'
+    | '/en/$'
+    | '/en/about'
+    | '/en/blog'
+    | '/en/contact'
+    | '/en/portfolio'
+    | '/en/privacy'
+    | '/en/services'
+    | '/en/terms'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin'
+    | '/ar'
+    | '/en'
     | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
@@ -809,6 +1087,14 @@ export interface FileRouteTypes {
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
+    | '/ar/authors/$slug'
+    | '/ar/blog/$slug'
+    | '/ar/portfolio/$slug'
+    | '/ar/services/$slug'
+    | '/en/authors/$slug'
+    | '/en/blog/$slug'
+    | '/en/portfolio/$slug'
+    | '/en/services/$slug'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -862,12 +1148,30 @@ export interface FileRouteTypes {
     | '/api/firebase-config'
     | '/api/leads'
     | '/api/upload-image'
+    | '/ar/$'
+    | '/ar/about'
+    | '/ar/blog'
+    | '/ar/contact'
+    | '/ar/portfolio'
+    | '/ar/privacy'
+    | '/ar/services'
+    | '/ar/terms'
     | '/authors/$slug'
     | '/blog/$slug'
+    | '/en/$'
+    | '/en/about'
+    | '/en/blog'
+    | '/en/contact'
+    | '/en/portfolio'
+    | '/en/privacy'
+    | '/en/services'
+    | '/en/terms'
     | '/media/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
     | '/admin/'
+    | '/ar/'
+    | '/en/'
     | '/admin/authors/$id'
     | '/admin/blog/$id'
     | '/admin/faqs/$id'
@@ -883,6 +1187,14 @@ export interface FileRouteTypes {
     | '/api/seo/gsc'
     | '/api/seo/insights'
     | '/api/seo/logs'
+    | '/ar/authors/$slug'
+    | '/ar/blog/$slug'
+    | '/ar/portfolio/$slug'
+    | '/ar/services/$slug'
+    | '/en/authors/$slug'
+    | '/en/blog/$slug'
+    | '/en/portfolio/$slug'
+    | '/en/services/$slug'
     | '/api/seo/gsc/callback'
     | '/api/seo/gsc/connect'
     | '/api/seo/gsc/status'
@@ -924,8 +1236,26 @@ export interface RootRouteChildren {
   ApiFirebaseConfigRoute: typeof ApiFirebaseConfigRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
   ApiUploadImageRoute: typeof ApiUploadImageRoute
+  ArSplatRoute: typeof ArSplatRoute
+  ArAboutRoute: typeof ArAboutRoute
+  ArBlogRoute: typeof ArBlogRouteWithChildren
+  ArContactRoute: typeof ArContactRoute
+  ArPortfolioRoute: typeof ArPortfolioRouteWithChildren
+  ArPrivacyRoute: typeof ArPrivacyRoute
+  ArServicesRoute: typeof ArServicesRouteWithChildren
+  ArTermsRoute: typeof ArTermsRoute
   AuthorsSlugRoute: typeof AuthorsSlugRoute
+  EnSplatRoute: typeof EnSplatRoute
+  EnAboutRoute: typeof EnAboutRoute
+  EnBlogRoute: typeof EnBlogRouteWithChildren
+  EnContactRoute: typeof EnContactRoute
+  EnPortfolioRoute: typeof EnPortfolioRouteWithChildren
+  EnPrivacyRoute: typeof EnPrivacyRoute
+  EnServicesRoute: typeof EnServicesRouteWithChildren
+  EnTermsRoute: typeof EnTermsRoute
   MediaIdRoute: typeof MediaIdRoute
+  ArIndexRoute: typeof ArIndexRoute
+  EnIndexRoute: typeof EnIndexRoute
   ApiCmsResourceRoute: typeof ApiCmsResourceRoute
   ApiSeoAnalyzeRoute: typeof ApiSeoAnalyzeRoute
   ApiSeoCreateDraftRoute: typeof ApiSeoCreateDraftRoute
@@ -933,6 +1263,8 @@ export interface RootRouteChildren {
   ApiSeoGscRoute: typeof ApiSeoGscRouteWithChildren
   ApiSeoInsightsRoute: typeof ApiSeoInsightsRoute
   ApiSeoLogsRoute: typeof ApiSeoLogsRoute
+  ArAuthorsSlugRoute: typeof ArAuthorsSlugRoute
+  EnAuthorsSlugRoute: typeof EnAuthorsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1154,6 +1486,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/en/': {
+      id: '/en/'
+      path: '/en'
+      fullPath: '/en/'
+      preLoaderRoute: typeof EnIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/': {
+      id: '/ar/'
+      path: '/ar'
+      fullPath: '/ar/'
+      preLoaderRoute: typeof ArIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -1182,6 +1528,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MediaIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/en/terms': {
+      id: '/en/terms'
+      path: '/en/terms'
+      fullPath: '/en/terms'
+      preLoaderRoute: typeof EnTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/services': {
+      id: '/en/services'
+      path: '/en/services'
+      fullPath: '/en/services'
+      preLoaderRoute: typeof EnServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/privacy': {
+      id: '/en/privacy'
+      path: '/en/privacy'
+      fullPath: '/en/privacy'
+      preLoaderRoute: typeof EnPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/portfolio': {
+      id: '/en/portfolio'
+      path: '/en/portfolio'
+      fullPath: '/en/portfolio'
+      preLoaderRoute: typeof EnPortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/contact': {
+      id: '/en/contact'
+      path: '/en/contact'
+      fullPath: '/en/contact'
+      preLoaderRoute: typeof EnContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/blog': {
+      id: '/en/blog'
+      path: '/en/blog'
+      fullPath: '/en/blog'
+      preLoaderRoute: typeof EnBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/about': {
+      id: '/en/about'
+      path: '/en/about'
+      fullPath: '/en/about'
+      preLoaderRoute: typeof EnAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/$': {
+      id: '/en/$'
+      path: '/en/$'
+      fullPath: '/en/$'
+      preLoaderRoute: typeof EnSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
@@ -1194,6 +1596,62 @@ declare module '@tanstack/react-router' {
       path: '/authors/$slug'
       fullPath: '/authors/$slug'
       preLoaderRoute: typeof AuthorsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/terms': {
+      id: '/ar/terms'
+      path: '/ar/terms'
+      fullPath: '/ar/terms'
+      preLoaderRoute: typeof ArTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/services': {
+      id: '/ar/services'
+      path: '/ar/services'
+      fullPath: '/ar/services'
+      preLoaderRoute: typeof ArServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/privacy': {
+      id: '/ar/privacy'
+      path: '/ar/privacy'
+      fullPath: '/ar/privacy'
+      preLoaderRoute: typeof ArPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/portfolio': {
+      id: '/ar/portfolio'
+      path: '/ar/portfolio'
+      fullPath: '/ar/portfolio'
+      preLoaderRoute: typeof ArPortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/contact': {
+      id: '/ar/contact'
+      path: '/ar/contact'
+      fullPath: '/ar/contact'
+      preLoaderRoute: typeof ArContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/blog': {
+      id: '/ar/blog'
+      path: '/ar/blog'
+      fullPath: '/ar/blog'
+      preLoaderRoute: typeof ArBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/about': {
+      id: '/ar/about'
+      path: '/ar/about'
+      fullPath: '/ar/about'
+      preLoaderRoute: typeof ArAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/$': {
+      id: '/ar/$'
+      path: '/ar/$'
+      fullPath: '/ar/$'
+      preLoaderRoute: typeof ArSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/upload-image': {
@@ -1307,6 +1765,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/authors'
       preLoaderRoute: typeof AdminAuthorsRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/en/services/$slug': {
+      id: '/en/services/$slug'
+      path: '/$slug'
+      fullPath: '/en/services/$slug'
+      preLoaderRoute: typeof EnServicesSlugRouteImport
+      parentRoute: typeof EnServicesRoute
+    }
+    '/en/portfolio/$slug': {
+      id: '/en/portfolio/$slug'
+      path: '/$slug'
+      fullPath: '/en/portfolio/$slug'
+      preLoaderRoute: typeof EnPortfolioSlugRouteImport
+      parentRoute: typeof EnPortfolioRoute
+    }
+    '/en/blog/$slug': {
+      id: '/en/blog/$slug'
+      path: '/$slug'
+      fullPath: '/en/blog/$slug'
+      preLoaderRoute: typeof EnBlogSlugRouteImport
+      parentRoute: typeof EnBlogRoute
+    }
+    '/en/authors/$slug': {
+      id: '/en/authors/$slug'
+      path: '/en/authors/$slug'
+      fullPath: '/en/authors/$slug'
+      preLoaderRoute: typeof EnAuthorsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ar/services/$slug': {
+      id: '/ar/services/$slug'
+      path: '/$slug'
+      fullPath: '/ar/services/$slug'
+      preLoaderRoute: typeof ArServicesSlugRouteImport
+      parentRoute: typeof ArServicesRoute
+    }
+    '/ar/portfolio/$slug': {
+      id: '/ar/portfolio/$slug'
+      path: '/$slug'
+      fullPath: '/ar/portfolio/$slug'
+      preLoaderRoute: typeof ArPortfolioSlugRouteImport
+      parentRoute: typeof ArPortfolioRoute
+    }
+    '/ar/blog/$slug': {
+      id: '/ar/blog/$slug'
+      path: '/$slug'
+      fullPath: '/ar/blog/$slug'
+      preLoaderRoute: typeof ArBlogSlugRouteImport
+      parentRoute: typeof ArBlogRoute
+    }
+    '/ar/authors/$slug': {
+      id: '/ar/authors/$slug'
+      path: '/ar/authors/$slug'
+      fullPath: '/ar/authors/$slug'
+      preLoaderRoute: typeof ArAuthorsSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/seo/logs': {
       id: '/api/seo/logs'
@@ -1609,6 +2123,76 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
+interface ArBlogRouteChildren {
+  ArBlogSlugRoute: typeof ArBlogSlugRoute
+}
+
+const ArBlogRouteChildren: ArBlogRouteChildren = {
+  ArBlogSlugRoute: ArBlogSlugRoute,
+}
+
+const ArBlogRouteWithChildren =
+  ArBlogRoute._addFileChildren(ArBlogRouteChildren)
+
+interface ArPortfolioRouteChildren {
+  ArPortfolioSlugRoute: typeof ArPortfolioSlugRoute
+}
+
+const ArPortfolioRouteChildren: ArPortfolioRouteChildren = {
+  ArPortfolioSlugRoute: ArPortfolioSlugRoute,
+}
+
+const ArPortfolioRouteWithChildren = ArPortfolioRoute._addFileChildren(
+  ArPortfolioRouteChildren,
+)
+
+interface ArServicesRouteChildren {
+  ArServicesSlugRoute: typeof ArServicesSlugRoute
+}
+
+const ArServicesRouteChildren: ArServicesRouteChildren = {
+  ArServicesSlugRoute: ArServicesSlugRoute,
+}
+
+const ArServicesRouteWithChildren = ArServicesRoute._addFileChildren(
+  ArServicesRouteChildren,
+)
+
+interface EnBlogRouteChildren {
+  EnBlogSlugRoute: typeof EnBlogSlugRoute
+}
+
+const EnBlogRouteChildren: EnBlogRouteChildren = {
+  EnBlogSlugRoute: EnBlogSlugRoute,
+}
+
+const EnBlogRouteWithChildren =
+  EnBlogRoute._addFileChildren(EnBlogRouteChildren)
+
+interface EnPortfolioRouteChildren {
+  EnPortfolioSlugRoute: typeof EnPortfolioSlugRoute
+}
+
+const EnPortfolioRouteChildren: EnPortfolioRouteChildren = {
+  EnPortfolioSlugRoute: EnPortfolioSlugRoute,
+}
+
+const EnPortfolioRouteWithChildren = EnPortfolioRoute._addFileChildren(
+  EnPortfolioRouteChildren,
+)
+
+interface EnServicesRouteChildren {
+  EnServicesSlugRoute: typeof EnServicesSlugRoute
+}
+
+const EnServicesRouteChildren: EnServicesRouteChildren = {
+  EnServicesSlugRoute: EnServicesSlugRoute,
+}
+
+const EnServicesRouteWithChildren = EnServicesRoute._addFileChildren(
+  EnServicesRouteChildren,
+)
+
 interface ApiSeoGscRouteChildren {
   ApiSeoGscCallbackRoute: typeof ApiSeoGscCallbackRoute
   ApiSeoGscConnectRoute: typeof ApiSeoGscConnectRoute
@@ -1662,8 +2246,26 @@ const rootRouteChildren: RootRouteChildren = {
   ApiFirebaseConfigRoute: ApiFirebaseConfigRoute,
   ApiLeadsRoute: ApiLeadsRoute,
   ApiUploadImageRoute: ApiUploadImageRoute,
+  ArSplatRoute: ArSplatRoute,
+  ArAboutRoute: ArAboutRoute,
+  ArBlogRoute: ArBlogRouteWithChildren,
+  ArContactRoute: ArContactRoute,
+  ArPortfolioRoute: ArPortfolioRouteWithChildren,
+  ArPrivacyRoute: ArPrivacyRoute,
+  ArServicesRoute: ArServicesRouteWithChildren,
+  ArTermsRoute: ArTermsRoute,
   AuthorsSlugRoute: AuthorsSlugRoute,
+  EnSplatRoute: EnSplatRoute,
+  EnAboutRoute: EnAboutRoute,
+  EnBlogRoute: EnBlogRouteWithChildren,
+  EnContactRoute: EnContactRoute,
+  EnPortfolioRoute: EnPortfolioRouteWithChildren,
+  EnPrivacyRoute: EnPrivacyRoute,
+  EnServicesRoute: EnServicesRouteWithChildren,
+  EnTermsRoute: EnTermsRoute,
   MediaIdRoute: MediaIdRoute,
+  ArIndexRoute: ArIndexRoute,
+  EnIndexRoute: EnIndexRoute,
   ApiCmsResourceRoute: ApiCmsResourceRoute,
   ApiSeoAnalyzeRoute: ApiSeoAnalyzeRoute,
   ApiSeoCreateDraftRoute: ApiSeoCreateDraftRoute,
@@ -1671,6 +2273,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSeoGscRoute: ApiSeoGscRouteWithChildren,
   ApiSeoInsightsRoute: ApiSeoInsightsRoute,
   ApiSeoLogsRoute: ApiSeoLogsRoute,
+  ArAuthorsSlugRoute: ArAuthorsSlugRoute,
+  EnAuthorsSlugRoute: EnAuthorsSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

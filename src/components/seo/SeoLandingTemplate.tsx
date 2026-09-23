@@ -1,10 +1,11 @@
-import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, CheckCircle2, ChevronDown, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { LandingPageContent } from "@/lib/seo/landing-pages";
 import { BreadcrumbNav } from "@/components/seo/BreadcrumbNav";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { localizeLanding } from "@/lib/i18n/localize-cms";
+import { withLocalePrefix } from "@/lib/i18n/locale-path";
 import { useLocale } from "@/providers/LocaleProvider";
 
 type SeoLandingTemplateProps = {
@@ -14,12 +15,16 @@ type SeoLandingTemplateProps = {
 export function SeoLandingTemplate({ page: rawPage }: SeoLandingTemplateProps) {
   const { m, locale } = useLocale();
   const page = localizeLanding(rawPage, locale);
+  const breadcrumbs = page.breadcrumbs.map((crumb) => ({
+    ...crumb,
+    path: withLocalePrefix(locale, crumb.path),
+  }));
   return (
     <>
       {/* ─── Hero ─── */}
       <section className="hero-bg relative overflow-hidden">
         <div className="container-page relative pt-8 pb-14">
-          <BreadcrumbNav items={page.breadcrumbs} className="mb-8" />
+          <BreadcrumbNav items={breadcrumbs} className="mb-8" />
 
           <div className="max-w-3xl">
             {/* Eyebrow */}
@@ -41,17 +46,17 @@ export function SeoLandingTemplate({ page: rawPage }: SeoLandingTemplateProps) {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/contact" className="btn-primary">
+              <LocaleLink to="/contact" className="btn-primary">
                 {m.landing.consult}
                 <ArrowLeft className="h-4 w-4 rtl-flip" aria-hidden />
-              </Link>
-              <Link
+              </LocaleLink>
+              <LocaleLink
                 to="/services/$slug"
                 params={{ slug: page.relatedServiceSlug }}
                 className="btn-ghost"
               >
                 {m.landing.serviceDetails}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </div>
@@ -153,12 +158,12 @@ export function SeoLandingTemplate({ page: rawPage }: SeoLandingTemplateProps) {
               {m.home.ctaDesc}
             </p>
             <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-              <Link to="/contact" className="btn-primary">
+              <LocaleLink to="/contact" className="btn-primary">
                 {m.common.contactUs} <ArrowRight className="h-4 w-4 rtl-flip" />
-              </Link>
-              <Link to="/portfolio" className="btn-ghost">
+              </LocaleLink>
+              <LocaleLink to="/portfolio" className="btn-ghost">
                 {m.common.viewWork}
-              </Link>
+              </LocaleLink>
             </div>
           </div>
         </div>

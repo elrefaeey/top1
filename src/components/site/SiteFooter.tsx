@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { ArrowLeft, Mail, MapPin, Sparkles } from "lucide-react";
 import { SiteLogo } from "@/components/site/SiteLogo";
 import { SocialLinks } from "@/components/site/SocialLinks";
@@ -49,10 +50,10 @@ export function SiteFooter() {
             <h2 className="footer-cta-title">{m.footer.ctaTitle}</h2>
             <p className="footer-cta-desc">{m.footer.ctaDesc}</p>
           </div>
-          <Link to="/contact" className="btn-primary footer-cta-btn shrink-0">
+          <LocaleLink to="/contact" className="btn-primary footer-cta-btn shrink-0">
             {m.footer.contactCta}
             <ArrowLeft className="h-4 w-4 rtl-flip" />
-          </Link>
+          </LocaleLink>
         </div>
       </div>
 
@@ -63,13 +64,13 @@ export function SiteFooter() {
           <div className="footer-grid">
             {/* العلامة */}
             <div className="footer-brand-col">
-              <Link to="/" className="footer-brand-logo-link">
+              <LocaleLink to="/" className="footer-brand-logo-link">
                 <SiteLogo
                   className="footer-brand-logo"
                   imageClassName="footer-brand-logo-img"
                   tone="light"
                 />
-              </Link>
+              </LocaleLink>
               <p className="footer-tagline">{tagline}</p>
               <ul className="footer-contact-list">
                 {settings?.address && (
@@ -110,9 +111,9 @@ export function SiteFooter() {
                 <ul className="footer-link-list">
                   {QUICK_LINKS.map((l) => (
                     <li key={l.href}>
-                      <Link to={l.href} className="footer-link">
+                      <LocaleLink to={l.href} className="footer-link">
                         {labelForHref(l.href, l.label)}
-                      </Link>
+                      </LocaleLink>
                     </li>
                   ))}
                 </ul>
@@ -125,13 +126,13 @@ export function SiteFooter() {
                   <ul className="footer-link-list">
                     {services.slice(0, 6).map((s) => (
                       <li key={s.id}>
-                        <Link
+                        <LocaleLink
                           to="/services/$slug"
                           params={{ slug: preferredServiceSlug(s.slug) }}
                           className="footer-link"
                         >
                           {s.title}
-                        </Link>
+                        </LocaleLink>
                       </li>
                     ))}
                   </ul>
@@ -144,31 +145,31 @@ export function SiteFooter() {
                 <ul className="footer-link-list">
                   {FOOTER_LANDING_LINKS.map((l) => (
                     <li key={l.href}>
-                      <Link to={l.href} className="footer-link">
+                      <LocaleLink to={l.href} className="footer-link">
                         {labelForHref(l.href, l.label)}
-                      </Link>
+                      </LocaleLink>
                     </li>
                   ))}
                 </ul>
-                <Link to="/contact" className="footer-mini-cta mt-4">
+                <LocaleLink to="/contact" className="footer-mini-cta mt-4">
                   {m.footer.contactCta}
                   <ArrowLeft className="h-3.5 w-3.5 rtl-flip" />
-                </Link>
+                </LocaleLink>
               </div>
             </div>
 
             {/* موبايل — روابط مضغوطة + CTA واحد */}
             <nav className="footer-mobile-nav footer-mobile-only" aria-label={m.footer.siteLinks}>
               {QUICK_LINKS.map((l) => (
-                <Link key={l.href} to={l.href} className="footer-mobile-link">
+                <LocaleLink key={l.href} to={l.href} className="footer-mobile-link">
                   {labelForHref(l.href, l.label)}
-                </Link>
+                </LocaleLink>
               ))}
             </nav>
-            <Link to="/contact" className="footer-mobile-cta footer-mobile-only">
+            <LocaleLink to="/contact" className="footer-mobile-cta footer-mobile-only">
               {m.footer.contactCta}
               <ArrowLeft className="h-4 w-4 rtl-flip" />
-            </Link>
+            </LocaleLink>
           </div>
 
           {/* الشريط السفلي */}
@@ -181,9 +182,9 @@ export function SiteFooter() {
             </p>
             <nav className="footer-legal-nav" aria-label={m.footer.legalNav}>
               {LEGAL_LINKS.map((l) => (
-                <Link key={l.href} to={l.href} className="footer-legal-link">
+                <LocaleLink key={l.href} to={l.href} className="footer-legal-link">
                   {labelForHref(l.href, l.label)}
-                </Link>
+                </LocaleLink>
               ))}
             </nav>
             <p className="footer-made">{m.footer.made}</p>

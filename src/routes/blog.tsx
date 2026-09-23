@@ -1,13 +1,15 @@
-import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLoaderData, useRouterState, redirect } from "@tanstack/react-router";
 import { Search, ArrowUpLeft, TrendingUp, Calendar } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useBlogPosts } from "@/hooks/use-cms";
 import { blogPostSlug } from "@/lib/cms/admin-utils";
 import { localizeBlogPost } from "@/lib/i18n/localize-cms";
+import { stripLocalePrefix } from "@/lib/i18n/locale-path";
 import { formatPostDate } from "@/lib/date-utils";
 import { SiteImage } from "@/components/site/SiteImage";
 import { ContentError } from "@/components/site/ContentState";
 import { InternalLinksBlock } from "@/components/seo/InternalLinksBlock";
+import { LocaleLink } from "@/components/site/LocaleLink";
 
 import { blogListingInternalLinks } from "@/lib/seo/internal-links";
 import { loadBlogRouteSeoFn } from "@/lib/seo/cms-seo.functions";
@@ -16,20 +18,21 @@ import { useLocale } from "@/providers/LocaleProvider";
 import { localeDateTag } from "@/lib/i18n/locale";
 
 export const Route = createFileRoute("/blog")({
-  loader: () => loadBlogRouteSeoFn(),
-  head: ({ loaderData, matches }) => {
-    if (matches.some((m) => (m.routeId as string) === "/blog/$slug")) return {};
-    return buildBlogListingHead(loaderData ?? { cms: null, posts: [] });
+  beforeLoad: () => {
+    throw redirect({ href: "/ar/blog", statusCode: 301 });
   },
-  component: Blog,
 });
 
-function Blog() {
-  const isPost = useMatch({ from: "/blog/$slug", shouldThrow: false });
+export function Blog() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const basePath = stripLocalePrefix(pathname);
+  const isPost = basePath.startsWith("/blog/") && basePath !== "/blog";
   const [q, setQ] = useState("");
   const allKey = "__all__";
   const [cat, setCat] = useState(allKey);
-  const { posts: loaderPosts = [] } = Route.useLoaderData();
+  const { posts: loaderPosts = [] } = (useLoaderData({ strict: false }) ?? {}) as {
+    posts?: Awaited<ReturnType<typeof loadBlogRouteSeoFn>>["posts"];
+  };
   const { data: queryPosts = [], isLoading, isError, isSuccess, refetch } = useBlogPosts();
   const { m, t, locale } = useLocale();
   const rawPosts = isSuccess ? queryPosts : loaderPosts.length > 0 ? loaderPosts : queryPosts;
@@ -135,7 +138,7 @@ function Blog() {
 
               <div className={`grid gap-6 ${trending.length > 1 ? "md:grid-cols-2" : "max-w-2xl"}`}>
                 {trending.map((p) => (
-                  <Link
+                  <LocaleLink
                     key={p.id}
                     to="/blog/$slug"
                     params={{ slug: blogPostSlug(p) }}
@@ -186,7 +189,7 @@ function Blog() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </LocaleLink>
                 ))}
               </div>
             </div>
@@ -202,7 +205,7 @@ function Blog() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             {filtered.map((p) => (
-              <Link
+              <LocaleLink
                 key={p.id}
                 to="/blog/$slug"
                 params={{ slug: blogPostSlug(p) }}
@@ -252,7 +255,7 @@ function Blog() {
                     </span>
                   </div>
                 </div>
-              </Link>
+              </LocaleLink>
             ))}
 
             {!isLoading && filtered.length === 0 && (

@@ -23,6 +23,7 @@ import { SITE_NAME } from "@/lib/site-config";
 import { rootJsonLdScripts } from "@/lib/seo";
 import { LocaleProvider, useT } from "@/providers/LocaleProvider";
 import { applyDocumentLocale, LOCALE_BOOTSTRAP_SCRIPT, readStoredLocale } from "@/lib/i18n/locale";
+import { resolveRequestLocale } from "@/lib/i18n/request-locale";
 
 function NotFoundComponent() {
   const m = useT();
@@ -38,10 +39,10 @@ function NotFoundComponent() {
       </h1>
       <p className="mt-3 max-w-md text-muted-foreground">{m.notFound.desc}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link to="/" className="btn-primary">
+        <Link to="/ar" className="btn-primary">
           {m.notFound.home}
         </Link>
-        <Link to="/contact" className="btn-ghost">
+        <Link to="/ar/contact" className="btn-ghost">
           {m.notFound.contact}
         </Link>
       </div>
@@ -73,7 +74,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             {m.error.retry}
           </button>
-          <a href="/" className="btn-ghost">
+          <a href="/ar" className="btn-ghost">
             {m.error.home}
           </a>
         </div>
@@ -83,6 +84,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async ({ location }) => ({
+    locale: await resolveRequestLocale(location.pathname),
+  }),
   head: () => {
     const meta: Array<Record<string, string>> = [
       { charSet: "utf-8" },
@@ -122,8 +126,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const locale = useRouterState({
+    select: (s) => {
+      const p = s.location.pathname;
+      if (p === "/en" || p.startsWith("/en/")) return "en";
+      return "ar";
+    },
+  });
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang={locale} dir={locale === "en" ? "ltr" : "rtl"} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: LOCALE_BOOTSTRAP_SCRIPT }} />
         <HeadContent />
@@ -138,6 +149,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { locale: initialLocale } = Route.useLoaderData();
   const isAdminRoute = useRouterState({ select: (s) => s.location.pathname.startsWith("/admin") });
 
   useEffect(() => {
@@ -146,7 +158,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LocaleProvider>
+      <LocaleProvider initialLocale={initialLocale}>
         <ToastProvider>
           {/* Auth + Firestore stay out of the public shell — see AdminProviders under /admin */}
           {!isAdminRoute ? <DeferredFirebaseAnalytics /> : null}

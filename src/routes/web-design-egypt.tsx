@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-/** إعادة توجيه دائمة — المحتوى الجغرافي أصبح للسعودية فقط */
+/** Legacy unprefixed URL → Arabic locale path. */
 export const Route = createFileRoute("/web-design-egypt")({
   beforeLoad: () => {
-    throw redirect({ to: "/web-design-saudi-arabia" });
+    throw redirect({ href: "/ar/web-design-saudi-arabia", statusCode: 301 });
   },
 });

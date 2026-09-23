@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import type { InternalLink } from "@/lib/seo/internal-links";
 import { useLocale } from "@/providers/LocaleProvider";
 
@@ -20,12 +20,12 @@ export function InternalLinksBlock({ title, links, className = "" }: InternalLin
       <ul className="mt-3 flex flex-wrap gap-2">
         {links.map((link) => (
           <li key={link.href}>
-            <Link
+            <LocaleLink
               to={link.href}
               className="inline-flex items-center rounded-full border border-border bg-surface px-3 py-1.5 text-sm text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
             >
               {labelForHref(link.href, link.label)}
-            </Link>
+            </LocaleLink>
           </li>
         ))}
       </ul>
