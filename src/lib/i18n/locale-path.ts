@@ -3,10 +3,11 @@ import type { Locale } from "@/lib/i18n/locale";
 const AR_PREFIX = "/ar";
 const EN_PREFIX = "/en";
 
-/** Paths that should never get a locale prefix (admin, APIs, assets). */
+/** Paths that should never get a locale prefix (admin, APIs, assets, framework internals like `/_serverFn`). */
 export function isLocaleExemptPath(pathname: string): boolean {
   const path = pathname.split("?")[0] || "/";
   return (
+    path.startsWith("/_") ||
     path.startsWith("/admin") ||
     path.startsWith("/api") ||
     path.startsWith("/media") ||

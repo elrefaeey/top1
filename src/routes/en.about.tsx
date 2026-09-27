@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { About } from "@/routes/about";
 import { buildStaticPageHead } from "@/lib/seo";
 import { loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import { clientNetworkFallback } from "@/lib/router/client-network-fallback";
 import { getMessages } from "@/lib/i18n/messages";
 import { withLocalePrefix } from "@/lib/i18n/locale-path";
 
 export const Route = createFileRoute("/en/about")({
-  loader: () => loadPublishedPageSeoFn({ data: { slug: "about" } }),
+  loader: () => clientNetworkFallback(() => loadPublishedPageSeoFn({ data: { slug: "about" } })),
   head: ({ loaderData }) => {
     const m = getMessages("en");
     return buildStaticPageHead("about", "/about", {

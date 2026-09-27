@@ -2,15 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Home } from "@/routes/index";
 import { absoluteImageUrl, buildStaticPageHead, resolveStaticPageOgImage } from "@/lib/seo";
 import { loadHomeHeroSettingsFn, loadPublishedPageSeoFn } from "@/lib/seo/cms-seo.functions";
+import { clientNetworkFallback } from "@/lib/router/client-network-fallback";
 
 export const Route = createFileRoute("/en/")({
-  loader: async () => {
-    const [cms, hero] = await Promise.all([
-      loadPublishedPageSeoFn({ data: { slug: "home" } }),
-      loadHomeHeroSettingsFn(),
-    ]);
-    return { cms, hero };
-  },
+  loader: () =>
+    clientNetworkFallback(async () => {
+      const [cms, hero] = await Promise.all([
+        loadPublishedPageSeoFn({ data: { slug: "home" } }),
+        loadHomeHeroSettingsFn(),
+      ]);
+      return { cms, hero };
+    }),
   head: ({ loaderData }) => {
     const cms = loaderData?.cms;
     const heroUrl = loaderData?.hero?.heroImageUrl?.trim() || "";
