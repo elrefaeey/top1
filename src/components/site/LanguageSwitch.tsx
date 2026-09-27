@@ -9,13 +9,19 @@ export function LanguageSwitch({ className = "" }: { className?: string }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   function go(target: Locale) {
-    if (target === locale) return;
-    setLocale(target);
-    if (isLocaleExemptPath(pathname)) return;
-    const next = alternateLocalePath(pathname, target);
-    if (next !== pathname) {
-      void router.history.push(next);
+    const path = window.location.pathname || pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    if (isLocaleExemptPath(path)) {
+      if (target === locale) return;
+      setLocale(target);
+      return;
     }
+    // Swap only `/ar` ↔ `/en`. Slug, extra segments, query, and hash stay as-is.
+    const nextPath = alternateLocalePath(path, target);
+    if (nextPath === path) return;
+    setLocale(target);
+    void router.navigate({ href: `${nextPath}${search}${hash}` });
   }
 
   return (
