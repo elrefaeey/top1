@@ -216,6 +216,11 @@ export function localizePortfolio<T extends PortfolioItem>(item: T, locale: Loca
       pickLocaleText(item.resultsSummary, item.resultsSummaryEn, locale) ||
       overlay?.resultsSummary ||
       item.resultsSummary,
+    caseMetrics: item.caseMetrics?.map((metric) => ({
+      ...metric,
+      label: pickLocaleText(metric.label, metric.labelEn, locale) || metric.label,
+    })),
+    caseDuration: pickLocaleText(item.caseDuration, item.caseDurationEn, locale) || item.caseDuration,
     metaTitle: pickLocaleText(item.metaTitle, item.metaTitleEn, locale) || item.metaTitle,
     metaDescription:
       pickLocaleText(item.metaDescription, item.metaDescriptionEn, locale) || item.metaDescription,

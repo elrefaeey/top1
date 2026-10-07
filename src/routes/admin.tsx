@@ -38,11 +38,13 @@ function AdminGate() {
   const [retrying, setRetrying] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
+
   useEffect(() => {
-    if (!loading && !user && !isLoginPage) {
+    if (!loading && !user && isAdminPath && !isLoginPage) {
       navigate({ to: "/admin/login" });
     }
-  }, [user, loading, isLoginPage, navigate]);
+  }, [user, loading, isAdminPath, isLoginPage, navigate]);
 
   if (isLoginPage) {
     return (

@@ -23,6 +23,7 @@ import { logout } from "@/lib/firebase/auth";
 import { useAuth } from "@/providers/AuthProvider";
 import { useAdminI18n } from "@/providers/LocaleProvider";
 import { LanguageSwitch } from "@/components/site/LanguageSwitch";
+import { LocaleLink } from "@/components/site/LocaleLink";
 import { SITE_LOGO_MARK_LIGHT_URL, SITE_NAME } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { AdminMessages } from "@/lib/i18n/admin-messages";
@@ -196,12 +197,12 @@ export function AdminSidebar({ open = false, onClose }: AdminSidebarProps) {
             </div>
             <LanguageSwitch className="shrink-0" />
           </div>
-          <Link to="/" onClick={onClose} className="admin-nav-link">
+          <LocaleLink to="/" onClick={onClose} className="admin-nav-link">
             <span className="admin-nav-icon" aria-hidden>
               <ExternalLink className="h-4 w-4" />
             </span>
             {a.viewSite}
-          </Link>
+          </LocaleLink>
           <button type="button" onClick={() => logout()} className="admin-nav-link w-full text-start">
             <span className="admin-nav-icon" aria-hidden>
               <LogOut className="h-4 w-4 rtl-flip" />

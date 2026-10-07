@@ -231,7 +231,7 @@ function BlogPreview() {
   const mounted = useHasMounted();
   const { data: home } = useHomeBundle();
   const { m, locale } = useLocale();
-  const posts = (home?.blog ?? []).slice(0, 4);
+  const posts = (home?.blog ?? []).slice(0, 3);
   if (!mounted || posts.length === 0) return null;
   return (
     <section className="section tone-tinted">
@@ -245,7 +245,7 @@ function BlogPreview() {
             </LocaleLink>
           }
         />
-        <div className="section-body grid gap-5 sm:grid-cols-2">
+        <div className="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((p) => (
             <LocaleLink
               key={p.id}

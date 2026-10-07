@@ -231,7 +231,7 @@ export function Services() {
               ) : null}
 
               {gridServices.length > 0 ? (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid-balanced-3 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {gridServices.map((s, idx) => (
                     <Reveal key={s.id || s.slug} delay={idx * 60} className="h-full">
                       <ServiceCard

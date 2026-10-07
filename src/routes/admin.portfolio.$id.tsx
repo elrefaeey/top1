@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import type { PortfolioItem, PublishStatus } from "@/types/cms";
+import { Plus, Trash2 } from "lucide-react";
+import type { CaseStudyMetric, PortfolioItem, PublishStatus } from "@/types/cms";
 import {
   AdminCardSection,
   AdminField,
@@ -72,6 +73,7 @@ function AdminPortfolioEdit() {
         ...form,
         slug: form.slug || slugify(form.title),
         tags: commaToArray(tagsText),
+        caseMetrics: form.caseMetrics?.filter((m) => m.label.trim() && m.after.trim()),
         updatedAt: nowIso(),
       },
     });
@@ -290,6 +292,125 @@ function AdminPortfolioEdit() {
               className={adminInputClass("text-start")}
             />
           </AdminField>
+        </AdminCardSection>
+
+        <AdminCardSection title={a.caseStudyTitle} description={a.caseStudyDesc}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label={a.caseDuration} id="caseDuration">
+              <input
+                id="caseDuration"
+                value={form.caseDuration ?? ""}
+                onChange={(e) => patch({ caseDuration: e.target.value || undefined })}
+                className={adminInputClass()}
+                placeholder="6 أشهر"
+              />
+            </AdminField>
+            <AdminField label={a.caseDurationEn} id="caseDurationEn">
+              <input
+                id="caseDurationEn"
+                dir="ltr"
+                value={form.caseDurationEn ?? ""}
+                onChange={(e) => patch({ caseDurationEn: e.target.value || undefined })}
+                className={adminInputClass("text-start")}
+                placeholder="6 months"
+              />
+            </AdminField>
+          </div>
+
+          {(form.caseMetrics ?? []).length === 0 && (
+            <p className="text-sm text-[var(--admin-muted)]">{a.caseMetricEmpty}</p>
+          )}
+
+          {(form.caseMetrics ?? []).map((metric, index) => {
+            const setMetric = (p: Partial<CaseStudyMetric>) =>
+              patch({
+                caseMetrics: (form.caseMetrics ?? []).map((m, i) => (i === index ? { ...m, ...p } : m)),
+              });
+            return (
+              <div
+                key={index}
+                className="space-y-3 rounded-[var(--admin-radius)] border border-[var(--admin-border)] bg-[var(--admin-surface-muted)] p-3 sm:p-4"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-[var(--admin-muted)]">#{index + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      patch({ caseMetrics: (form.caseMetrics ?? []).filter((_, i) => i !== index) })
+                    }
+                    className="admin-btn admin-btn-ghost !min-h-8 !px-2.5 text-[var(--admin-danger)]"
+                    aria-label={a.caseMetricRemove}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <AdminField label={a.caseMetricLabel} id={`metric-label-${index}`}>
+                    <input
+                      id={`metric-label-${index}`}
+                      required
+                      value={metric.label}
+                      onChange={(e) => setMetric({ label: e.target.value })}
+                      className={adminInputClass()}
+                      placeholder="زيارات Google الشهرية"
+                    />
+                  </AdminField>
+                  <AdminField label={a.caseMetricLabelEn} id={`metric-labelEn-${index}`}>
+                    <input
+                      id={`metric-labelEn-${index}`}
+                      dir="ltr"
+                      value={metric.labelEn ?? ""}
+                      onChange={(e) => setMetric({ labelEn: e.target.value || undefined })}
+                      className={adminInputClass("text-start")}
+                      placeholder="Monthly Google visits"
+                    />
+                  </AdminField>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <AdminField label={a.caseMetricBefore} id={`metric-before-${index}`}>
+                    <input
+                      id={`metric-before-${index}`}
+                      dir="ltr"
+                      value={metric.before ?? ""}
+                      onChange={(e) => setMetric({ before: e.target.value || undefined })}
+                      className={adminInputClass("text-start")}
+                      placeholder="320"
+                    />
+                  </AdminField>
+                  <AdminField label={a.caseMetricAfter} id={`metric-after-${index}`}>
+                    <input
+                      id={`metric-after-${index}`}
+                      dir="ltr"
+                      required
+                      value={metric.after}
+                      onChange={(e) => setMetric({ after: e.target.value })}
+                      className={adminInputClass("text-start")}
+                      placeholder="4,800"
+                    />
+                  </AdminField>
+                  <AdminField label={a.caseMetricChange} id={`metric-change-${index}`}>
+                    <input
+                      id={`metric-change-${index}`}
+                      dir="ltr"
+                      value={metric.change ?? ""}
+                      onChange={(e) => setMetric({ change: e.target.value || undefined })}
+                      className={adminInputClass("text-start")}
+                      placeholder="+1,400%"
+                    />
+                  </AdminField>
+                </div>
+              </div>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={() => patch({ caseMetrics: [...(form.caseMetrics ?? []), { label: "", after: "" }] })}
+            className="admin-btn admin-btn-ghost"
+          >
+            <Plus className="h-4 w-4" />
+            {a.caseMetricAdd}
+          </button>
         </AdminCardSection>
 
         <AdminCardSection title={a.projectImageSettings} description={a.projectImageSettingsDesc}>

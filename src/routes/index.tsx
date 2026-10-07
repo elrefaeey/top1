@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight, ShieldCheck, Zap, TrendingUp, Target } from "
 import { lazy, Suspense, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SiteImage } from "@/components/site/SiteImage";
+import { CaseMetricCard, caseMetricsOf } from "@/components/site/CaseStudy";
 import { useHomeBundle } from "@/hooks/use-cms";
 import { statIcon } from "@/lib/stat-icons";
 import { flattenTitle, portfolioItemSlug, splitDisplayTitle } from "@/lib/cms/admin-utils";
@@ -46,6 +47,7 @@ export function Home() {
       <Services />
       <WhyUs />
       <Portfolio />
+      <CaseStudies />
       <Stats />
       <Suspense
         fallback={
@@ -183,7 +185,11 @@ function Services() {
             desc={m.home.servicesDesc}
           />
         </Reveal>
-        <div className="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={`section-body grid gap-5 sm:grid-cols-2 ${
+            services.length % 4 === 0 ? "lg:grid-cols-4" : "grid-balanced-3 lg:grid-cols-3"
+          }`}
+        >
           {services.map((s, i) => {
             const Icon = serviceIcon(s.icon);
             return (
@@ -318,7 +324,7 @@ function Portfolio() {
             </LocaleLink>
           }
         />
-        <div className="section-body portfolio-home-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="section-body portfolio-home-grid grid-balanced-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {preview.map((p, i) => {
             const { name, specialty } = splitDisplayTitle(p.title);
             return (
@@ -358,6 +364,57 @@ function Portfolio() {
                 </div>
               </LocaleLink>
             </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseStudies() {
+  const { data: home } = useHomeBundle();
+  const { m, t } = useLocale();
+  const cases = (home?.portfolio ?? [])
+    .map((project) => ({ project, metrics: caseMetricsOf(project) }))
+    .filter(({ metrics }) => metrics.length > 0)
+    .slice(0, 3);
+  if (cases.length === 0) return null;
+
+  return (
+    <section className="section tone-tinted">
+      <div className="container-page">
+        <SectionIntro eyebrow={m.home.caseEyebrow} title={m.home.caseTitle} desc={m.home.caseDesc} />
+        <div className="section-body grid-balanced-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {cases.map(({ project, metrics }, i) => {
+            const { name } = splitDisplayTitle(project.title);
+            return (
+              <Reveal key={project.id} delay={i * 100} className="h-full">
+                <LocaleLink
+                  to="/portfolio/$slug"
+                  params={{ slug: portfolioItemSlug(project) }}
+                  className="group case-card"
+                >
+                  <div className="case-card-head">
+                    {project.category && <span className="case-card-category">{project.category}</span>}
+                    {project.caseDuration && (
+                      <span className="case-card-period">
+                        {t(m.portfolioDetail.resultsPeriod, { period: project.caseDuration })}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="case-card-title">{name}</h3>
+                  <div className="case-card-metrics">
+                    {metrics.slice(0, 3).map((metric, mi) => (
+                      <CaseMetricCard key={`${metric.label}-${mi}`} metric={metric} compact />
+                    ))}
+                  </div>
+                  <span className="case-card-link">
+                    {m.home.caseRead}
+                    <ArrowRight className="h-4 w-4 rtl-flip" />
+                  </span>
+                </LocaleLink>
+              </Reveal>
             );
           })}
         </div>

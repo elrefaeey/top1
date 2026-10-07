@@ -8,7 +8,7 @@ function unsplash(photoId: string, width = 1200) {
 
 export const siteImages = {
   hero: {
-    main: unsplash("photo-1460925895917-afe12b2b6d0e", 1200),
+    main: "/hero-top1-v2.webp",
     mainAlt: `فريق ${SITE_NAME} يتعاون على بناء منتج رقمي`,
   },
   about: {

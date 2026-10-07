@@ -1,5 +1,6 @@
 import { createFileRoute, notFound, redirect, useLoaderData, useParams } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpLeft, ExternalLink, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowUpLeft, ExternalLink, Sparkles, TrendingUp } from "lucide-react";
+import { CaseMetricCard, caseMetricsOf } from "@/components/site/CaseStudy";
 import { SiteImage } from "@/components/site/SiteImage";
 import { LocaleLink } from "@/components/site/LocaleLink";
 import { usePortfolioItem } from "@/hooks/use-cms";
@@ -57,10 +58,12 @@ export function PortfolioDetail() {
   const serviceLinks = serviceLinksForPortfolio(item);
   const tags = normalizeTags(item.tags ?? []);
   const hasStory = Boolean(item.challenge || item.solution || item.resultsSummary);
+  const metrics = caseMetricsOf(item);
   const { name: brandName, specialty } = splitDisplayTitle(item.title);
 
   const hasExtra =
     hasStory ||
+    metrics.length > 0 ||
     (item.servicesProvided && item.servicesProvided.length > 0) ||
     (item.technologies && item.technologies.length > 0) ||
     serviceLinks.length > 0;
@@ -150,6 +153,27 @@ export function PortfolioDetail() {
       {hasExtra && (
         <section className="section tone-tinted">
           <div className="container-page">
+
+            {metrics.length > 0 && (
+              <div className="case-results mb-8">
+                <div className="case-results-head">
+                  <h2 className="case-results-title">
+                    <TrendingUp className="h-5 w-5" aria-hidden />
+                    {m.portfolioDetail.resultsTitle}
+                  </h2>
+                  {item.caseDuration && (
+                    <span className="case-results-period">
+                      {t(m.portfolioDetail.resultsPeriod, { period: item.caseDuration })}
+                    </span>
+                  )}
+                </div>
+                <div className="case-results-grid">
+                  {metrics.map((metric, i) => (
+                    <CaseMetricCard key={`${metric.label}-${i}`} metric={metric} />
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Challenge / Solution / Result */}
             {hasStory && (

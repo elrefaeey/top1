@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useLoaderData, useRouterState, redirect } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpLeft, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
+import { CaseHighlightBadge, caseMetricsOf } from "@/components/site/CaseStudy";
 import { SiteImage } from "@/components/site/SiteImage";
 import { LocaleLink } from "@/components/site/LocaleLink";
 import { PageIntro } from "@/components/site/SectionIntro";
@@ -45,6 +46,7 @@ function PortfolioCard({
   const { name, specialty } = splitDisplayTitle(item.title);
   const excerpt = projectExcerpt(item.description, featured ? 180 : 110);
   const showClient = Boolean(item.client && item.client.trim() !== name);
+  const topMetric = caseMetricsOf(item)[0];
 
   return (
     <LocaleLink
@@ -75,6 +77,11 @@ function PortfolioCard({
           {item.category ? (
             <span className="absolute top-3 start-3 rounded-full bg-background/90 px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-sm backdrop-blur">
               {item.category}
+            </span>
+          ) : null}
+          {topMetric ? (
+            <span className="absolute bottom-3 start-3 end-3 flex">
+              <CaseHighlightBadge metric={topMetric} />
             </span>
           ) : null}
         </div>
@@ -209,7 +216,7 @@ export function Portfolio() {
           ) : null}
 
           {gridItems.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid-balanced-3 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {gridItems.map((p, idx) => (
                 <Reveal key={p.id} delay={idx * 60} className="h-full">
                   <PortfolioCard item={p} index={featured ? idx + 1 : idx} />

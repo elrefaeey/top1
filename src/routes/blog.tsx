@@ -203,7 +203,7 @@ export function Blog() {
             </div>
           )}
 
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid-balanced-3 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => (
               <LocaleLink
                 key={p.id}
@@ -219,7 +219,7 @@ export function Blog() {
                       alt={p.featuredImageAlt ?? p.title}
                       width={800}
                       height={450}
-                      sizes="(max-width: 640px) 100vw, 50vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       wrapperClassName="aspect-[16/9] w-full"
                       className="transition-transform duration-500 group-hover:scale-105 object-cover object-top"
                     />

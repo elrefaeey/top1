@@ -94,6 +94,16 @@ export interface Service extends SeoFields, Timestamps {
   metaDescriptionEn?: string;
 }
 
+/** One measured outcome of a case study — values are free text so the admin controls formatting. */
+export interface CaseStudyMetric {
+  label: string;
+  labelEn?: string;
+  before?: string;
+  after: string;
+  /** Headline change, e.g. "+1,400%" */
+  change?: string;
+}
+
 export interface PortfolioItem extends SeoFields, Timestamps {
   id: string;
   title: string;
@@ -124,6 +134,11 @@ export interface PortfolioItem extends SeoFields, Timestamps {
   /** Optional outcome note (only when real) */
   resultsSummary?: string;
   resultsSummaryEn?: string;
+  /** Real before/after numbers — the case study section only renders when present */
+  caseMetrics?: CaseStudyMetric[];
+  /** Period the results were measured over, e.g. "6 أشهر" */
+  caseDuration?: string;
+  caseDurationEn?: string;
   order: number;
   status: PublishStatus;
   metaTitleEn?: string;
